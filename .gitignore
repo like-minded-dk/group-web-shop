@@ -49,8 +49,13 @@
 #
 /wp-content/plugins
 /wp-content/upgrade-temp-backup
-/wp-content/languages
 /wp-content/upgrade
 /wp-content/logs
 /wp-content/jetpack-waf
 /wp-content/uploads
+
+# Ignore everything in the folder
+!/wp-content/plugins/index.php
+!/wp-content/uploads/index.php
+!/wp-content/themes/index.php
+
