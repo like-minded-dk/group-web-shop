@@ -48,6 +48,3 @@ wp-config.php
 #/wp-content/themes
 
 # every thing
-wp-content
-wp-includes
-wp-admin
