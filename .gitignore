@@ -47,12 +47,12 @@
 # uncomment the next line
 #/#wp-content/themes
 #
-/wp-content/plugins
-/wp-content/upgrade-temp-backup
-/wp-content/upgrade
-/wp-content/logs
-/wp-content/jetpack-waf
-/wp-content/uploads
+/wp-content/plugins/
+/wp-content/upgrade-temp-backup/
+/wp-content/upgrade/
+/wp-content/logs/
+/wp-content/jetpack-waf/
+/wp-content/uploads/
 
 # Ignore everything in the folder
 !/wp-content/plugins/index.php
