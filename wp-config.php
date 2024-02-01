@@ -55,6 +55,9 @@ if (!defined('WP_CONTENT_DIR') && !defined('DONT_SET_WP_CONTENT_DIR'))
    be put in every host-specific config file */
 if (!isset($table_prefix)) {
     $table_prefix = 'wp_';
+define( 'SAVEQUERIES', true );
+define( 'SCRIPT_DEBUG', true );
+define( 'WP_DEBUG_LOG', true );
 }
 
 if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')
