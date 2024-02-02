@@ -54,10 +54,12 @@ wp-content/logs/
 wp-content/jetpack-waf/
 wp-content/uploads/
 wp-content/languages/
+wp-content/themes/
 
 # Ignore everything in the folder
 !wp-content/plugins/index.php
 !wp-content/uploads/index.php
 !wp-content/themes/index.php
+
 
 
