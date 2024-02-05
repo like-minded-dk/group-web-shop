@@ -8,8 +8,6 @@ function my_child_theme_styles() {
 }
 add_action( 'wp_enqueue_scripts', 'my_child_theme_styles' );
 
-
-
 function list_products_by_creator_shortcode($atts) {
     // Shortcode attributes for user ID
     $atts = shortcode_atts(array(
@@ -50,3 +48,10 @@ function list_products_by_creator_shortcode($atts) {
     return $output;
 }
 add_shortcode('products_by_creator', 'list_products_by_creator_shortcode');
+
+# remove breadcrumbs
+add_action( 'init', 'custom_remove_storefront_breadcrumbs');
+
+function custom_remove_storefront_breadcrumbs() {
+    remove_action( 'storefront_before_content', 'woocommerce_breadcrumb', 10 );
+}
