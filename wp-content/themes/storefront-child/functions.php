@@ -13,7 +13,7 @@ add_action( 'wp_enqueue_scripts', 'my_child_theme_styles' );
 function list_products_by_creator_shortcode($atts) {
     // Shortcode attributes for user ID
     $atts = shortcode_atts(array(
-        'user_id' => '', // Default user ID if none provided
+        'user_id' => '17', // Default user ID if none provided
     ), $atts, 'products_by_creator');
 
     $user_id = $atts['user_id'];
