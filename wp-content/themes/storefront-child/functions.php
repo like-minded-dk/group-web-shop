@@ -14,7 +14,7 @@ function list_products_by_creator_shortcode($atts) {
         'user_id' => '', // Default user ID if none provided
     ), $atts, 'products_by_creator');
 
-    $user_id = $atts['user_id'];
+    $user_id = get_current_user_id();
 
     // Query arguments
     $args = array(
@@ -26,16 +26,31 @@ function list_products_by_creator_shortcode($atts) {
     $query = new WP_Query($args);
 
     $output = '<div class="products-by-creator">';
+    $output .= '<ul class="products columns-3">';
 
     if ($query->have_posts()) {
         while ($query->have_posts()) {
             $query->the_post();
             global $product;
+            
+            $image_url = wp_get_attachment_url($product->get_image_id());
+            $image_url = $image_url ? $image_url : "/wp-content/uploads/woocommerce-placeholder-324x324.png";
+            $sale_price = $product->get_sale_price();
+            $sale_price = $sale_price ? $sale_price : '-';
+            $regular_price = $product->get_regular_price();
+            $permalink = get_the_permalink();
+            $title = get_the_title();
+            $currency = get_woocommerce_currency_symbol();
 
             // Customize how each product is displayed
-            $output .= '<div class="product">';
-            $output .= '<a href="' . get_the_permalink() . '">' . get_the_title() . '</a>'; // Product link and title
-            $output .= '</div>';
+            $output .= '<li class="product">';
+            $output .= '<a class="product-permalink" href="permalink">';
+            $output .= "<img class='product-image' src='$image_url'/>";
+            $output .= "<p class='product-title'>$title</p>";
+            $output .= "<p class='product-sale-price'>Sales price: $sale_price $currency</p>";
+            $output .= "<p class='product-regular-price'>Regular price $regular_price $currency</p>";
+            $output .= "</a>";
+            $output .= "</li>";
         }
     } else {
         $output .= '<p>No products found.</p>';
