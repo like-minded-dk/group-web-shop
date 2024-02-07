@@ -1,0 +1,35 @@
+/* Center-align text and elements in product list */
+.products-by-creator ul.products::before {
+    display: none;
+}
+
+.products-by-creator ul {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    list-style: none;
+    margin: 0 0 1.41575em 3em;
+    max-width: 100%;
+    padding: 0;
+    gap: 1.25em;
+}
+
+.products-by-creator li {
+    text-align: center;
+    margin: 0 !important;
+    width: 100% !important;
+}
+
+.products-by-creator li img {
+    width: 100%;
+}
+
+/* Center-align the add to cart button */
+.products-by-creator li.product p {
+    font-size: medium;
+    margin: 0;
+}
+
+.products-by-creator li.product .product-title {
+    font-size: large;
+    margin: 0;
+}
