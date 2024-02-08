@@ -17,6 +17,8 @@
 #/wp-*.php
 #/xmlrpc.php
 
+.well-known
+
 # Configuration
 #wp-config.php
 
@@ -58,9 +60,8 @@ wp-content/themes/*
 
 # Ignore everything in the folder
 !wp-content/plugins/index.php
+!wp-content/plugins/lmshops
 !wp-content/uploads/index.php
 !wp-content/themes/index.php
 !wp-content/themes/storefront-child/
-
-
 

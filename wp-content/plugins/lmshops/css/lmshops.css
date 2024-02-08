@@ -1,17 +1,3 @@
-/*
- Theme Name:   Storefront Child
- Theme URI:    https://wordpress.org/themes/storefront/
- Description:  Twenty Twenty-One Child Theme
- Author:       John Doe
- Author URI:   https://woo.com/products/storefront/
- Template:     storefront
- Version:      1.0.0
- License:      GNU General Public License v2 or later
- License URI:  http://www.gnu.org/licenses/gpl-2.0.html
- Text Domain:  storefront-child
-*/
-
-
 /* Center-align text and elements in product list */
 .products-by-creator ul.products::before {
     display: none;
