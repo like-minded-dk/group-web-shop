@@ -8,6 +8,7 @@
 
 include __DIR__.'/list_offer.php';
 include __DIR__.'/create_offer.php';
+include __DIR__.'/edit_offer.php';
 
 function my_custom_styles() {
     wp_enqueue_style('my-custom-styles', plugin_dir_url(__FILE__) . 'css/lmshops.css');

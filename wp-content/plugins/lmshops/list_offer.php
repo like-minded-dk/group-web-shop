@@ -67,27 +67,39 @@ function list_products_by_creator_shortcode($atts) {
             $permalink = get_the_permalink();
             $title = get_the_title();
             $currency = get_woocommerce_currency_symbol();
-
+            $pid = get_the_ID();
             // Customize how each product is displayed
             $output .= '<li class="product">';
-            $output .= '<a class="product-permalink" href="permalink">';
+            $output .= "<a class='product-permalink' href='$permalink'>";
             $output .= "<img class='product-image' src='$image_url'/>";
             $output .= "<p class='product-title'>$title</p>";
             $output .= "<p class='product-sale-price'>Sales price: $sale_price $currency</p>";
             $output .= "<p class='product-regular-price'>Regular price $regular_price $currency</p>";
             $output .= "</a>";
-            $output .= '<br><button class="product-delete-btn" onclick="deleteProduct(' . get_the_ID() . ')">Delete Offer</button>';
+            $output .= "<button class='btn btn-default product-edit-btn' onclick='editProduct($pid)'><span class='glyphicon glyphicon-wrench'></span> Edit</button>";
+            $output .= "<br/>";
+            $output .= "<button class='btn btn-danger product-delete-btn' onclick='deleteProduct($pid)'>Delete Offer</button>";
+            $output .= "<br/>";
             $output .= "</li>";
 
-            $output .= '
+            $post_url = admin_url('admin-post.php');
+            $delete_nonce = wp_create_nonce('delete_product_nonce');
+            $edit_nonce = wp_create_nonce('edit_product_nonce');
+            $edit_path = get_permalink(get_page_by_path('edit-offer'));
+
+            $output .= "
                 <script>
                 function deleteProduct(productId) {
-                    if (confirm("Are you sure you want to delete this product?")) {
-                        window.location.href = "' . admin_url('admin-post.php') . '?action=delete_product&product_id=" + productId + "&nonce=' . wp_create_nonce('delete_product_nonce') . '";
+                    if (confirm('Are you sure you want to delete this product?')) {
+                        window.location.href = `$post_url?action=delete_product&product_id=` + productId + `&nonce=$delete_nonce`;
                     }
                 }
+
+                function editProduct(productId) {
+                    window.location.href = `$edit_path?product_id=` + productId + `&nonce=$edit_nonce`;
+                }
                 </script>
-            ';
+            ";
         }
     } else {
         $output .= '<p>No products found.</p>';
