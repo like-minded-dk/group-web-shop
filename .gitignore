@@ -17,6 +17,8 @@
 #/wp-*.php
 #/xmlrpc.php
 
+.well-known
+
 # Configuration
 #wp-config.php
 
@@ -62,6 +64,4 @@ wp-content/themes/*
 !wp-content/uploads/index.php
 !wp-content/themes/index.php
 !wp-content/themes/storefront-child/
-
-
 
