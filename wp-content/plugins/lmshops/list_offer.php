@@ -1,37 +1,6 @@
 <?php
-# delete handler
-function handle_delete_product() {
-    if (isset($_GET['product_id'], $_GET['nonce']) && wp_verify_nonce($_GET['nonce'], 'delete_product_nonce')) {
-        $product_id = intval($_GET['product_id']);
-        $current_user_id = get_current_user_id();
-        $post_author_id = get_post_field('post_author', $product_id);
-
-        // Check if the current user is the author of the product or has the capability to delete products
-        if ($current_user_id === $post_author_id || current_user_can('delete_others_posts')) {
-            if (wp_delete_post($product_id, true)) {
-                wp_redirect(add_query_arg('product_deleted', 'success', get_permalink(get_page_by_path('lm-my-offers'))));
-                exit;
-            } else {
-                wp_die('Error deleting product.');
-            }
-        } else {
-            wp_die('You do not have permission to delete this product.');
-        }
-    } else {
-        wp_die('Security check failed or invalid product.');
-    }
-}
-add_action('admin_post_delete_product', 'handle_delete_product');
-add_action('admin_post_nopriv_delete_product', 'handle_delete_product'); // Optionally, if you want non-logged-in users to trigger this action, though this is not recommended for deletion operations.
-
-# delete shorcode
-function show_product_deletion_success_message() {
-    if (isset($_GET['product_deleted']) && $_GET['product_deleted'] == 'success') {
-        return '<p>Product deleted successfully!</p>';
-    }
-}
-add_shortcode('show_product_deletion_message', 'show_product_deletion_success_message');
-
+include __DIR__.'/delete_offer.php';
+include __DIR__.'/switch_status.php';
 
 #list_products_by_creator_shortcode
 function list_products_by_creator_shortcode($atts) {
@@ -47,6 +16,7 @@ function list_products_by_creator_shortcode($atts) {
         'post_type' => 'product',
         'posts_per_page' => -1, // -1 to show all, adjust as needed
         'author' => $user_id, // Filter by author/user ID
+        'post_status' => array('draft', 'publish'),
     );
 
     $query = new WP_Query($args);
@@ -66,40 +36,60 @@ function list_products_by_creator_shortcode($atts) {
             $regular_price = $product->get_regular_price();
             $permalink = get_the_permalink();
             $title = get_the_title();
+            $status = get_post_status($product->get_id());
+            $status = $status == 'draft' ? 'Draft' : 'Published'; 
             $currency = get_woocommerce_currency_symbol();
             $pid = get_the_ID();
+            $admin_url = esc_url(admin_url('admin-post.php'));
+            $product_nonce = wp_create_nonce('product_nonce');
+            $edit_path = get_permalink(get_page_by_path('edit-offer'));
+            
+            $toggle_status_url = admin_url("admin-post.php?action=toggle_product_status&product_id=$pid&nonce=$product_nonce");
+            $toggle_button_text = ('Published' === $status) ? 'Set to Draft' : 'Publish';
+
             // Customize how each product is displayed
             $output .= '<li class="product">';
             $output .= "<a class='product-permalink' href='$permalink'>";
             $output .= "<img class='product-image' src='$image_url'/>";
             $output .= "<p class='product-title'>$title</p>";
+            $output .= "<p class='product-title'>$status</p>";
             $output .= "<p class='product-sale-price'>Sales price: $sale_price $currency</p>";
             $output .= "<p class='product-regular-price'>Regular price $regular_price $currency</p>";
             $output .= "</a>";
-            $output .= "<button class='btn btn-default product-edit-btn' onclick='editProduct($pid)'><span class='glyphicon glyphicon-wrench'></span> Edit</button>";
-            $output .= "<br/>";
-            $output .= "<button class='btn btn-danger product-delete-btn' onclick='deleteProduct($pid)'>Delete Offer</button>";
-            $output .= "<br/>";
+            $output .= <<<HTML
+                <form action='$toggle_status_url' method='post'>
+                    <button class='btn btn-secondary product-toggle-status-btn' type="submit">
+                        $toggle_button_text
+                    </button>
+                </form>
+            HTML;
+            $output .= <<<HTML
+                <form class="inline" action='$admin_url' method='post'>
+                    <input type="hidden" name="action" value="duplicate_product">
+                    <input type="hidden" name="product_id" value="$pid">
+                    <input type="hidden" name="nonce" value="$product_nonce">
+                    <button class='btn btn-secondary product-clone-btn' type="submit">
+                        <span class='glyphicon glyphicon-refresh'></span> Duplicate
+                    </button>
+                </form>
+            HTML;
+            $output .= <<<HTML
+                <form class="inline" action='$edit_path' method='get'>
+                    <input type="hidden" name="product_id" value="$pid">
+                    <button class='btn btn-secondary product-clone-btn' type="submit">
+                        <span class='glyphicon glyphicon-wrench'></span> Edit
+                    </button>
+                </form>
+            HTML;
+            $output .= <<<HTML
+                <form class="inline" action='$admin_url' method='post'>
+                    <input type="hidden" name="action" value="delete_product">
+                    <input type="hidden" name="product_id" value="$pid">
+                    <input type="hidden" name="nonce" value="$product_nonce">
+                    <button class='btn btn-danger product-delete-btn' type="submit">Delete</button>
+                </form>
+            HTML;
             $output .= "</li>";
-
-            $post_url = admin_url('admin-post.php');
-            $delete_nonce = wp_create_nonce('delete_product_nonce');
-            $edit_nonce = wp_create_nonce('edit_product_nonce');
-            $edit_path = get_permalink(get_page_by_path('edit-offer'));
-
-            $output .= "
-                <script>
-                function deleteProduct(productId) {
-                    if (confirm('Are you sure you want to delete this product?')) {
-                        window.location.href = `$post_url?action=delete_product&product_id=` + productId + `&nonce=$delete_nonce`;
-                    }
-                }
-
-                function editProduct(productId) {
-                    window.location.href = `$edit_path?product_id=` + productId + `&nonce=$edit_nonce`;
-                }
-                </script>
-            ";
         }
     } else {
         $output .= '<p>No products found.</p>';
