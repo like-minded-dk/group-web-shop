@@ -15,7 +15,6 @@ function render_output($products) {
             
             $sale_price = $sale_price ? $sale_price : '-';
             $regular_price = $product->get_regular_price();
-            $permalink = get_the_permalink();
             $title = shortString($product->get_title(), 20);
             $status = get_post_status($product->get_id());
             $status = $status == 'draft' ? 'Draft' : 'Published';
@@ -36,6 +35,7 @@ function render_output($products) {
             $toggle_button_text = ('Published' === $status) ? $draft_icon : $publish_icon;
             $toggle_button_tip = ('Published' === $status) ? 'To&nbsp;Draft' : 'Publish';
 
+            $permalink = HOST_STRING . '?post_type=product&p=' . $pid;
             $shortlink = HOST_STRING . "/?p=" . $pid;
             $copy_icon = $publish_icon = '<i class="bi bi-link"></i>';
             // $clipboard = do_shortcode("[copy_clipboard content='$shortlink' text='aa'] $copy_icon");
