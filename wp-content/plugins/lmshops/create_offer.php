@@ -11,27 +11,27 @@ function custom_product_creation_form_shortcode() {
     $form_html = '<form action="' . esc_url(admin_url('admin-post.php')) . '" method="post" enctype="multipart/form-data">
         <input type="hidden" name="action" value="create_custom_product_shortcode">
         
-        <div class=""mb-3">
+        <div class="mt-3 mb-3">
             <label class="form-label" for="product_name">Product Name:</label>
             <input class="form-control" type="text" id="product_name" name="product_name" required>
         </div>
 
-        <div class=""mb-3">
+        <div class="mt-3 mb-3">
             <label class="form-label" for="sale_price">Product Price:</label>
             <input class="form-control" type="text" id="sale_price" name="sale_price" required>
         </div>
         
-        <div class=""mb-3">
+        <div class="mt-3 mb-3">
             <label class="form-label" for="regular_price">Product Price:</label>
             <input class="form-control" type="text" id="regular_price" name="regular_price" required>
         </div>
 
-        <div class=""mb-3">
+        <div class="mt-3 mb-3">
             <label class="form-label" for="offer_image">Images:</label>
             <input class="form-control" type="file" id="offer_image" name="offer_image[]" accept="image/*" multiple>
         </div>
     
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary mt-3">Submit</button>
     </form>';
     return $form_html;
 }
