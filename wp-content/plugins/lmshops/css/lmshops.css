@@ -3,6 +3,11 @@
     display: none;
 }
 
+
+.product-images-container {
+    display: flex !important;
+}
+
 .products-by-creator ul {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -19,6 +24,16 @@
     width: 100% !important;
 }
 
+.edit-offer-form .product-image {
+    width: 30%;
+    height: auto;
+    border: 1px solid gray;
+    padding: 4px;
+    margin: 16px;
+}
+
+.woocommerce-product-gallery img,
+li.product.status-publish img,
 .products-by-creator li img {
     width: 100%;
 }
@@ -32,4 +47,8 @@
 .products-by-creator li.product .product-title {
     font-size: large;
     margin: 0;
+}
+
+.page-id-863 .entry-header {
+    display: none;
 }
