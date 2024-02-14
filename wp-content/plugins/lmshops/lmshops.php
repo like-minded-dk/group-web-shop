@@ -14,6 +14,7 @@ include __DIR__.'/duplicate_offer.php';
 
 define("DEFAULT_PRODUCT_IMAGE", "/wp-content/uploads/woocommerce-placeholder-324x324.png");
 define("DEFAULT_PRODUCT_IMAGE_ID", 112);
+define("HOST_STRING", "https://wp.like-minded.dk");
 
 function lmshops_styles() {
     wp_enqueue_style('lmshops-styles', plugin_dir_url(__FILE__) . 'css/lmshops.css');

@@ -61,6 +61,11 @@ function custom_product_edit_form_shortcode() {
         </div>
 
         <div class="mt-3 mb-3">
+            <label class="form-label" for="description">Description:</label>
+            <input class="form-control" type="text" id="description" name="description" value="' . esc_attr($product->get_description()) . '">
+        </div>
+
+        <div class="mt-3 mb-3">
             <label class="form-label" for="offer_image">Images:</label>
             <input class="form-control" type="file" id="offer_image" name="offer_image[]" accept="image/*" multiple>
         </div>
@@ -82,9 +87,10 @@ function handle_shortcode_update_product() {
         wp_die('You do not have sufficient permissions to edit products.');
     }
 
-    if (isset($_POST['product_name'], $_POST['sale_price'], $_POST['regular_price'], $_POST['product_id'])) {
+    if (isset($_POST['product_name'], $_POST['description'], $_POST['sale_price'], $_POST['regular_price'], $_POST['product_id'])) {
         $product_id = intval($_POST['product_id']);
         $product_name = sanitize_text_field($_POST['product_name']);
+        $description = sanitize_text_field($_POST['description']);
         $regular_price = wc_format_decimal($_POST['regular_price']);
         $sale_price = wc_format_decimal($_POST['sale_price']);
 
@@ -94,6 +100,7 @@ function handle_shortcode_update_product() {
         }
 
         $product->set_name($product_name);
+        $product->set_description($description);
         $product->set_price($regular_price);
         $product->set_sale_price($sale_price);
         $product->set_regular_price($regular_price);
