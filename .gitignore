@@ -66,3 +66,4 @@ wp-content/themes/*
 !wp-content/themes/index.php
 !wp-content/themes/storefront-child/
 
+wp-content/object-cache.php
