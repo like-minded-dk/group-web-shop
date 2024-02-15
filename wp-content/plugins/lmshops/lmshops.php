@@ -21,6 +21,9 @@ function lmshops_styles() {
 }
 add_action('wp_enqueue_scripts', 'lmshops_styles');
 
+// disable this to all allow wp-admin
+// add_filter( 'woocommerce_prevent_admin_access', '__return_true' );
+
 
 function lm_enqueue_bootstrap() {
     // Enqueue Bootstrap CSS
@@ -37,3 +40,47 @@ function lm_enqueue_bootstrap() {
 }
 
 add_action('wp_enqueue_scripts', 'lm_enqueue_bootstrap');
+
+
+
+
+// function remove_specific_capability() {
+//     foreach (wp_roles()->roles as $role_name => $role_info) {
+//         // Get the role object
+//         $role = get_role($role_name);
+
+//         $role_list = ["cuar_access_admin_panel",
+//             "cuar_edit_account",
+//             "cuar_pf_assign_categories",
+//             "cuar_pf_delete",
+//             "cuar_pf_delete_categories",
+//             "cuar_pf_edit",
+//             "cuar_pf_edit_categories",
+//             "cuar_pf_list_all",
+//             "cuar_pf_manage_attachments",
+//             "cuar_pf_manage_categories",
+//             "cuar_pf_read",
+//             "cuar_pp_assign_categories",
+//             "cuar_pp_delete",
+//             "cuar_pp_delete_categories",
+//             "cuar_pp_edit",
+//             "cuar_pp_edit_categories",
+//             "cuar_pp_list_all",
+//             "cuar_pp_manage_categories",
+//             "cuar_pp_read",
+//             "cuar_view_account",
+//             "cuar_view_any_cuar_private_file",
+//             "cuar_view_any_cuar_private_page",
+//             "cuar_view_files",
+//             "cuar_view_pages",
+//             "cuar_view_top_bar"];
+
+//         // Loop through each capability you want to remove
+//         foreach ($role_list as $cap) {
+//             // Remove the capability from the current role
+//             $role->remove_cap($cap);
+//         }
+//     }
+// }
+
+// add_action('init', 'remove_specific_capability');

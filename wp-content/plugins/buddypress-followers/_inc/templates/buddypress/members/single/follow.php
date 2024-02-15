@@ -7,11 +7,11 @@
 
 					<div id="bp-ajax-loader"><?php bp_nouveau_user_feedback( 'generic-loading' ); ?></div>
 				
-				<?php else : ?>
-
-					<?php bp_get_template_part( 'members/members-loop' ) ?>
-
 				<?php endif; ?>
+
+				<?php bp_get_template_part( 'members/members-loop' ) ?>
+				
+
 			</div>
 
 			<?php do_action( 'bp_after_member_' . bp_current_action() . '_content' ); ?>
