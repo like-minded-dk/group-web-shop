@@ -3,13 +3,14 @@
 function handle_delete_product() {
     if (isset($_POST['product_id'], $_POST['nonce']) && wp_verify_nonce($_POST['nonce'], 'product_nonce')) {
         $product_id = intval($_POST['product_id']);
+
         $current_user_id = get_current_user_id();
         $post_author_id = get_post_field('post_author', $product_id);
 
         // Check if the current user is the author of the product or has the capability to delete products
         if ($current_user_id === $post_author_id || current_user_can('delete_others_posts')) {
             if (wp_delete_post($product_id, true)) {
-                wp_redirect(add_query_arg('product_deleted', 'success', get_permalink(get_page_by_path('lm-my-offers'))));
+                wp_redirect(add_query_arg('product_deleted', 'success', get_permalink(get_page_by_path('sell-offer'))));
                 exit;
             } else {
                 wp_die('Error deleting product.');

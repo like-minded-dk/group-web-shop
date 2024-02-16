@@ -54,7 +54,7 @@ function handle_duplicate_wc_product() {
         if ($current_user_id === $post_author_id || current_user_can('edit_posts')) {
             $pid = duplicate_wc_product($product_id);
             if ($pid) {
-                wp_redirect(add_query_arg('product_deplicate', 'success', get_permalink(get_page_by_path('lm-my-offers'))));
+                wp_redirect(add_query_arg('product_deplicate', 'success', get_permalink(get_page_by_path('sell--offer'))));
                 exit;
             } else {
                 wp_die('Error duplicate product.');

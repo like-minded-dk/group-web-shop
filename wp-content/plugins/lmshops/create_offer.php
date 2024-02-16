@@ -17,12 +17,12 @@ function custom_product_creation_form_shortcode() {
         </div>
 
         <div class="mt-3 mb-3">
-            <label class="form-label" for="sale_price">Product Price:</label>
+            <label class="form-label" for="sale_price">Sale Price:</label>
             <input class="form-control" type="text" id="sale_price" name="sale_price" required>
         </div>
         
         <div class="mt-3 mb-3">
-            <label class="form-label" for="regular_price">Product Price:</label>
+            <label class="form-label" for="regular_price">Regular Price:</label>
             <input class="form-control" type="text" id="regular_price" name="regular_price" required>
         </div>
 
@@ -70,7 +70,7 @@ function handle_shortcode_create_product() {
 
         set_product_images($product);
 
-        wp_redirect(add_query_arg('product_created', 'success', get_permalink(get_page_by_path('lm-my-offers'))));
+        wp_redirect(add_query_arg('product_created', 'success', get_permalink(get_page_by_path('sell-offer'))));
         exit;
     }
 }

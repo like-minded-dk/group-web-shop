@@ -56,7 +56,8 @@ function custom_product_edit_form_shortcode() {
         </div>
         
         <div class="mt-3 mb-3">
-            <label class="form-label" for="regular_price">Product Price:</label>
+            <label class="form-label" for="regular_price">Regular
+             Price:</label>
             <input class="form-control" type="text" id="regular_price" name="regular_price" value="' . esc_attr($product->get_regular_price()) . '" required>
         </div>
 
@@ -110,7 +111,7 @@ function handle_shortcode_update_product() {
 
         $product->save();
 
-        wp_redirect(add_query_arg('product_updated', 'success', get_permalink(get_page_by_path('lm-my-offers'))));
+        wp_redirect(add_query_arg('product_updated', 'success', get_permalink(get_page_by_path('sell-offer'))));
         exit;
     } else {
         wp_die('Edit in Security check failed or invalid product.');

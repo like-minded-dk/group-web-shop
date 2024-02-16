@@ -6,6 +6,7 @@
  * Author: Zheng Dai
  */
 
+include __DIR__.'/util.php';
 include __DIR__.'/list_offer.php';
 include __DIR__.'/create_offer.php';
 include __DIR__.'/edit_offer.php';
@@ -22,6 +23,7 @@ function lmshops_styles() {
 add_action('wp_enqueue_scripts', 'lmshops_styles');
 
 // disable this to all allow wp-admin
+
 // add_filter( 'woocommerce_prevent_admin_access', '__return_true' );
 
 
