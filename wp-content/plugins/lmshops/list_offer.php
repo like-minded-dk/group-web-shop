@@ -30,7 +30,7 @@ function render_output($products) {
             $draft_icon = '<i class="bi bi-box-arrow-in-down"></i>' ;
             $toggle_status_url = admin_url("admin-post.php?action=toggle_product_status&product_id=$pid&nonce=$product_nonce");
             $toggle_button_text = ('Published' === $status) ? $draft_icon : $publish_icon;
-            $toggle_button_tip = ('Published' === $status) ? 'Draft' : 'Publish';
+            $toggle_button_tip = ('Published' === $status) ? 'To&nbsp;Draft' : 'Publish';
 
             $shortlink = HOST_STRING . "/?p=" . get_the_ID();
             $copy_icon = $publish_icon = '<i class="bi bi-link"></i>';
@@ -50,10 +50,11 @@ function render_output($products) {
 
                 <div class="grid-button-container">
                     <div>
-                        <button class='btn btn-secondary product-shortlink'>$clipboard</button>
+                        <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title='Copy to clipboard'>
+                            <button class='btn btn-secondary product-shortlink'>$clipboard</button>
+                        </span>
                     </div>
                     <form class="grid-form" action='$toggle_status_url' method='post'>
-
                         <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title=$toggle_button_tip>
                             <button class='btn btn-secondary product-toggle-status-btn' type="submit">
                                 $toggle_button_text
