@@ -76,7 +76,7 @@ function render_output($products) {
                 
                     <form class="grid-form" action='$edit_path' method='get'>
                         <input type="hidden" name="product_id" value="$pid">
-                        <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title="Duplicate">
+                        <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title="Edit">
                             <button class='btn btn-secondary product-clone-btn' type="submit">
                                 <i class="bi bi-pencil-square"></i>
                             </button>
