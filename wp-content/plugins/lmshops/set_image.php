@@ -38,6 +38,8 @@ function set_product_images(WC_Product_Simple $product) {
             // Clean up, remove the temporary file array
             unset($_FILES['upload_attachment']);
         }
+    } else {
+        $gallery_image_ids = $product->get_gallery_image_ids() ?? [];
     }
 
     // Set the first image as the product's main image and the rest as gallery images

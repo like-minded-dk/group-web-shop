@@ -10,9 +10,10 @@ function duplicate_wc_product($original_product_id) {
     // Set properties from the original product
     $new_product->set_name($original_product->get_name() . ' - Copy');
     $new_product->set_status('draft'); // Set the status of the new product to draft
-    // $new_product->set_sku($original_product->get_sku() . '-copy');
-    $new_product->set_price($original_product->get_price());
+    $new_product->set_regular_price($original_product->get_regular_price());
+    $new_product->set_sale_price($original_product->get_sale_price());
     $new_product->set_image_id($original_product->get_image_id());
+    $new_product->set_gallery_image_ids($original_product->get_gallery_image_ids());
     // ... Copy other properties as needed
 
     // Save the new product to get an ID
@@ -53,7 +54,7 @@ function handle_duplicate_wc_product() {
         if ($current_user_id === $post_author_id || current_user_can('edit_posts')) {
             $pid = duplicate_wc_product($product_id);
             if ($pid) {
-                wp_redirect(add_query_arg('product_deplicate', 'success', get_permalink(get_page_by_path('lm-my-offers'))));
+                wp_redirect(add_query_arg('product_deplicate', 'success', get_permalink(get_page_by_path('sell--offer'))));
                 exit;
             } else {
                 wp_die('Error duplicate product.');

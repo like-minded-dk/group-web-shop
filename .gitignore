@@ -61,7 +61,10 @@ wp-content/themes/*
 # Ignore everything in the folder
 !wp-content/plugins/index.php
 !wp-content/plugins/lmshops
+!wp-content/plugins/buddypress-engagement
+!wp-content/plugins/buddypress-followers
 !wp-content/uploads/index.php
 !wp-content/themes/index.php
 !wp-content/themes/storefront-child/
 
+wp-content/object-cache.php

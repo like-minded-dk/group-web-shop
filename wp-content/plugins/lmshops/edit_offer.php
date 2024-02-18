@@ -45,27 +45,33 @@ function custom_product_edit_form_shortcode() {
         <input type="hidden" name="action" value="update_custom_product_shortcode">
         <input type="hidden" name="product_id" value="' . esc_attr($product_id) . '">
         
-        <div class="mb-3">
+        <div class="mt-3 mb-3">
             <label class="form-label" for="product_name">Product Name:</label>
             <input class="form-control" type="text" id="product_name" name="product_name" value="' . esc_attr($product->get_name()) . '" required>
         </div>
         
-        <div class="mb-3">
+        <div class="mt-3 mb-3">
             <label class="form-label" for="sale_price">Sales Price:</label>
             <input class="form-control" type="text" id="sale_price" name="sale_price" value="' . esc_attr($product->get_sale_price()) . '" required>
         </div>
         
-        <div class="mb-3">
-            <label class="form-label" for="regular_price">Product Price:</label>
+        <div class="mt-3 mb-3">
+            <label class="form-label" for="regular_price">Regular
+             Price:</label>
             <input class="form-control" type="text" id="regular_price" name="regular_price" value="' . esc_attr($product->get_regular_price()) . '" required>
         </div>
 
-        <div class=""mb-3">
+        <div class="mt-3 mb-3">
+            <label class="form-label" for="description">Description:</label>
+            <input class="form-control" type="text" id="description" name="description" value="' . esc_attr($product->get_description()) . '">
+        </div>
+
+        <div class="mt-3 mb-3">
             <label class="form-label" for="offer_image">Images:</label>
             <input class="form-control" type="file" id="offer_image" name="offer_image[]" accept="image/*" multiple>
         </div>
 
-        <div class=""mb-3">
+        <div class="mt-3 mb-3">
             ' . get_image_html($product) . '
         </div>
 
@@ -82,9 +88,10 @@ function handle_shortcode_update_product() {
         wp_die('You do not have sufficient permissions to edit products.');
     }
 
-    if (isset($_POST['product_name'], $_POST['sale_price'], $_POST['regular_price'], $_POST['product_id'])) {
+    if (isset($_POST['product_name'], $_POST['description'], $_POST['sale_price'], $_POST['regular_price'], $_POST['product_id'])) {
         $product_id = intval($_POST['product_id']);
         $product_name = sanitize_text_field($_POST['product_name']);
+        $description = sanitize_text_field($_POST['description']);
         $regular_price = wc_format_decimal($_POST['regular_price']);
         $sale_price = wc_format_decimal($_POST['sale_price']);
 
@@ -94,6 +101,7 @@ function handle_shortcode_update_product() {
         }
 
         $product->set_name($product_name);
+        $product->set_description($description);
         $product->set_price($regular_price);
         $product->set_sale_price($sale_price);
         $product->set_regular_price($regular_price);
@@ -103,7 +111,7 @@ function handle_shortcode_update_product() {
 
         $product->save();
 
-        wp_redirect(add_query_arg('product_updated', 'success', get_permalink(get_page_by_path('lm-my-offers'))));
+        wp_redirect(add_query_arg('product_updated', 'success', get_permalink(get_page_by_path('sell-offer'))));
         exit;
     } else {
         wp_die('Edit in Security check failed or invalid product.');

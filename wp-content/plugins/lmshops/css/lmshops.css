@@ -1,5 +1,6 @@
 /* Center-align text and elements in product list */
-.products-by-creator ul.products::before {
+.hidden,
+.products-lm ul.products::before {
     display: none;
 }
 
@@ -8,9 +9,18 @@
     display: flex !important;
 }
 
-.products-by-creator ul {
+.grid-button-container {
+    display: flex;
+    justify-content: space-around;
+}
+
+.grid-form {
+    margin: 0;
+}
+
+.products-lm ul {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     list-style: none;
     margin: 0 0 1.41575em 3em;
     max-width: 100%;
@@ -18,14 +28,18 @@
     gap: 1.25em;
 }
 
-.products-by-creator li {
+.products-lm ul li {
+    border: 1px solid black;
+    border-radius: 1em;
+    padding: 16px;
+
     text-align: center;
     margin: 0 !important;
     width: 100% !important;
 }
 
 .edit-offer-form .product-image {
-    width: 30%;
+    width: 24%;
     height: auto;
     border: 1px solid gray;
     padding: 4px;
@@ -34,17 +48,19 @@
 
 .woocommerce-product-gallery img,
 li.product.status-publish img,
-.products-by-creator li img {
-    width: 100%;
+.products-lm li img {
+    width: auto;
+    height: 200px;
+    overflow: hidden;
 }
 
 /* Center-align the add to cart button */
-.products-by-creator li.product p {
+.products-lm li.product p {
     font-size: medium;
     margin: 0;
 }
 
-.products-by-creator li.product .product-title {
+.products-lm li.product .product-title {
     font-size: large;
     margin: 0;
 }
