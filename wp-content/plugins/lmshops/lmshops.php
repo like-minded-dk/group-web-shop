@@ -32,9 +32,6 @@ function lm_enqueue_bootstrap() {
     // Enqueue Bootstrap CSS
     wp_enqueue_style('bootstrap-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css', array(), '5.3.2', 'all');
 
-    // Enqueue Bootstrap Optional Theme CSS
-    wp_enqueue_style('bootstrap-theme-css', 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap-theme.min.css', array(), '5.3.2', 'all');
-
     // Enqueue jQuery (comes with WordPress) as Bootstrap's JavaScript depends on it
     wp_enqueue_script('jquery');
 

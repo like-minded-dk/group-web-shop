@@ -9,6 +9,11 @@
  * /usr/share/wordpress/config-<host>.php or /usr/share/wordpress/config-<domain>.php
  */
 
+
+if (defined('WP_CLI') && WP_CLI && !isset($_SERVER['HTTP_HOST'])) {
+    $_SERVER['HTTP_HOST'] = 'wp.like-minded.dk'; // Replace 'default.domain.com' with your site's domain name or a default value.
+}
+
 define('CONFIG_PATH', '/usr/share/wordpress/');
 $debian_server = preg_replace('/:.*/', "", $_SERVER['HTTP_HOST']);
 $debian_server = preg_replace("/[^a-zA-Z0-9.\-]/", "", $debian_server);
