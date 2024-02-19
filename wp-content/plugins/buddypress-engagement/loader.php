@@ -22,8 +22,8 @@ Domain Path: /languages
 defined( 'ABSPATH' ) || exit;
 
 // some pertinent defines.
-define( 'BP_FOLLOW_DIR', dirname( __FILE__ ) );
-define( 'BP_FOLLOW_URL', plugins_url( basename( BP_FOLLOW_DIR ) ) . '/' );
+define( 'BP_ENGAGEMENT_DIR', dirname( __FILE__ ) );
+define( 'BP_ENGAGEMENT_URL', plugins_url( basename( BP_ENGAGEMENT_DIR ) ) . '/' );
 
 /**
  * Only load the plugin code if BuddyPress is activated.
@@ -31,7 +31,7 @@ define( 'BP_FOLLOW_URL', plugins_url( basename( BP_FOLLOW_DIR ) ) . '/' );
 function bp_follow_init() {
 	// only supported in BP 1.5+
 	if ( version_compare( BP_VERSION, '1.3', '>' ) ) {
-		require( constant( 'BP_FOLLOW_DIR' ) . '/bp-follow-core.php' );
+		require( constant( 'BP_ENGAGEMENT_DIR' ) . '/bp-follow-core.php' );
 
 	// show admin notice for users on BP 1.2.x
 	} else {
@@ -63,7 +63,7 @@ function bp_follow_localization() {
 	if ( is_readable( $mofile_custom ) ) {
 		return load_textdomain( $domain, $mofile_custom );
 	} else {
-		return load_plugin_textdomain( $domain, false, basename( BP_FOLLOW_DIR ) . '/languages/' );
+		return load_plugin_textdomain( $domain, false, basename( BP_ENGAGEMENT_DIR ) . '/languages/' );
 	}
 }
 add_action( 'plugins_loaded', 'bp_follow_localization' );

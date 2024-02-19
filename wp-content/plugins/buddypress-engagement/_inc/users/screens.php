@@ -142,7 +142,7 @@ add_filter( 'bp_located_template', 'bp_follow_load_template_filter', 10, 2 );
  * @return string
  */
 function bp_follow_get_template_directory() {
-	return apply_filters( 'bp_follow_get_template_directory', constant( 'BP_FOLLOW_DIR' ) . '/_inc/templates' );
+	return apply_filters( 'bp_follow_get_template_directory', constant( 'BP_ENGAGEMENT_DIR' ) . '/_inc/templates' );
 }
 
 /**

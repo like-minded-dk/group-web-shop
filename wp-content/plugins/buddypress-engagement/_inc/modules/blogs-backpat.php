@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
  * Set activity scope on a user's "Activity > Followed Sites" page
  */
 function bp_follow_blogs_set_activity_scope_on_user_activity() {
-	if ( ! bp_is_current_action( constant( 'BP_FOLLOW_BLOGS_USER_ACTIVITY_SLUG' ) ) ) {
+	if ( ! bp_is_current_action( constant( 'BP_ENGAGEMENT_BLOGS_USER_ACTIVITY_SLUG' ) ) ) {
 		return;
 	}
 
@@ -64,7 +64,7 @@ function bp_follow_blogs_add_activity_scope_filter( $qs, $object ) {
 	// parse querystring into an array.
 	$r = wp_parse_args( $qs );
 
-	if ( bp_is_current_action( constant( 'BP_FOLLOW_BLOGS_USER_ACTIVITY_SLUG' ) ) ) {
+	if ( bp_is_current_action( constant( 'BP_ENGAGEMENT_BLOGS_USER_ACTIVITY_SLUG' ) ) ) {
 		$r['scope'] = 'followblogs';
 	}
 

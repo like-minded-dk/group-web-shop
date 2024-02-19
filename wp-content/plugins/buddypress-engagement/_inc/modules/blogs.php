@@ -87,13 +87,13 @@ class BP_Follow_Blogs {
 	 */
 	public function constants() {
 		// /members/admin/blogs/[FOLLOWING]
-		if ( ! defined( 'BP_FOLLOW_BLOGS_USER_FOLLOWING_SLUG' ) ) {
-			define( 'BP_FOLLOW_BLOGS_USER_FOLLOWING_SLUG', constant( 'BP_FOLLOWING_SLUG' ) );
+		if ( ! defined( 'BP_ENGAGEMENT_BLOGS_USER_FOLLOWING_SLUG' ) ) {
+			define( 'BP_ENGAGEMENT_BLOGS_USER_FOLLOWING_SLUG', constant( 'BP_FOLLOWING_SLUG' ) );
 		}
 
 		// /members/admin/activity/[FOLLOWBLOGS]
-		if ( ! defined( 'BP_FOLLOW_BLOGS_USER_ACTIVITY_SLUG' ) ) {
-			define( 'BP_FOLLOW_BLOGS_USER_ACTIVITY_SLUG', 'followblogs' );
+		if ( ! defined( 'BP_ENGAGEMENT_BLOGS_USER_ACTIVITY_SLUG' ) ) {
+			define( 'BP_ENGAGEMENT_BLOGS_USER_ACTIVITY_SLUG', 'followblogs' );
 		}
 	}
 
@@ -128,7 +128,7 @@ class BP_Follow_Blogs {
 
 		bp_core_new_subnav_item( array(
 			'name'            => _x( 'Followed Sites', 'Sites subnav tab', 'buddypress-followers' ),
-			'slug'            => constant( 'BP_FOLLOW_BLOGS_USER_FOLLOWING_SLUG' ),
+			'slug'            => constant( 'BP_ENGAGEMENT_BLOGS_USER_FOLLOWING_SLUG' ),
 			'parent_url'      => bp_follow_get_user_url( $user_id, array( bp_get_blogs_slug() ) ),
 			'parent_slug'     => bp_get_blogs_slug(),
 			'screen_function' => 'BP_Follow_Blogs_Screens::user_blogs_screen',
@@ -140,7 +140,7 @@ class BP_Follow_Blogs {
 		if ( bp_is_active( 'activity' ) && apply_filters( 'bp_follow_blogs_show_activity_subnav', true ) ) {
 			bp_core_new_subnav_item( array(
 				'name'            => _x( 'Followed Sites', 'Activity subnav tab', 'buddypress-followers' ),
-				'slug'            => constant( 'BP_FOLLOW_BLOGS_USER_ACTIVITY_SLUG' ),
+				'slug'            => constant( 'BP_ENGAGEMENT_BLOGS_USER_ACTIVITY_SLUG' ),
 				'parent_url'      => bp_follow_get_user_url( $user_id, array( bp_get_activity_slug() ) ),
 				'parent_slug'     => bp_get_activity_slug(),
 				'screen_function' => 'BP_Follow_Blogs_Screens::user_activity_screen',
@@ -166,7 +166,7 @@ class BP_Follow_Blogs {
 				'parent' => 'my-account-activity',
 				'id'     => 'my-account-activity-followblogs',
 				'title'  => _x( 'Followed Sites', 'Adminbar activity subnav', 'buddypress-followers' ),
-				'href'   => bp_follow_get_user_url( bp_loggedin_user_id(), array( bp_get_activity_slug(), constant( 'BP_FOLLOW_BLOGS_USER_ACTIVITY_SLUG' ) ) ),
+				'href'   => bp_follow_get_user_url( bp_loggedin_user_id(), array( bp_get_activity_slug(), constant( 'BP_ENGAGEMENT_BLOGS_USER_ACTIVITY_SLUG' ) ) ),
 			);
 
 			$inject = array();
@@ -198,7 +198,7 @@ class BP_Follow_Blogs {
 			'parent' => 'my-account-blogs',
 			'id'     => 'my-account-blogs-following',
 			'title'  => _x( 'Followed Sites', 'Adminbar blogs subnav', 'buddypress-followers' ),
-			'href'   => bp_follow_get_user_url( bp_loggedin_user_id(), array( bp_get_blogs_slug(), constant( 'BP_FOLLOW_BLOGS_USER_FOLLOWING_SLUG' ) ) ),
+			'href'   => bp_follow_get_user_url( bp_loggedin_user_id(), array( bp_get_blogs_slug(), constant( 'BP_ENGAGEMENT_BLOGS_USER_FOLLOWING_SLUG' ) ) ),
 		);
 
 		$inject = array();
@@ -242,7 +242,7 @@ class BP_Follow_Blogs {
 		}
 		*/
 
-		$following_blog_url = bp_follow_get_user_url( bp_loggedin_user_id(), array( bp_get_blogs_slug(), constant( 'BP_FOLLOW_BLOGS_USER_FOLLOWING_SLUG' ) ) );
+		$following_blog_url = bp_follow_get_user_url( bp_loggedin_user_id(), array( bp_get_blogs_slug(), constant( 'BP_ENGAGEMENT_BLOGS_USER_FOLLOWING_SLUG' ) ) );
 		?>
 		<li id="activity-followblogs"><a href="<?php echo esc_url( $following_blog_url ); ?>"><?php printf( esc_html__( 'Followed Sites %s', 'buddypress-followers' ), '<span>' . esc_html( bp_core_number_format( $counts['following'] ) ) . '</span>' ); ?></a></li><?php
 	}
@@ -268,7 +268,7 @@ class BP_Follow_Blogs {
 			return false;
 		}
 
-		$following_blog_url = bp_follow_get_user_url( bp_loggedin_user_id(), array( bp_get_blogs_slug(), constant( 'BP_FOLLOW_BLOGS_USER_FOLLOWING_SLUG' ) ) );
+		$following_blog_url = bp_follow_get_user_url( bp_loggedin_user_id(), array( bp_get_blogs_slug(), constant( 'BP_ENGAGEMENT_BLOGS_USER_FOLLOWING_SLUG' ) ) );
 		?>
 		<li id="blogs-following"><a href="<?php echo esc_url( $following_blog_url ); ?>"><?php printf( esc_html__( 'Following %s', 'buddypress-followers' ), '<span>' . esc_html( bp_core_number_format( $counts['following'] ) ) . '</span>' ); ?></a></li><?php
 	}
@@ -419,7 +419,7 @@ class BP_Follow_Blogs {
 		$r = wp_parse_args( $qs );
 
 		// set scope if a user is on a user's "Followed Sites" page.
-		if ( bp_is_user_blogs() && bp_is_current_action( constant( 'BP_FOLLOW_BLOGS_USER_FOLLOWING_SLUG' ) ) ) {
+		if ( bp_is_user_blogs() && bp_is_current_action( constant( 'BP_ENGAGEMENT_BLOGS_USER_FOLLOWING_SLUG' ) ) ) {
 			$r['scope'] = 'following';
 		}
 
@@ -512,7 +512,7 @@ class BP_Follow_Blogs {
 		}
 
 		// Register our script.
-		wp_register_script( 'bp-follow-blogs', BP_FOLLOW_URL . '_inc/modules/blogs.js', [ 'jquery' ], false, true );
+		wp_register_script( 'bp-follow-blogs', BP_ENGAGEMENT_URL . '_inc/modules/blogs.js', [ 'jquery' ], false, true );
 
 		// Nouveau requires early enqueuing on BP blog pages.
 		if ( function_exists( 'bp_nouveau' ) && bp_is_blogs_component() ) {
@@ -632,7 +632,7 @@ class BP_Follow_Blogs {
  			<?php
  				$btn_args = apply_filters( 'bp_follow_blogs_get_sites_button_args', array(
  					'class' => 'home',
- 					'link' => bp_follow_get_user_url( bp_loggedin_user_id(), array( bp_get_blogs_slug(), constant( 'BP_FOLLOW_BLOGS_USER_FOLLOWING_SLUG' ) ) ),
+ 					'link' => bp_follow_get_user_url( bp_loggedin_user_id(), array( bp_get_blogs_slug(), constant( 'BP_ENGAGEMENT_BLOGS_USER_FOLLOWING_SLUG' ) ) ),
  					'text' => _x( 'Followed Sites', 'Footer button', 'buddypress-followers' ),
  				) );
 
@@ -957,7 +957,7 @@ class BP_Follow_Blogs {
 		$scope = ! empty( $_COOKIE['bp-activity-scope'] ) ? $_COOKIE['bp-activity-scope'] : false;
 
 		if ( 'followblogs' === $scope && bp_loggedin_user_id() ) {
-			$retval = bp_follow_get_user_url( bp_loggedin_user_id(), array( bp_get_activity_slug(), constant( 'BP_FOLLOW_BLOGS_USER_ACTIVITY_SLUG' ), array( 'feed' ) ) );
+			$retval = bp_follow_get_user_url( bp_loggedin_user_id(), array( bp_get_activity_slug(), constant( 'BP_ENGAGEMENT_BLOGS_USER_ACTIVITY_SLUG' ), array( 'feed' ) ) );
 		}
 
 		return $retval;
@@ -1044,7 +1044,7 @@ class BP_Follow_Blogs_Screens {
 			return;
 		}
 
-		if ( ! bp_is_user_activity() || ! bp_is_current_action( constant( 'BP_FOLLOW_BLOGS_USER_ACTIVITY_SLUG' ) ) || ! bp_is_action_variable( 'feed', 0 ) ) {
+		if ( ! bp_is_user_activity() || ! bp_is_current_action( constant( 'BP_ENGAGEMENT_BLOGS_USER_ACTIVITY_SLUG' ) ) || ! bp_is_action_variable( 'feed', 0 ) ) {
 			return;
 		}
 
@@ -1071,7 +1071,7 @@ class BP_Follow_Blogs_Screens {
 			/* translators: User's following activity RSS title - "[Site Name] | [User Display Name] | Followed Site Activity" */
 			'title'         => sprintf( __( '%1$s | %2$s | Followed Site Activity', 'buddypress-followers' ), bp_get_site_name(), bp_get_displayed_user_fullname() ),
 
-			'link'          => bp_follow_get_user_url( bp_displayed_user_id(), array( bp_get_activity_slug(), constant( 'BP_FOLLOW_BLOGS_USER_ACTIVITY_SLUG' ) ) ),
+			'link'          => bp_follow_get_user_url( bp_displayed_user_id(), array( bp_get_activity_slug(), constant( 'BP_ENGAGEMENT_BLOGS_USER_ACTIVITY_SLUG' ) ) ),
 			'description'   => sprintf( __( "Activity feed for sites that %s is following.", 'buddypress' ), bp_get_displayed_user_fullname() ),
 			'activity_args' => $args,
 		) );
@@ -1132,7 +1132,7 @@ class BP_Follow_Blogs_Screens {
 		}
 
 		// it's possible that wp_get_referer() returns false, so let's fallback to the displayed user's page.
-		$redirect = wp_get_referer() ? wp_get_referer() : bp_follow_get_user_url( bp_displayed_user_id(), array( bp_get_blogs_slug(), constant( 'BP_FOLLOW_BLOGS_USER_FOLLOWING_SLUG' ) ) );
+		$redirect = wp_get_referer() ? wp_get_referer() : bp_follow_get_user_url( bp_displayed_user_id(), array( bp_get_blogs_slug(), constant( 'BP_ENGAGEMENT_BLOGS_USER_FOLLOWING_SLUG' ) ) );
 		bp_core_redirect( $redirect );
 	}
 

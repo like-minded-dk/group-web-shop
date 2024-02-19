@@ -107,7 +107,7 @@ class BP_Follow_Component extends BP_Component {
 		parent::start(
 			'follow',
 			__( 'Follow', 'buddypress-followers' ),
-			constant( 'BP_FOLLOW_DIR' ) . '/_inc',
+			constant( 'BP_ENGAGEMENT_DIR' ) . '/_inc',
 			$this->params
 		);
 
@@ -298,7 +298,7 @@ class BP_Follow_Component extends BP_Component {
 			return;
 		}
 
-		wp_enqueue_script( 'bp-follow-js', constant( 'BP_FOLLOW_URL' ) . '_inc/bp-follow.js', array( 'jquery' ), strtotime( $this->revision_date ) );
+		wp_enqueue_script( 'bp-follow-js', constant( 'BP_ENGAGEMENT_URL' ) . '_inc/bp-follow.js', array( 'jquery' ), strtotime( $this->revision_date ) );
 	}
 }
 

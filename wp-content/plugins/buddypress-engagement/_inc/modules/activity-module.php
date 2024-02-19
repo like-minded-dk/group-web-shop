@@ -55,8 +55,8 @@ class BP_Follow_Activity_Module {
 	 */
 	public function constants() {
 		// /members/admin/activity/[FOLLOW]
-		if ( ! defined( 'BP_FOLLOW_ACTIVITY_USER_ACTIVITY_SLUG' ) ) {
-			define( 'BP_FOLLOW_ACTIVITY_USER_ACTIVITY_SLUG', 'follow' );
+		if ( ! defined( 'BP_ENGAGEMENT_ACTIVITY_USER_ACTIVITY_SLUG' ) ) {
+			define( 'BP_ENGAGEMENT_ACTIVITY_USER_ACTIVITY_SLUG', 'follow' );
 		}
 	}
 
@@ -92,7 +92,7 @@ class BP_Follow_Activity_Module {
 		if ( bp_is_active( 'activity' ) && apply_filters( 'bp_follow_activity_show_activity_subnav', true ) ) {
 			bp_core_new_subnav_item( array(
 				'name'            => _x( 'Followed Activity', 'Activity subnav tab', 'buddypress-followers' ),
-				'slug'            => constant( 'BP_FOLLOW_ACTIVITY_USER_ACTIVITY_SLUG' ),
+				'slug'            => constant( 'BP_ENGAGEMENT_ACTIVITY_USER_ACTIVITY_SLUG' ),
 				'parent_url'      => bp_follow_get_user_url( $user_id, array( bp_get_activity_slug() ) ),
 				'parent_slug'     => bp_get_activity_slug(),
 				'screen_function' => 'bp_activity_screen_my_activity',
@@ -118,7 +118,7 @@ class BP_Follow_Activity_Module {
 				'parent' => 'my-account-activity',
 				'id'     => 'my-account-activity-followactivity',
 				'title'  => _x( 'Followed Activity', 'Adminbar activity subnav', 'buddypress-followers' ),
-				'href'   => bp_follow_get_user_url( bp_loggedin_user_id(), array( bp_get_activity_slug(), constant( 'BP_FOLLOW_ACTIVITY_USER_ACTIVITY_SLUG' ) ) ),
+				'href'   => bp_follow_get_user_url( bp_loggedin_user_id(), array( bp_get_activity_slug(), constant( 'BP_ENGAGEMENT_ACTIVITY_USER_ACTIVITY_SLUG' ) ) ),
 			);
 
 			$inject = array();
@@ -155,7 +155,7 @@ class BP_Follow_Activity_Module {
 		 *	return;
 		 * }
 		 */
-		$activity_follow_url =  bp_follow_get_user_url( bp_loggedin_user_id(), array( bp_get_activity_slug(), constant( 'BP_FOLLOW_ACTIVITY_USER_ACTIVITY_SLUG' ) ) );
+		$activity_follow_url =  bp_follow_get_user_url( bp_loggedin_user_id(), array( bp_get_activity_slug(), constant( 'BP_ENGAGEMENT_ACTIVITY_USER_ACTIVITY_SLUG' ) ) );
 		?>
 		<li id="activity-follow"><a href="<?php echo esc_url( $activity_follow_url ); ?>"><?php esc_html_e( 'My Followed Activity', 'buddypress-followers' ); ?></a></li><?php
 	}
@@ -402,8 +402,8 @@ class BP_Follow_Activity_Module {
 		}
 
 		// This filters the RSS link when on a user's "Activity > Papers" page.
-		if ( 'bp_get_activities_member_rss_link' === current_filter() && '' == $retval && bp_is_current_action( constant( 'BP_FOLLOW_ACTIVITY_USER_ACTIVITY_SLUG' ) ) ) {
-			return esc_url( bp_follow_get_user_url( bp_displayed_user_id(), array( bp_get_activity_slug(), constant( 'BP_FOLLOW_ACTIVITY_USER_ACTIVITY_SLUG' ), array( 'feed' ) ) ) );
+		if ( 'bp_get_activities_member_rss_link' === current_filter() && '' == $retval && bp_is_current_action( constant( 'BP_ENGAGEMENT_ACTIVITY_USER_ACTIVITY_SLUG' ) ) ) {
+			return esc_url( bp_follow_get_user_url( bp_displayed_user_id(), array( bp_get_activity_slug(), constant( 'BP_ENGAGEMENT_ACTIVITY_USER_ACTIVITY_SLUG' ), array( 'feed' ) ) ) );
 		}
 
 		// this is done b/c we're filtering 'bp_get_sitewide_activity_feed_link' and
@@ -416,7 +416,7 @@ class BP_Follow_Activity_Module {
 		$scope = ! empty( $_COOKIE['bp-activity-scope'] ) ? $_COOKIE['bp-activity-scope'] : false;
 
 		if ( 'follow' === $scope && bp_loggedin_user_id() ) {
-			$retval = bp_follow_get_user_url( bp_loggedin_user_id(), array( bp_get_activity_slug(), constant( 'BP_FOLLOW_ACTIVITY_USER_ACTIVITY_SLUG' ), array( 'feed' ) ) );
+			$retval = bp_follow_get_user_url( bp_loggedin_user_id(), array( bp_get_activity_slug(), constant( 'BP_ENGAGEMENT_ACTIVITY_USER_ACTIVITY_SLUG' ), array( 'feed' ) ) );
 		}
 
 		return esc_url( $retval );
@@ -434,7 +434,7 @@ class BP_Follow_Activity_Module {
 			return;
 		}
 
-		if ( ! bp_is_user_activity() || ! bp_is_current_action( constant( 'BP_FOLLOW_ACTIVITY_USER_ACTIVITY_SLUG' ) ) || ! bp_is_action_variable( 'feed', 0 ) ) {
+		if ( ! bp_is_user_activity() || ! bp_is_current_action( constant( 'BP_ENGAGEMENT_ACTIVITY_USER_ACTIVITY_SLUG' ) ) || ! bp_is_action_variable( 'feed', 0 ) ) {
 			return;
 		}
 
@@ -452,7 +452,7 @@ class BP_Follow_Activity_Module {
 			/* translators: User's following activity RSS title - "[Site Name] | [User Display Name] | Followed Activity" */
 			'title'         => sprintf( __( '%1$s | %2$s | Followed Activity', 'buddypress-followers' ), bp_get_site_name(), bp_get_displayed_user_fullname() ),
 
-			'link'          => esc_url( bp_follow_get_user_url( bp_displayed_user_id(), array( bp_get_activity_slug(), constant( 'BP_FOLLOW_ACTIVITY_USER_ACTIVITY_SLUG' ) ) ) ),
+			'link'          => esc_url( bp_follow_get_user_url( bp_displayed_user_id(), array( bp_get_activity_slug(), constant( 'BP_ENGAGEMENT_ACTIVITY_USER_ACTIVITY_SLUG' ) ) ) ),
 			'description'   => sprintf( __( "Feed for activity that %s is following.", 'buddypress' ), bp_get_displayed_user_fullname() ),
 			'activity_args' => $args,
 		) );
