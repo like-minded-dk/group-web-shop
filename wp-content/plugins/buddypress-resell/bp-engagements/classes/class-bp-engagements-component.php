@@ -26,6 +26,7 @@ class BP_Engagements_Component extends BP_Component {
 	 * @since 1.5.0
 	 */
 	public function __construct() {
+		
 		parent::start(
 			'engagements',
 			_x( 'engagement Connections', 'engagements screen page <title>', 'buddypress' ),
@@ -82,10 +83,12 @@ class BP_Engagements_Component extends BP_Component {
 
 		// engagements.
 		// Authenticated actions.
-		if ( is_user_logged_in() &&
-			in_array( bp_current_action(), array( 'add-engagement', 'remove-engagement' ), true )
-		) {
-			require_once $this->path . 'bp-engagements/actions/' . bp_current_action() . '.php';
+		if ( is_user_logged_in() && bp_current_action() == 'add-engagement') {
+			require_once $this->path . 'bp-engagements/actions/add-engagement.php';
+		}
+
+		if ( is_user_logged_in() && bp_current_action() == 'remove-engagement') {
+			require_once $this->path . 'bp-engagements/actions/remove-engagement.php';
 		}
 
 		if ( ! function_exists( 'bp_is_user_engagement_requests' ) ) {
@@ -116,19 +119,19 @@ class BP_Engagements_Component extends BP_Component {
 		$bp           = buddypress();
 		$default_slug = $this->id;
 		
-		// @deprecated.
-		if ( defined( 'BP_Engagement_DB_VERSION' ) ) {
-			_doing_it_wrong( 'BP_Engagement_DB_VERSION', esc_html__( 'This constants is not used anymore.', 'buddypress' ), 'BuddyPress 12.0.0' );
-		}
+		// // @deprecated.
+		// if ( defined( 'BP_Engagement_DB_VERSION' ) ) {
+		// 	_doing_it_wrong( 'BP_Engagement_DB_VERSION', esc_html__( 'This constants is not used anymore.', 'buddypress' ), 'BuddyPress 12.0.0' );
+		// }
 
-		// @deprecated.
-		if ( !defined( 'BP_ENGAGEMENTS_SLUG' ) ) {
-			define( 'BP_ENGAGEMENTS_SLUG' , false ) ;
-		}
-		if ( defined( 'BP_ENGAGEMENTS_SLUG' ) ) {
-			_doing_it_wrong( 'BP_ENGAGEMENTS_SLUG', esc_html__( 'Slug constants are deprecated.', 'buddypress' ), 'BuddyPress 12.0.0' );
-			$default_slug = BP_ENGAGEMENTS_SLUG;
-		}
+		// // @deprecated.
+		// if ( !defined( 'BP_ENGAGEMENTS_SLUG' ) ) {
+		// 	define( 'BP_ENGAGEMENTS_SLUG' , false ) ;
+		// }
+		// if ( defined( 'BP_ENGAGEMENTS_SLUG' ) ) {
+		// 	_doing_it_wrong( 'BP_ENGAGEMENTS_SLUG', esc_html__( 'Slug constants are deprecated.', 'buddypress' ), 'BuddyPress 12.0.0' );
+		// 	$default_slug = BP_ENGAGEMENTS_SLUG;
+		// }
 
 		// Global tables for the engagements component.
 		$global_tables = array(
