@@ -9,7 +9,9 @@
  * /usr/share/wordpress/config-<host>.php or /usr/share/wordpress/config-<domain>.php
  */
 
-
+if (!defined('WP_CLI')) {
+    define('WP_CLI', false);
+}
 if (defined('WP_CLI') && WP_CLI && !isset($_SERVER['HTTP_HOST'])) {
     $_SERVER['HTTP_HOST'] = 'wp.like-minded.dk'; // Replace 'default.domain.com' with your site's domain name or a default value.
 }

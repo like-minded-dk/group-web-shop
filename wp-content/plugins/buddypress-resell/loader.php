@@ -25,20 +25,26 @@ defined( 'ABSPATH' ) || exit;
 define( 'BP_RESELL_DIR', dirname( __FILE__ ) );
 define( 'BP_RESELL_URL', plugins_url( basename( BP_RESELL_DIR ) ) . '/' );
 
+
+function includeAllPHP($dir) {
+	$directory = new RecursiveDirectoryIterator($dir);
+	$iterator = new RecursiveIteratorIterator($directory);
+
+	foreach ($iterator as $file) {
+		if ($file->isFile() && $file->getExtension() == 'php') {
+			require $file->getPathname();
+		}
+	}
+}
+
 /**
  * Only load the plugin code if BuddyPress is activated.
  */
 function bp_resell_init() {
 	// only supported in BP 1.5+
 	if ( version_compare( BP_VERSION, '1.3', '>' ) ) {
-		require_once( constant( 'BP_RESELL_DIR' ) . '/bp-resell-core.php' );
-		foreach (glob( constant( 'BP_RESELL_DIR' ) . '/bp-engagements/*.php' ) as $filename) {
-			require_once $filename;
-		}
-		foreach (glob( constant( 'BP_RESELL_DIR' ) . '/bp-engagements/classes/*.php' ) as $filename) {
-			require_once $filename;
-		}
-		
+		includeAllPHP(constant( 'BP_RESELL_DIR' ) . '/bp-engagements');
+		require( constant( 'BP_RESELL_DIR' ) . '/bp-resell-core.php' );
 		do_action('bp_engagement_setup_components');
 	// show admin notice for users on BP 1.2.x
 	} else {
