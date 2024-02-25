@@ -30,6 +30,7 @@ defined( 'ABSPATH' ) || exit;
  * @return string Query string for the component loops
  */
 function bp_nouveau_ajax_querystring( $query_string, $object ) {
+	error_log('>>bp_nouveau_ajax_querystring');
 	if ( empty( $object ) ) {
 		return '';
 	}

@@ -10,6 +10,7 @@
 defined( 'ABSPATH' ) || exit;
 
 add_action( 'admin_init', function() {
+	error_log('> engagement admin_init');
 	$ajax_actions = array(
 		array(
 			'engagements_remove_engagement' => array(
@@ -65,7 +66,7 @@ function bp_nouveau_ajax_addremove_engagement() {
 	$response = array(
 		'feedback' => sprintf(
 			'<div class="bp-feedback error bp-ajax-message"><p>%s</p></div>',
-			esc_html__( 'There was a problem performing this action. Please try again.', 'buddypress' )
+			esc_html__( 'There was a problem performing this action (friend). Please try again.', 'buddypress' )
 		),
 	);
 

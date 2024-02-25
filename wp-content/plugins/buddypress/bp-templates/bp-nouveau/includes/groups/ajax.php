@@ -44,7 +44,7 @@ function bp_nouveau_ajax_joinleave_group() {
 	$response = array(
 		'feedback' => sprintf(
 			'<div class="bp-feedback error"><span class="bp-icon" aria-hidden="true"></span><p>%s</p></div>',
-			esc_html__( 'There was a problem performing this action. Please try again.', 'buddypress' )
+			esc_html__( 'There was a problem performing this action (engagement). Please try again.', 'buddypress' )
 		),
 	);
 

@@ -133,6 +133,11 @@ class BP_Nouveau extends BP_Theme_Compat {
 		foreach ( $this->_bp_core_get_packaged_component_ids() as $component ) {
 			$component_loader = trailingslashit( $this->includes_dir ) . $component . '/loader.php';
 
+			if ( $component === 'engagements' && file_exists( $component_loader ) ) {
+				require( $component_loader );
+				continue;
+			}
+
 			if ( ! bp_is_active( $component ) || ! file_exists( $component_loader ) ) {
 				continue;
 			}

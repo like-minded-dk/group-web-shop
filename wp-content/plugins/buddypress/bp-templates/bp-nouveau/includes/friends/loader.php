@@ -49,8 +49,11 @@ class BP_Nouveau_Friends {
 
 		// Load AJAX code only on AJAX requests.
 		} else {
+			// error_log('>>> friend includes');
 			add_action( 'admin_init', function() {
+				error_log('>>> includes admin_init friend');
 				if ( defined( 'DOING_AJAX' ) && true === DOING_AJAX && 0 === strpos( $_REQUEST['action'], 'friends_' ) ) {
+					error_log('>>>includes friend:'. $_REQUEST['action'] . ' ' .bp_nouveau()->friends->dir . 'ajax.php');
 					require bp_nouveau()->friends->dir . 'ajax.php';
 				}
 			} );
@@ -64,6 +67,7 @@ class BP_Nouveau_Friends {
 	 */
 	protected function setup_actions() {
 		// Remove BuddyPress action for the members loop
+		error_log('----remove_action bp_directory_members_actions friend');
 		remove_action( 'bp_directory_members_actions', 'bp_member_add_friend_button' );
 
 		// Register the friends Notifications filters
@@ -140,10 +144,12 @@ class BP_Nouveau_Friends {
  * @since 3.0.0
  */
 function bp_nouveau_friends( $bp_nouveau = null ) {
+	//error_log('>>>bp_nouveau_friends');
 	if ( is_null( $bp_nouveau ) ) {
 		return;
 	}
 
 	$bp_nouveau->friends = new BP_Nouveau_Friends();
 }
+//error_log('>>>add_action bp_nouveau_includes friends');
 add_action( 'bp_nouveau_includes', 'bp_nouveau_friends', 10, 1 );

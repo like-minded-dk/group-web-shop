@@ -49,8 +49,11 @@ class BP_Nouveau_Engagements {
 
 		// Load AJAX code only on AJAX requests.
 		} else {
+			// error_log('>>> enagement includes');
 			add_action( 'admin_init', function() {
+				error_log('>>> includes admin_init engagements');
 				if ( defined( 'DOING_AJAX' ) && true === DOING_AJAX && 0 === strpos( $_REQUEST['action'], 'engagements_' ) ) {
+					error_log('>>> includes engagement'. $_REQUEST['action'] . ' ' . bp_nouveau()->engagements->dir . 'ajax.php');
 					require bp_nouveau()->engagements->dir . 'ajax.php';
 				}
 			} );
@@ -64,6 +67,7 @@ class BP_Nouveau_Engagements {
 	 */
 	protected function setup_actions() {
 		// Remove BuddyPress action for the members loop
+		error_log('----remove_action bp_directory_members_actions engagement');
 		remove_action( 'bp_directory_members_actions', 'bp_member_add_engagement_button' );
 
 		// Register the engagements Notifications filters
@@ -140,10 +144,12 @@ class BP_Nouveau_Engagements {
  * @since 3.0.0
  */
 function bp_nouveau_engagements( $bp_nouveau = null ) {
+	//error_log('>>>bp_nouveau_engagements');
 	if ( is_null( $bp_nouveau ) ) {
 		return;
 	}
 
 	$bp_nouveau->engagements = new BP_Nouveau_Engagements();
 }
+//error_log('>>>add_action bp_nouveau_includes engagement');
 add_action( 'bp_nouveau_includes', 'bp_nouveau_engagements', 10, 1 );

@@ -170,6 +170,7 @@ function bp_nouveau_member_header_buttons( $args = array() ) {
  * @param array $args See bp_nouveau_wrapper() for the description of parameters.
  */
 function bp_nouveau_members_loop_buttons( $args = array() ) {
+	// error_log(">>>>bp_nouveau_members_loop_buttons");
 	if ( empty( $GLOBALS['members_template'] ) ) {
 		return;
 	}
@@ -183,9 +184,15 @@ function bp_nouveau_members_loop_buttons( $args = array() ) {
 		$action       = 'bp_group_members_list_item_action';
 
 	} elseif ( bp_is_active( 'friends' ) && bp_is_user_friend_requests() ) {
+		error_log('>>>bp_is_active friends');
 		$args['type'] = 'friendship_request';
 		$action       = 'bp_friend_requests_item_action';
+	} elseif ( bp_is_active( 'engagements' ) && bp_is_user_engagement_requests() ) {
+		error_log('>>>bp_is_active engagements');
+		$args['type'] = 'engagementship_request';
+		$action       = 'bp_engagement_requests_item_action';
 	}
+
 
 	$output = join( ' ', bp_nouveau_get_members_buttons( $args ) );
 
@@ -196,6 +203,7 @@ function bp_nouveau_members_loop_buttons( $args = array() ) {
 	 * @since 1.1.0
 	 */
 	do_action( $action );
+	error_log('>>>action: '. $action);
 	$output .= ob_get_clean();
 
 	if ( ! $output ) {
