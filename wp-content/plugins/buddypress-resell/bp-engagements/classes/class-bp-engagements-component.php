@@ -91,12 +91,6 @@ class BP_Engagements_Component extends BP_Component {
 			require_once $this->path . 'bp-engagements/actions/remove-engagement.php';
 		}
 
-		if ( ! function_exists( 'bp_is_user_engagement_requests' ) ) {
-			function bp_is_user_engagement_requests() {
-				return (bool) ( bp_is_current_action( 'requests' ) );
-			}
-		}
-
 		// User nav.
 		require_once $this->path . 'bp-engagements/screens/my-engagements.php';
 		if ( is_user_logged_in() && bp_is_user_engagement_requests() ) {

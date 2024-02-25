@@ -89,6 +89,9 @@ class BP_Nouveau extends BP_Theme_Compat {
 		}
 	}
 
+	protected function _bp_core_get_packaged_component_ids () {
+		return array_merge(bp_core_get_packaged_component_ids(), ['engagements']);
+	}
 	/**
 	 * Includes!
 	 *
@@ -127,7 +130,7 @@ class BP_Nouveau extends BP_Theme_Compat {
 			remove_action( 'customize_register', 'bp_customize_register', 20 );
 		}
 
-		foreach ( bp_core_get_packaged_component_ids() as $component ) {
+		foreach ( $this->_bp_core_get_packaged_component_ids() as $component ) {
 			$component_loader = trailingslashit( $this->includes_dir ) . $component . '/loader.php';
 
 			if ( ! bp_is_active( $component ) || ! file_exists( $component_loader ) ) {

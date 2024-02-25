@@ -45,7 +45,7 @@ function bp_nouveau_ajax_object_template_loader() {
 		wp_send_json_error();
 	}
 
-	$result = array()
+	$result = array();
 
 	if ( 'activity' === $object ) {
 		$scope = '';

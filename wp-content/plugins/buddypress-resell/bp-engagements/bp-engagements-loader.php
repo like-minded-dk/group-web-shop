@@ -17,12 +17,17 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 1.6.0
  */
-function bp_is_engagements_component() {
-	return true;
-}
 
 function bp_is_user_engagements() {
 	return (bool) ( bp_is_user() && bp_is_engagements_component() );
+}
+
+function bp_is_user_engagement_requests() {
+	return (bool) ( bp_is_user_engagements() && bp_is_current_action( 'requests' ) );
+}
+
+function bp_is_engagements_component() {
+	return true;
 }
 
 function bp_setup_engagements() {
