@@ -203,7 +203,7 @@ function bp_nouveau_members_loop_buttons( $args = array() ) {
 	 * @since 1.1.0
 	 */
 	do_action( $action );
-	error_log('>>>action: '. $action);
+
 	$output .= ob_get_clean();
 
 	if ( ! $output ) {

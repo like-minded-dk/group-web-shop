@@ -958,6 +958,7 @@ function bp_engagements_personal_data_exporter( $email_address, $page ) {
 		'page'         => $page,
 		'per_page'     => $number,
 	) );
+	
 
 	foreach ( $engagementships as $engagementship ) {
 		if ( (int) $user->ID === (int) $engagementship->initiator_user_id ) {
@@ -985,7 +986,7 @@ function bp_engagements_personal_data_exporter( $email_address, $page ) {
 
 		$data_to_export[] = array(
 			'group_id'    => 'bp_engagements',
-			'group_label' => __( 'engagements', 'buddypress' ),
+			'group_label' => __( 'Engagements', 'buddypress' ),
 			'item_id'     => "bp-engagements-{$engagement_id}",
 			'data'        => $item_data,
 		);

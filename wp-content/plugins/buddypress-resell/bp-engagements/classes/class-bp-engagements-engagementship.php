@@ -262,7 +262,6 @@ class BP_Engagements_Engagementship {
 	 * @return array $engagementships Array of engagementship objects.
 	 */
 	public static function get_engagementships( $user_id, $args = array(), $operator = 'AND' ) {
-
 		if ( empty( $user_id ) ) {
 			$user_id = bp_loggedin_user_id();
 		}
@@ -388,7 +387,6 @@ class BP_Engagements_Engagementship {
 			$start       = ( $r['page'] - 1 ) * ( $r['per_page'] );
 			$engagementships = array_slice( $engagementships, $start, $r['per_page'] );
 		}
-
 		return $engagementships;
 	}
 
@@ -406,8 +404,8 @@ class BP_Engagements_Engagementship {
 		global $wpdb;
 
 		$bp = buddypress();
-
 		$engagementship_ids = $wpdb->get_col( $wpdb->prepare( "SELECT id FROM {$bp->engagements->table_name} WHERE (initiator_user_id = %d OR engagement_user_id = %d) ORDER BY date_created DESC", $user_id, $user_id ) );
+		//$engagementship_ids = $wpdb->get_col( $wpdb->prepare( "SELECT id FROM {$bp->engagements->table_name} WHERE (engagement_user_id = %d) ORDER BY date_created DESC", $user_id, $user_id ) );
 
 		return $engagementship_ids;
 	}
@@ -513,7 +511,6 @@ class BP_Engagements_Engagementship {
 		if ( ! empty( $engagement_requests ) ) {
 			$engagement_requests = array_map( 'intval', $engagement_requests );
 		}
-
 		return $engagement_requests;
 	}
 
