@@ -82,4 +82,5 @@ wp-content/object-cache.php
 !wp-content/themes/storefront-child/
 !wp-content/plugins/buddypress/
 !wp-content/plugins/buddypress/bp-templates/bp-nouveau/
+!wp-content/plugins/buddypress/bp-friends/
 
