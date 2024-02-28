@@ -201,7 +201,7 @@ function bp_nouveau_ajax_addremove_engagement() {
 		}
 
 	// Trying to cancel pending request.
-	} elseif ( 'pending' === BP_engagements_engagementship::check_is_engagement( bp_loggedin_user_id(), $engagement_id ) ) {
+	} elseif ( 'pending_engagement' === BP_engagements_engagementship::check_is_engagement( bp_loggedin_user_id(), $engagement_id ) ) {
 		if ( engagements_withdraw_engagementship( bp_loggedin_user_id(), $engagement_id ) ) {
 			wp_send_json_success( array( 'contents' => bp_get_add_engagement_button( $engagement_id ) ) );
 		} else {
@@ -217,7 +217,7 @@ function bp_nouveau_ajax_addremove_engagement() {
 	} else {
 		$response['feedback'] = sprintf(
 			'<div class="bp-feedback error">%s</div>',
-			esc_html__( 'Request Pending', 'buddypress' )
+			esc_html__( 'Request Pending Engagement', 'buddypress' )
 		);
 
 		wp_send_json_error( $response );

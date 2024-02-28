@@ -159,13 +159,13 @@ function bp_potential_engagement_id( $user_id = 0 ) {
 /**
  * Check whether a given user is a engagement of the logged-in user.
  *
- * Returns - 'is_engagement', 'not_engagements', 'pending'.
+ * Returns - 'is_engagement', 'not_engagements', 'pending_engagement'.
  *
  * @since 1.2.6
  *
  * @param int $user_id ID of the potential engagement. Default: the value of
  *                     {@link bp_get_potential_engagement_id()}.
- * @return bool|string 'is_engagement', 'not_engagements', or 'pending'.
+ * @return bool|string 'is_engagement', 'not_engagements', or 'pending_engagement'.
  */
 function bp_is_engagement( $user_id = 0 ) {
 
@@ -186,7 +186,7 @@ function bp_is_engagement( $user_id = 0 ) {
 	 *
 	 * @since 1.2.10
 	 *
-	 * @param string $value   String status of engagementship. Possible values are 'is_engagement', 'not_engagements', 'pending'.
+	 * @param string $value   String status of engagementship. Possible values are 'is_engagement', 'not_engagements', 'pending_engagement'.
 	 * @param int    $user_id ID of the potential engagement.
 	 */
 	return apply_filters( 'bp_is_engagement', engagements_check_engagementship_status( bp_loggedin_user_id(), $user_id ), $user_id );
@@ -229,9 +229,9 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 			return $button_args;
 		}
 		switch ( $engagementship_status ) {
-			case 'pending':
+			case 'pending_engagement':
 				$button_args = array(
-					'id'                => 'pending',
+					'id'                => 'pending_engagement',
 					'component'         => 'engagements',
 					'must_be_logged_in' => true,
 					'block_self'        => true,
@@ -366,7 +366,7 @@ function bp_get_engagement_ids( $user_id = 0 ) {
 /**
  * Get a user's engagementship requests.
  *
- * Note that we return a 0 if no pending requests are found. This is necessary
+ * Note that we return a 0 if no pending_engagement requests are found. This is necessary
  * because of the structure of the $include parameter in bp_has_members().
  *
  * @since 1.2.0

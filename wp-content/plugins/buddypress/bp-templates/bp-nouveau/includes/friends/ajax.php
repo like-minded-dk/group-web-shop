@@ -202,7 +202,7 @@ function bp_nouveau_ajax_addremove_friend() {
 		}
 
 	// Trying to cancel pending request.
-	} elseif ( 'pending' === BP_Friends_Friendship::check_is_friend( bp_loggedin_user_id(), $friend_id ) ) {
+	} elseif ( 'pending_friend' === BP_Friends_Friendship::check_is_friend( bp_loggedin_user_id(), $friend_id ) ) {
 		if ( friends_withdraw_friendship( bp_loggedin_user_id(), $friend_id ) ) {
 			wp_send_json_success( array( 'contents' => bp_get_add_friend_button( $friend_id ) ) );
 		} else {
@@ -216,9 +216,10 @@ function bp_nouveau_ajax_addremove_friend() {
 
 	// Request already pending.
 	} else {
+		error_log('pending friend: '.BP_Friends_Friendship::check_is_friend( bp_loggedin_user_id(), $friend_id ));
 		$response['feedback'] = sprintf(
 			'<div class="bp-feedback error">%s</div>',
-			esc_html__( 'Request Pending', 'buddypress' )
+			esc_html__( 'Request Pending Friend', 'buddypress' )
 		);
 
 		wp_send_json_error( $response );

@@ -80,7 +80,7 @@ class BP_Nouveau_Engagements {
 	 */
 	protected function setup_filters() {
 		$buttons = array(
-			'engagements_pending',
+			'engagements_pending_engagement',
 			'engagements_is_engagement',
 			'engagements_not_engagements',
 			'engagements_member_engagementship',

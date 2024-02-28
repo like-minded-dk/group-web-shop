@@ -80,7 +80,7 @@ class BP_Nouveau_Friends {
 	 */
 	protected function setup_filters() {
 		$buttons = array(
-			'friends_pending',
+			'friends_pending_friend',
 			'friends_is_friend',
 			'friends_not_friends',
 			'friends_member_friendship',

@@ -628,7 +628,7 @@ class BP_Friends_Friendship {
 	/**
 	 * Check friendship status between two users.
 	 *
-	 * Note that 'pending' means that $initiator_userid has sent a friend
+	 * Note that 'pending_friend' means that $initiator_userid has sent a friend
 	 * request to $possible_friend_userid that has not yet been approved,
 	 * while 'awaiting_response' is the other way around ($possible_friend_userid
 	 * sent the initial request).
@@ -640,7 +640,7 @@ class BP_Friends_Friendship {
 	 * @param int $possible_friend_userid The ID of the user who is the
 	 *                                    recipient of the potential friendship/request.
 	 * @return string|false $value The friendship status, from among 'not_friends',
-	 *                             'is_friend', 'pending', and 'awaiting_response'.
+	 *                             'is_friend', 'pending_friend', and 'awaiting_response'.
 	 */
 	public static function check_is_friend( $initiator_userid, $possible_friend_userid ) {
 
@@ -702,7 +702,7 @@ class BP_Friends_Friendship {
 			if ( 1 === (int) $friendship->is_confirmed ) {
 				$status_initiator = $status_friend = 'is_friend';
 			} else {
-				$status_initiator = 'pending';
+				$status_initiator = 'pending_friend';
 				$status_friend    = 'awaiting_response';
 			}
 			bp_core_set_incremented_cache( $initiator_user_id . ':' . $friend_user_id, 'bp_friends', $status_initiator );

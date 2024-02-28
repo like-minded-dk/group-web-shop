@@ -267,7 +267,7 @@ function engagements_check_engagementship( $user_id, $possible_engagement_id ) {
 /**
  * Get the engagementship status of two engagements.
  *
- * Will return 'is_engagements', 'not_engagements', 'pending' or 'awaiting_response'.
+ * Will return 'is_engagements', 'not_engagements', 'pending_engagement' or 'awaiting_response'.
  *
  * @since 1.2.0
  *

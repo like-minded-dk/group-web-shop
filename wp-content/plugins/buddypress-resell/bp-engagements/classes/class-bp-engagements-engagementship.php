@@ -625,7 +625,7 @@ class BP_Engagements_Engagementship {
 	/**
 	 * Check engagementship status between two users.
 	 *
-	 * Note that 'pending' means that $initiator_userid has sent a engagement
+	 * Note that 'pending_engagement' means that $initiator_userid has sent a engagement
 	 * request to $possible_engagement_userid that has not yet been approved,
 	 * while 'awaiting_response' is the other way around ($possible_engagement_userid
 	 * sent the initial request).
@@ -637,7 +637,7 @@ class BP_Engagements_Engagementship {
 	 * @param int $possible_engagement_userid The ID of the user who is the
 	 *                                    recipient of the potential engagementship/request.
 	 * @return string|false $value The engagementship status, from among 'not_engagements',
-	 *                             'is_engagement', 'pending', and 'awaiting_response'.
+	 *                             'is_engagement', 'pending_engagement', and 'awaiting_response'.
 	 */
 	public static function check_is_engagement( $initiator_userid, $possible_engagement_userid ) {
 
@@ -699,7 +699,7 @@ class BP_Engagements_Engagementship {
 			if ( 1 === (int) $engagementship->is_confirmed ) {
 				$status_initiator = $status_engagement = 'is_engagement';
 			} else {
-				$status_initiator = 'pending';
+				$status_initiator = 'pending_engagement';
 				$status_engagement    = 'awaiting_response';
 			}
 			bp_core_set_incremented_cache( $initiator_user_id . ':' . $engagement_user_id, 'bp_engagements', $status_initiator );

@@ -267,7 +267,7 @@ function friends_check_friendship( $user_id, $possible_friend_id ) {
 /**
  * Get the friendship status of two friends.
  *
- * Will return 'is_friends', 'not_friends', 'pending' or 'awaiting_response'.
+ * Will return 'is_friends', 'not_friends', 'pending_friend' or 'awaiting_response'.
  *
  * @since 1.2.0
  *
