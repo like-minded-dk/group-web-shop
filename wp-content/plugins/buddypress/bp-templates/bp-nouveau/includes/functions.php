@@ -30,7 +30,6 @@ defined( 'ABSPATH' ) || exit;
  * @return string Query string for the component loops
  */
 function bp_nouveau_ajax_querystring( $query_string, $object ) {
-	error_log('>>bp_nouveau_ajax_querystring');
 	if ( empty( $object ) ) {
 		return '';
 	}
@@ -182,7 +181,7 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 		'member_friendship' => true,
 		'group_membership'  => true,
 	);
-
+	// error_log('>>>>>>>'.json_encode($reset_ids));
 	if ( ! empty( $reset_ids[ $button->id ] ) )  {
 		$parse_class = array_map( 'sanitize_html_class', explode( ' ', $r['button_attr']['class'] ) );
 		if ( false === $parse_class ) {
@@ -190,6 +189,9 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 		}
 
 		$find_id = array_intersect( $parse_class, array(
+			'pending_engagement',
+			'is_engagement',
+			'not_engagements',
 			'pending_friend',
 			'is_friend',
 			'not_friends',
@@ -206,7 +208,7 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 
 		$data_attribute = reset( $find_id );
 		if ( 'pending_friend' === $data_attribute ) {
-			$data_attribute = str_replace( '_friend', '', $data_attribute );
+			//$data_attribute = str_replace( '_friend', '', $data_attribute );
 		} elseif ( 'group_membership' === $button->id ) {
 			$data_attribute = str_replace( '-', '_', $data_attribute );
 		}
