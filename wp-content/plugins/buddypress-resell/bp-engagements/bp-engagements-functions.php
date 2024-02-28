@@ -303,8 +303,8 @@ function engagements_get_total_engagement_count( $user_id = 0 ) {
 	if ( empty( $user_id ) ) {
 		$user_id = ( bp_displayed_user_id() ) ? bp_displayed_user_id() : bp_loggedin_user_id();
 	}
-
 	$count = bp_get_user_meta( $user_id, 'total_engagement_count', true );
+	// error_log('>>>bp_get_user_meta engagement' . $user_id . ' ' . $count);
 	if ( empty( $count ) ) {
 		$count = 0;
 	}

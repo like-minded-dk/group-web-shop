@@ -554,6 +554,10 @@ function bp_nouveau_get_component_filters( $context = '', $component = '' ) {
 				$context   = 'friends';
 				$component = 'members';
 			}
+			if ( 'engagements' === $component ) {
+				$context   = 'engagements';
+				$component = 'members';
+			}
 		} elseif ( 'group' === $context && bp_is_group_activity() ) {
 			$component = 'activity';
 		} elseif ( 'group' === $context && bp_is_group_members() ) {
@@ -655,6 +659,9 @@ function bp_nouveau_get_appearance_settings( $option = '' ) {
 
 	if ( bp_is_active( 'friends' ) ) {
 		$default_args['members_friends_layout'] = 1;
+	}
+	if ( bp_is_active( 'engagements' ) ) {
+		$default_args['members_engagements_layout'] = 1;
 	}
 
 	if ( bp_is_active( 'activity' ) ) {
@@ -960,6 +967,7 @@ function bp_nouveau_theme_cover_image( $params = array() ) {
  * @return string|false The list of parameters for the message
  */
 function bp_nouveau_get_user_feedback( $feedback_id = '' ) {
+	// error_log('>>>bp_nouveau_get_user_feedback: '. $feedback_id);
 	/**
 	 * Filters the BuddyPress Nouveau feedback messages.
 	 *
@@ -1099,6 +1107,10 @@ function bp_nouveau_get_user_feedback( $feedback_id = '' ) {
 			'member-friends-loading'            => array(
 				'type'    => 'loading',
 				'message' => __( 'Loading the member\'s friends. Please wait.', 'buddypress' ),
+			),
+			'member-engagements-loading'            => array(
+				'type'    => 'loading',
+				'message' => __( 'Loading the member\'s engagements. Please wait.', 'buddypress' ),
 			),
 			'member-groups-loading'             => array(
 				'type'    => 'loading',

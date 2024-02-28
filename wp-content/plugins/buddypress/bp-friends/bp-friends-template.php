@@ -73,8 +73,6 @@ function bp_member_add_friend_button() {
 	error_log('----bp_member_add_friend_button '. bp_get_member_user_id());
 	bp_add_friend_button( bp_get_member_user_id() );
 }
-error_log(' ');
-error_log('add_action bp_directory_members_actions friend -----');
 add_action( 'bp_directory_members_actions', 'bp_member_add_friend_button' );
 
 /**

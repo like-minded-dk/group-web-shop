@@ -177,7 +177,7 @@ class BP_Engagements_Component extends BP_Component {
 
 		// Add the subnav items to the engagements nav item.
 		$sub_nav[] = array(
-			'name'            => _x( 'engagementships', 'engagements screen sub nav', 'buddypress' ),
+			'name'            => _x( 'Engagementships', 'engagements screen sub nav', 'buddypress' ),
 			'slug'            => 'my-engagements',
 			'parent_slug'     => $slug,
 			'screen_function' => 'engagements_screen_my_engagements',
@@ -214,11 +214,11 @@ class BP_Engagements_Component extends BP_Component {
 		// Only grab count if we're on a user page.
 		if ( bp_is_user() && isset( $this->main_nav['name'] ) ) {
 			// Add 'engagements' to the main navigation.
-			$count                  = engagements_get_total_engagement_count();
+			$count                  = (int) engagements_get_total_engagement_count();
 			$class                  = ( 0 === $count ) ? 'no-count' : 'count';
 			$this->main_nav['name'] = sprintf(
 				/* translators: %s: engagement count for the current user */
-				__( 'engagements %s', 'buddypress' ),
+				__( 'Engagements %s', 'buddypress' ),
 				sprintf(
 					'<span class="%s">%s</span>',
 					esc_attr( $class ),
@@ -309,7 +309,7 @@ class BP_Engagements_Component extends BP_Component {
 			$bp = buddypress();
 
 			if ( bp_is_my_profile() ) {
-				$bp->bp_options_title = __( 'engagementships', 'buddypress' );
+				$bp->bp_options_title = __( 'Engagementships', 'buddypress' );
 			} else {
 				$bp->bp_options_avatar = bp_core_fetch_avatar( array(
 					'item_id' => bp_displayed_user_id(),
@@ -336,9 +336,9 @@ class BP_Engagements_Component extends BP_Component {
 
 		// Global groups.
 		wp_cache_add_global_groups( array(
-			'BP_Engagement_requests',
-			'BP_Engagement_engagementships', // Individual engagementship objects are cached here by ID.
-			'BP_Engagement_engagementships_for_user' // All engagementship IDs for a single user.
+			'bp_engagement_requests',
+			'bp_engagement_engagementships', // Individual engagementship objects are cached here by ID.
+			'bp_engagement_engagementships_for_user' // All engagementship IDs for a single user.
 		) );
 
 		parent::setup_cache_groups();
@@ -369,8 +369,8 @@ class BP_Engagements_Component extends BP_Component {
 		parent::blocks_init(
 			array(
 				'bp/engagements' => array(
-					'metadata'        => trailingslashit( buddypress()->plugin_dir ) . 'bp-engagements/blocks/dynamic-engagements',
-					'render_callback' => 'BP_Engagement_render_engagements_block',
+					'metadata'        => trailingslashit( constant( 'BP_RESELL_DIR' ) ) . 'bp-engagements/blocks/dynamic-engagements',
+					'render_callback' => 'bp_engagements_render_engagements_block',
 				),
 			)
 		);

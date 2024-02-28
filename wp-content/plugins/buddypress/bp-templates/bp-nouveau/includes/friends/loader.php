@@ -67,7 +67,6 @@ class BP_Nouveau_Friends {
 	 */
 	protected function setup_actions() {
 		// Remove BuddyPress action for the members loop
-		error_log('----remove_action bp_directory_members_actions friend');
 		remove_action( 'bp_directory_members_actions', 'bp_member_add_friend_button' );
 
 		// Register the friends Notifications filters

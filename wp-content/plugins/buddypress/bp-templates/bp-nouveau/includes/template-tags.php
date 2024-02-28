@@ -81,6 +81,20 @@ function bp_nouveau_friend_hook( $suffix = '' ) {
 	);
 }
 
+function bp_nouveau_engagement_hook( $suffix = '' ) {
+	if ( ! $suffix ) {
+		return;
+	}
+
+	bp_nouveau_hook(
+		array(
+			'bp',
+			'engagement',
+			$suffix,
+		)
+	);
+}
+
 /**
  * Add classes to style the template notice/feedback message
  *
@@ -409,6 +423,7 @@ function bp_nouveau_pagination( $position ) {
 
 		case 'members':
 		case 'friends':
+		case 'engagements':
 		case 'manage-members':
 			$pag_count = bp_get_members_pagination_count();
 			$pag_links = bp_get_members_pagination_links();
@@ -2095,6 +2110,7 @@ function bp_nouveau_filter_container_id() {
 		$ids = array(
 			'members'       =>  $component['members_select'],
 			'friends'       => 'members-friends-select',
+			'engagements'   => 'members-engagements-select',
 			'notifications' => 'notifications-filter-select',
 			'activity'      => 'activity-filter-select',
 			'groups'        => 'groups-order-select',
@@ -2137,6 +2153,7 @@ function bp_nouveau_filter_id() {
 		$ids = array(
 			'members'       => $component['members_order_by'],
 			'friends'       => 'members-friends',
+			'engagements'   => 'members-engagements',
 			'notifications' => 'notifications-filter-by',
 			'activity'      => 'activity-filter-by',
 			'groups'        => 'groups-order-by',

@@ -70,7 +70,6 @@ function bp_engagements_root_slug() {
  * @since 1.2.6
  */
 function bp_member_add_engagement_button() {
-	error_log('----bp_member_add_engagement_button '. bp_get_member_user_id());
 	bp_add_engagement_button( bp_get_member_user_id() );
 }
 // error_log('add_action bp_directory_members_actions engage -----');
@@ -227,11 +226,8 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 		$engagements_slug      = bp_get_engagements_slug();
 
 		if ( empty( $engagementship_status ) ) {
-			error_log('>>>>engagementship_status');
 			return $button_args;
 		}
-		error_log('>engagementship_status');
-		error_log($engagementship_status);
 		switch ( $engagementship_status ) {
 			case 'pending':
 				$button_args = array(

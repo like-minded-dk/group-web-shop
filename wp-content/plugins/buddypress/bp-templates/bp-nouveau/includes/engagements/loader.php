@@ -67,7 +67,6 @@ class BP_Nouveau_Engagements {
 	 */
 	protected function setup_actions() {
 		// Remove BuddyPress action for the members loop
-		error_log('----remove_action bp_directory_members_actions engagement');
 		remove_action( 'bp_directory_members_actions', 'bp_member_add_engagement_button' );
 
 		// Register the engagements Notifications filters

@@ -170,7 +170,6 @@ function bp_nouveau_member_header_buttons( $args = array() ) {
  * @param array $args See bp_nouveau_wrapper() for the description of parameters.
  */
 function bp_nouveau_members_loop_buttons( $args = array() ) {
-	// error_log(">>>>bp_nouveau_members_loop_buttons");
 	if ( empty( $GLOBALS['members_template'] ) ) {
 		return;
 	}
@@ -269,7 +268,7 @@ function bp_nouveau_members_loop_buttons( $args = array() ) {
 
 		if ( bp_is_active( 'friends' ) ) {
 			// It's the member's friendship requests screen
-			if ( 'friendship_request' === $type ) {
+			if ( 'friendship_request' === $type || 'engagementship_request' === $type ) {
 				$buttons = array(
 					'accept_friendship' => array(
 						'id'                => 'accept_friendship',
@@ -612,6 +611,8 @@ function bp_nouveau_member_template_part() {
 			$template = 'blogs';
 		} elseif ( bp_is_user_friends() ) {
 			$template = 'friends';
+		} elseif ( bp_is_user_templates() ) {
+			$template = 'engagements';
 		} elseif ( bp_is_user_groups() ) {
 			$template = 'groups';
 		} elseif ( bp_is_user_messages() ) {
