@@ -51,9 +51,7 @@ class BP_Nouveau_Engagements {
 		} else {
 			// error_log('>>> enagement includes');
 			add_action( 'admin_init', function() {
-				error_log('>>> includes admin_init engagements');
 				if ( defined( 'DOING_AJAX' ) && true === DOING_AJAX && 0 === strpos( $_REQUEST['action'], 'engagements_' ) ) {
-					error_log('>>> includes engagement'. $_REQUEST['action'] . ' ' . bp_nouveau()->engagements->dir . 'ajax.php');
 					require bp_nouveau()->engagements->dir . 'ajax.php';
 				}
 			} );

@@ -51,9 +51,7 @@ class BP_Nouveau_Friends {
 		} else {
 			// error_log('>>> friend includes');
 			add_action( 'admin_init', function() {
-				error_log('>>> includes admin_init friend');
 				if ( defined( 'DOING_AJAX' ) && true === DOING_AJAX && 0 === strpos( $_REQUEST['action'], 'friends_' ) ) {
-					error_log('>>>includes friend:'. $_REQUEST['action'] . ' ' .bp_nouveau()->friends->dir . 'ajax.php');
 					require bp_nouveau()->friends->dir . 'ajax.php';
 				}
 			} );

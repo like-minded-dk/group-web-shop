@@ -289,6 +289,9 @@ window.bp = window.bp || {};
 			if ( 'friends' === data.object || 'friend_requests' === data.object || 'group_members' === data.object ) {
 				data.template = data.object;
 				data.object   = 'members';
+			} else if ( 'engagements' === data.object || 'engagement_requests' === data.object || 'group_members' === data.object ) {
+				data.template = data.object;
+				data.object   = 'members';
 			} else if ( 'group_requests' === data.object ) {
 				data.object = 'groups';
 				data.template = 'group_requests';
@@ -697,9 +700,14 @@ window.bp = window.bp || {};
 				reject_friendship : 'reject_friendship'
 			};
 
-			if ( 'members' === object && undefined !== friends_actions_map[ action ] ) {
+			if ( action.includes('friend') && 'members' === object && undefined !== friends_actions_map[ action ] ) {
 				action = friends_actions_map[ action ];
 				object = 'friends';
+			}
+
+			if ( action.includes('engagement') && 'members' === object && undefined !== friends_actions_map[ action ] ) {
+				action = friends_actions_map[ action ];
+				object = 'engagements';
 			}
 
 			// Add a pending class to prevent queries while we're processing the action.

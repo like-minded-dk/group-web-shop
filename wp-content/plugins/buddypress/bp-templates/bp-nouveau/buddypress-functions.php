@@ -90,8 +90,8 @@ class BP_Nouveau extends BP_Theme_Compat {
 	}
 
 	protected function _bp_core_get_packaged_component_ids () {
-		return bp_core_get_packaged_component_ids();
-		//return array_merge(bp_core_get_packaged_component_ids(), ['engagements']);
+		// return bp_core_get_packaged_component_ids();
+		return array_merge(bp_core_get_packaged_component_ids(), ['engagements']);
 	}
 	/**
 	 * Includes!
@@ -134,10 +134,10 @@ class BP_Nouveau extends BP_Theme_Compat {
 		foreach ( $this->_bp_core_get_packaged_component_ids() as $component ) {
 			$component_loader = trailingslashit( $this->includes_dir ) . $component . '/loader.php';
 
-			// if ( $component === 'engagements' && file_exists( $component_loader ) ) {
-			// 	require( $component_loader );
-			// 	continue;
-			// }
+			if ( $component === 'engagements' && file_exists( $component_loader ) ) {
+				require( $component_loader );
+				continue;
+			}
 
 			if ( ! bp_is_active( $component ) || ! file_exists( $component_loader ) ) {
 				continue;
@@ -519,7 +519,8 @@ class BP_Nouveau extends BP_Theme_Compat {
 		 *
 		 * @param array $value Array of supported components.
 		 */
-		$supported_objects = (array) apply_filters( 'bp_nouveau_supported_components', bp_core_get_packaged_component_ids() );
+		$supported_objects = (array) apply_filters( 'bp_nouveau_supported_components', $this->_bp_core_get_packaged_component_ids() );
+
 		$object_nonces     = array();
 
 		foreach ( $supported_objects as $key_object => $object ) {
