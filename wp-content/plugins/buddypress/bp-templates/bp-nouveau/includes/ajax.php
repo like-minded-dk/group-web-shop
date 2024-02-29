@@ -104,6 +104,7 @@ function bp_nouveau_ajax_object_template_loader() {
 	 * context. Without this check, templates will load the 'single' version
 	 * of themselves rather than the directory version.
 	 */
+	
 	if ( ! bp_current_action() ) {
 		bp_update_is_directory( true, bp_current_component() );
 	}

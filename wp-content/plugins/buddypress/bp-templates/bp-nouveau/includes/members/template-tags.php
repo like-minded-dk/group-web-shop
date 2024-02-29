@@ -9,6 +9,15 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
+// todo: error_log('add_core_funciton')
+function bp_is_user_templates() {
+	return (bool) ( bp_is_user() && bp_is_templates_component() );
+}
+
+// todo: error_log('add_core_funciton')
+function bp_is_templates_component() {
+	return (bool) bp_is_current_component( 'engagements' );
+}
 
 function add_engagement_button($user_id, $type, $parent_class, $button_element, $parent_element) {
 	$buttons  = [];

@@ -58,7 +58,6 @@ wp-content/uploads/*
 wp-content/languages/*
 wp-content/themes/*
 wp-content/plugins/buddypress/bp-activity
-wp-content/plugins/buddypress/bp-core
 wp-content/plugins/buddypress/bp-blogs
 wp-content/plugins/buddypress/bp-friends
 wp-content/plugins/buddypress/bp-groups
@@ -81,6 +80,8 @@ wp-content/object-cache.php
 !wp-content/themes/index.php
 !wp-content/themes/storefront-child/
 !wp-content/plugins/buddypress/
+!wp-content/plugins/buddypress/bp-core
+!wp-content/plugins/buddypress/bp-members
 !wp-content/plugins/buddypress/bp-templates/bp-nouveau/
 !wp-content/plugins/buddypress/bp-friends/
 

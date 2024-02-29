@@ -262,7 +262,6 @@ class BP_Friends_Friendship {
 	 * @return array $friendships Array of friendship objects.
 	 */
 	public static function get_friendships( $user_id, $args = array(), $operator = 'AND' ) {
-
 		if ( empty( $user_id ) ) {
 			$user_id = bp_loggedin_user_id();
 		}
@@ -444,17 +443,17 @@ class BP_Friends_Friendship {
 		$fids = array();
 		foreach ( $friendships as $friendship ) {
 			$friend_id = $friendship->friend_user_id;
+			
 			if ( $friendship->friend_user_id === $user_id ) {
 				$friend_id = $friendship->initiator_user_id;
 			}
-
 			if ( ! empty( $assoc_arr ) ) {
 				$fids[] = array( 'user_id' => $friend_id );
 			} else {
 				$fids[] = $friend_id;
 			}
 		}
-
+		
 		return array_map( 'intval', $fids );
 	}
 

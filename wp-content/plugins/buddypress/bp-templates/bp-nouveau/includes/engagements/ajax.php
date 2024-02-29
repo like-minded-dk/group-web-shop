@@ -44,6 +44,7 @@ add_action( 'admin_init', function() {
 	);
 
 	foreach ( $ajax_actions as $ajax_action ) {
+		
 		$action = key( $ajax_action );
 
 		add_action( 'wp_ajax_' . $action, $ajax_action[ $action ]['function'] );

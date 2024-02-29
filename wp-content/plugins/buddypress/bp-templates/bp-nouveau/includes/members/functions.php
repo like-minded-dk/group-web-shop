@@ -135,6 +135,10 @@ function bp_nouveau_get_members_filters( $context = '' ) {
 		if ( 'friends' === $context ) {
 			$action = 'bp_member_friends_order_options';
 		}
+
+		if ( 'engagements' === $context ) {
+			$action = 'bp_member_engagements_order_options';
+		}
 	} else {
 		$filters = array(
 			'last_joined'  => __( 'Newest', 'buddypress' ),
