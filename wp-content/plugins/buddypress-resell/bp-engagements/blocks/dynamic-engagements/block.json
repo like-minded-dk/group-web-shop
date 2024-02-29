@@ -1,0 +1,38 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "bp/engagements",
+  "title": "engagements List",
+  "category": "widgets",
+  "icon": "buddicons-engagements",
+  "description": "A dynamic list of recently active, popular, and newest engagements of the post author (when used into a page or post) or of the displayed member (when used in a widgetized area). If author/member data is not available the block is not displayed.",
+  "keywords": [
+    "BuddyPress",
+    "engagements",
+    "community"
+  ],
+  "textdomain": "buddypress",
+  "attributes": {
+    "maxengagements": {
+      "type": "number",
+      "default": 5
+    },
+    "engagementDefault": {
+      "type": "string",
+      "default": "active"
+    },
+    "linkTitle": {
+      "type": "boolean",
+      "default": false
+    },
+    "postId": {
+      "type": "number",
+      "default": 0
+    }
+  },
+  "supports": {
+    "align": true
+  },
+  "editorScript": "file:index.js",
+  "style": "file:index.css"
+}

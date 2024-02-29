@@ -57,14 +57,31 @@ wp-content/jetpack-waf/*
 wp-content/uploads/*
 wp-content/languages/*
 wp-content/themes/*
+wp-content/plugins/buddypress/bp-activity
+wp-content/plugins/buddypress/bp-blogs
+wp-content/plugins/buddypress/bp-friends
+wp-content/plugins/buddypress/bp-groups
+wp-content/plugins/buddypress/bp-messages
+wp-content/plugins/buddypress/bp-xprofile
+wp-content/plugins/buddypress/bp-settings
+wp-content/plugins/buddypress/bp-notifications
+wp-content/plugins/buddypress/bp-members
+wp-content/plugins/buddypress/bp-templates/bp-legacy
+wp-content/plugins/buddypress/cli
+
+wp-content/object-cache.php
 
 # Ignore everything in the folder
 !wp-content/plugins/index.php
 !wp-content/plugins/lmshops
-!wp-content/plugins/buddypress-engagement
+!wp-content/plugins/buddypress-resell
 !wp-content/plugins/buddypress-followers
 !wp-content/uploads/index.php
 !wp-content/themes/index.php
 !wp-content/themes/storefront-child/
+!wp-content/plugins/buddypress/
+!wp-content/plugins/buddypress/bp-core
+!wp-content/plugins/buddypress/bp-members
+!wp-content/plugins/buddypress/bp-templates/bp-nouveau/
+!wp-content/plugins/buddypress/bp-friends/
 
-wp-content/object-cache.php
