@@ -1094,19 +1094,19 @@ class BP_REST_Members_Endpoint extends WP_REST_Users_Controller {
 						'context'     => array( 'view', 'edit', 'embed' ),
 						'readonly'    => true,
 					),
-					// 'engagementship_status'      => array(
-					// 	'description' => __( 'engagementship relation with, current, logged in user.', 'buddypress' ),
-					// 	'type'        => 'bool',
-					// 	'context'     => array( 'view', 'edit', 'embed' ),
-					// 	'readonly'    => true,
-					// ),
-					// 'engagementship_status_slug' => array(
-					// 	'description' => __( 'Slug of the engagementship status with current logged in user.', 'buddypress' ),
-					// 	'enum'        => array( 'is_engagement', 'not_engagements', 'pending_engagement', 'awaiting_response' ),
-					// 	'type'        => 'string',
-					// 	'context'     => array( 'view', 'edit', 'embed' ),
-					// 	'readonly'    => true,
-					// ),
+					'engagementship_status'      => array(
+						'description' => __( 'engagementship relation with, current, logged in user.', 'buddypress' ),
+						'type'        => 'bool',
+						'context'     => array( 'view', 'edit', 'embed' ),
+						'readonly'    => true,
+					),
+					'engagementship_status_slug' => array(
+						'description' => __( 'Slug of the engagementship status with current logged in user.', 'buddypress' ),
+						'enum'        => array( 'is_engagement', 'not_engagements', 'pending_engagement', 'awaiting_response' ),
+						'type'        => 'string',
+						'context'     => array( 'view', 'edit', 'embed' ),
+						'readonly'    => true,
+					),
 					'last_activity'          => array(
 						'description' => __( 'Last date the member was active on the site.', 'buddypress' ),
 						'type'        => 'object',

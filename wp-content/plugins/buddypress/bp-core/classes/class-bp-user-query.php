@@ -414,17 +414,17 @@ class BP_User_Query {
 			}
 		}
 
-		// if ( ! empty( $user_id ) && bp_is_active( 'engagements' ) && bp_is_current_component('engagements') ) {
-		// 	$engagement_ids = engagements_get_engagement_user_ids( $user_id );
-		// 	$engagement_ids = implode( ',', wp_parse_id_list( $engagement_ids ) );
-		// 	if ( ! empty( $engagement_ids ) ) {
-		// 		$sql['where'][] = "u.{$this->uid_name} IN ({$engagement_ids})";
-		// 	// If the user has no engagements, the query should always
-		// 	// return no users.
-		// 	} else {
-		// 		$sql['where'][] = $this->no_results['where'];
-		// 	}
-		// }
+		if ( ! empty( $user_id ) && bp_is_active( 'engagements' ) && bp_is_current_component('engagements') ) {
+			$engagement_ids = engagements_get_engagement_user_ids( $user_id );
+			$engagement_ids = implode( ',', wp_parse_id_list( $engagement_ids ) );
+			if ( ! empty( $engagement_ids ) ) {
+				$sql['where'][] = "u.{$this->uid_name} IN ({$engagement_ids})";
+			// If the user has no engagements, the query should always
+			// return no users.
+			} else {
+				$sql['where'][] = $this->no_results['where'];
+			}
+		}
 
 		/* Search Terms ******************************************************/
 

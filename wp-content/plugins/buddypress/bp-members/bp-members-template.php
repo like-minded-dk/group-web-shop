@@ -378,9 +378,9 @@ function bp_has_members( $args = '' ) {
 		$user_id = bp_displayed_user_id();
 	}
 
-	// if ( bp_is_user_engagements() && ! bp_is_user_engagement_requests() ) {
-	// 	$user_id = bp_displayed_user_id();
-	// }
+	if ( bp_is_user_engagements() && ! bp_is_user_engagement_requests() ) {
+		$user_id = bp_displayed_user_id();
+	}
 
 	$member_type = bp_get_current_member_type();
 	if ( ! $member_type && ! empty( $_GET['member_type'] ) ) {
