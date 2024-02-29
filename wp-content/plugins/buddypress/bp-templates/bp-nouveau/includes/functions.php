@@ -177,11 +177,14 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 	// Custom data attribute.
 	$r['button_attr']['data-bp-btn-action'] = $button->id;
 
-	$reset_ids = array(
+	$reset_ids = 'engagements' == $button->component ? array(
+		'member_engagementship' => true,
+		'group_membership'  => true,
+	) : array(
 		'member_friendship' => true,
 		'group_membership'  => true,
 	);
-	// error_log('>>>>>>>'.json_encode($reset_ids));
+
 	if ( ! empty( $reset_ids[ $button->id ] ) )  {
 		$parse_class = array_map( 'sanitize_html_class', explode( ' ', $r['button_attr']['class'] ) );
 		if ( false === $parse_class ) {

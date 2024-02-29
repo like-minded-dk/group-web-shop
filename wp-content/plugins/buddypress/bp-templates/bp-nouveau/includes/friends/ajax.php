@@ -10,7 +10,6 @@
 defined( 'ABSPATH' ) || exit;
 
 add_action( 'admin_init', function() {
-	error_log('> friends admin_init');
 	$ajax_actions = array(
 		array(
 			'friends_remove_friend' => array(
@@ -216,7 +215,6 @@ function bp_nouveau_ajax_addremove_friend() {
 
 	// Request already pending.
 	} else {
-		error_log('pending friend: '.BP_Friends_Friendship::check_is_friend( bp_loggedin_user_id(), $friend_id ));
 		$response['feedback'] = sprintf(
 			'<div class="bp-feedback error">%s</div>',
 			esc_html__( 'Request Pending Friend', 'buddypress' )

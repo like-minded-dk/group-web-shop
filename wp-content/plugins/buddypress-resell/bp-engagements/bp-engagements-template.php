@@ -215,7 +215,6 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 	 * @return array The engagement button arguments.
 	 */
 	function bp_get_add_engagement_button_args( $potential_engagement_id = 0 ) {
-		// wp_die('bp_get_add_engagement_button_args');
 		$button_args = array();
 
 		if ( empty( $potential_engagement_id ) ) {
@@ -228,6 +227,7 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 		if ( empty( $engagementship_status ) ) {
 			return $button_args;
 		}
+
 		switch ( $engagementship_status ) {
 			case 'pending_engagement':
 				$button_args = array(

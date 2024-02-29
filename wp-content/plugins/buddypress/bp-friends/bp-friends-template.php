@@ -70,7 +70,6 @@ function bp_friends_root_slug() {
  * @since 1.2.6
  */
 function bp_member_add_friend_button() {
-	error_log('----bp_member_add_friend_button '. bp_get_member_user_id());
 	bp_add_friend_button( bp_get_member_user_id() );
 }
 add_action( 'bp_directory_members_actions', 'bp_member_add_friend_button' );
