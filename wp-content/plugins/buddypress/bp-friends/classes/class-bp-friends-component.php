@@ -213,7 +213,7 @@ class BP_Friends_Component extends BP_Component {
 			$class                  = ( 0 === $count ) ? 'no-count' : 'count';
 			$this->main_nav['name'] = sprintf(
 				/* translators: %s: Friend count for the current user */
-				__( 'Friends %s', 'buddypress' ),
+				__( 'Resells %s', 'buddypress' ),
 				sprintf(
 					'<span class="%s">%s</span>',
 					esc_attr( $class ),
