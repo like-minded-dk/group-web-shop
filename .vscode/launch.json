@@ -14,6 +14,15 @@
             }            
         },
         {
+            "name": "local Listen for Xdebug",
+            "type": "php",
+            "request": "launch",
+            "port": 9003,
+            "pathMappings": {
+                "/Users/zhengdai/git/group-web-shop/": "${workspaceRoot}"
+            }            
+        },
+        {
             "name": "Launch currently open script",
             "type": "php",
             "request": "launch",

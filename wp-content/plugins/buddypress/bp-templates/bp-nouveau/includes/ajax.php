@@ -24,7 +24,6 @@ function bp_nouveau_ajax_object_template_loader() {
 	if ( ! bp_is_post_request() ) {
 		wp_send_json_error();
 	}
-
 	$post_vars = bp_parse_args(
 		$_POST,
 		array(
@@ -56,9 +55,11 @@ function bp_nouveau_ajax_object_template_loader() {
 		}
 		// We need to calculate and return the feed URL for each scope.
 		switch ( $scope ) {
+			case 'my-friends':
 			case 'friends':
 				$feed_url = bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_nouveau_get_component_slug( 'activity' ), 'friends', array( 'feed' ) ) ) );
 				break;
+			case 'my-engagements':
 			case 'engagements':
 				$feed_url = bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_nouveau_get_component_slug( 'activity' ), 'engagements', array( 'feed' ) ) ) );
 				break;
@@ -98,7 +99,7 @@ function bp_nouveau_ajax_object_template_loader() {
 		 */
 		$result['feed_url'] = apply_filters( 'bp_nouveau_ajax_object_template_loader', $feed_url, $scope );
 	}
-
+	
 	/*
 	 * AJAX requests happen too early to be seen by bp_update_is_directory()
 	 * so we do it manually here to ensure templates load with the correct
@@ -153,6 +154,7 @@ function bp_nouveau_ajax_object_template_loader() {
 	 *
 	 * @param string Template file path.
 	 */
+	error_log(json_encode($post_vars));
 	$template_path = apply_filters( 'bp_nouveau_object_template_path', $template_path );
 	load_template( $template_path );
 	$result['contents'] = ob_get_contents();

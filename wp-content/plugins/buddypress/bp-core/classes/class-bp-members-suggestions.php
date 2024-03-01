@@ -114,6 +114,7 @@ class BP_Members_Suggestions extends BP_Suggestions {
 
 
 		$user_query = new BP_User_Query( $user_query );
+
 		$results    = array();
 
 		foreach ( $user_query->results as $user ) {

@@ -771,9 +771,9 @@ class BP_Relations_Relationship {
 	 *                                              to check relationship status with primary user.
 	 */
 	public static function update_bp_relations_cache( $user_id, $possible_member_ids ) {
-		error_log(' ');
+		//error_log(' ');
 		$bp_cache_key = static::$bp_cachekey;
-		error_log('class >'. json_encode('>>>update_bp_relations_cache'));
+		// error_log('[class] >'. json_encode('>>>update_bp_relations_cache'));
 		update_lm_relation_cache(static::$comp, $user_id, $possible_member_ids, $bp_cache_key);
 	}
 	/**

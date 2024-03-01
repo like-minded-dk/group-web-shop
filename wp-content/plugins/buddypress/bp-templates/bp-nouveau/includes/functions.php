@@ -187,13 +187,13 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 	);
 	
 	//  test member_component exist
-	error_log('[$reset_ids]: '. json_encode($reset_ids));
+	// error_log('[$reset_ids]: '. json_encode($reset_ids));
 	if ( ! empty( $reset_ids[ $button->id ] ) )  {
 		$parse_class = array_map( 'sanitize_html_class', explode( ' ', $r['button_attr']['class'] ) );
 		if ( false === $parse_class ) {
 			return $output;
 		}
-		error_log('[parse_class] '.json_encode($parse_class));
+		// error_log('[parse_class] '.json_encode($parse_class));
 		$find_id = array_intersect( $parse_class, array(
 			'remove_engagement_reversed',
 			'add_engagement',
@@ -216,7 +216,7 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 			'request-membership',
 		) );
 
-		error_log('[find_id] '. json_encode($find_id));
+		// error_log('[find_id] '. json_encode($find_id));
 		// @todo output html
 		//error_log('-------output html------------'.json_encode($output));
 		if ( 1 !== count( $find_id ) ) {
@@ -228,8 +228,8 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 		} elseif ( 'group_membership' === $button->id ) {
 			$data_attribute = str_replace( '-', '_', $data_attribute );
 		}
-		error_log('[button_attr] '. ($data_attribute));
-		error_log(' -- ');
+		// error_log('[button_attr] '. ($data_attribute));
+		// error_log(' -- ');
 		$r['button_attr']['data-bp-btn-action'] = $data_attribute;
 	}
 
