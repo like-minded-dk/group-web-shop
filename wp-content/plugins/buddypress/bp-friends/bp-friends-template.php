@@ -240,8 +240,8 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 						bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'requests', array( 'cancel', $potential_friend_id ) ) ) ),
 						'friends_withdraw_friendship'
 					),
-					'link_text'         => __( 'Cancel Friendship Request', 'buddypress' ),
-					'link_title'        => __( 'Cancel Friendship Requested', 'buddypress' ),
+					'link_text'         => __( 'Cancel help reseller Request', 'buddypress' ),
+					'link_title'        => __( 'Cancel help reseller Requested', 'buddypress' ),
 					'link_id'           => 'friend-' . $potential_friend_id,
 					'link_rel'          => 'remove',
 					'link_class'        => 'friendship-button pending_friend requested',
@@ -277,8 +277,8 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 						bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'remove-friend', array( $potential_friend_id ) ) ) ),
 						'friends_remove_friend'
 					),
-					'link_text'         => __( 'Cancel Friendship', 'buddypress' ),
-					'link_title'        => __( 'Cancel Friendship', 'buddypress' ),
+					'link_text'         => __( 'Stop supply the reseller', 'buddypress' ),
+					'link_title'        => __( 'Stop supply the reseller', 'buddypress' ),
 					'link_id'           => 'friend-' . $potential_friend_id,
 					'link_rel'          => 'remove',
 					'link_class'        => 'friendship-button is_friend remove',
@@ -297,8 +297,8 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 						bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'add-friend', array( $potential_friend_id ) ) ) ),
 						'friends_add_friend'
 					),
-					'link_text'         => __( 'Add Friend', 'buddypress' ),
-					'link_title'        => __( 'Add Friend', 'buddypress' ),
+					'link_text'         => __( 'Supply the Reseller', 'buddypress' ),
+					'link_title'        => __( 'Supply the Reseller', 'buddypress' ),
 					'link_id'           => 'friend-' . $potential_friend_id,
 					'link_rel'          => 'add',
 					'link_class'        => 'friendship-button not_friends add',
