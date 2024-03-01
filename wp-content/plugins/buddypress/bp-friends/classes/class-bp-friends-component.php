@@ -172,7 +172,7 @@ class BP_Friends_Component extends BP_Component {
 
 		// Add the subnav items to the friends nav item.
 		$sub_nav[] = array(
-			'name'            => _x( 'Friendships', 'Friends screen sub nav', 'buddypress' ),
+			'name'            => _x( 'Resellers', 'Friends screen sub nav', 'buddypress' ),
 			'slug'            => 'my-friends',
 			'parent_slug'     => $slug,
 			'screen_function' => 'friends_screen_my_friends',
@@ -213,7 +213,7 @@ class BP_Friends_Component extends BP_Component {
 			$class                  = ( 0 === $count ) ? 'no-count' : 'count';
 			$this->main_nav['name'] = sprintf(
 				/* translators: %s: Friend count for the current user */
-				__( 'Resells %s', 'buddypress' ),
+				__( 'Resellers %s', 'buddypress' ),
 				sprintf(
 					'<span class="%s">%s</span>',
 					esc_attr( $class ),

@@ -216,7 +216,7 @@ class BP_Engagements_Component extends BP_Component {
 			$class                  = ( 0 === $count ) ? 'no-count' : 'count';
 			$this->main_nav['name'] = sprintf(
 				/* translators: %s: engagement count for the current user */
-				__( 'Supplies %s', 'buddypress' ),
+				__( 'Suppliers %s', 'buddypress' ),
 				sprintf(
 					'<span class="%s">%s</span>',
 					esc_attr( $class ),
