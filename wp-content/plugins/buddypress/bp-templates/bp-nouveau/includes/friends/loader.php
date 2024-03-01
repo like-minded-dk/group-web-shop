@@ -141,12 +141,10 @@ class BP_Nouveau_Friends {
  * @since 3.0.0
  */
 function bp_nouveau_friends( $bp_nouveau = null ) {
-	//error_log('>>>bp_nouveau_friends');
 	if ( is_null( $bp_nouveau ) ) {
 		return;
 	}
 
 	$bp_nouveau->friends = new BP_Nouveau_Friends();
 }
-//error_log('>>>add_action bp_nouveau_includes friends');
 add_action( 'bp_nouveau_includes', 'bp_nouveau_friends', 10, 1 );
