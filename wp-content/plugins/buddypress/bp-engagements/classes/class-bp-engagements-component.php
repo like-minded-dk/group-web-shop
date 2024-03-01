@@ -177,7 +177,7 @@ class BP_Engagements_Component extends BP_Component {
 
 		// Add the subnav items to the engagements nav item.
 		$sub_nav[] = array(
-			'name'            => _x( 'Engagementships', 'engagements screen sub nav', 'buddypress' ),
+			'name'            => _x( 'Suppliers', 'engagements screen sub nav', 'buddypress' ),
 			'slug'            => 'my-engagements',
 			'parent_slug'     => $slug,
 			'screen_function' => 'engagements_screen_my_engagements',
@@ -218,7 +218,7 @@ class BP_Engagements_Component extends BP_Component {
 			$class                  = ( 0 === $count ) ? 'no-count' : 'count';
 			$this->main_nav['name'] = sprintf(
 				/* translators: %s: engagement count for the current user */
-				__( 'Engagements %s', 'buddypress' ),
+				__( 'Supplies %s', 'buddypress' ),
 				sprintf(
 					'<span class="%s">%s</span>',
 					esc_attr( $class ),
@@ -309,7 +309,7 @@ class BP_Engagements_Component extends BP_Component {
 			$bp = buddypress();
 
 			if ( bp_is_my_profile() ) {
-				$bp->bp_options_title = __( 'Engagementships', 'buddypress' );
+				$bp->bp_options_title = __( 'Supplyer', 'buddypress' );
 			} else {
 				$bp->bp_options_avatar = bp_core_fetch_avatar( array(
 					'item_id' => bp_displayed_user_id(),

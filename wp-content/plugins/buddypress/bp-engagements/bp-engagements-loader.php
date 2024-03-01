@@ -33,4 +33,4 @@ function bp_is_engagements_component() {
 function bp_setup_engagements() {
 	buddypress()->engagements = new BP_Engagements_Component();
 }
-add_action( 'bp_engagement_setup_components', 'bp_setup_engagements', 6 );
+add_action( 'bp_setup_components', 'bp_setup_engagements', 6 );
