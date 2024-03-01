@@ -25,18 +25,6 @@ defined( 'ABSPATH' ) || exit;
 define( 'BP_RESELL_DIR', dirname( __FILE__ ) );
 define( 'BP_RESELL_URL', plugins_url( basename( BP_RESELL_DIR ) ) . '/' );
 
-
-function includeAllPHP($dir) {
-	$directory = new RecursiveDirectoryIterator($dir);
-	$iterator = new RecursiveIteratorIterator($directory);
-
-	foreach ($iterator as $file) {
-		if ($file->isFile() && $file->getExtension() == 'php') {
-			require $file->getPathname();
-		}
-	}
-}
-
 /**
  * Only load the plugin code if BuddyPress is activated.
  */

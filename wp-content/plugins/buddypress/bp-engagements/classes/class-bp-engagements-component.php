@@ -26,7 +26,6 @@ class BP_Engagements_Component extends BP_Component {
 	 * @since 1.5.0
 	 */
 	public function __construct() {
-		
 		parent::start(
 			'engagements',
 			_x( 'engagement Connections', 'engagements screen page <title>', 'buddypress' ),
@@ -35,7 +34,6 @@ class BP_Engagements_Component extends BP_Component {
 				'adminbar_myaccount_order' => 60,
 			)
 		);
-		$this->path = constant( 'BP_RESELL_DIR' ). '/';
 	}
 
 	/**
@@ -369,7 +367,7 @@ class BP_Engagements_Component extends BP_Component {
 		parent::blocks_init(
 			array(
 				'bp/engagements' => array(
-					'metadata'        => trailingslashit( constant( 'BP_RESELL_DIR' ) ) . 'bp-engagements/blocks/dynamic-engagements',
+					'metadata'        => trailingslashit( buddypress()->plugin_dir ) . 'bp-engagements/blocks/dynamic-engagements',
 					'render_callback' => 'bp_engagements_render_engagements_block',
 				),
 			)

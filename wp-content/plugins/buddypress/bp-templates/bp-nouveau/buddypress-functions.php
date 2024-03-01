@@ -90,7 +90,6 @@ class BP_Nouveau extends BP_Theme_Compat {
 	}
 
 	protected function _bp_core_get_packaged_component_ids () {
-		// return bp_core_get_packaged_component_ids();
 		return array_merge(bp_core_get_packaged_component_ids(), ['engagements']);
 	}
 	/**

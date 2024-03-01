@@ -688,6 +688,7 @@ class BuddyPress {
 			'blogs',
 			'core',
 			'friends',
+			'engagements',
 			'groups',
 			'members',
 			'messages',

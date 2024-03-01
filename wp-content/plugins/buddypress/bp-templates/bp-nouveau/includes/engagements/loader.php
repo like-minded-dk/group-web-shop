@@ -141,12 +141,10 @@ class BP_Nouveau_Engagements {
  * @since 3.0.0
  */
 function bp_nouveau_engagements( $bp_nouveau = null ) {
-	//error_log('>>>bp_nouveau_engagements');
 	if ( is_null( $bp_nouveau ) ) {
 		return;
 	}
 
 	$bp_nouveau->engagements = new BP_Nouveau_Engagements();
 }
-//error_log('>>>add_action bp_nouveau_includes engagement');
 add_action( 'bp_nouveau_includes', 'bp_nouveau_engagements', 10, 1 );
