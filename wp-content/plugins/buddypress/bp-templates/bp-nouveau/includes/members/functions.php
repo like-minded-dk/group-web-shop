@@ -87,9 +87,20 @@ function bp_nouveau_get_members_directory_nav_items() {
 				'slug'      => 'personal', // slug is used because BP_Core_Nav requires it, but it's the scope
 				'li_class'  => array(),
 				'link'      => bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_nouveau_get_component_slug( 'friends' ), 'my-friends' ) ) ),
-				'text'      => __( 'My Friends', 'buddypress' ),
+				'text'      => __( 'My Resellers', 'buddypress' ),
 				'count'     => bp_get_total_friend_count( bp_loggedin_user_id() ),
 				'position'  => 15,
+			);
+		}
+		if ( bp_is_active( 'engagements' ) && bp_get_total_engagement_count( bp_loggedin_user_id() ) ) {
+			$nav_items['my-engagements'] = array(
+				'component' => 'members',
+				'slug'      => 'my-engagements', // slug is used because BP_Core_Nav requires it, but it's the scope
+				'li_class'  => array(),
+				'link'      => bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_nouveau_get_component_slug( 'engagements' ), 'my-engagements' ) ) ),
+				'text'      => __( 'My Suppliers', 'buddypress' ),
+				'count'     => bp_get_total_engagement_count( bp_loggedin_user_id() ),
+				'position'  => 25,
 			);
 		}
 	}

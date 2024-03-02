@@ -425,16 +425,24 @@ class BP_Friends_Friendship {
 	 * @return array $fids IDs of friends for provided user.
 	 */
 	public static function get_friend_user_ids( $user_id, $friend_requests_only = false, $assoc_arr = false ) {
-
 		if ( ! empty( $friend_requests_only ) ) {
 			$args = array(
 				'is_confirmed'   => 0,
 				'friend_user_id' => $user_id,
 			);
 		} else {
-			$args = array(
-				'is_confirmed' => 1,
-			);
+			if (bp_current_component() == 'friends') {
+				$args = array(
+					'initiator_user_id' => $user_id,
+					'is_confirmed' => 1,
+				);
+			} 
+			if (bp_current_component() == 'engagements') {
+				$args = array(
+					'friend_user_id' => $user_id,
+					'is_confirmed' => 1,
+				);
+			}
 		}
 
 		$friendships = self::get_friendships( $user_id, $args );
@@ -591,6 +599,7 @@ class BP_Friends_Friendship {
 		}
 
 		$friend_ids = self::get_friend_user_ids( $user_id );
+
 		if ( ! $friend_ids ) {
 			return false;
 		}

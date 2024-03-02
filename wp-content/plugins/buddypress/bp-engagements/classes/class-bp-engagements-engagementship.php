@@ -431,9 +431,18 @@ class BP_Engagements_Engagementship {
 				'engagement_user_id' => $user_id,
 			);
 		} else {
-			$args = array(
-				'is_confirmed' => 1,
-			);
+			if (bp_current_component() == 'engagements') {
+				$args = array(
+					'initiator_user_id' => $user_id,
+					'is_confirmed' => 1,
+				);
+			} 
+			if (bp_current_component() == 'friends') {
+				$args = array(
+					'engagement_user_id' => $user_id,
+					'is_confirmed' => 1,
+				);
+			}
 		}
 
 		$engagementships = self::get_engagementships( $user_id, $args );

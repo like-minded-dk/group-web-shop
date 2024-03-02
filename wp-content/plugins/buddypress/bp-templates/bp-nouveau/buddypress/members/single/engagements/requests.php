@@ -7,7 +7,7 @@
  */
 ?>
 
-<h2 class="screen-heading engagementship-requests-screen"><?php esc_html_e( 'Engagement Requests', 'buddypress' ); ?></h2>
+<h2 class="screen-heading engagementship-requests-screen"><?php esc_html_e( 'Supplier Relation Requests', 'buddypress' ); ?></h2>
 
 <?php bp_nouveau_member_hook( 'before', 'engagement_requests_content' ); ?>
 

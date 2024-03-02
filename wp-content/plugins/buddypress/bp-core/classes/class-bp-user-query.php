@@ -401,11 +401,15 @@ class BP_User_Query {
 
 		// 'user_id' - When a user id is passed, limit to the friends of the user
 		// @todo remove need for bp_is_active() check.
-		if ( ! empty( $user_id ) && bp_is_active( 'friends' ) && bp_is_current_component( 'friends' ) ) {
-			$friend_ids = friends_get_friend_user_ids( $user_id );
-			$friend_ids = implode( ',', wp_parse_id_list( $friend_ids ) );
-			if ( ! empty( $friend_ids ) ) {
-				$sql['where'][] = "u.{$this->uid_name} IN ({$friend_ids})";
+
+		$is_engagment = bp_is_active( 'engagements' ) && bp_is_current_component('engagements');
+		$is_friend = bp_is_active( 'friends' ) && bp_is_current_component('friends');
+
+		if ( ! empty( $user_id ) && ($is_engagment || $is_friend) ) {
+			$relation_ids = array_merge(friends_get_friend_user_ids( $user_id ), engagements_get_engagement_user_ids( $user_id ));
+			$relation_ids = implode( ',', wp_parse_id_list( $relation_ids ) );
+			if ( ! empty( $relation_ids ) ) {
+				$sql['where'][] = "u.{$this->uid_name} IN ({$relation_ids})";
 
 			// If the user has no friends, the query should always
 			// return no users.
@@ -414,17 +418,17 @@ class BP_User_Query {
 			}
 		}
 
-		if ( ! empty( $user_id ) && bp_is_active( 'engagements' ) && bp_is_current_component('engagements') ) {
-			$engagement_ids = engagements_get_engagement_user_ids( $user_id );
-			$engagement_ids = implode( ',', wp_parse_id_list( $engagement_ids ) );
-			if ( ! empty( $engagement_ids ) ) {
-				$sql['where'][] = "u.{$this->uid_name} IN ({$engagement_ids})";
-			// If the user has no engagements, the query should always
-			// return no users.
-			} else {
-				$sql['where'][] = $this->no_results['where'];
-			}
-		}
+		// if ( ! empty( $user_id ) && bp_is_active( 'engagements' ) && bp_is_current_component('engagements') ) {
+		// 	$engagement_ids = engagements_get_engagement_user_ids( $user_id );
+		// 	$engagement_ids = implode( ',', wp_parse_id_list( $engagement_ids ) );
+		// 	if ( ! empty( $engagement_ids ) ) {
+		// 		$sql['where'][] = "u.{$this->uid_name} IN ({$engagement_ids})";
+		// 	// If the user has no engagements, the query should always
+		// 	// return no users.
+		// 	} else {
+		// 		$sql['where'][] = $this->no_results['where'];
+		// 	}
+		// }
 
 		/* Search Terms ******************************************************/
 
