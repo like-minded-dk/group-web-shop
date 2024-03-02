@@ -226,9 +226,12 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 		if ( empty( $friendship_status ) ) {
 			return $button_args;
 		}
+		$verb_str = is_initiator($friendship_status) ? 'Supply' : 'Resell';
+		$object_str = is_initiator($friendship_status) ? 'Reseller' : 'Supplier';
 
 		switch ( $friendship_status ) {
 			case 'pending_friend':
+				// "Cancel Supply Resell Request"
 				$button_args = array(
 					'id'                => 'pending_friend',
 					'component'         => 'friends',
@@ -240,8 +243,8 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 						bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'requests', array( 'cancel', $potential_friend_id ) ) ) ),
 						'friends_withdraw_friendship'
 					),
-					'link_text'         => __( 'Cancel supply reseller Request', 'buddypress' ),
-					'link_title'        => __( 'Cancel supply reseller Request', 'buddypress' ),
+					'link_text'         => __( "Cancel $verb_str $object_str Request", 'buddypress' ),
+					'link_title'        => __( "Cancel $verb_str $object_str Request", 'buddypress' ),
 					'link_id'           => 'friend-' . $potential_friend_id,
 					'link_rel'          => 'remove',
 					'link_class'        => 'friendship-button pending_friend requested',
@@ -249,6 +252,7 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 				break;
 
 			case 'awaiting_response':
+				// Supply Reseller Requested
 				$button_args = array(
 					'id'                => 'awaiting_response',
 					'component'         => 'friends',
@@ -257,8 +261,8 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 					'wrapper_class'     => 'friendship-button awaiting_response_friend',
 					'wrapper_id'        => 'friendship-button-' . $potential_friend_id,
 					'link_href'         => bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'requests' ) ) ),
-					'link_text'         => __( 'Friendship Requested', 'buddypress' ),
-					'link_title'        => __( 'Friendship Requested', 'buddypress' ),
+					'link_text'         => __( "$verb_str $object_str Requested", 'buddypress' ),
+					'link_title'        => __( "$verb_str $object_str Requested", 'buddypress' ),
 					'link_id'           => 'friend-' . $potential_friend_id,
 					'link_rel'          => 'remove',
 					'link_class'        => 'friendship-button awaiting_response_friend requested',
@@ -266,6 +270,7 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 				break;
 
 			case 'is_friend':
+				// Stop Supply Reseller
 				$button_args = array(
 					'id'                => 'is_friend',
 					'component'         => 'friends',
@@ -277,8 +282,8 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 						bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'remove-friend', array( $potential_friend_id ) ) ) ),
 						'friends_remove_friend'
 					),
-					'link_text'         => __( 'Stop supply the reseller', 'buddypress' ),
-					'link_title'        => __( 'Stop supply the reseller', 'buddypress' ),
+					'link_text'         => __( "Stop $verb_str $object_str", 'buddypress' ),
+					'link_title'        => __( "Stop $verb_str $object_str", 'buddypress' ),
 					'link_id'           => 'friend-' . $potential_friend_id,
 					'link_rel'          => 'remove',
 					'link_class'        => 'friendship-button is_friend remove',
@@ -286,6 +291,7 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 				break;
 
 			default:
+				// Supply Reseller
 				$button_args = array(
 					'id'                => 'not_friends',
 					'component'         => 'friends',
@@ -297,8 +303,8 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 						bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'add-friend', array( $potential_friend_id ) ) ) ),
 						'friends_add_friend'
 					),
-					'link_text'         => __( 'Supply the reseller', 'buddypress' ),
-					'link_title'        => __( 'Supply the reseller', 'buddypress' ),
+					'link_text'         => __( "$verb_str $object_str", 'buddypress' ),
+					'link_title'        => __( "$verb_str $object_str", 'buddypress' ),
 					'link_id'           => 'friend-' . $potential_friend_id,
 					'link_rel'          => 'add',
 					'link_class'        => 'friendship-button not_friends add',

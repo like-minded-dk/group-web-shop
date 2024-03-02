@@ -1,4 +1,20 @@
 <?php
+function is_initiator() {
+	$user_id = bp_get_member_user_id();
+	$status = bp_current_component() == 'friends' ? bp_is_friend( $user_id ) : bp_is_engagement( $user_id );
+
+	$component = substr(bp_current_component(), 0, -1);
+	if (substr($status, 0, 3) == 'is_') {
+		return substr($status, 3) === $component;
+	}
+
+	if (substr($status, 0, 4) == 'not_') {
+		$status_name = substr(substr($status, 4), 0, -1);	
+		return $status_name !== $component;
+	}
+	return false;
+}
+
 function add_engagement_button(&$buttons, $user_id, $type, $parent_class, $button_element, $parent_element) {
 	if (  bp_is_active( 'engagements' ) ) {
 			// It's the member's friendship requests screen

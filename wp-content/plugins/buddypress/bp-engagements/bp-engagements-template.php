@@ -228,7 +228,11 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 			return $button_args;
 		}
 
+		$verb_str = is_initiator($engagementship_status) ? 'Resell' : 'Supply';
+		$object_str = is_initiator($engagementship_status) ? 'Supplier' : 'Reseller';
+
 		switch ( $engagementship_status ) {
+			// "Cancel Supply Resell Request"
 			case 'pending_engagement':
 				$button_args = array(
 					'id'                => 'pending_engagement',
@@ -241,8 +245,8 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 						bp_loggedin_user_url( bp_members_get_path_chunks( array( $engagements_slug, 'requests', array( 'cancel', $potential_engagement_id ) ) ) ),
 						'engagements_withdraw_engagementship'
 					),
-					'link_text'         => __( 'Cancel resell supplier Request', 'buddypress' ),
-					'link_title'        => __( 'Cancel resell supplier Request', 'buddypress' ),
+					'link_text'         => __( "Cancel $verb_str $object_str Request", 'buddypress' ),
+					'link_title'        => __( "Cancel $verb_str $object_str Request", 'buddypress' ),
 					'link_id'           => 'engagement-' . $potential_engagement_id,
 					'link_rel'          => 'remove',
 					'link_class'        => 'engagementship-button pending_engagement requested',
@@ -250,6 +254,7 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 				break;
 
 			case 'awaiting_response':
+				// Supply Reseller Requested
 				$button_args = array(
 					'id'                => 'awaiting_response',
 					'component'         => 'engagements',
@@ -258,8 +263,8 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 					'wrapper_class'     => 'engagementship-button awaiting_response_engagement',
 					'wrapper_id'        => 'engagementship-button-' . $potential_engagement_id,
 					'link_href'         => bp_loggedin_user_url( bp_members_get_path_chunks( array( $engagements_slug, 'requests' ) ) ),
-					'link_text'         => __( 'Help supplier Requested', 'buddypress' ),
-					'link_title'        => __( 'Help supplier Requested', 'buddypress' ),
+					'link_text'         => __( "$verb_str $object_str Requested", 'buddypress' ),
+					'link_title'        => __( "$verb_str $object_str Requested", 'buddypress' ),
 					'link_id'           => 'engagement-' . $potential_engagement_id,
 					'link_rel'          => 'remove',
 					'link_class'        => 'engagementship-button awaiting_response_engagement requested',
@@ -267,6 +272,7 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 				break;
 
 			case 'is_engagement':
+				// Stop Supply Reseller
 				$button_args = array(
 					'id'                => 'is_engagement',
 					'component'         => 'engagements',
@@ -278,8 +284,8 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 						bp_loggedin_user_url( bp_members_get_path_chunks( array( $engagements_slug, 'remove-engagement', array( $potential_engagement_id ) ) ) ),
 						'engagements_remove_engagement'
 					),
-					'link_text'         => __( 'Stop resell the supplier', 'buddypress' ),
-					'link_title'        => __( 'Stop resell the supplier', 'buddypress' ),
+					'link_text'         => __( "Stop $verb_str $object_str", 'buddypress' ),
+					'link_title'        => __( "Stop $verb_str $object_str", 'buddypress' ),
 					'link_id'           => 'engagement-' . $potential_engagement_id,
 					'link_rel'          => 'remove',
 					'link_class'        => 'engagementship-button is_engagement remove',
@@ -287,6 +293,7 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 				break;
 
 			default:
+				// Supply Reseller
 				$button_args = array(
 					'id'                => 'not_engagements',
 					'component'         => 'engagements',
@@ -298,8 +305,8 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 						bp_loggedin_user_url( bp_members_get_path_chunks( array( $engagements_slug, 'add-engagement', array( $potential_engagement_id ) ) ) ),
 						'engagements_add_engagement'
 					),
-					'link_text'         => __( 'Resell the Supplier', 'buddypress' ),
-					'link_title'        => __( 'Resell the Supplier', 'buddypress' ),
+					'link_text'         => __( "$verb_str $object_str", 'buddypress' ),
+					'link_title'        => __( "$verb_str $object_str", 'buddypress' ),
 					'link_id'           => 'engagement-' . $potential_engagement_id,
 					'link_rel'          => 'add',
 					'link_class'        => 'engagementship-button not_engagements add',
