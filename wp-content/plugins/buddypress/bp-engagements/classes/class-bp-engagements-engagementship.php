@@ -145,7 +145,10 @@ class BP_Engagements_Engagementship {
 
 		// Cache missed, so query the DB.
 		if ( false === $engagementship ) {
-			$engagementship = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$bp->engagements->table_name} WHERE id = %d", $this->id ) );
+			$engagementship = $wpdb->get_row( $wpdb->prepare( <<<SQL
+				SELECT * FROM {$bp->engagements->table_name} WHERE id = %d
+			SQL
+			, $this->id ) );
 
 			wp_cache_set( $this->id, $engagementship, 'bp_engagements_engagementships' );
 		}
@@ -202,11 +205,38 @@ class BP_Engagements_Engagementship {
 
 		// Update.
 		if ( ! empty( $this->id ) ) {
-			$result = $wpdb->query( $wpdb->prepare( "UPDATE {$bp->engagements->table_name} SET initiator_user_id = %d, engagement_user_id = %d, is_confirmed = %d, is_limited = %d, date_created = %s WHERE id = %d", $this->initiator_user_id, $this->engagement_user_id, $this->is_confirmed, $this->is_limited, $this->date_created, $this->id ) );
+			$result = $wpdb->query( $wpdb->prepare( <<<SQL
+				UPDATE {$bp->engagements->table_name} 
+				SET initiator_user_id = %d, 
+					engagement_user_id = %d, 
+					is_confirmed = %d, 
+					is_limited = %d, 
+					date_created = %s 
+				WHERE id = %d
+				SQL,
+				$this->initiator_user_id,
+				$this->engagement_user_id,
+				$this->is_confirmed,
+				$this->is_limited,
+				$this->date_created,
+				$this->id ) );
 
 		// Save.
 		} else {
-			$result = $wpdb->query( $wpdb->prepare( "INSERT INTO {$bp->engagements->table_name} ( initiator_user_id, engagement_user_id, is_confirmed, is_limited, date_created ) VALUES ( %d, %d, %d, %d, %s )", $this->initiator_user_id, $this->engagement_user_id, $this->is_confirmed, $this->is_limited, $this->date_created ) );
+			$result = $wpdb->query( $wpdb->prepare( <<<SQL
+			INSERT INTO {$bp->engagements->table_name} 
+				( initiator_user_id
+				engagement_user_id
+				is_confirmed
+				is_limited
+				date_created ) 
+			VALUES ( %d, %d, %d, %d, %s )
+			SQL,
+			$this->initiator_user_id,
+			$this->engagement_user_id,
+			$this->is_confirmed,
+			$this->is_limited,
+			$this->date_created ) );
 			$this->id = $wpdb->insert_id;
 		}
 
@@ -697,7 +727,12 @@ class BP_Engagements_Engagementship {
 		}
 
 		$engagement_ids_sql = implode( ',', array_unique( $fetch ) );
-		$sql = $wpdb->prepare( "SELECT initiator_user_id, engagement_user_id, is_confirmed FROM {$bp->engagements->table_name} WHERE (initiator_user_id = %d AND engagement_user_id IN ({$engagement_ids_sql}) ) OR (initiator_user_id IN ({$engagement_ids_sql}) AND engagement_user_id = %d )", $user_id, $user_id );
+		$sql = $wpdb->prepare( <<<SQL
+			SELECT initiator_user_id, engagement_user_id, is_confirmed 
+			FROM {$bp->engagements->table_name} 
+			WHERE (initiator_user_id = %d AND engagement_user_id IN ({$engagement_ids_sql}) ) 
+				OR (initiator_user_id IN ({$engagement_ids_sql}) AND engagement_user_id = %d )
+		SQL, $user_id, $user_id );
 		$engagementships = $wpdb->get_results( $sql );
 
 		// Use $handled to keep track of all of the $possible_engagement_ids we've matched.
