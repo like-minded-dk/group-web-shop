@@ -30,8 +30,7 @@ function engagements_action_add_engagement() {
 	$engagementship_status = BP_Engagements_Engagementship::check_is_engagement( bp_loggedin_user_id(), $potential_engagement_id );
 
 	if ( 'not_engagements' === $engagementship_status ) {
-
-		if ( ! check_admin_referer( 'engagements_add_engagement' ) ) {
+		if ( ! check_admin_referer( 'engagement' ) ) {
 			return false;
 		}
 
@@ -39,6 +38,16 @@ function engagements_action_add_engagement() {
 			bp_core_add_message( __( 'engagementship could not be requested.', 'buddypress' ), 'error' );
 		} else {
 			bp_core_add_message( __( 'engagementship requested', 'buddypress' ) );
+		}
+	} elseif ( 'not_friends_from_engagements' === $engagementship_status ) {
+		if ( ! check_admin_referer( 'engagements_add_friend' ) ) {
+			return false;
+		}
+		// todo engagements_add_friend
+		if ( ! engagements_add_engagement( bp_loggedin_user_id(), $potential_engagement_id ) ) {
+			bp_core_add_message( __( '(engagements) friendsship could not be requested.', 'buddypress' ), 'error' );
+		} else {
+			bp_core_add_message( __( '(engagements) friendsship requested', 'buddypress' ) );
 		}
 	} elseif ( 'is_engagement' === $engagementship_status ) {
 		bp_core_add_message( __( 'You are already engagements with this user', 'buddypress' ), 'error' );

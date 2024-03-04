@@ -83,6 +83,7 @@ class BP_Nouveau_Engagements {
 			'engagements_pending_engagement',
 			'engagements_is_engagement',
 			'engagements_not_engagements',
+			'engagements_not_friends_from_engagements',
 			'engagements_member_engagementship',
 			'engagements_accept_engagementship',
 			'engagements_reject_engagementship',
@@ -127,7 +128,7 @@ class BP_Nouveau_Engagements {
 	 * @since 12.0.0
 	 */
 	public function register_ajax_actions() {
-		$ajax_actions = array( 'engagements_remove_engagement', 'engagements_add_engagement', 'engagements_withdraw_engagementship', 'engagements_accept_engagementship', 'engagements_reject_engagementship' );
+		$ajax_actions = array( 'engagements_not_friends_from_engagements','engagements_remove_engagement', 'engagements_add_engagement', 'engagements_withdraw_engagementship', 'engagements_accept_engagementship', 'engagements_reject_engagementship' );
 
 		foreach ( $ajax_actions as $ajax_action ) {
 			bp_ajax_register_action( $ajax_action );

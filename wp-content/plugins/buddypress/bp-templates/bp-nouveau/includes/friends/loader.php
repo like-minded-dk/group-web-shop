@@ -83,6 +83,7 @@ class BP_Nouveau_Friends {
 			'friends_pending_friend',
 			'friends_is_friend',
 			'friends_not_friends',
+			'friends_not_engagements_from_friends',
 			'friends_member_friendship',
 			'friends_accept_friendship',
 			'friends_reject_friendship',
@@ -127,7 +128,7 @@ class BP_Nouveau_Friends {
 	 * @since 12.0.0
 	 */
 	public function register_ajax_actions() {
-		$ajax_actions = array( 'friends_remove_friend', 'friends_add_friend', 'friends_withdraw_friendship', 'friends_accept_friendship', 'friends_reject_friendship' );
+		$ajax_actions = array( 'friends_not_engagements_from_friends','friends_remove_friend', 'friends_add_friend', 'friends_withdraw_friendship', 'friends_accept_friendship', 'friends_reject_friendship' );
 
 		foreach ( $ajax_actions as $ajax_action ) {
 			bp_ajax_register_action( $ajax_action );

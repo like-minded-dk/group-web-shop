@@ -195,6 +195,8 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 			'pending_engagement',
 			'is_engagement',
 			'not_engagements',
+			'not_engagements_from_friends',
+			'not_friends_from_engagements',
 			'pending_friend',
 			'is_friend',
 			'not_friends',

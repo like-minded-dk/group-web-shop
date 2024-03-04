@@ -41,6 +41,8 @@ function engagements_action_remove_engagement() {
 		}
 	} elseif ( 'not_engagements' === $engagementship_status ) {
 		bp_core_add_message( __( 'You are not yet engagements with this user', 'buddypress' ), 'error' );
+	} elseif ( 'not_friends_from_engagements' === $engagementship_status ) {
+		bp_core_add_message( __( 'You are not yet friends with this user', 'buddypress' ), 'error' );
 	} else {
 		bp_core_add_message( __( 'You have a pending engagementship request with this user', 'buddypress' ), 'error' );
 	}

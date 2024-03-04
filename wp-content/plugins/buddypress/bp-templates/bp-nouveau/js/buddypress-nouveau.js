@@ -688,17 +688,19 @@ window.bp = window.bp || {};
 			// Unfortunately unlike groups
 			// Friends actions does not match the wpnonce
 			var friends_actions_map = {
+				not_engagements_from_friends: 'not_engagements_from_friends',
 				is_friend         : 'remove_friend',
 				not_friends       : 'add_friend',
-				pending_friend           : 'withdraw_friendship',
+				pending_friend    : 'withdraw_friendship',
 				accept_friendship : 'accept_friendship',
 				reject_friendship : 'reject_friendship'
 			};
 
 			var engagements_actions_map = {
+				not_friends_from_engagements: 'not_friends_from_engagements',
 				is_engagement         : 'remove_engagement',
 				not_engagements       : 'add_engagement',
-				pending_engagement               : 'withdraw_engagementship',
+				pending_engagement    : 'withdraw_engagementship',
 				accept_engagementship : 'accept_engagementship',
 				reject_engagementship : 'reject_engagementship'
 			};

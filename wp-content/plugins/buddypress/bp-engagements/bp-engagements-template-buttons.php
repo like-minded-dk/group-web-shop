@@ -150,14 +150,14 @@ function engagement_reciver_btn_args($engagementship_status, $potential_engageme
                 'wrapper_class'     => 'engagementship-button not_engagements',
                 'wrapper_id'        => 'engagementship-button-' . $potential_engagement_id,
                 'link_href'         => wp_nonce_url(
-                    bp_loggedin_user_url( bp_members_get_path_chunks( array( $engagements_slug, 'add-engagement', array( $potential_engagement_id ) ) ) ),
-                    'engagements_add_engagement'
+                    bp_loggedin_user_url( bp_members_get_path_chunks( array( $engagements_slug, 'add-friend', array( $potential_engagement_id ) ) ) ),
+                    'engagements_not_friends_from_engagements'
                 ),
                 'link_text'         => __( "Supply Reseller", 'buddypress' ),
                 'link_title'        => __( "Supply Reseller", 'buddypress' ),
                 'link_id'           => 'engagement-' . $potential_engagement_id,
                 'link_rel'          => 'add',
-                'link_class'        => 'engagementship-button not_engagements add',
+                'link_class'        => 'engagementship-button not_friends_from_engagements add',
             );
             break;
     }

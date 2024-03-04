@@ -41,6 +41,8 @@ function friends_action_remove_friend() {
 		}
 	} elseif ( 'not_friends' === $friendship_status ) {
 		bp_core_add_message( __( 'You are not yet friends with this user', 'buddypress' ), 'error' );
+	} elseif ( 'not_engagement_from_friends' === $friendship_status ) {
+		bp_core_add_message( __( 'You are not yet engagements with this user', 'buddypress' ), 'error' );
 	} else {
 		bp_core_add_message( __( 'You have a pending friendship request with this user', 'buddypress' ), 'error' );
 	}

@@ -39,6 +39,16 @@ function friends_action_add_friend() {
 		} else {
 			bp_core_add_message( __( 'Friendship requested', 'buddypress' ) );
 		}
+	} elseif ( 'not_engagements_from_friends' === $friendship_status ) {
+		if ( ! check_admin_referer( 'friends_add_engagements' ) ) {
+			return false;
+		}
+		// todo friends_add_engagements
+		if ( ! friends_add_friend( bp_loggedin_user_id(), $potential_friend_id ) ) {
+			bp_core_add_message( __( '(friends) engagementsship could not be requested.', 'buddypress' ), 'error' );
+		} else {
+			bp_core_add_message( __( '(friends) engagementsship requested', 'buddypress' ) );
+		}
 	} elseif ( 'is_friend' === $friendship_status ) {
 		bp_core_add_message( __( 'You are already friends with this user', 'buddypress' ), 'error' );
 	} else {
