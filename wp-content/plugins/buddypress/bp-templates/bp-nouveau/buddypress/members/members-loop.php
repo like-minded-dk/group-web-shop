@@ -33,7 +33,7 @@ bp_nouveau_before_loop(); ?>
 
 						<h2 class="list-title member-name">
 							<?php 
-							echo is_initiator() ? 'Initiator' : 'Receiver';
+							echo print_initiator('');
 							 ?>
 							<a href="<?php bp_member_permalink(); ?>"><?php bp_member_name(); ?></a>
 						</h2>
