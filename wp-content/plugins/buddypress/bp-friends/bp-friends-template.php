@@ -228,14 +228,27 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 			return $button_args;
 		}
 
-		$is_init = is_initiator('friend');
+		$is_existed_in_another = is_initiator('engagement') != -1;
+		if ($is_existed_in_another) {
+			// check initiator , and change text, and create reverse link;
+			$is_init = is_initiator('engagement');
 
-		$button_args = engagement_initiator_btn_args($friendship_status, $potential_friend_id, $friends_slug);
-		if ($is_init) {
-			$button_args = friend_initiator_btn_args($friendship_status, $potential_friend_id, $friends_slug);
+			if ($is_init) {
+				$button_args = friend_initiator_btn_args($friendship_status, $potential_friend_id, $friends_slug);
+			} else {
+				$button_args = friend_reciver_btn_args($friendship_status, $potential_friend_id, bp_get_engagements_slug());
+			}
 		} else {
-			$button_args = friend_reciver_btn_args($friendship_status, $potential_friend_id, bp_get_engagements_slug());
+			// check initiator, and change text
+			$is_init = is_initiator('friend');
+			if ($is_init) {
+				$button_args = friend_initiator_btn_args($friendship_status, $potential_friend_id, $friends_slug);
+			} else {
+				$button_args = friend_reciver_btn_args($friendship_status, $potential_friend_id, bp_get_engagements_slug());
+			}
 		}
+		
+
 
 		/**
 		 * Filters the HTML for the add friend button.

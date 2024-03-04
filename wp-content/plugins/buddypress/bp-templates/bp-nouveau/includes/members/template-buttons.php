@@ -7,27 +7,31 @@ function is_initiator($component = '') {
 		$component = bp_current_component();
 	}
 	global $wpdb;
-
-	$results='';
 	
 	if ($component== 'friend') {
 		$relations1 = $wpdb->get_results( "SELECT * FROM wp_bp_friends WHERE friend_user_id = {$member_id} AND initiator_user_id = {$user_id}", OBJECT );
+		if (!empty($relations1)) {
+			return 1;
+		} 
 		$relations2 = $wpdb->get_results( "SELECT * FROM wp_bp_friends WHERE friend_user_id = {$user_id} AND initiator_user_id = {$member_id}", OBJECT );
-		$relations = array_merge($relations1, $relations2);
-		foreach ($relations as $relation) {
-			$results .= $relation->id;
-			return $relation->initiator_user_id === (string) $user_id;
+		if (!empty($relations2)) {
+			return 0;
 		}
+		return -1;
 	}
+
 	if ($component== 'engagement') {
 		$relations1 = $wpdb->get_results( "SELECT * FROM wp_bp_engagements WHERE engagement_user_id = {$member_id} AND initiator_user_id = {$user_id}", OBJECT );
+		if (!empty($relations1)) {
+			return 1;
+		} 
 		$relations2 = $wpdb->get_results( "SELECT * FROM wp_bp_engagements WHERE engagement_user_id = {$user_id} AND initiator_user_id = {$member_id}", OBJECT );
-		$relations = array_merge($relations1, $relations2);
-		foreach ($relations as $relation) {
-			return $relation->initiator_user_id === (string) $user_id;
+		if (!empty($relations2)) {
+			return 0;
 		}
+		return -1;
 	}
-	return $results;
+	return 0;
 }
 
 function print_initiator($component = '') {

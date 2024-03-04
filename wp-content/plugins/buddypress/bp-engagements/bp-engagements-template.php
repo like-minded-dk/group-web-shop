@@ -228,12 +228,24 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 			return $button_args;
 		}
 
-		$is_init = is_initiator('engagement');
-
-		if ($is_init) {
-			$button_args = engagement_initiator_btn_args($engagementship_status, $potential_engagement_id, $engagements_slug);
+		$is_existed_in_another = is_initiator('friend') != -1;
+		if ($is_existed_in_another) {
+			error_log(11);
+			// check initiator , and change text, and create reverse link;
+			$is_init = is_initiator('friend');
+			if ($is_init) {
+				$button_args = engagement_initiator_btn_args($engagementship_status, $potential_engagement_id, $engagements_slug);
+			} else {
+				$button_args = engagement_reciver_btn_args($engagementship_status, $potential_engagement_id, bp_get_friends_slug());
+			}
 		} else {
-			$button_args = engagement_reciver_btn_args($engagementship_status, $potential_engagement_id, bp_get_friends_slug());
+			// check initiator, and change text
+			$is_init = is_initiator('engagement');
+			if ($is_init) {
+				$button_args = engagement_initiator_btn_args($engagementship_status, $potential_engagement_id, $engagements_slug);
+			} else {
+				$button_args = engagement_reciver_btn_args($engagementship_status, $potential_engagement_id, bp_get_friends_slug());
+			}
 		}
 
 		/**

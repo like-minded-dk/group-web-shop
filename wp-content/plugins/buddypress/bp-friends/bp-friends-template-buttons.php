@@ -150,10 +150,10 @@ function friend_reciver_btn_args($friendship_status, $potential_friend_id, $frie
                 'wrapper_class'     => 'friendship-button not_friends',
                 'wrapper_id'        => 'friendship-button-' . $potential_friend_id,
                 'link_href'         => wp_nonce_url(
-                    bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'add-engagment', array( $potential_friend_id ) ) ) ),
-                    'engagements_add_engagement'
+                    bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'add-friend', array( $potential_friend_id ) ) ) ),
+                    'friends_add_friend'
                 ),
-                'link_text'         => __( "Resell Supplier", 'buddypress' ),
+                'link_text'         => __( "Resell Supplier1", 'buddypress' ),
                 'link_title'        => __( "Resell Supplier", 'buddypress' ),
                 'link_id'           => 'friend-' . $potential_friend_id,
                 'link_rel'          => 'add',
