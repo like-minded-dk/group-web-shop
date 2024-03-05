@@ -164,7 +164,8 @@ function bp_nouveau_ajax_addremove_engagement() {
 		}
 
 	// Trying to cancel engagementship.
-	} elseif (  in_array($check_is_engagement, ['exist_engagement', 'is_engagement']) ) {
+	} elseif (  in_array($check_is_engagement, ['exist_initiator_engagement', 'is_engagement']) ) {
+		// todo: $reversed = $check_is_engagement == 'is_engagement';
 		if ( ! engagements_remove_engagement( bp_loggedin_user_id(), $engagement_id ) ) {
 			$response['feedback'] = sprintf(
 				'<div class="bp-feedback error">%s</div>',
@@ -356,7 +357,7 @@ function bp_nouveau_ajax_addremove_friends_from_engagements() {
 		}
 
 	// Trying to request friendship.
-	} elseif ( 'not_friends' === $check_is_friend ) {
+	} elseif ( in_array($check_is_friend, ['not_friends', 'exist_initiator_friend'])) {
 		if ( ! friends_add_friend( bp_loggedin_user_id(), $friend_id ) ) {
 			$response['feedback'] = sprintf(
 				'<div class="bp-feedback error">%s</div>',

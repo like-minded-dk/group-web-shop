@@ -708,7 +708,17 @@ class BP_Friends_Friendship {
 			$initiator_user_id = (int) $friendship->initiator_user_id;
 			$friend_user_id    = (int) $friendship->friend_user_id;
 			if ( 1 === (int) $friendship->is_confirmed ) {
-				$status_initiator = $status_friend = 'is_friend';
+				error_log('>>bp_current_component -f');
+				error_log(bp_current_component());
+				error_log($initiator_user_id);
+				error_log($user_id);
+				if (bp_current_component() == 'friends' || bp_current_component() === 'members') {
+					error_log('is_friend');
+					$status_initiator = $status_friend = 'is_friend';
+				} else {
+					error_log('exist_initiator_friend');
+					$status_initiator = $status_friend = 'exist_initiator_friend';
+				}
 			} else {
 				$status_initiator = 'pending_friend';
 				$status_friend    = 'awaiting_response';

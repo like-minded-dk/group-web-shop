@@ -742,11 +742,18 @@ class BP_Engagements_Engagementship {
 			$initiator_user_id = (int) $engagementship->initiator_user_id;
 			$engagement_user_id    = (int) $engagementship->engagement_user_id;
 			if ( 1 === (int) $engagementship->is_confirmed) {
-				if ($initiator_user_id === $user_id && bp_current_component() === 'engagements') {
+				error_log('>>bp_current_component -e');
+				error_log(bp_current_component());
+				error_log($initiator_user_id);
+				error_log($user_id);
+				if (bp_current_component() === 'engagements' || bp_current_component() === 'members') {
+					error_log('is_engagement');
 					$status_initiator = $status_engagement = 'is_engagement';
 				} else {
-					$status_initiator = $status_engagement = 'exist_engagement';
+					error_log('exist_initiator_engagement');
+					$status_initiator = $status_engagement = 'exist_initiator_engagement';
 				}
+				$status_initiator = $status_engagement = 'exist_initiator_engagement';
 			} else {
 				$status_initiator = 'pending_engagement';
 				$status_engagement    = 'awaiting_response';

@@ -222,31 +222,49 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 		}
 
 		$engagementship_status = bp_is_engagement( $potential_engagement_id );
+		$friendship_status = bp_is_engagement( $potential_engagement_id );
 		$engagements_slug      = bp_get_engagements_slug();
 
 		if ( empty( $engagementship_status ) ) {
 			return $button_args;
 		}
 
-		$is_existed_in_another = is_initiator('friend') != -1;
-		if ($is_existed_in_another) {
-			error_log(11);
-			// check initiator , and change text, and create reverse link;
-			$is_init = is_initiator('friend');
-			if ($is_init) {
+		error_log('  >>>>>>>>>>>>e $is_initiator e');
+		$is_initiator = is_initiator('engagement');
+		error_log($is_initiator);
+		error_log('>>>> $bp_current_component -e');
+		error_log(bp_current_component());
+		// in engagement table
+		if (bp_current_component() === 'members') {
+			error_log('bp_current_component is engagement -e');
+			$button_args = engagement_initiator_btn_args($engagementship_status, $potential_engagement_id, $engagements_slug);
+		} elseif ($is_initiator != 0) {
+			if ($is_initiator == 1) {
+				error_log('initiator in engagement -e');
 				$button_args = engagement_initiator_btn_args($engagementship_status, $potential_engagement_id, $engagements_slug);
-			} else {
+			} elseif ($is_initiator == 3) {
+				error_log('receiver in engagement -e');
+				$button_args = engagement_reciver_btn_args($engagementship_status, $potential_engagement_id, bp_get_friends_slug());
+			} elseif ($is_initiator > 3) {
+				error_log('both in engagement -e');
 				$button_args = engagement_reciver_btn_args($engagementship_status, $potential_engagement_id, bp_get_friends_slug());
 			}
 		} else {
-			// check initiator, and change text
-			$is_init = is_initiator('engagement');
-			if ($is_init) {
-				$button_args = engagement_initiator_btn_args($engagementship_status, $potential_engagement_id, $engagements_slug);
-			} else {
+			$is_initiator = is_initiator('friend');
+			error_log('is_initiator f -e');
+			error_log($is_initiator);
+			if ($is_initiator == 1) {
+				error_log('initiator in friend -e');
+				$button_args = engagement_reciver_btn_args($engagementship_status, $potential_engagement_id, $engagements_slug);
+			} elseif ($is_initiator == 3) {
+				error_log('receiver in friend -e');
+				$button_args = engagement_reciver_btn_args($engagementship_status, $potential_engagement_id, bp_get_friends_slug());
+			} elseif ($is_initiator > 3) {
+				error_log('both in friend -e');
 				$button_args = engagement_reciver_btn_args($engagementship_status, $potential_engagement_id, bp_get_friends_slug());
 			}
 		}
+		error_log(' ---------e------');
 
 		/**
 		 * Filters the HTML for the add engagement button.

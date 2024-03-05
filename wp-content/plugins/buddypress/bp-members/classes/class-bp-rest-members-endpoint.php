@@ -561,7 +561,6 @@ class BP_REST_Members_Endpoint extends WP_REST_Users_Controller {
 						);
 						break;
 
-					case 'exist_friend':
 					case 'is_friend':
 						$links['bp-action-delete-friendship'] = $friends_action;
 						break;
