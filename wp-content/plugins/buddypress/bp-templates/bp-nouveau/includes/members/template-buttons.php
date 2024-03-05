@@ -1,37 +1,42 @@
 <?php
+// $state could be 0, 1, 3, 4
+// 0  = no record
+// 1  = initiator record only
+// 3  = reciver record only
+// 4  = both record
 function is_initiator($component = '') {
 	$user_id = bp_loggedin_user_id();
 	// $user_name = bp_get_user_firstname();
+
 	$member_id = bp_get_member_user_id();
 	if (empty($component)) {
 		$component = bp_current_component();
 	}
 	global $wpdb;
 	
+	$state = 0;
 	if ($component== 'friend') {
 		$relations1 = $wpdb->get_results( "SELECT * FROM wp_bp_friends WHERE friend_user_id = {$member_id} AND initiator_user_id = {$user_id}", OBJECT );
 		if (!empty($relations1)) {
-			return 1;
+			$state += 1;
 		} 
 		$relations2 = $wpdb->get_results( "SELECT * FROM wp_bp_friends WHERE friend_user_id = {$user_id} AND initiator_user_id = {$member_id}", OBJECT );
 		if (!empty($relations2)) {
-			return 0;
+			$state += 3;
 		}
-		return -1;
 	}
 
 	if ($component== 'engagement') {
 		$relations1 = $wpdb->get_results( "SELECT * FROM wp_bp_engagements WHERE engagement_user_id = {$member_id} AND initiator_user_id = {$user_id}", OBJECT );
 		if (!empty($relations1)) {
-			return 1;
+			$state += 1;
 		} 
 		$relations2 = $wpdb->get_results( "SELECT * FROM wp_bp_engagements WHERE engagement_user_id = {$user_id} AND initiator_user_id = {$member_id}", OBJECT );
 		if (!empty($relations2)) {
-			return 0;
+			$state += 3;
 		}
-		return -1;
 	}
-	return 0;
+	return $state;
 }
 
 function print_initiator($component = '') {

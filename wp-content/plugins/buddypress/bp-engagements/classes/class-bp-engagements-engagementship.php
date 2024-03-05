@@ -220,15 +220,14 @@ class BP_Engagements_Engagementship {
 				$this->is_limited,
 				$this->date_created,
 				$this->id ) );
-
 		// Save.
 		} else {
 			$result = $wpdb->query( $wpdb->prepare( <<<SQL
 			INSERT INTO {$bp->engagements->table_name} 
-				( initiator_user_id
-				engagement_user_id
-				is_confirmed
-				is_limited
+				( initiator_user_id,
+				engagement_user_id,
+				is_confirmed,
+				is_limited,
 				date_created ) 
 			VALUES ( %d, %d, %d, %d, %s )
 			SQL,
@@ -320,6 +319,8 @@ class BP_Engagements_Engagementship {
 		);
 
 		// First, we get all engagementships that involve the user.
+
+		
 		$engagementship_ids = wp_cache_get( $user_id, 'bp_engagements_engagementships_for_user' );
 		if ( false === $engagementship_ids ) {
 			$engagementship_ids = self::get_engagementship_ids_for_user( $user_id );
@@ -740,8 +741,12 @@ class BP_Engagements_Engagementship {
 		foreach ( $engagementships as $engagementship ) {
 			$initiator_user_id = (int) $engagementship->initiator_user_id;
 			$engagement_user_id    = (int) $engagementship->engagement_user_id;
-			if ( 1 === (int) $engagementship->is_confirmed ) {
-				$status_initiator = $status_engagement = 'is_engagement';
+			if ( 1 === (int) $engagementship->is_confirmed) {
+				if ($initiator_user_id === $user_id && bp_current_component() === 'engagements') {
+					$status_initiator = $status_engagement = 'is_engagement';
+				} else {
+					$status_initiator = $status_engagement = 'exist_engagement';
+				}
 			} else {
 				$status_initiator = 'pending_engagement';
 				$status_engagement    = 'awaiting_response';

@@ -83,6 +83,7 @@ function friend_initiator_btn_args($friendship_status, $potential_friend_id, $fr
 }
 
 function friend_reciver_btn_args($friendship_status, $potential_friend_id, $friends_slug) {
+    error_log($friendship_status);
     switch ( $friendship_status ) {
         case 'pending_friend':
             $button_args = array(
@@ -121,23 +122,23 @@ function friend_reciver_btn_args($friendship_status, $potential_friend_id, $frie
             );
             break;
 
-        case 'is_friend':
+        case 'is_engagement':
             $button_args = array(
-                'id'                => 'is_friend',
+                'id'                => 'is_engagement',
                 'component'         => 'friends',
                 'must_be_logged_in' => true,
                 'block_self'        => false,
-                'wrapper_class'     => 'friendship-button is_friend',
-                'wrapper_id'        => 'friendship-button-' . $potential_friend_id,
+                'wrapper_class'     => 'engagementship-button is_engagement',
+                'wrapper_id'        => 'engagementship-button-' . $potential_friend_id,
                 'link_href'         => wp_nonce_url(
-                    bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'remove-friend', array( $potential_friend_id ) ) ) ),
-                    'friends_remove_friend'
+                    bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'remove-engagement', array( $potential_friend_id ) ) ) ),
+                    'engagements_remove_engagement'
                 ),
-                'link_text'         => __( "Stop Resell Supplier", 'buddypress' ),
-                'link_title'        => __( "Stop Resell Supplier", 'buddypress' ),
-                'link_id'           => 'friend-' . $potential_friend_id,
+                'link_text'         => __( "Stop Supply Reseller", 'buddypress' ),
+                'link_title'        => __( "Stop Supply Reseller", 'buddypress' ),
+                'link_id'           => 'engagement-' . $potential_friend_id,
                 'link_rel'          => 'remove',
-                'link_class'        => 'friendship-button is_friend remove',
+                'link_class'        => 'engagementship-button is_engagement remove',
             );
             break;
 

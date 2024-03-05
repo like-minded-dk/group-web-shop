@@ -38,6 +38,7 @@ function engagement_initiator_btn_args($engagementship_status, $potential_engage
             );
             break;
 
+        case 'exist_engagement':
         case 'is_engagement':
             $button_args = array(
                 'id'                => 'is_engagement',
@@ -121,6 +122,7 @@ function engagement_reciver_btn_args($engagementship_status, $potential_engageme
             );
             break;
 
+        case 'exist_engagement':
         case 'is_engagement':
             $button_args = array(
                 'id'                => 'is_engagement',
