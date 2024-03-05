@@ -165,8 +165,28 @@ function bp_nouveau_ajax_addremove_engagement() {
 
 	// Trying to cancel engagementship.
 	} elseif (  in_array($check_is_engagement, ['exist_initiator_engagement', 'is_engagement']) ) {
-		// todo: $reversed = $check_is_engagement == 'is_engagement';
-		if ( ! engagements_remove_engagement( bp_loggedin_user_id(), $engagement_id ) ) {
+		// todo:
+		$is_reversed = bp_current_component() !== 'engagements';
+		$is_reverse = $check_is_engagement == 'exist_initiator_engagement';
+		error_log('');
+		error_log('is_reversed:'.$is_reversed);
+		error_log('is_reverse:'.$is_reverse);
+		error_log('check_is_engagement: '.$check_is_engagement);
+		error_log('>>>ajax -e');
+		error_log('bp_loggedin_user_id()'.bp_loggedin_user_id());
+		error_log('engagement_id:'.$engagement_id);
+		error_log('<<<ajax -e');
+		error_log('');
+		
+		if (!$is_reverse) {
+			$user1 = bp_loggedin_user_id() ;
+			$user2 = $engagement_id ;
+		} else {
+			$user1 = $engagement_id;
+			$user2 = bp_loggedin_user_id() ;
+		}
+
+		if ( ! engagements_remove_engagement( $user1, $user2 ) ) {
 			$response['feedback'] = sprintf(
 				'<div class="bp-feedback error">%s</div>',
 				esc_html__( 'engagementship could not be cancelled.', 'buddypress' )
@@ -255,7 +275,7 @@ function bp_nouveau_ajax_addremove_friends_from_engagements() {
 		$nonce = $_POST['_wpnonce'];
 		$check = $_POST['action'];
 	}
-	error_log($check);
+
 	// Nonce check!
 	if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, $check ) ) {
 		wp_send_json_error( $response );

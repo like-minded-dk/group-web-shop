@@ -521,11 +521,21 @@ class BP_Engagements_Engagementship {
 			'initiator_user_id' => $engagement_id,
 			'engagement_user_id'    => $engagement_id,
 		);
-
 		$result = self::get_engagementships( $user_id, $args, 'OR' );
+		error_log('---------->class e');
+		error_log('user_id:'.$user_id);
+		error_log('engagement_id:'.$engagement_id);
+		error_log(json_encode($result));
+		$result = array_filter($result, function($v, $k) use ($user_id) {
+			return $v->initiator_user_id == $user_id;
+		}, ARRAY_FILTER_USE_BOTH);
+		error_log(count($result));
 		if ( $result ) {
 			$engagementship_id = current( $result )->id;
 		}
+		error_log(json_encode($engagementship_id));
+		error_log('----------<class e');
+		// return;
 		return $engagementship_id;
 	}
 
@@ -742,18 +752,20 @@ class BP_Engagements_Engagementship {
 			$initiator_user_id = (int) $engagementship->initiator_user_id;
 			$engagement_user_id    = (int) $engagementship->engagement_user_id;
 			if ( 1 === (int) $engagementship->is_confirmed) {
-				error_log('>>bp_current_component -e');
+				error_log('');
+				error_log('>>class bp_current_component -e');
 				error_log(bp_current_component());
-				error_log($initiator_user_id);
-				error_log($user_id);
+				error_log('initiator_user_id:'.$initiator_user_id);
+				error_log('user_id:'.$user_id);
 				if (bp_current_component() === 'engagements' || bp_current_component() === 'members') {
-					error_log('is_engagement');
+					error_log('>>is_engagement');
 					$status_initiator = $status_engagement = 'is_engagement';
 				} else {
-					error_log('exist_initiator_engagement');
+					error_log('>>exist_initiator_engagement');
 					$status_initiator = $status_engagement = 'exist_initiator_engagement';
 				}
-				$status_initiator = $status_engagement = 'exist_initiator_engagement';
+				error_log('<<<class -e');
+				error_log('');
 			} else {
 				$status_initiator = 'pending_engagement';
 				$status_engagement    = 'awaiting_response';

@@ -229,11 +229,10 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 			return $button_args;
 		}
 
-		error_log('  >>>>>>>>>>>>e $is_initiator e');
 		$is_initiator = is_initiator('engagement');
-		error_log($is_initiator);
-		error_log('>>>> $bp_current_component -e');
-		error_log(bp_current_component());
+		error_log('');
+		error_log('>>>>e $is_initiator e: '.$is_initiator);
+		error_log('>>>> $bp_current_component -e: '.bp_current_component());
 		// in engagement table
 		if (bp_current_component() === 'members') {
 			error_log('bp_current_component is engagement -e');
@@ -244,15 +243,14 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 				$button_args = engagement_initiator_btn_args($engagementship_status, $potential_engagement_id, $engagements_slug);
 			} elseif ($is_initiator == 3) {
 				error_log('receiver in engagement -e');
-				$button_args = engagement_reciver_btn_args($engagementship_status, $potential_engagement_id, bp_get_friends_slug());
+				$button_args = engagement_initiator_btn_args($engagementship_status, $potential_engagement_id, bp_get_friends_slug());
 			} elseif ($is_initiator > 3) {
 				error_log('both in engagement -e');
-				$button_args = engagement_reciver_btn_args($engagementship_status, $potential_engagement_id, bp_get_friends_slug());
+				$button_args = engagement_initiator_btn_args($engagementship_status, $potential_engagement_id, bp_get_friends_slug());
 			}
 		} else {
 			$is_initiator = is_initiator('friend');
-			error_log('is_initiator f -e');
-			error_log($is_initiator);
+			error_log('is_initiator f -e: '.$is_initiator);
 			if ($is_initiator == 1) {
 				error_log('initiator in friend -e');
 				$button_args = engagement_reciver_btn_args($engagementship_status, $potential_engagement_id, $engagements_slug);
@@ -265,6 +263,7 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 			}
 		}
 		error_log(' ---------e------');
+		error_log('');
 
 		/**
 		 * Filters the HTML for the add engagement button.

@@ -126,23 +126,24 @@ function engagement_reciver_btn_args($engagementship_status, $potential_engageme
             );
             break;
 
-        case 'is_engagement':
+        case 'exist_initiator_engagement':
+        case 'is_friend':
             $button_args = array(
-                'id'                => 'is_engagement',
+                'id'                => 'is_friend',
                 'component'         => 'engagements',
                 'must_be_logged_in' => true,
                 'block_self'        => false,
-                'wrapper_class'     => 'engagementship-button is_engagement',
-                'wrapper_id'        => 'engagementship-button-' . $potential_engagement_id,
+                'wrapper_class'     => 'friendship-button is_friend',
+                'wrapper_id'        => 'friendship-button-' . $potential_engagement_id,
                 'link_href'         => wp_nonce_url(
-                    bp_loggedin_user_url( bp_members_get_path_chunks( array( $engagements_slug, 'remove-engagement', array( $potential_engagement_id ) ) ) ),
+                    bp_loggedin_user_url( bp_members_get_path_chunks( array( $engagements_slug, 'remove-friend', array( $potential_engagement_id ) ) ) ),
                     'engagements_remove_engagement'
                 ),
                 'link_text'         => __( "Stop Supply Reseller e-r", 'buddypress' ),
                 'link_title'        => __( "Stop Supply Reseller e-r", 'buddypress' ),
-                'link_id'           => 'engagement-' . $potential_engagement_id,
+                'link_id'           => 'friend-' . $potential_engagement_id,
                 'link_rel'          => 'remove',
-                'link_class'        => 'engagementship-button is_engagement remove',
+                'link_class'        => 'friendship-button is_engagement remove',
             );
             break;
 

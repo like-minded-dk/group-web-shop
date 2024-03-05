@@ -93,7 +93,6 @@ function bp_nouveau_ajax_addremove_friend() {
 		$nonce = $_POST['_wpnonce'];
 		$check = $_POST['action'];
 	}
-	error_log($check);
 	// Nonce check!
 	if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, $check ) ) {
 		wp_send_json_error( $response );
@@ -169,7 +168,26 @@ function bp_nouveau_ajax_addremove_friend() {
 
 	// Trying to cancel friendship.
 	} elseif ( in_array($check_is_friend, ['exist_initiator_friend', 'is_friend']) ) {
-		if ( ! friends_remove_friend( bp_loggedin_user_id(), $friend_id ) ) {
+		// todo:
+		$is_reversed = bp_current_component() !== 'friends';
+		$is_reverse = $check_is_friend == 'exist_initiator_friend';
+		
+		error_log('');
+		error_log('>>>ajax -f');
+		error_log('bp_loggedin_user_id():'.bp_loggedin_user_id());
+		error_log('$friend_id:'.$friend_id);
+		error_log('<<<ajax -f');
+		
+		if (!$is_reverse) {
+			$user1 = bp_loggedin_user_id() ;
+			$user2 = $friend_id ;
+		} else {
+			$user1 = $friend_id;
+			$user2 = bp_loggedin_user_id() ;
+		}
+
+		//return;
+		if ( ! friends_remove_friend( $user1, $user2 ) ) {
 			$response['feedback'] = sprintf(
 				'<div class="bp-feedback error">%s</div>',
 				esc_html__( 'Friendship could not be cancelled.', 'buddypress' )
@@ -329,7 +347,15 @@ function bp_nouveau_ajax_addremove_engagements_from_friends() {
 		}
 
 	// Trying to cancel engagementship.
-	} elseif ( 'is_engagement' === $check_is_engagement ) {
+	} elseif (  in_array($check_is_engagement, ['exist_initiator_engagement', 'is_engagement']) ) {
+		error_log('>>>cancle engagement -e ajax');
+		error_log('');
+		error_log('>>>ajax -f remove engagement_id');
+		error_log('bp_loggedin_user_id():'.bp_loggedin_user_id());
+		error_log('$friend_id:'.$engagement_id);
+		error_log('<<<ajax -f remove engagement_id');
+		error_log('');
+
 		if ( ! engagements_remove_engagement( bp_loggedin_user_id(), $engagement_id ) ) {
 			$response['feedback'] = sprintf(
 				'<div class="bp-feedback error">%s</div>',

@@ -30,7 +30,7 @@ defined( 'ABSPATH' ) || exit;
  *                               engagementship, with no notifications being sent. Default: false.
  * @return bool True on success, false on failure.
  */
-function engagements_add_engagement( $initiator_userid, $engagement_userid, $force_accept = false ) {
+function engagements_add_engagement( $initiator_userid, $engagement_userid, $force_accept = false, $exist = false ) {
 
 	// You cannot be engagements with yourself!
 	if ( $initiator_userid === $engagement_userid ) {
@@ -57,7 +57,7 @@ function engagements_add_engagement( $initiator_userid, $engagement_userid, $for
 	// Bail if engagementship could not be saved (how sad!).
 	if ( ! $engagementship->save() ) {
 		return false;
-	}
+	}	
 
 	// Send notifications.
 	if ( empty( $force_accept ) ) {
@@ -98,7 +98,7 @@ function engagements_add_engagement( $initiator_userid, $engagement_userid, $for
  * @param int $engagement_userid    ID of the engagement user.
  * @return bool True on success, false on failure.
  */
-function engagements_remove_engagement( $initiator_userid, $engagement_userid, $reversed = false ) {
+function engagements_remove_engagement( $initiator_userid, $engagement_userid ) {
 
 	$engagementship_id = BP_Engagements_Engagementship::get_engagementship_id( $initiator_userid, $engagement_userid );
 	$engagementship    = new BP_Engagements_Engagementship( $engagementship_id );
@@ -127,19 +127,9 @@ function engagements_remove_engagement( $initiator_userid, $engagement_userid, $
 	 * @param int $initiator_userid ID of the engagementship initiator.
 	 * @param int $engagement_userid    ID of the engagement user.
 	 */
-	do_action( 'engagements_engagementship_deleted', $engagementship_id, $initiator_userid, $engagement_userid, $reversed = false );
-	
-	$reversed_check = $reversed && $engagementship->engagement_user_id === $initiator_userid;
+	do_action( 'engagements_engagementship_deleted', $engagementship_id, $initiator_userid, $engagement_userid );
 
-	error_log('$reversed_check');
-	error_log($reversed_check);
-	$initial_check = !$reversed && $engagementship->initiator_user_id === $initiator_userid;
-
-	error_log('$initial_check');
-	error_log($initial_check);
-	error_log($initiator_userid);
-
-	if ( ($reversed_check || $initial_check)  && $engagementship->delete() ) {
+	if ( $engagementship->delete() ) {
 		engagements_update_engagement_totals( $initiator_userid, $engagement_userid, 'remove' );
 
 		/**

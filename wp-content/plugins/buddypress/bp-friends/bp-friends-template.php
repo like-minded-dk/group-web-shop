@@ -229,11 +229,10 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 			return $button_args;
 		}
 
-		error_log('  >>>>>>>>>>>>f $is_initiator f');
 		$is_initiator = is_initiator('friend');
-		error_log($is_initiator);
-		error_log('>>>>  $bp_current_component -f');
-		error_log(bp_current_component());
+		error_log('');
+		error_log('>>>>f $is_initiator f:'.$is_initiator);
+		error_log('>>>>  $bp_current_component -f: '. bp_current_component());
 		// in friend table
 		if (bp_current_component() === 'members') {
 			error_log('--------------------');
@@ -255,8 +254,7 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 			}
 		} else {
 			$is_initiator = is_initiator('engagement');
-			error_log('is_initiator e -f');
-			error_log($is_initiator);
+			error_log('is_initiator e -f:'.$is_initiator);
 			// initiator in engagement
 			if ($is_initiator == 1) {
 				error_log('initiator in engagement -f');
@@ -271,7 +269,7 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 			}
 		}
 		error_log(' ---------f------');
-		
+		error_log('');
 
 
 		/**

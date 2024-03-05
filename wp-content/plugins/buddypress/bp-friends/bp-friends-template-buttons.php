@@ -126,6 +126,7 @@ function friend_reciver_btn_args($friendship_status, $potential_friend_id, $frie
             );
             break;
 
+        case 'exist_initiator_friend':
         case 'is_engagement':
             $button_args = array(
                 'id'                => 'is_engagement',
