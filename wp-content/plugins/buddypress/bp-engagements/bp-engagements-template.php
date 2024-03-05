@@ -243,7 +243,7 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 				$button_args = engagement_initiator_btn_args($engagementship_status, $potential_engagement_id, $engagements_slug);
 			} elseif ($is_initiator == 3) {
 				error_log('receiver in engagement -e');
-				$button_args = engagement_initiator_btn_args($engagementship_status, $potential_engagement_id, bp_get_friends_slug());
+				$button_args = engagement_reciver_btn_args($engagementship_status, $potential_engagement_id, bp_get_friends_slug());
 			} elseif ($is_initiator > 3) {
 				error_log('both in engagement -e');
 				$button_args = engagement_initiator_btn_args($engagementship_status, $potential_engagement_id, bp_get_friends_slug());
