@@ -688,6 +688,7 @@ window.bp = window.bp || {};
 			// Unfortunately unlike groups
 			// Friends actions does not match the wpnonce
 			var friends_actions_map = {
+				remove_engagements_from_friends: 'remove_engagements_from_friends',
 				not_engagements_from_friends: 'not_engagements_from_friends',
 				is_friend         : 'remove_friend',
 				not_friends       : 'add_friend',
@@ -697,6 +698,7 @@ window.bp = window.bp || {};
 			};
 
 			var engagements_actions_map = {
+				remove_friends_from_engagements: 'remove_friends_from_engagements',
 				not_friends_from_engagements: 'not_friends_from_engagements',
 				is_engagement         : 'remove_engagement',
 				not_engagements       : 'add_engagement',

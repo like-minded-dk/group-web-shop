@@ -30,6 +30,12 @@ add_action( 'admin_init', function() {
 			),
 		),
 		array(
+			'friends_remove_engagements_from_friends' => array(
+				'function' => 'bp_nouveau_ajax_addremove_engagements_from_friends',
+				'nopriv'   => false,
+			),
+		),
+		array(
 			'friends_withdraw_friendship' => array(
 				'function' => 'bp_nouveau_ajax_addremove_friend',
 				'nopriv'   => false,
@@ -434,7 +440,7 @@ function bp_nouveau_ajax_addremove_engagements_from_friends() {
 	// Trying to request engagementship in existed button.
 	} elseif ( 'exist_initiator_engagement' === $check_is_engagement ) {
 		error_log('>>exist_initiator_engagement -f 434: '. bp_loggedin_user_id() . ' - ' . $engagement_id);
-		if ( ! engagements_add_engagement( $engagement_id, bp_loggedin_user_id() ) ) {
+		if ( ! engagements_add_engagement( bp_loggedin_user_id(), $engagement_id ) ) {
 			$response['feedback'] = sprintf(
 				'<div class="bp-feedback error">%s</div>',
 				esc_html__( 'engagementship could not be requested exist_initiator_engagement -429.', 'buddypress' )
