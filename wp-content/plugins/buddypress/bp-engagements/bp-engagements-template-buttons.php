@@ -61,6 +61,27 @@ function engagement_initiator_btn_args($engagementship_status, $potential_engage
             );
             break;
 
+        case 'exist_more_friends':
+            error_log(json_encode('>>default f-i'));
+            $button_args = array(
+                'id'                => 'is_engagement',
+                'component'         => 'engagements',
+                'must_be_logged_in' => true,
+                'block_self'        => false,
+                'wrapper_class'     => 'engagementship-button is_engagement',
+                'wrapper_id'        => 'engagementship-button-' . $potential_engagement_id,
+                'link_href'         => wp_nonce_url(
+                    bp_loggedin_user_url( bp_members_get_path_chunks( array( $engagements_slug, 'remove-engagement', array( $potential_engagement_id ) ) ) ),
+                    'engagements_remove_friends_from_engagements'
+                ),
+                'link_text'         => __( "Stop Supply Reseller f-i", 'buddypress' ),
+                'link_title'        => __( "Stop Supply Reseller f-i", 'buddypress' ),
+                'link_id'           => 'engagement-' . $potential_engagement_id,
+                'link_rel'          => 'remove',
+                'link_class'        => 'engagementship-button remove_friends_from_engagements remove',
+            );
+            break;
+    
         default:
             error_log(json_encode('>>default e-i'));
             $button_args = array(
@@ -128,6 +149,7 @@ function engagement_reciver_btn_args($engagementship_status, $potential_engageme
             break;
 
         case 'exist_initiator_engagement':
+        case 'exist_initiator_friend':
         case 'is_engagement':
             $button_args = array(
                 'id'                => 'is_friend',
@@ -160,8 +182,8 @@ function engagement_reciver_btn_args($engagementship_status, $potential_engageme
                     bp_loggedin_user_url( bp_members_get_path_chunks( array( $engagements_slug, 'remove-engagement', array( $potential_engagement_id ) ) ) ),
                     'friends_remove_friends_from_engagements'
                 ),
-                'link_text'         => __( "Stop Resell Supplier f-r", 'buddypress' ),
-                'link_title'        => __( "Stop Resell Supplier f-r", 'buddypress' ),
+                'link_text'         => __( "Stop Resell Supplier e-r", 'buddypress' ),
+                'link_title'        => __( "Stop Resell Supplier e-r", 'buddypress' ),
                 'link_id'           => 'engagement-' . $potential_engagement_id,
                 'link_rel'          => 'remove',
                 'link_class'        => 'engagementship-button remove_friends_from_engagements remove',

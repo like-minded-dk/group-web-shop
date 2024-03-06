@@ -494,7 +494,6 @@ class BP_Friends_Friendship {
 		error_log('---------->class f');
 		error_log('user_id:'.$user_id);
 		error_log('friend_id:'.$friend_id);
-		error_log(json_encode($result));
 		$result = array_filter($result, function($v, $k) use ($user_id) {
 			return $v->initiator_user_id == $user_id;
 		}, ARRAY_FILTER_USE_BOTH);
@@ -709,16 +708,24 @@ class BP_Friends_Friendship {
 		}
 
 		$friend_ids_sql = implode( ',', array_unique( $fetch ) );
-		$sql = $wpdb->prepare( "SELECT initiator_user_id, friend_user_id, is_confirmed FROM {$bp->friends->table_name} WHERE (initiator_user_id = %d AND friend_user_id IN ({$friend_ids_sql}) ) OR (initiator_user_id IN ({$friend_ids_sql}) AND friend_user_id = %d )", $user_id, $user_id );
+		$sql = $wpdb->prepare(<<<SQL
+			SELECT initiator_user_id, friend_user_id, is_confirmed 
+			FROM {$bp->friends->table_name} 
+			WHERE (initiator_user_id = %d 
+			AND friend_user_id IN ({$friend_ids_sql}) ) 
+			OR (initiator_user_id IN ({$friend_ids_sql}) 
+			AND friend_user_id = %d )
+		SQL,
+		$user_id, $user_id );
 		$friendships = $wpdb->get_results( $sql );
-		error_log('$sql'.json_encode($sql));
+		error_log('class f 714 $sql'.json_encode($sql));
 		// Use $handled to keep track of all of the $possible_friend_ids we've matched.
 		$handled = array();
 		foreach ( $friendships as $friendship ) {
 			$initiator_user_id = (int) $friendship->initiator_user_id;
 			$friend_user_id    = (int) $friendship->friend_user_id;
 			if ( 1 === (int) $friendship->is_confirmed ) {
-				error_log('>>class bp_current_component -f');
+				error_log('>>class bp_current_component -f 721');
 				error_log(bp_current_component());
 				error_log($initiator_user_id);
 				error_log($user_id);

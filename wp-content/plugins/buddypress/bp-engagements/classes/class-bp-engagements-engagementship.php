@@ -525,7 +525,6 @@ class BP_Engagements_Engagementship {
 		error_log('---------->class e');
 		error_log('user_id:'.$user_id);
 		error_log('engagement_id:'.$engagement_id);
-		error_log(json_encode($result));
 		$result = array_filter($result, function($v, $k) use ($user_id) {
 			return $v->initiator_user_id == $user_id;
 		}, ARRAY_FILTER_USE_BOTH);
@@ -757,7 +756,7 @@ class BP_Engagements_Engagementship {
 				error_log(bp_current_component());
 				error_log('initiator_user_id:'.$initiator_user_id);
 				error_log('user_id:'.$user_id);
-				if ($initiator_user_id === $user_id || bp_current_component() === 'members') {
+				if (($initiator_user_id === $user_id && count($engagementships) == 1 )|| bp_current_component() === 'members') {
 					error_log('>>is_engagement');
 					$status_initiator = $status_engagement = 'is_engagement';
 				} elseif ($engagement_user_id === $user_id && count($engagementships) == 1) {

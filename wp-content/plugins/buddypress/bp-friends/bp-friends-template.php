@@ -229,62 +229,51 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 			return $button_args;
 		}
 
+		$user_id = bp_loggedin_user_id();
+		$friendship_id = BP_Friends_Friendship::get_friendship_id($user_id, $potential_friend_id);
+		$engagementship_id = BP_Engagements_Engagementship::get_engagementship_id($user_id, $potential_friend_id);
+
+		// if (!empty($friendship_id)) {
+		// 	error_log('>>got friendship_id: '.$friendship_id);
+		// 	$relation = BP_Friends_Friendship::get_friendships_by_id($friendship_id)[0];
+		// }
+		// if (!empty($engagementship_id)) {
+		// 	error_log('>>got engagementship_id: '.$engagementship_id);
+		// 	$relation = BP_Engagements_Engagementship::get_engagementships_by_id($engagementship_id)[0];
+		// }
+		// error_log(json_encode($relation));
+		// $is_reversed = $relation->initiator_user_id != $user_id;
+
 		$is_initiator_f = is_initiator('friend');
 		$is_initiator_e = is_initiator('engagement');
 		$is_reversed = strpos($friendship_status, 'exist') !==false || strpos($engagementship_status, 'exist') !== false;
 		error_log('');
-		error_log('>>>>>>>e $is_initiator_e f: '.$is_initiator_e);
-		error_log('=========$is_initiator_f f: '.$is_initiator_f);
+		error_log('>>>>>>e $is_initiator_e f: '.$is_initiator_e);
+		error_log('========$is_initiator_f f: '.$is_initiator_f);
 		error_log('======friendship_status f: '.$friendship_status);
 		error_log('==engagementship_status f: '.$engagementship_status);
 		error_log('===$potential_friend_id f: '.$potential_friend_id);
 		error_log('==========$friends_slug f: '.$friends_slug);
+		// error_log('=====$initiator_user_id f: '.$relation->initiator_user_id);
+		error_log('===============$user_id f: '.$user_id);
 		error_log('===========$is_reversed f: '.$is_reversed);
 		error_log('==$bp_current_component f: '.bp_current_component());
 		if ($is_reversed) {
-			$button_args = friend_reciver_btn_args($engagementship_status, $potential_friend_id, $friends_slug);
+			// if ( $friendship_status === 'not_friends' && strpos($engagementship_status, 'exist') !== false ) {
+			// 	$button_args = friend_reciver_btn_args('is_friend', $potential_friend_id, $friends_slug);	
+			// } else {
+				$button_args = friend_reciver_btn_args($friendship_status, $potential_friend_id, $friends_slug);
+			// }
 		} else {
-			$button_args = friend_initiator_btn_args($friendship_status, $potential_friend_id, $friends_slug);
+			// if ($friendship_status === 'not_friends' && strpos($engagementship_status, 'exist') !== false) {
+			// 	error_log(json_encode('----f----!!!!!!!!!'));
+			// 	$button_args = friend_initiator_btn_args('exist_more_engagements', $potential_friend_id, $friends_slug);
+			// } else {
+				error_log(json_encode('-----f---?????????????'));
+				$button_args = friend_initiator_btn_args($friendship_status, $potential_friend_id, $friends_slug);
+			// }
 		}
-		// // in friend table
-		// if (bp_current_component() === 'members' || $is_reversed || ($is_initiator_f ==0 && $is_initiator_e == 0)) {
-		// 	error_log('--------------------');
-		// 	error_log('bp_current_component is friend -f');
-		// 	$button_args = friend_initiator_btn_args($friendship_status, $potential_friend_id, $friends_slug);
-		// } elseif ($is_initiator_f != 0) {
-		// 	// initiator in friend
-		// 	error_log('is_initiator f -f:'.$is_initiator_f);
-		// 	if ($is_initiator_f == 1) {
-		// 		error_log('initiator in friend -f');
-		// 		$button_args = friend_initiator_btn_args($friendship_status, $potential_friend_id, $friends_slug);
-		// 	// receiver in friend
-		// 	} elseif ($is_initiator_f == 3) {
-		// 		error_log('reciver in friend -f');
-		// 		$button_args = friend_reciver_btn_args($friendship_status, $potential_friend_id, bp_get_engagements_slug());
-		// 	// both in friend
-		// 	} elseif ($is_initiator_f > 3) {
-		// 		error_log('both in friend -f');
-		// 		$button_args = friend_initiator_btn_args($friendship_status, $potential_friend_id, bp_get_engagements_slug());
-		// 	}
-		// } elseif ($is_initiator_e != 0) {
-		// 	error_log('is_initiator e -f:'.$is_initiator_e);
-		// 	// initiator in engagement
-		// 	if ($is_initiator_e == 1) {
-		// 		error_log('initiator in engagement -f');
-		// 		$button_args = friend_reciver_btn_args($friendship_status, $potential_friend_id, $friends_slug);
-		// 	// receiver in engagement
-		// 	} elseif ($is_initiator_e == 3) {
-		// 		error_log('receiver in engagement -f');
-		// 		$button_args = friend_reciver_btn_args($friendship_status, $potential_friend_id, bp_get_engagements_slug());
-		// 	} elseif ($is_initiator_e > 3) {
-		// 		error_log('both in engagement -f');
-		// 		$button_args = friend_reciver_btn_args($friendship_status, $potential_friend_id, bp_get_engagements_slug());
-		// 	}
-		// } else {
-		// 	error_log('is_initiator f e 0 -f');
-		// 	$button_args = friend_initiator_btn_args($friendship_status, $potential_friend_id, $friends_slug);
-		// }
-		error_log(' ---------f------');
+		error_log('<<<<<<<<-f------');
 		error_log('');
 
 
