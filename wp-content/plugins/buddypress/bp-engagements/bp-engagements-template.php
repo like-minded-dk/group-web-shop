@@ -275,7 +275,7 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 			// }
 		}
 		
-		error_log('<<<<<<<<-e------');
+		error_log('<<<<<<<<-e');
 		error_log('');
 
 		/**

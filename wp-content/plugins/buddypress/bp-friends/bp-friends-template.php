@@ -273,7 +273,7 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 				$button_args = friend_initiator_btn_args($friendship_status, $potential_friend_id, $friends_slug);
 			// }
 		}
-		error_log('<<<<<<<<-f------');
+		error_log('<<<<<<<<-f');
 		error_log('');
 
 

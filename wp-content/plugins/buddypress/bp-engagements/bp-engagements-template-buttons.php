@@ -1,5 +1,6 @@
 <?php
 function engagement_initiator_btn_args($engagementship_status, $potential_engagement_id, $engagements_slug) {
+    error_log('');
     error_log('status e-i');
     error_log($engagementship_status);
     switch ( $engagementship_status ) {
@@ -108,6 +109,7 @@ function engagement_initiator_btn_args($engagementship_status, $potential_engage
 }
 
 function engagement_reciver_btn_args($engagementship_status, $potential_engagement_id, $engagements_slug) {
+    error_log('');
     error_log('status e-r');
     error_log($engagementship_status);
     switch ( $engagementship_status ) {

@@ -492,17 +492,17 @@ class BP_Friends_Friendship {
 		);
 		$result = self::get_friendships( $user_id, $args, 'OR' );
 		error_log('---------->class f');
-		error_log('user_id:'.$user_id);
-		error_log('friend_id:'.$friend_id);
+		// error_log('user_id:'.$user_id);
+		// error_log('friend_id:'.$friend_id);
 		$result = array_filter($result, function($v, $k) use ($user_id) {
 			return $v->initiator_user_id == $user_id;
 		}, ARRAY_FILTER_USE_BOTH);
-		error_log(count($result));
+		//error_log(count($result));
 		if ( $result ) {
 			$friendship_id = current( $result )->id;
 		}
-		error_log(json_encode($friendship_id));
-		error_log('----------<class f');
+		//error_log(json_encode($friendship_id));
+		//error_log('----------<class f');
 		// return;
 		return $friendship_id;
 	}
@@ -725,22 +725,22 @@ class BP_Friends_Friendship {
 			$initiator_user_id = (int) $friendship->initiator_user_id;
 			$friend_user_id    = (int) $friendship->friend_user_id;
 			if ( 1 === (int) $friendship->is_confirmed ) {
-				error_log('>>class bp_current_component -f 721');
-				error_log(bp_current_component());
-				error_log($initiator_user_id);
-				error_log($user_id);
+				// error_log('>>class bp_current_component -f 721');
+				// error_log(bp_current_component());
+				// error_log($initiator_user_id);
+				// error_log($user_id);
 				if ($initiator_user_id === $user_id || bp_current_component() === 'members') {
 				// if (bp_current_component() == 'friends' || bp_current_component() === 'members') {
-					error_log('is_friend');
+					// error_log('is_friend');
 					$status_initiator = $status_friend = 'is_friend';
 				} elseif ($friend_user_id === $user_id && count($friendships) == 1) {
-					error_log('>>exist_initiator_friend');
+					// error_log('>>exist_initiator_friend');
 					$status_initiator = $status_friend = 'exist_initiator_friend';
 				} else {
-					error_log('>>exist_more_friends : '. count($friendships) );
+					// error_log('>>exist_more_friends : '. count($friendships) );
 					$status_initiator = $status_friend = 'exist_more_friends';
 				}
-				error_log('<<<class -f');
+				// error_log('<<<class -f');
 			} else {
 				$status_initiator = 'pending_friend';
 				$status_friend    = 'awaiting_response';

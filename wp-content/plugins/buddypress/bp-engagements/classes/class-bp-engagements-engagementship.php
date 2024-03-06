@@ -522,18 +522,18 @@ class BP_Engagements_Engagementship {
 			'engagement_user_id'    => $engagement_id,
 		);
 		$result = self::get_engagementships( $user_id, $args, 'OR' );
-		error_log('---------->class e');
-		error_log('user_id:'.$user_id);
-		error_log('engagement_id:'.$engagement_id);
+		error_log('---------->class e get_engagementship_id');
+		// error_log('user_id:'.$user_id);
+		// error_log('engagement_id:'.$engagement_id);
 		$result = array_filter($result, function($v, $k) use ($user_id) {
 			return $v->initiator_user_id == $user_id;
 		}, ARRAY_FILTER_USE_BOTH);
-		error_log(count($result));
+		// error_log(count($result));
 		if ( $result ) {
 			$engagementship_id = current( $result )->id;
 		}
-		error_log(json_encode($engagementship_id));
-		error_log('----------<class e');
+		// error_log(json_encode($engagementship_id));
+		// error_log('----------<class e');
 		// return;
 		return $engagementship_id;
 	}
@@ -744,29 +744,29 @@ class BP_Engagements_Engagementship {
 				OR (initiator_user_id IN ({$engagement_ids_sql}) AND engagement_user_id = %d )
 		SQL, $user_id, $user_id );
 		$engagementships = $wpdb->get_results( $sql );
-
+		error_log('class e 717 $sql'.json_encode($sql));
 		// Use $handled to keep track of all of the $possible_engagement_ids we've matched.
 		$handled = array();
 		foreach ( $engagementships as $engagementship ) {
 			$initiator_user_id = (int) $engagementship->initiator_user_id;
 			$engagement_user_id    = (int) $engagementship->engagement_user_id;
 			if ( 1 === (int) $engagementship->is_confirmed) {
-				error_log('');
-				error_log('>>class bp_current_component -e 756');
-				error_log(bp_current_component());
-				error_log('initiator_user_id:'.$initiator_user_id);
-				error_log('user_id:'.$user_id);
+				//error_log('');
+				//error_log('>>class bp_current_component -e 756');
+				// error_log(bp_current_component());
+				// error_log('initiator_user_id:'.$initiator_user_id);
+				// error_log('user_id:'.$user_id);
 				if (($initiator_user_id === $user_id && count($engagementships) == 1 )|| bp_current_component() === 'members') {
-					error_log('>>is_engagement');
+					// error_log('>>is_engagement');
 					$status_initiator = $status_engagement = 'is_engagement';
 				} elseif ($engagement_user_id === $user_id && count($engagementships) == 1) {
-					error_log('>>exist_initiator_engagement');
+					// error_log('>>exist_initiator_engagement');
 					$status_initiator = $status_engagement = 'exist_initiator_engagement';
 				} else {
-					error_log('>>exist_more_engagements : '. count($engagementships) );
+					// error_log('>>exist_more_engagements : '. count($engagementships) );
 					$status_initiator = $status_engagement = 'exist_more_engagements';
 				}
-				error_log('<<<class -e');
+				// error_log('<<<class -e');
 				error_log('');
 			} else {
 				$status_initiator = 'pending_engagement';
