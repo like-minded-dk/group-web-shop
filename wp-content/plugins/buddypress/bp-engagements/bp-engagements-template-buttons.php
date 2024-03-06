@@ -127,7 +127,7 @@ function engagement_reciver_btn_args($engagementship_status, $potential_engageme
             break;
 
         case 'exist_initiator_engagement':
-        case 'is_friend':
+        case 'is_engagement':
             $button_args = array(
                 'id'                => 'is_friend',
                 'component'         => 'engagements',
