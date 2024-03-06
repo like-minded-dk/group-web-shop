@@ -726,9 +726,12 @@ class BP_Friends_Friendship {
 				// if (bp_current_component() == 'friends' || bp_current_component() === 'members') {
 					error_log('is_friend');
 					$status_initiator = $status_friend = 'is_friend';
-				} else {
-					error_log('exist_initiator_friend');
+				} elseif ($friend_user_id === $user_id && count($friendships) == 1) {
+					error_log('>>exist_initiator_friend');
 					$status_initiator = $status_friend = 'exist_initiator_friend';
+				} else {
+					error_log('>>exist_more_friends : '. count($friendships) );
+					$status_initiator = $status_friend = 'exist_more_friends';
 				}
 				error_log('<<<class -f');
 			} else {
