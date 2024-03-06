@@ -169,28 +169,31 @@ function bp_nouveau_ajax_addremove_friend() {
 	// Trying to cancel friendship.
 	} elseif ( in_array($check_is_friend, ['exist_initiator_friend', 'is_friend']) ) {
 		// todo:
-		$is_reversed = bp_current_component() !== 'friends';
-		$is_reverse = $check_is_friend == 'exist_initiator_friend';
-		
+		$is_reversed = $check_is_friend == 'exist_initiator_friend';
 		error_log('');
 		error_log('>>>ajax -f');
-		error_log('bp_loggedin_user_id():'.bp_loggedin_user_id());
-		error_log('$friend_id:'.$friend_id);
+		error_log('bp_loggedin_user_id(): '.bp_loggedin_user_id());
+		error_log('$friend_id: '.$friend_id);
+		error_log('$is_reverse: '.$is_reversed);
+		error_log('$check_is_friend: '.$check_is_friend);
+		error_log('$bp_current_component: '.bp_current_component());
 		error_log('<<<ajax -f');
 		
-		if (!$is_reverse) {
+		if (!$is_reversed) {
 			$user1 = bp_loggedin_user_id() ;
 			$user2 = $friend_id ;
 		} else {
 			$user1 = $friend_id;
 			$user2 = bp_loggedin_user_id() ;
 		}
+		// $user1 = bp_loggedin_user_id() ;
+		// $user2 = $friend_id ;
 
 		//return;
 		if ( ! friends_remove_friend( $user1, $user2 ) ) {
 			$response['feedback'] = sprintf(
 				'<div class="bp-feedback error">%s</div>',
-				esc_html__( 'Friendship could not be cancelled.', 'buddypress' )
+				esc_html__( 'Friendship could not be cancelled. (in_array -e)', 'buddypress' )
 			);
 
 			wp_send_json_error( $response );
@@ -359,7 +362,7 @@ function bp_nouveau_ajax_addremove_engagements_from_friends() {
 		if ( ! engagements_remove_engagement( bp_loggedin_user_id(), $engagement_id ) ) {
 			$response['feedback'] = sprintf(
 				'<div class="bp-feedback error">%s</div>',
-				esc_html__( 'engagementship could not be cancelled.', 'buddypress' )
+				esc_html__( 'engagementship could not be cancelled 327 -f.', 'buddypress' )
 			);
 
 			wp_send_json_error( $response );

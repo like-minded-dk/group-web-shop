@@ -235,7 +235,7 @@ class BP_Friends_Friendship {
 		global $wpdb;
 
 		$bp = buddypress();
-
+		return;
 		return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->friends->table_name} WHERE id = %d", $this->id ) );
 	}
 
@@ -722,7 +722,8 @@ class BP_Friends_Friendship {
 				error_log(bp_current_component());
 				error_log($initiator_user_id);
 				error_log($user_id);
-				if (bp_current_component() == 'friends' || bp_current_component() === 'members') {
+				if ($initiator_user_id === $user_id || bp_current_component() === 'members') {
+				// if (bp_current_component() == 'friends' || bp_current_component() === 'members') {
 					error_log('is_friend');
 					$status_initiator = $status_friend = 'is_friend';
 				} else {

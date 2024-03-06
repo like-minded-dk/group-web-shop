@@ -264,7 +264,7 @@ class BP_Engagements_Engagementship {
 		global $wpdb;
 
 		$bp = buddypress();
-
+		return;
 		return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->engagements->table_name} WHERE id = %d", $this->id ) );
 	}
 
@@ -757,7 +757,7 @@ class BP_Engagements_Engagementship {
 				error_log(bp_current_component());
 				error_log('initiator_user_id:'.$initiator_user_id);
 				error_log('user_id:'.$user_id);
-				if (bp_current_component() === 'engagements' || bp_current_component() === 'members') {
+				if ($initiator_user_id === $user_id || bp_current_component() === 'members') {
 					error_log('>>is_engagement');
 					$status_initiator = $status_engagement = 'is_engagement';
 				} else {
