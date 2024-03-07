@@ -443,7 +443,7 @@ function bp_has_members( $args = '' ) {
 	if ( !empty( $r['max'] ) && ( $r['per_page'] > $r['max'] ) ) {
 		$r['per_page'] = $r['max'];
 	}
-	error_log('aaaaaaaaaaa'.json_encode($r));
+
 	// Query for members and populate $members_template global.
 	$members_template = new BP_Core_Members_Template( $r );
 

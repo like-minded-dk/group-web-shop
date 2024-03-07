@@ -150,6 +150,7 @@ function friend_reciver_btn_args($friendship_status, $potential_friend_id, $frie
             );
             break;
 
+        case 'remove_initiator_friend':
         case 'exist_initiator_friend':
         case 'is_friend':
             $button_args = array(

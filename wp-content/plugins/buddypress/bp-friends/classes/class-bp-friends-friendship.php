@@ -447,7 +447,7 @@ class BP_Friends_Friendship {
 				);
 			}
 		}
-		error_log('bbbbbbbb '.json_encode($args));
+
 		$friendships = self::get_friendships( $user_id, $args );
 		$user_id     = (int) $user_id;
 

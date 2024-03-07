@@ -150,7 +150,7 @@ function engagement_reciver_btn_args($engagementship_status, $potential_engageme
             );
             break;
 
-        case 'exist_initiator_engagement':
+        case 'remove_initiator_engagement':
         case 'exist_initiator_friend':
         case 'is_engagement':
             $button_args = array(
@@ -192,6 +192,7 @@ function engagement_reciver_btn_args($engagementship_status, $potential_engageme
             );
             break;
             
+        case 'exist_initiator_engagement':
         default:
             error_log(json_encode('>>default e-r'));
             $button_args = array(

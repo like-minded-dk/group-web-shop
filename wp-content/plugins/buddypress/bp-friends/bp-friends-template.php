@@ -269,21 +269,21 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 		
 		if (false) {
 			return;
+		// both relations are initiator
+		} elseif ($is_initiator_e === 1 && $is_initiator_f == 1) {
+			$button_args = friend_initiator_btn_args('is_friend', $potential_friend_id, $friends_slug);
+		// both relations are reciver
+		} elseif ($is_initiator_e === 3 && $is_initiator_f == 3) {
+			$button_args = friend_reciver_btn_args('remove_initiator_friend', $potential_friend_id, $friends_slug);
 		} elseif ($status === 'exist_more_friends') {
-			$button_args = engagement_initiator_btn_args('is_friend', $engagementship_status, $friends_slug);
+			$button_args = friend_initiator_btn_args('is_friend', $potential_friend_id, $friends_slug);
+		} elseif ($status === 'exist_initiator_friend') {
+			$button_args = friend_reciver_btn_args('remove_initiator_friend', $potential_friend_id, $friends_slug);
 		} elseif ($is_reversed) {
-			// if ( $friendship_status === 'not_friends' && strpos($engagementship_status, 'exist') !== false ) {
-			// 	$button_args = friend_reciver_btn_args('is_friend', $potential_friend_id, $friends_slug);	
-			// } else {
-				$button_args = friend_reciver_btn_args($status, $potential_friend_id, $friends_slug);
-			// }
+			error_log(json_encode('revers f '. $status));
+			$button_args = friend_reciver_btn_args($status, $potential_friend_id, $friends_slug);
 		} else {
-			// if ($friendship_status === 'not_friends' && strpos($engagementship_status, 'exist') !== false) {
-			// 	error_log(json_encode('----f----!!!!!!!!!'));
-			// 	$button_args = friend_initiator_btn_args('exist_more_engagements', $potential_friend_id, $friends_slug);
-			// } else {
-				$button_args = friend_initiator_btn_args($status, $potential_friend_id, $friends_slug);
-			// }
+			$button_args = friend_initiator_btn_args($status, $potential_friend_id, $friends_slug);
 		}
 		error_log('<<<<<<<<-f');
 		error_log('');
