@@ -256,10 +256,10 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 		error_log('===========$is_reversed e: '.$is_reversed);
 		error_log('potential_engagement_id e: '.$potential_engagement_id);
 		error_log('======$engagements_slug e: '.$engagements_slug);
-		if ( ! empty($relation)) {
-			error_log(json_encode($relation));
-			error_log('==============$relation e: '.$relation->id);	
-		}
+		// if ( ! empty($relation)) {
+		// 	error_log(json_encode($relation));
+		// 	error_log('==============$relation e: '.$relation->id);	
+		// }
 		error_log('===============$user_id e: '.$user_id);
 		error_log('==$bp_current_component e: '.bp_current_component());
 		error_log('================$status e: '.$status);
@@ -268,21 +268,28 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 			return;
 			// both relations are initiator
 		} elseif ($is_initiator_e === 1 && $is_initiator_f == 1) {
+			error_log(json_encode('1.1 e'));
 			$button_args = engagement_initiator_btn_args('is_engagement', $potential_engagement_id, $engagements_slug);
 			// both relations are reciver
 		} elseif ($is_initiator_e === 3 && $is_initiator_f == 3) {
+			error_log(json_encode('3.3 e'));
 			$button_args = engagement_reciver_btn_args('remove_initiator_engagement', $potential_engagement_id, $engagements_slug);
 		} elseif ($status === 'exist_more_engagements') {
+			error_log(json_encode('eme e'));
 			$button_args = engagement_initiator_btn_args('is_engagement', $potential_engagement_id, $engagements_slug);
 		} elseif ($status === 'exist_initiator_engagement') {
+			error_log(json_encode('eie e'));
 			$button_args = engagement_reciver_btn_args('remove_initiator_engagement', $potential_engagement_id, $engagements_slug);
+		} elseif ($is_reversed && $status == 'exist_more_friends') {
+			error_log(json_encode('emf e'));
+			$button_args = engagement_reciver_btn_args('remove_more_friends', $potential_engagement_id, $engagements_slug);
 		} elseif ($is_reversed) {
-			error_log(json_encode('revers e '. $status));
+			error_log(json_encode('rev e'. $status));
 			$button_args = engagement_reciver_btn_args($status, $potential_engagement_id, $engagements_slug);
 		} else {
+			error_log(json_encode('els e'));
 			$button_args = engagement_initiator_btn_args($status, $potential_engagement_id, $engagements_slug);
 		}
-		
 		error_log('<<<<<<<<-e');
 		error_log('');
 

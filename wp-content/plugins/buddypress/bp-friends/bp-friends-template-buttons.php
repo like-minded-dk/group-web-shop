@@ -172,27 +172,49 @@ function friend_reciver_btn_args($friendship_status, $potential_friend_id, $frie
             );
             break;
 
-        case 'exist_more_engagements':
+        case 'remove_more_engagements':
+            error_log(json_encode('>exist_more_friends -f-r'));
             $button_args = array(
-                'id'                => 'exist_more_engagements',
+                'id'                => 'remove_more_engagements',
                 'component'         => 'friends',
                 'must_be_logged_in' => true,
                 'block_self'        => false,
-                'wrapper_class'     => 'engagementship-button is_engagement',
-                'wrapper_id'        => 'engagementship-button-' . $potential_friend_id,
+                'wrapper_class'     => 'friendship-button is_friend',
+                'wrapper_id'        => 'friendship-button-' . $potential_friend_id,
                 'link_href'         => wp_nonce_url(
-                    bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'remove-engagement', array( $potential_friend_id ) ) ) ),
+                    bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'remove-friend', array( $potential_friend_id ) ) ) ),
                     'friends_remove_engagements_from_friends'
                 ),
                 'link_text'         => __( "Stop Supply Reseller f-r", 'buddypress' ),
                 'link_title'        => __( "Stop Supply Reseller f-r", 'buddypress' ),
-                'link_id'           => 'engagement-' . $potential_friend_id,
+                'link_id'           => 'friend-' . $potential_friend_id,
                 'link_rel'          => 'remove',
-                'link_class'        => 'engagementship-button remove_engagements_from_friends remove',
+                'link_class'        => 'friendship-button remove_engagements_from_friends remove',
+            );
+            break;
+
+        case 'exist_more_friends':
+            error_log(json_encode('>exist_more_friends -f-r'));
+            $button_args = array(
+                'id'                => 'exist_more_friends',
+                'component'         => 'friends',
+                'must_be_logged_in' => true,
+                'block_self'        => false,
+                'wrapper_class'     => 'friendship-button is_friend',
+                'wrapper_id'        => 'friendship-button-' . $potential_friend_id,
+                'link_href'         => wp_nonce_url(
+                    bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'remove-friend', array( $potential_friend_id ) ) ) ),
+                    'engagements_remove_friends_from_engagements'
+                ),
+                'link_text'         => __( "Stop Resell Supplier f-r", 'buddypress' ),
+                'link_title'        => __( "Stop Resell Supplier f-r", 'buddypress' ),
+                'link_id'           => 'friend-' . $potential_friend_id,
+                'link_rel'          => 'remove',
+                'link_class'        => 'friendship-button remove_friends_from_engagements remove',
             );
             break;
         
-        case 'exist_initiator_engagement':
+        case 'exist_initiator_friend':
         default:
             error_log(json_encode('>>default f-r'));
             $button_args = array(

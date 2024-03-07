@@ -184,13 +184,13 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 		'member_friendship' => true,
 		'group_membership'  => true,
 	);
-
+	
 	if ( ! empty( $reset_ids[ $button->id ] ) )  {
 		$parse_class = array_map( 'sanitize_html_class', explode( ' ', $r['button_attr']['class'] ) );
 		if ( false === $parse_class ) {
 			return $output;
 		}
-
+		error_log('-------------------'.json_encode( $parse_class ));
 		$find_id = array_intersect( $parse_class, array(
 			'pending_engagement',
 			'is_engagement',
@@ -208,11 +208,12 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 			'membership-requested',
 			'request-membership',
 		) );
-
+		
+		error_log('-------------------'.json_encode($find_id));
+		error_log('-------------------'.json_encode($output));
 		if ( 1 !== count( $find_id ) ) {
 			return $output;
 		}
-
 		$data_attribute = reset( $find_id );
 		if ( 'pending_friend' === $data_attribute ) {
 			//$data_attribute = str_replace( '_friend', '', $data_attribute );
