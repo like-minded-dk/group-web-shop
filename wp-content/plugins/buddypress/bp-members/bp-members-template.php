@@ -425,7 +425,7 @@ function bp_has_members( $args = '' ) {
 			'xprofile_query'      => false,
 			'date_query'          => false,    // Filter members by last activity.
 			'populate_extras'     => true,     // Fetch usermeta? Friend count, last active etc.
-			'reversed'			  => false,    // Fetch reversed table , add friend or enagement
+			// 'reversed'			  => false,    // Fetch reversed table , add friend or enagement
 		),
 		'has_members'
 	);
@@ -443,7 +443,7 @@ function bp_has_members( $args = '' ) {
 	if ( !empty( $r['max'] ) && ( $r['per_page'] > $r['max'] ) ) {
 		$r['per_page'] = $r['max'];
 	}
-
+	error_log('aaaaaaaaaaa'.json_encode($r));
 	// Query for members and populate $members_template global.
 	$members_template = new BP_Core_Members_Template( $r );
 

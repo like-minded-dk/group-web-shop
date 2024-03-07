@@ -233,21 +233,23 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 		$friendship_id = BP_Friends_Friendship::get_friendship_id($user_id, $potential_friend_id);
 		$engagementship_id = BP_Engagements_Engagementship::get_engagementship_id($user_id, $potential_friend_id);
 
-		// if (!empty($friendship_id)) {
-		// 	error_log('>>got friendship_id: '.$friendship_id);
-		// 	$relation = BP_Friends_Friendship::get_friendships_by_id($friendship_id)[0];
-		// }
-		// if (!empty($engagementship_id)) {
-		// 	error_log('>>got engagementship_id: '.$engagementship_id);
-		// 	$relation = BP_Engagements_Engagementship::get_engagementships_by_id($engagementship_id)[0];
-		// }
-		// error_log(json_encode($relation));
+		if (!empty($friendship_id)) {
+			error_log('>>got friendship_id: '.$friendship_id);
+			$relation = BP_Friends_Friendship::get_friendships_by_id($friendship_id)[0];
+		}
+		if (!empty($engagementship_id)) {
+			error_log('>>got engagementship_id: '.$engagementship_id);
+			$relation = BP_Engagements_Engagementship::get_engagementships_by_id($engagementship_id)[0];
+		}
 		// $is_reversed = $relation->initiator_user_id != $user_id;
 
 		$is_initiator_f = (int) is_initiator('friend');
 		$is_initiator_e = (int) is_initiator('engagement');
 		$is_reversed = (int) (strpos($friendship_status, 'exist') !==false || strpos($engagementship_status, 'exist') !== false);
+		// $is_reversed = (int) ( bp_current_component() === 'engagements' && strpos($engagementship_status, 'exist') !== false);
+		// $is_reversed = (int) ( bp_current_component() === 'friendeffffffffffffffffffffffffffffffffffffffffffffffffs' && strpos($friendship_status, 'exist') !== false);
 		$status = $is_initiator_f > $is_initiator_e ? $friendship_status : $engagementship_status ;
+		
 		error_log('');
 		error_log('>>>>>>e $is_initiator_e f: '.$is_initiator_e);
 		error_log('========$is_initiator_f f: '.$is_initiator_f);
@@ -255,7 +257,10 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 		error_log('==engagementship_status f: '.$engagementship_status);
 		error_log('===$potential_friend_id f: '.$potential_friend_id);
 		error_log('==========$friends_slug f: '.$friends_slug);
-		// error_log('=====$initiator_user_id f: '.$relation->initiator_user_id);
+		if ( ! empty($relation)) {
+			error_log(json_encode($relation));
+			error_log('==============$relation f: '.$relation->id);	
+		}
 		error_log('===============$user_id f: '.$user_id);
 		error_log('===========$is_reversed f: '.$is_reversed);
 		error_log('================$status f: '.$status);

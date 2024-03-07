@@ -179,7 +179,7 @@ class BP_User_Query {
 					'date_query'          => false,
 					'populate_extras'     => true,
 					'count_total'         => 'count_query',
-					'reversed'			  => false
+					// 'reversed'			  => false
 				)
 			);
 

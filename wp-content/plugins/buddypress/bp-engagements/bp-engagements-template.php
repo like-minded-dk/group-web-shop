@@ -233,16 +233,15 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 		$friendship_id = BP_Friends_Friendship::get_friendship_id($user_id, $potential_engagement_id);
 		$engagementship_id = BP_Engagements_Engagementship::get_engagementship_id($user_id, $potential_engagement_id);
 
-		// if (!empty($friendship_id)) {
-		// 	error_log('>>got friendship_id: '.$friendship_id);
-		// 	$relation = BP_Friends_Friendship::get_friendships_by_id($friendship_id)[0];
-		// }
-		// if (!empty($engagementship_id)) {
-		// 	error_log('>>got engagementship_id: '.$engagementship_id);
-		// 	$relation = BP_Engagements_Engagementship::get_engagementships_by_id($engagementship_id)[0];
-		// }
-		// error_log(json_encode($relation));
-		// $is_reversed = $relation->initiator_user_id != $user_id;
+		if (!empty($friendship_id)) {
+			error_log('>>got friendship_id: '.$friendship_id);
+			$relation = BP_Friends_Friendship::get_friendships_by_id($friendship_id)[0];
+		}
+		if (!empty($engagementship_id)) {
+			error_log('>>got engagementship_id: '.$engagementship_id);
+			$relation = BP_Engagements_Engagementship::get_engagementships_by_id($engagementship_id)[0];
+		}
+		//$is_reversed = $relation->initiator_user_id != $user_id;
 		
 		$is_initiator_f = (int) is_initiator('friend');
 		$is_initiator_e = (int) is_initiator('engagement');
@@ -257,7 +256,10 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 		error_log('===========$is_reversed e: '.$is_reversed);
 		error_log('potential_engagement_id e: '.$potential_engagement_id);
 		error_log('======$engagements_slug e: '.$engagements_slug);
-		// error_log('=====$initiator_user_id f: '.$relation->initiator_user_id);
+		if ( ! empty($relation)) {
+			error_log(json_encode($relation));
+			error_log('==============$relation e: '.$relation->id);	
+		}
 		error_log('===============$user_id e: '.$user_id);
 		error_log('==$bp_current_component e: '.bp_current_component());
 		error_log('================$status e: '.$status);
