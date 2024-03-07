@@ -1,8 +1,6 @@
 <?php
 function friend_initiator_btn_args($friendship_status, $potential_friend_id, $friends_slug) {
-    error_log('');
-    error_log('status f-i');
-    error_log($friendship_status);
+    error_log('status f-i '.$friendship_status);
     switch ( $friendship_status ) {
         case 'pending_friend':
             $button_args = array(
@@ -109,9 +107,7 @@ function friend_initiator_btn_args($friendship_status, $potential_friend_id, $fr
 }
 
 function friend_reciver_btn_args($friendship_status, $potential_friend_id, $friends_slug) {
-    error_log('');
-    error_log('status f-r');
-    error_log($friendship_status);
+    error_log('status f-r '.$friendship_status);
     switch ( $friendship_status ) {
         case 'pending_friend':
             $button_args = array(

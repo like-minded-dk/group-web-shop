@@ -1,4 +1,33 @@
 <?php
+
+function is_oppsit_relation($table) {
+	//bp_current_component() === "{$table}s";
+	$user_id = bp_loggedin_user_id();
+	// $user_name = bp_get_user_firstname();
+
+	$member_id = bp_get_member_user_id();
+	if (empty($component)) {
+		$component = bp_current_component();
+	}
+	global $wpdb;
+	$relation = $wpdb->get_results( "SELECT * FROM wp_bp_{$table}s WHERE initiator_user_id = {$user_id} AND {$table}_user_id = {$member_id} ", OBJECT );
+	//error_log(json_encode($relation));
+	return (bool) count($relation);
+}
+
+function is_opposit_relation_confirmed($table) {
+	$table = $table === 'friend' ? 'engagement' : 'friend';
+	$user_id = bp_loggedin_user_id();
+	// $user_name = bp_get_user_firstname();
+
+	$member_id = bp_get_member_user_id();
+	if (empty($component)) {
+		$component = bp_current_component();
+	}
+	global $wpdb;
+
+	$relations1 = $wpdb->get_results( "SELECT * FROM wp_bp_{$table}s WHERE {$table}_user_id = {$member_id} AND initiator_user_id = {$user_id} and is_confirmed = 1", OBJECT );
+}
 // $state could be 0, 1, 3, 4
 // 0  = no record
 // 1  = initiator record only

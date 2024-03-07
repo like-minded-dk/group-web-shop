@@ -234,18 +234,21 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 		$engagementship_id = BP_Engagements_Engagementship::get_engagementship_id($user_id, $potential_engagement_id);
 
 		if (!empty($friendship_id)) {
-			error_log('>>got friendship_id: '.$friendship_id);
+			//error_log('>>got friendship_id -e : '.$friendship_id);
 			$relation = BP_Friends_Friendship::get_friendships_by_id($friendship_id)[0];
 		}
 		if (!empty($engagementship_id)) {
-			error_log('>>got engagementship_id: '.$engagementship_id);
+			//error_log('>>got engagementship_id -e: '.$engagementship_id);
 			$relation = BP_Engagements_Engagementship::get_engagementships_by_id($engagementship_id)[0];
 		}
 		//$is_reversed = $relation->initiator_user_id != $user_id;
 		
+		//$is_reversed = is_oppsit_relation('engagement');
+		// error_log('$is_opps   >>>>  '. json_encode($is_reversed));
 		$is_initiator_f = (int) is_initiator('friend');
 		$is_initiator_e = (int) is_initiator('engagement');
 		$is_reversed = (int) (strpos($friendship_status, 'exist') !==false || strpos($engagementship_status, 'exist') !==false);
+		
 		$status = $is_initiator_f > $is_initiator_e ? $friendship_status : $engagementship_status ;
 
 		error_log('');
@@ -261,8 +264,8 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 		// 	error_log('==============$relation e: '.$relation->id);	
 		// }
 		error_log('===============$user_id e: '.$user_id);
-		error_log('==$bp_current_component e: '.bp_current_component());
 		error_log('================$status e: '.$status);
+		error_log('==$bp_current_component e: '.bp_current_component());
 
 		if (false) {
 			return;

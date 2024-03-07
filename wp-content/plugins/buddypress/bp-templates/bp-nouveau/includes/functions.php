@@ -190,7 +190,7 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 		if ( false === $parse_class ) {
 			return $output;
 		}
-		error_log('-------------------'.json_encode( $parse_class ));
+
 		$find_id = array_intersect( $parse_class, array(
 			'pending_engagement',
 			'is_engagement',
@@ -209,8 +209,8 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 			'request-membership',
 		) );
 		
-		error_log('-------------------'.json_encode($find_id));
-		error_log('-------------------'.json_encode($output));
+		// @todo output html
+		//error_log('-------output html------------'.json_encode($output));
 		if ( 1 !== count( $find_id ) ) {
 			return $output;
 		}

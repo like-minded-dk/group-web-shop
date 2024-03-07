@@ -505,8 +505,8 @@ class BP_Friends_Friendship {
 		if ( $result ) {
 			$friendship_id = current( $result )->id;
 		}
-		error_log(json_encode($friendship_id));
-		error_log('----------<class f');
+		error_log('=====friendship_id 508>> :'.json_encode($friendship_id));
+		// error_log('----------<class f');
 		// return;
 		return $friendship_id;
 	}
@@ -713,7 +713,7 @@ class BP_Friends_Friendship {
 
 		$friend_ids_sql = implode( ',', array_unique( $fetch ) );
 		$sql = $wpdb->prepare(<<<SQL
-			SELECT initiator_user_id, friend_user_id, is_confirmed 
+			SELECT id, initiator_user_id, friend_user_id, is_confirmed 
 			FROM {$bp->friends->table_name} 
 			WHERE (initiator_user_id = %d 
 			AND friend_user_id IN ({$friend_ids_sql}) ) 
@@ -722,13 +722,16 @@ class BP_Friends_Friendship {
 		SQL,
 		$user_id, $user_id );
 		$friendships = $wpdb->get_results( $sql );
-		error_log('class f 714 $sql'.json_encode($sql));
+		error_log('   >>>>start cls f>>> ');
+		//error_log('class f 714 $sql'.json_encode($sql));
 		// Use $handled to keep track of all of the $possible_friend_ids we've matched.
 		$handled = array();
 		foreach ( $friendships as $friendship ) {
 			$initiator_user_id = (int) $friendship->initiator_user_id;
 			$friend_user_id    = (int) $friendship->friend_user_id;
+			
 			if ( 1 === (int) $friendship->is_confirmed ) {
+				//error_log('>>confirmed id2 '.json_encode($friendship));
 				// error_log('>>class bp_current_component -f 721');
 				// error_log(bp_current_component());
 				// error_log($initiator_user_id);
@@ -746,6 +749,7 @@ class BP_Friends_Friendship {
 				}
 				// error_log('<<<class -f');
 			} else {
+				//error_log('>>pending id3 '.json_encode($friendship));
 				$status_initiator = 'pending_friend';
 				$status_friend    = 'awaiting_response';
 			}
@@ -754,10 +758,13 @@ class BP_Friends_Friendship {
 
 			$handled[] = ( $initiator_user_id === $user_id ) ? $friend_user_id : $initiator_user_id;
 		}
-
 		// Set all those with no matching entry to "not friends" status.
 		$not_friends = array_diff( $fetch, $handled );
-
+		
+		// error_log('handled '.json_encode($handled));
+		// error_log('fetch '.json_encode($fetch));
+		// error_log('diff '.json_encode(array_diff( $fetch, $handled )));
+		// error_log('   ----end----');
 		foreach ( $not_friends as $not_friend_id ) {
 			bp_core_set_incremented_cache( $user_id . ':' . $not_friend_id, 'bp_friends', 'not_friends' );
 			bp_core_set_incremented_cache( $not_friend_id . ':' . $user_id, 'bp_friends', 'not_friends' );

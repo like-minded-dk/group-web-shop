@@ -265,6 +265,7 @@ class BP_Engagements_Engagementship {
 
 		$bp = buddypress();
 		// @todo: shortcut
+		error_log('delete id: '.json_encode($this->id));
 		return;
 		return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->engagements->table_name} WHERE id = %d", $this->id ) );
 	}
@@ -536,8 +537,8 @@ class BP_Engagements_Engagementship {
 		if ( $result ) {
 			$engagementship_id = current( $result )->id;
 		}
-		error_log(json_encode($engagementship_id));
-		error_log('----------<class e');
+		error_log('=engagementship_id 540>> '.json_encode($engagementship_id));
+		// error_log('----------<class e');
 		// return;
 		return $engagementship_id;
 	}
@@ -748,13 +749,15 @@ class BP_Engagements_Engagementship {
 				OR (initiator_user_id IN ({$engagement_ids_sql}) AND engagement_user_id = %d )
 		SQL, $user_id, $user_id );
 		$engagementships = $wpdb->get_results( $sql );
-		error_log('class e 717 $sql'.json_encode($sql));
+		error_log('   >>>>start cls e>>> ');
+		// error_log('class e 717 $sql'.json_encode($sql));
 		// Use $handled to keep track of all of the $possible_engagement_ids we've matched.
 		$handled = array();
 		foreach ( $engagementships as $engagementship ) {
 			$initiator_user_id = (int) $engagementship->initiator_user_id;
 			$engagement_user_id    = (int) $engagementship->engagement_user_id;
 			if ( 1 === (int) $engagementship->is_confirmed) {
+				//error_log('>>confirmed id2 '.json_encode($engagementship));
 				//error_log('');
 				//error_log('>>class bp_current_component -e 756');
 				// error_log(bp_current_component());
@@ -768,11 +771,11 @@ class BP_Engagements_Engagementship {
 					$status_initiator = $status_engagement = 'exist_initiator_engagement';
 				} else {
 					// error_log('>>exist_more_engagements : '. count($engagementships) );
-					$status_initiator = $status_engagement = 'exist_more_engagements';
+					$status_initiator = $status_engagement = 'pending_engagement';
 				}
 				// error_log('<<<class -e');
-				error_log('');
 			} else {
+				//error_log('>>pending id3 '.json_encode($engagementship));
 				$status_initiator = 'pending_engagement';
 				$status_engagement    = 'awaiting_response';
 			}
@@ -785,6 +788,10 @@ class BP_Engagements_Engagementship {
 		// Set all those with no matching entry to "not engagements" status.
 		$not_engagements = array_diff( $fetch, $handled );
 
+		// error_log('handled '.json_encode($handled));
+		// error_log('fetch '.json_encode($fetch));
+		// error_log('diff '.json_encode(array_diff( $fetch, $handled )));
+		// error_log('   ----end----');
 		foreach ( $not_engagements as $not_engagement_id ) {
 			bp_core_set_incremented_cache( $user_id . ':' . $not_engagement_id, 'bp_engagements', 'not_engagements' );
 			bp_core_set_incremented_cache( $not_engagement_id . ':' . $user_id, 'bp_engagements', 'not_engagements' );
@@ -858,7 +865,9 @@ class BP_Engagements_Engagementship {
 		global $wpdb;
 
 		$bp = buddypress();
-
+		error_log('>>>withdraw $engagementship_id: '.json_encode($engagementship_id));
+		// @todo: shortcut withdraw
+		return;
 		return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->engagements->table_name} WHERE id = %d AND initiator_user_id = %d", $engagementship_id, bp_loggedin_user_id() ) );
 	}
 
