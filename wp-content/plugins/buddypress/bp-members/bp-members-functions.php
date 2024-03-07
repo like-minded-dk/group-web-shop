@@ -1872,6 +1872,10 @@ function bp_core_signup_user( $user_login, $user_password, $user_email, $usermet
 		 * clutter by defining setting the BP_SIGNUPS_SKIP_USER_CREATION
 		 * to true in your wp-config.php file.
 		 */
+		if (! defined( 'BP_SIGNUPS_SKIP_USER_CREATION' )) {
+			define('BP_SIGNUPS_SKIP_USER_CREATION', false);
+		}
+
 		if ( ! defined( 'BP_SIGNUPS_SKIP_USER_CREATION' ) || ! BP_SIGNUPS_SKIP_USER_CREATION ) {
 			$user_id = BP_Signup::add_backcompat( $user_login, $user_password, $user_email, $usermeta );
 

@@ -532,8 +532,8 @@ class BP_Engagements_Engagementship {
 		if ( $result ) {
 			$engagementship_id = current( $result )->id;
 		}
-		// error_log(json_encode($engagementship_id));
-		// error_log('----------<class e');
+		error_log(json_encode($engagementship_id));
+		error_log('----------<class e');
 		// return;
 		return $engagementship_id;
 	}

@@ -244,9 +244,10 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 		// error_log(json_encode($relation));
 		// $is_reversed = $relation->initiator_user_id != $user_id;
 
-		$is_initiator_f = is_initiator('friend');
-		$is_initiator_e = is_initiator('engagement');
-		$is_reversed = strpos($friendship_status, 'exist') !==false || strpos($engagementship_status, 'exist') !== false;
+		$is_initiator_f = (int) is_initiator('friend');
+		$is_initiator_e = (int) is_initiator('engagement');
+		$is_reversed = (int) (strpos($friendship_status, 'exist') !==false || strpos($engagementship_status, 'exist') !== false);
+		$status = $is_initiator_f > $is_initiator_e ? $friendship_status : $engagementship_status ;
 		error_log('');
 		error_log('>>>>>>e $is_initiator_e f: '.$is_initiator_e);
 		error_log('========$is_initiator_f f: '.$is_initiator_f);
@@ -257,20 +258,26 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 		// error_log('=====$initiator_user_id f: '.$relation->initiator_user_id);
 		error_log('===============$user_id f: '.$user_id);
 		error_log('===========$is_reversed f: '.$is_reversed);
+		error_log('================$status f: '.$status);
 		error_log('==$bp_current_component f: '.bp_current_component());
-		if ($is_reversed) {
+
+		
+		if (false) {
+			return;
+		} elseif ($status === 'exist_more_friends') {
+			$button_args = engagement_initiator_btn_args('is_friend', $engagementship_status, $friends_slug);
+		} elseif ($is_reversed) {
 			// if ( $friendship_status === 'not_friends' && strpos($engagementship_status, 'exist') !== false ) {
 			// 	$button_args = friend_reciver_btn_args('is_friend', $potential_friend_id, $friends_slug);	
 			// } else {
-				$button_args = friend_reciver_btn_args($friendship_status, $potential_friend_id, $friends_slug);
+				$button_args = friend_reciver_btn_args($status, $potential_friend_id, $friends_slug);
 			// }
 		} else {
 			// if ($friendship_status === 'not_friends' && strpos($engagementship_status, 'exist') !== false) {
 			// 	error_log(json_encode('----f----!!!!!!!!!'));
 			// 	$button_args = friend_initiator_btn_args('exist_more_engagements', $potential_friend_id, $friends_slug);
 			// } else {
-				error_log(json_encode('-----f---?????????????'));
-				$button_args = friend_initiator_btn_args($friendship_status, $potential_friend_id, $friends_slug);
+				$button_args = friend_initiator_btn_args($status, $potential_friend_id, $friends_slug);
 			// }
 		}
 		error_log('<<<<<<<<-f');

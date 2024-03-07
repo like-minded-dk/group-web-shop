@@ -244,9 +244,11 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 		// error_log(json_encode($relation));
 		// $is_reversed = $relation->initiator_user_id != $user_id;
 		
-		$is_initiator_f = is_initiator('friend');
-		$is_initiator_e = is_initiator('engagement');
-		$is_reversed = strpos($friendship_status, 'exist') !==false || strpos($engagementship_status, 'exist') !==false;
+		$is_initiator_f = (int) is_initiator('friend');
+		$is_initiator_e = (int) is_initiator('engagement');
+		$is_reversed = (int) (strpos($friendship_status, 'exist') !==false || strpos($engagementship_status, 'exist') !==false);
+		$status = $is_initiator_f > $is_initiator_e ? $friendship_status : $engagementship_status ;
+
 		error_log('');
 		error_log('>>>>>>e $is_initiator_e e: '.$is_initiator_e);
 		error_log('========$is_initiator_f e: '.$is_initiator_f);
@@ -258,20 +260,24 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 		// error_log('=====$initiator_user_id f: '.$relation->initiator_user_id);
 		error_log('===============$user_id e: '.$user_id);
 		error_log('==$bp_current_component e: '.bp_current_component());
+		error_log('================$status e: '.$status);
 
-		if ($is_reversed) {
+		if (false) {
+			return;
+		} elseif ($status === 'exist_more_engagements') {
+			$button_args = engagement_initiator_btn_args('is_engagement', $potential_engagement_id, $engagements_slug);
+		} elseif ($is_reversed) {
 			// if ( $friendship_status === 'not_friends' && strpos($engagementship_status, 'exist') !== false ) {
 			// 	$button_args = engagement_reciver_btn_args('is_engagement', $potential_engagement_id, $engagements_slug);	
 			// } else {
-				$button_args = engagement_reciver_btn_args($friendship_status, $potential_engagement_id, $engagements_slug);
+				$button_args = engagement_reciver_btn_args($status, $potential_engagement_id, $engagements_slug);
 			// }
 		} else {
 			// if ($friendship_status === 'not_engagements' && strpos($friendship_status, 'exist') !== false) {
 			// 	error_log(json_encode('----e----!!!!!!!!!'));
 			// 	$button_args = engagement_initiator_btn_args('exist_more_friends', $potential_engagement_id, $engagements_slug);
 			// } else {
-				error_log(json_encode('----e----?????????????'));
-				$button_args = engagement_initiator_btn_args($engagementship_status, $potential_engagement_id, $engagements_slug);
+				$button_args = engagement_initiator_btn_args($status, $potential_engagement_id, $engagements_slug);
 			// }
 		}
 		

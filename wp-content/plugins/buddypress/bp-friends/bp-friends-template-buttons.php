@@ -150,7 +150,6 @@ function friend_reciver_btn_args($friendship_status, $potential_friend_id, $frie
             );
             break;
 
-        case 'exist_initiator_engagement':
         case 'exist_initiator_friend':
         case 'is_friend':
             $button_args = array(
@@ -184,14 +183,15 @@ function friend_reciver_btn_args($friendship_status, $potential_friend_id, $frie
                     bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'remove-engagement', array( $potential_friend_id ) ) ) ),
                     'friends_remove_engagements_from_friends'
                 ),
-                'link_text'         => __( "Stop Resell Supplier f-r", 'buddypress' ),
-                'link_title'        => __( "Stop Resell Supplier f-r", 'buddypress' ),
+                'link_text'         => __( "Stop Supply Reseller f-r", 'buddypress' ),
+                'link_title'        => __( "Stop Supply Reseller f-r", 'buddypress' ),
                 'link_id'           => 'engagement-' . $potential_friend_id,
                 'link_rel'          => 'remove',
                 'link_class'        => 'engagementship-button remove_engagements_from_friends remove',
             );
             break;
-
+        
+        case 'exist_initiator_engagement':
         default:
             error_log(json_encode('>>default f-r'));
             $button_args = array(

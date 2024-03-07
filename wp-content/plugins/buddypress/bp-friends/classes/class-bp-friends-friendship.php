@@ -501,8 +501,8 @@ class BP_Friends_Friendship {
 		if ( $result ) {
 			$friendship_id = current( $result )->id;
 		}
-		//error_log(json_encode($friendship_id));
-		//error_log('----------<class f');
+		error_log(json_encode($friendship_id));
+		error_log('----------<class f');
 		// return;
 		return $friendship_id;
 	}
