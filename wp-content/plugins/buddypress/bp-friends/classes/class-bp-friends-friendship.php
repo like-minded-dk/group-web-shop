@@ -235,6 +235,7 @@ class BP_Friends_Friendship {
 		global $wpdb;
 
 		$bp = buddypress();
+		// @todo: shortcut
 		return;
 		return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->friends->table_name} WHERE id = %d", $this->id ) );
 	}
