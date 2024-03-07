@@ -467,10 +467,13 @@ class BP_Engagements_Engagementship {
 					'initiator_user_id' => $user_id,
 					'is_confirmed' => 1,
 				);
-			} 
-			if (bp_current_component() == 'friends') {
+			} elseif (bp_current_component() == 'friends') {
 				$args = array(
 					'engagement_user_id' => $user_id,
+					'is_confirmed' => 1,
+				);
+			} else {
+				$args = array(
 					'is_confirmed' => 1,
 				);
 			}

@@ -436,15 +436,18 @@ class BP_Friends_Friendship {
 					'initiator_user_id' => $user_id,
 					'is_confirmed' => 1,
 				);
-			} 
-			if (bp_current_component() == 'engagements') {
+			} elseif (bp_current_component() == 'engagements') {
 				$args = array(
 					'friend_user_id' => $user_id,
 					'is_confirmed' => 1,
 				);
+			} else {
+				$args = array(
+					'is_confirmed' => 1,
+				);
 			}
 		}
-
+		error_log('bbbbbbbb '.json_encode($args));
 		$friendships = self::get_friendships( $user_id, $args );
 		$user_id     = (int) $user_id;
 
