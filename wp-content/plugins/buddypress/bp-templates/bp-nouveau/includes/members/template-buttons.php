@@ -15,8 +15,8 @@ function is_oppsit_relation($table) {
 	return (bool) count($relation);
 }
 
-function is_opposit_relation_confirmed($table) {
-	$table = $table === 'friend' ? 'engagement' : 'friend';
+function is_reciver_relation_confirmed($table) {
+	// $table = $table === 'friend' ? 'engagement' : 'friend';
 	$user_id = bp_loggedin_user_id();
 	// $user_name = bp_get_user_firstname();
 
@@ -26,8 +26,37 @@ function is_opposit_relation_confirmed($table) {
 	}
 	global $wpdb;
 
-	$relations1 = $wpdb->get_results( "SELECT * FROM wp_bp_{$table}s WHERE {$table}_user_id = {$member_id} AND initiator_user_id = {$user_id} and is_confirmed = 1", OBJECT );
+	$result= $wpdb->get_results(<<<SQL
+		SELECT id
+		FROM wp_bp_{$table}s
+		WHERE is_confirmed = 0 AND
+			({$table}_user_id = {$user_id}
+			AND initiator_user_id = {$member_id})
+	SQL, OBJECT );
+	error_log('>>is_reciver_relation_confirmed  '.json_encode($result));
+	return (string) count($result);
 }
+
+function is_initial_relation_confirmed($table) {
+	$user_id = bp_loggedin_user_id();
+
+	$member_id = bp_get_member_user_id();
+	if (empty($component)) {
+		$component = bp_current_component();
+	}
+	global $wpdb;
+
+	$result= $wpdb->get_results(<<<SQL
+		SELECT id
+		FROM wp_bp_{$table}s
+		WHERE is_confirmed = 0 AND
+			({$table}_user_id = {$member_id}
+			AND initiator_user_id = {$user_id})
+	SQL, OBJECT );
+	//error_log('>>is_initial_relation_confirmed  '.json_encode($result));
+	return (string) count($result);
+}
+
 // $state could be 0, 1, 3, 4
 // 0  = no record
 // 1  = initiator record only

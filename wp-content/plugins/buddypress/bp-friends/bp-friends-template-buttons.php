@@ -59,7 +59,7 @@ function friend_initiator_btn_args($friendship_status, $potential_friend_id, $fr
                 'link_class'        => 'friendship-button is_friend remove',
             );
             break;
-
+    
         case 'exist_more_engagements':
             error_log(json_encode('>>default f-i'));
             $button_args = array(
@@ -121,8 +121,8 @@ function friend_reciver_btn_args($friendship_status, $potential_friend_id, $frie
                     bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'requests', array( 'cancel', $potential_friend_id ) ) ) ),
                     'friends_withdraw_friendship'
                 ),
-                'link_text'         => __( "Cancel Resell Supplier Request f-r", 'buddypress' ),
-                'link_title'        => __( "Cancel Resell Supplier Request f-r", 'buddypress' ),
+                'link_text'         => __( "Cancel Supply Reseller Request f-r", 'buddypress' ),
+                'link_title'        => __( "Cancel Supply Reseller Request f-r", 'buddypress' ),
                 'link_id'           => 'friend-' . $potential_friend_id,
                 'link_rel'          => 'remove',
                 'link_class'        => 'friendship-button pending_friend requested',
@@ -138,8 +138,8 @@ function friend_reciver_btn_args($friendship_status, $potential_friend_id, $frie
                 'wrapper_class'     => 'friendship-button awaiting_response_friend',
                 'wrapper_id'        => 'friendship-button-' . $potential_friend_id,
                 'link_href'         => bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'requests' ) ) ),
-                'link_text'         => __( "Resell Supplier Requested f-r", 'buddypress' ),
-                'link_title'        => __( "Resell Supplier Requested f-r", 'buddypress' ),
+                'link_text'         => __( "Supply Reseller Requested f-r", 'buddypress' ),
+                'link_title'        => __( "Supply Reseller Requested f-r", 'buddypress' ),
                 'link_id'           => 'friend-' . $potential_friend_id,
                 'link_rel'          => 'remove',
                 'link_class'        => 'friendship-button awaiting_response_friend requested',

@@ -771,7 +771,7 @@ class BP_Engagements_Engagementship {
 					$status_initiator = $status_engagement = 'exist_initiator_engagement';
 				} else {
 					// error_log('>>exist_more_engagements : '. count($engagementships) );
-					$status_initiator = $status_engagement = 'pending_engagement';
+					$status_initiator = $status_engagement = 'exist_more_engagements';
 				}
 				// error_log('<<<class -e');
 			} else {

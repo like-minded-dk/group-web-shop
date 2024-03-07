@@ -190,7 +190,7 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 		if ( false === $parse_class ) {
 			return $output;
 		}
-
+		error_log('parse_class   >  '.json_encode($parse_class));
 		$find_id = array_intersect( $parse_class, array(
 			'pending_engagement',
 			'is_engagement',

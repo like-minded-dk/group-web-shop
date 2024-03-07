@@ -251,6 +251,12 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 
 		$status = $is_initiator_f > $is_initiator_e ? $friendship_status : $engagementship_status ;
 		
+		// $reciver_e_confirmed = is_reciver_relation_confirmed('engagement');
+		// $initial_e_confirmed = is_initial_relation_confirmed('engagement');
+		$reciver_f_confirmed = is_reciver_relation_confirmed('friend');
+		$initial_f_confirmed = is_initial_relation_confirmed('friend');
+		error_log('>>r_f i_f: '.json_encode( $reciver_f_confirmed . ', ' .$initial_f_confirmed));
+
 		error_log('');
 		error_log('>>>>>>e $is_initiator_e f: '.$is_initiator_e);
 		error_log('========$is_initiator_f f: '.$is_initiator_f);
@@ -278,14 +284,26 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 		} elseif ($is_initiator_e === 3 && $is_initiator_f == 3) {
 			error_log(json_encode('3.3 f'));
 			$button_args = friend_reciver_btn_args('remove_initiator_friend', $potential_friend_id, $friends_slug);
+		// } elseif ($is_reversed && $status == 'exist_more_friends' && $reciver_f_confirmed == '0') {
+		// 	error_log(json_encode('emf-pending f'));
+		// 	$button_args = friend_initiator_btn_args('pending_friend', $potential_friend_id, $friends_slug);
 		} elseif ($status === 'exist_more_friends') {
-			error_log(json_encode('eme f'));
+			error_log(json_encode('emf f'));
 			$button_args = friend_initiator_btn_args('is_friend', $potential_friend_id, $friends_slug);
 		} elseif ($status === 'exist_initiator_friend') {
-			error_log(json_encode('eie f'));
+			error_log(json_encode('eif f'));
 			$button_args = friend_reciver_btn_args('remove_initiator_friend', $potential_friend_id, $friends_slug);
+		// } elseif ($is_reversed && $status == 'exist_more_engagements' && $reciver_f_confirmed == '0') {
+		// 	error_log(json_encode('eme-await f'));
+		// 	$button_args = friend_reciver_btn_args('awaiting_response', $potential_friend_id, $friends_slug);
+		} elseif ($friendship_status == 'not_friends' && $engagementship_status == 'pending_engagement') {
+			error_log(json_encode('pee f'));
+			$button_args = friend_reciver_btn_args('pending_friend', $potential_friend_id, $friends_slug);
+		} elseif ($friendship_status == 'not_friends' && $engagementship_status == 'awaiting_response') {
+			error_log(json_encode('awr f'));
+			$button_args = friend_reciver_btn_args('awaiting_response', $potential_friend_id, $friends_slug);
 		} elseif ($is_reversed && $status == 'exist_more_engagements') {
-			error_log(json_encode('emf f'));
+			error_log(json_encode('eme f'));
 			$button_args = friend_reciver_btn_args('remove_more_engagements', $potential_friend_id, $friends_slug);
 		} elseif ($is_reversed) {
 			error_log(json_encode('rev f'. $status));
