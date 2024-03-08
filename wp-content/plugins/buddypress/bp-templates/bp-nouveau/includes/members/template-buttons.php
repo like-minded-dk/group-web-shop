@@ -1,29 +1,228 @@
 <?php
+function get_button_args ($pid, $comp) {
+	$oppo = $comp == 'friend' ? 'engagement' : 'friend'; 
+	//friend_initiator_btn_args
+	$initiator_func = "{$comp}_initiator_btn_args";
+	//friend_reciver_btn_args
+	$reciver_func   = "{$comp}_reciver_btn_args";
+	$mk = $comp[0];
+	$button_args = array();
+	list(
+		$ini_e,
+		$ini_f,
+		$fst,
+		$est,
+		$pid,
+		$sg,
+		$f_rel_id,
+		$e_rel_id,
+		$is_reversed,
+		$status,
+		$rev_e_awa,
+		$rev_f_awa,
+		$ini_e_awat,
+		$ini_f_awat,
+		$ini_f_id,
+		$rev_f_id,
+		$ini_e_id,
+		$rev_e_id
+	) = get_template_vars($pid, $comp);
 
-function is_oppsit_relation($table) {
-	//bp_current_component() === "{$table}s";
-	$user_id = bp_loggedin_user_id();
-	// $user_name = bp_get_user_firstname();
+	$ini_id = $comp == 'friend' ? ($ini_f_id ? $ini_f_id : $ini_e_id) : ($ini_e_id ? $ini_e_id : $ini_f_id) ;
+	$rev_id = $comp == 'friend' ? ($rev_f_id ? $rev_f_id : $rev_e_id) : ($rev_e_id ? $rev_e_id : $rev_f_id) ;
+	
+	if (false) {
+		return;
+	} elseif ($ini_e === 1 && $ini_f == 1 && $fst == "is_{$comp}" && $est == "is_{$oppo}" ) {
+		// one initiator
+		error_log(json_encode("1.1 isf ise"));
+		$button_args = $initiator_func("is_{$comp}", $pid, $sg, $ini_id);
 
-	$member_id = bp_get_member_user_id();
-	if (empty($component)) {
-		$component = bp_current_component();
+	} elseif ($ini_e === 1 && $ini_f == 1 && $fst == "pending_{$comp}" && $est == "is_{$oppo}" ) {
+		// both relations are initiator
+		error_log(json_encode("1.1 pef ise"));
+		$button_args = $initiator_func("pending_{$comp}", $pid, $sg, $ini_id);
+
+	} elseif ($ini_e === 3 && $ini_f == 0 && $fst == "not_{$comp}s" && $est == "exist_initiator_{$oppo}") {
+		// one reciver
+		error_log(json_encode("3.0 nof exi"));
+		$button_args = $reciver_func("remove_initiator_{$oppo}", $pid, $sg, $rev_id);
+
+	} elseif ($ini_e === 3 && $ini_f == 3 && $fst == "exist_initiator_{$comp}" && $est == "exist_initiator_{$oppo}") {
+		// both relations are reciver
+		error_log(json_encode("3.3 eif eie"));
+		$button_args = $reciver_func("remove_initiator_{$comp}", $pid, $sg, $rev_id);
+
+	} elseif ($ini_e === 3 && $ini_f == 3 && $fst == "awaiting_response" && $est == "exist_initiator_{$oppo}") {
+		// both relations are reciver
+		error_log(json_encode("3.3 awr eie"));
+		$button_args = $reciver_func("awaiting_response", $pid, $sg, $rev_id);
+		
+	} elseif ($ini_e === 4 && $ini_f == 0 && $fst == "not_{$comp}s" && $est == "exist_more_{$oppo}s" && $rev_e_awa == "1" ) {
+		// one table
+		error_log(json_encode("4.0 nof eme re"));
+		$button_args = $reciver_func("awaiting_response", $pid, $sg, $rev_id);
+
+	} elseif ($ini_e === 4 && $ini_f == 0 && $fst == "not_{$comp}s" && $est == "exist_more_{$oppo}s" && $ini_e_awat == "1" ) {
+		// one table
+		error_log(json_encode("4.0 nof eme ie"));
+		$button_args = $reciver_func("remove_more_{$oppo}s", $pid, $sg, $rev_id);
+
+	} elseif ($status === "exist_more_{$comp}s") {
+		error_log(json_encode("emf"));
+		$button_args = $initiator_func("is_{$comp}", $pid, $sg, $ini_id);
+
+	} elseif ($status === "exist_initiator_{$comp}") {
+		error_log(json_encode("eif"));
+		$button_args = $reciver_func("remove_initiator_{$comp}", $pid, $sg, $rev_id);
+
+	} elseif ($fst == "not_{$comp}s" && $est == "pending_{$oppo}" && $is_reversed == "0") {
+		error_log(json_encode("nof pee rev0"));
+		$button_args = $reciver_func("pending_{$comp}", $pid, $sg, $rev_id);
+
+	} elseif ($fst == "not_{$comp}s" && $est == "pending_{$oppo}" && $is_reversed == "1") {
+		error_log(json_encode("nof pee rev1"));
+		$button_args = $reciver_func("remove_more_{$oppo}s", $pid, $sg, $rev_id);
+
+	} elseif ($fst == "not_{$comp}s" && $est == "awaiting_response" && $is_reversed == "1") {
+		error_log(json_encode("nof awr rev1"));
+		$button_args = $reciver_func("exist_more_{$oppo}s", $pid, $sg, $ini_id);
+
+	} elseif ($fst == "not_{$comp}s" && $est == "awaiting_response" && $is_reversed == "0") {
+		error_log(json_encode("nof awr rev0"));
+		$button_args = $initiator_func("awaiting_response", $pid, $sg, $rev_id);
+
+	} elseif ($status == "exist_more_{$oppo}s" && $is_reversed == "1" ) {
+		error_log(json_encode("eme"));
+		$button_args = $reciver_func("remove_more_{$oppo}s", $pid, $sg, $rev_id);
+
+	} elseif ($is_reversed == 1) {
+		error_log(json_encode("rev only "));
+		$button_args = $reciver_func($status, $pid, $sg, $rev_id);
+
+	} else {
+		error_log(json_encode("els only "));
+		$button_args = $initiator_func($status, $pid, $sg, $ini_id);
 	}
-	global $wpdb;
-	$relation = $wpdb->get_results( "SELECT * FROM wp_bp_{$table}s WHERE initiator_user_id = {$user_id} AND {$table}_user_id = {$member_id} ", OBJECT );
-	//error_log(json_encode($relation));
-	return (bool) count($relation);
+	return $button_args;
+}
+function get_template_vars($pid, $comp) {
+		$user_id = bp_loggedin_user_id();
+		$fst = $friend_status     = bp_is_friend( $pid );
+		$est = $engagement_status = bp_is_engagement( $pid );
+		$sg = $friends_slug          = bp_get_friends_slug();
+		$is_reversed = (int) is_oppsit_relation($comp);
+
+		$ini_e_id = get_relation('engagement');
+		$rev_e_id = get_relation('engagement', false);
+		$ini_f_id = get_relation('friend');
+		$rev_f_id = get_relation('friend', false);
+		$f_rel_id = get_friend_id($user_id, $pid) ?? $ini_f_id ?? $rev_f_id;
+		$e_rel_id = get_engagement_id($user_id, $pid) ?? $ini_e_id ?? $rev_e_id;
+		// error_log('$f_rel_id '.json_encode($f_rel_id));
+		// error_log('$e_rel_id '.json_encode($e_rel_id));
+		// $f_rel_id = empty($f_rel_id) ? ( $is_reversed ? $rev_e_id : $ini_f_id ) : $f_rel_id;
+		// $e_rel_id = empty($e_rel_id) ? ( $is_reversed ? $rev_e_id : $ini_e_id ) : $e_rel_id;
+		
+		$ini_f = (int) is_initiator('friend');
+		$ini_e = (int) is_initiator('engagement');
+		$status = $ini_f > $ini_e ? $fst : $est ;
+
+		$rev_e_awa = is_reciver_awating('engagement');
+		$ini_e_awat = is_initial_awating('engagement');
+		$rev_f_awa = is_reciver_awating('friend');
+		$ini_f_awat = is_initial_awating('friend');
+		
+		error_log('');
+		error_log('>>>awaiting rf if re ie: '.json_encode( $rev_f_awa . ', ' .$ini_f_awat . ', ' . $rev_e_awa . ', ' .$ini_e_awat ));
+		error_log('>>>>>>>>>>>>>>>e $ini_e: '.$ini_e);
+		error_log('=================$ini_f: '.$ini_f);
+		error_log('==========friend_status: '.$fst);
+		error_log('======engagement_status: '.$est);
+		error_log('===========$is_reversed: '.$is_reversed);
+		error_log('==========$friends_slug: '.$friends_slug);
+		error_log('===============$user_id: '.$user_id);
+		error_log('===================$pid: '.$pid);
+		error_log('============$relation_f: '.$f_rel_id);	
+		error_log('============$relation_e: '.$e_rel_id);	
+		error_log('===============ini_f_id: '.$ini_f_id);
+		error_log('===============rev_f_id: '.$rev_f_id);
+		error_log('===============ini_e_id: '.$ini_e_id);
+		error_log('===============rev_e_id: '.$rev_e_id);
+		error_log('================$status: '.$status);
+		error_log('==$bp_current_component: '.bp_current_component());
+
+		return [
+			$ini_e,
+			$ini_f,
+			$fst,
+			$est,
+			$pid,
+			$sg,
+			$f_rel_id,
+			$e_rel_id,
+			$is_reversed,
+			$status,
+			$rev_e_awa,
+			$rev_f_awa,
+			$ini_e_awat,
+			$ini_f_awat,
+			$ini_f_id,
+			$rev_f_id,
+			$ini_e_id,
+			$rev_e_id
+		];
 }
 
-function is_reciver_relation_confirmed($table) {
-	// $table = $table === 'friend' ? 'engagement' : 'friend';
-	$user_id = bp_loggedin_user_id();
-	// $user_name = bp_get_user_firstname();
-
-	$member_id = bp_get_member_user_id();
-	if (empty($component)) {
-		$component = bp_current_component();
+function get_friend_id($user_id, $potential_engagement_id) {
+	$friendship_id = BP_Friends_Friendship::get_friendship_id($user_id, $potential_engagement_id);
+	if (!empty($friendship_id)) {
+		$fri_rel = BP_Friends_Friendship::get_friendships_by_id($friendship_id)[0];
+		if ( ! empty($fri_rel)) {
+			$f_rel_id = $fri_rel->id;
+		}
 	}
+	return $f_rel_id ?? 0 ;
+}
+
+function get_engagement_id($user_id, $potential_engagement_id) {
+	$engagementship_id = BP_Engagements_Engagementship::get_engagementship_id($user_id, $potential_engagement_id);
+	if (!empty($engagementship_id)) {
+		$eng_rel = BP_Engagements_Engagementship::get_engagementships_by_id($engagementship_id)[0];
+		if ( ! empty($eng_rel)) {
+			$e_rel_id = $eng_rel->id;
+		}
+	}
+	return $e_rel_id ?? 0 ;
+}
+
+function get_relation($table, $initiator = 1) {
+	$user_id = bp_loggedin_user_id();
+	$member_id = bp_get_member_user_id();
+	if (empty($initiator)) {
+		[$user_id , $member_id] = [$member_id , $user_id];
+	}
+	global $wpdb;
+	$result = $wpdb->get_results( "SELECT * FROM wp_bp_{$table}s WHERE initiator_user_id = {$user_id} AND {$table}_user_id = {$member_id} ",ARRAY_N );
+	// return 1st id from database, otherwise return null
+	return $result[0][0] ?? 0;
+}
+
+function is_oppsit_relation($table) {
+	$oppsite = $table == 'friend' ? 'engagement' : 'friend';
+	$user_id = bp_loggedin_user_id();
+	$member_id = bp_get_member_user_id();
+	global $wpdb;
+	$relation1 = $wpdb->get_results( "SELECT * FROM wp_bp_{$table}s WHERE initiator_user_id = {$user_id} AND {$table}_user_id = {$member_id} ", OBJECT );
+	$relation2 = $wpdb->get_results( "SELECT * FROM wp_bp_{$oppsite}s WHERE initiator_user_id = {$member_id} AND {$oppsite}_user_id = {$user_id} ", OBJECT );
+	// error_log(json_encode($relation1));
+	// error_log(json_encode($relation2));
+	return (int) (count($relation1) == 0 && count($relation2) > 0);
+}
+
+function is_reciver_awating($table) {
+	$user_id = bp_loggedin_user_id();
+	$member_id = bp_get_member_user_id();
 	global $wpdb;
 
 	$result= $wpdb->get_results(<<<SQL
@@ -33,19 +232,14 @@ function is_reciver_relation_confirmed($table) {
 			({$table}_user_id = {$user_id}
 			AND initiator_user_id = {$member_id})
 	SQL, OBJECT );
-	error_log('>>is_reciver_relation_confirmed  '.json_encode($result));
+	//error_log('>>is_reciver_awating  '.json_encode($result));
 	return (string) count($result);
 }
 
-function is_initial_relation_confirmed($table) {
+function is_initial_awating($table) {
 	$user_id = bp_loggedin_user_id();
-
 	$member_id = bp_get_member_user_id();
-	if (empty($component)) {
-		$component = bp_current_component();
-	}
 	global $wpdb;
-
 	$result= $wpdb->get_results(<<<SQL
 		SELECT id
 		FROM wp_bp_{$table}s
@@ -53,7 +247,7 @@ function is_initial_relation_confirmed($table) {
 			({$table}_user_id = {$member_id}
 			AND initiator_user_id = {$user_id})
 	SQL, OBJECT );
-	//error_log('>>is_initial_relation_confirmed  '.json_encode($result));
+	// error_log('>>is_initial_awating  '.json_encode($result));
 	return (string) count($result);
 }
 
@@ -111,7 +305,7 @@ function print_initiator($component = '') {
 		$relations2 = $wpdb->get_results( "SELECT * FROM wp_bp_friends WHERE friend_user_id = {$user_id} AND initiator_user_id = {$member_id}", OBJECT );
 		$relations = array_merge($relations1, $relations2);
 		foreach ($relations as $relation) {
-			$results .= $relation->id;
+			$results .= '<br> '.$relation->id;
 			if($relation->initiator_user_id === (string) $user_id) {
 				$results .= "<br> (resell) {$user_name} has frie initiator. ";
 			} else {
@@ -123,7 +317,7 @@ function print_initiator($component = '') {
 		$relations2 = $wpdb->get_results( "SELECT * FROM wp_bp_engagements WHERE engagement_user_id = {$user_id} AND initiator_user_id = {$member_id}", OBJECT );
 		$relations = array_merge($relations1, $relations2);
 		foreach ($relations as $relation) {
-			$results .= $relation->id;
+			$results .= '<br> '.$relation->id;
 			if($relation->initiator_user_id === (string) $user_id) {
 				$results .= "<br> (supply) {$user_name} has enga initiator. ";
 			 }else {

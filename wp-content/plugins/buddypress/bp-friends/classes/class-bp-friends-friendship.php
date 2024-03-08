@@ -235,7 +235,8 @@ class BP_Friends_Friendship {
 		global $wpdb;
 
 		$bp = buddypress();
-		// @todo: shortcut
+		// @todo: shortcut delete
+		error_log('delete id: '.json_encode($this->id));
 		return;
 		return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->friends->table_name} WHERE id = %d", $this->id ) );
 	}
@@ -495,7 +496,7 @@ class BP_Friends_Friendship {
 			'friend_user_id'    => $friend_id,
 		);
 		$result = self::get_friendships( $user_id, $args, 'OR' );
-		error_log('---------->class f');
+		// error_log('---------->class f');
 		// error_log('user_id:'.$user_id);
 		// error_log('friend_id:'.$friend_id);
 		$result = array_filter($result, function($v, $k) use ($user_id) {
@@ -838,7 +839,9 @@ class BP_Friends_Friendship {
 		global $wpdb;
 
 		$bp = buddypress();
-
+		// @todo: shortcut
+		error_log('!Remove friendship 843 f: '.json_encode($friendship_id));
+		return;
 		return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->friends->table_name} WHERE id = %d AND initiator_user_id = %d", $friendship_id, bp_loggedin_user_id() ) );
 	}
 
@@ -856,7 +859,9 @@ class BP_Friends_Friendship {
 		global $wpdb;
 
 		$bp = buddypress();
-
+		// @todo: shortcut reject
+		error_log('delete id: '.json_encode($friendship_id));
+		return;
 		return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->friends->table_name} WHERE id = %d AND friend_user_id = %d", $friendship_id, bp_loggedin_user_id() ) );
 	}
 

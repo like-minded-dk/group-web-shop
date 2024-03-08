@@ -56,7 +56,6 @@ add_action( 'admin_init', function() {
 	);
 
 	foreach ( $ajax_actions as $ajax_action ) {
-		
 		$action = key( $ajax_action );
 
 		add_action( 'wp_ajax_' . $action, $ajax_action[ $action ]['function'] );
@@ -86,6 +85,7 @@ function bp_nouveau_ajax_addremove_engagement() {
 	if ( ! bp_is_post_request() ) {
 		wp_send_json_error( $response );
 	}
+
 	if ( empty( $_POST['nonce'] ) || empty( $_POST['item_id'] ) || ! bp_is_active( 'engagements' ) ) {
 		wp_send_json_error( $response );
 	}
@@ -106,6 +106,7 @@ function bp_nouveau_ajax_addremove_engagement() {
 
 	// Cast fid as an integer.
 	$engagement_id = (int) $_POST['item_id'];
+	
 	// Check if the user exists only when the engagement ID is not a Frienship ID.
 	if ( isset( $_POST['action'] ) && $_POST['action'] !== 'engagements_accept_engagementship' && $_POST['action'] !== 'engagements_reject_engagementship' ) {
 		$user = get_user_by( 'id', $engagement_id );
@@ -120,13 +121,11 @@ function bp_nouveau_ajax_addremove_engagement() {
 			);
 		}
 	}
+
 	$check_is_engagement = BP_engagements_engagementship::check_is_engagement( bp_loggedin_user_id(), $engagement_id );
-	if ($_POST['action'] === 'is_engagement') {
-		error_log('fix is_engagement -e 125 ');
-		$check_is_engagement = 'is_engagement';
-	}
+
 	error_log('ajax_addremove_e POST action -e 127: '.$_POST['action']);
-	error_log('$check_is_engagement -e 118: '.$check_is_engagement);
+	error_log('$check_is_engagement -e 128: '.$check_is_engagement);
 	// In the 2 first cases the $engagement_id is a engagementship id.
 	if ( ! empty( $_POST['action'] ) && 'engagements_accept_engagementship' === $_POST['action'] ) {
 		if ( ! engagements_accept_engagementship( $engagement_id ) ) {
@@ -238,12 +237,12 @@ function bp_nouveau_ajax_addremove_engagement() {
 
 	// Trying to cancel engagementship in existed button..
 	} elseif ( 'exist_more_engagements' === $check_is_engagement ) {
-		error_log('>>exist_more_engagements -f 396: '. bp_loggedin_user_id() . ' - ' . $engagement_id);
+		error_log('>>exist_more_engagements -e 241: '. bp_loggedin_user_id() . ' - ' . $engagement_id);
 
 		if ( ! engagements_remove_engagement( bp_loggedin_user_id(), $engagement_id ) ) {
 			$response['feedback'] = sprintf(
 				'<div class="bp-feedback error">%s</div>',
-				esc_html__( 'engagementship could not be cancelled 403 -f.', 'buddypress' )
+				esc_html__( 'engagementship could not be cancelled 403 -e.', 'buddypress' )
 			);
 
 			wp_send_json_error( $response );
@@ -279,19 +278,6 @@ function bp_nouveau_ajax_addremove_engagement() {
 			wp_send_json_success( array( 'contents' => bp_get_add_engagement_button( $engagement_id ) ) );
 		}
 	// Trying to request engagementship in existed button.
-	} elseif ( 'exist_initiator_engagement' === $check_is_engagement ) {
-		error_log('>>exist_initiator_engagement -f 240: '. bp_loggedin_user_id() . ' - ' . $engagement_id);
-		if ( ! engagements_add_engagement( bp_loggedin_user_id(), $engagement_id ) ) {
-			$response['feedback'] = sprintf(
-				'<div class="bp-feedback error">%s</div>',
-				esc_html__( 'engagementship could not be requested exist_initiator_engagement -240.', 'buddypress' )
-			);
-
-			wp_send_json_error( $response );
-		} else {
-			wp_send_json_success( array( 'contents' => bp_get_add_engagement_button( $engagement_id ) ) );
-		}
-	// Trying to cancel pending request.
 	} elseif ( 'pending_engagement' === $check_is_engagement ) {
 		if ( engagements_withdraw_engagementship( bp_loggedin_user_id(), $engagement_id ) ) {
 			wp_send_json_success( array( 'contents' => bp_get_add_engagement_button( $engagement_id ) ) );
@@ -366,9 +352,9 @@ function bp_nouveau_ajax_addremove_friends_from_engagements() {
 	}
 
 	$check_is_friend = BP_Friends_Friendship::check_is_friend( bp_loggedin_user_id(), $friend_id );
+	
 	error_log('>>ajax_addremove_f from e -e 369 post action '. $_POST['action']);
-	error_log('$check_is_friend -f 370: '.$check_is_friend);
-
+	error_log('$check_is_friend -e 370: '.$check_is_friend);
 	// In the 2 first cases the $friend_id is a friendship id.
 	if ( ! empty( $_POST['action'] ) && 'friends_accept_friendship' === $_POST['action'] ) {
 		if ( ! friends_accept_friendship( $friend_id ) ) {
@@ -420,6 +406,7 @@ function bp_nouveau_ajax_addremove_friends_from_engagements() {
 	// Trying to cancel friendship.
 	} elseif ( 'is_friend' === $check_is_friend ) {
 		error_log('>>is_friend 386: '. bp_loggedin_user_id() . ' - ' . $friend_id);
+
 		if ( ! friends_remove_friend( bp_loggedin_user_id(), $friend_id ) ) {
 			$response['feedback'] = sprintf(
 				'<div class="bp-feedback error">%s</div>',
@@ -446,14 +433,15 @@ function bp_nouveau_ajax_addremove_friends_from_engagements() {
 			wp_send_json_success( $response );
 		}
 
-	// Trying to cancel friendship in existed button.
-	} elseif ( 'exist_initiator_friend' === $check_is_friend ) {
+	// Trying to cancel friendship in existed button..
+	} elseif ( 'exist_more_friends' === $check_is_friend ) {
 		// todo:
-		error_log('>>exist_initiator_friend 416: '. bp_loggedin_user_id() . ' - ' . $friend_id);
+		error_log('>>exist_more_friends -e 230: '. bp_loggedin_user_id() . ' - ' . $friend_id);
+		
 		if ( ! friends_remove_friend( $friend_id, bp_loggedin_user_id() ) ) {
 			$response['feedback'] = sprintf(
 				'<div class="bp-feedback error">%s</div>',
-				esc_html__( 'Friendship could not be cancelled (is_friend -e).', 'buddypress' )
+				esc_html__( 'friendship could not be cancelled. 230 -e', 'buddypress' )
 			);
 
 			wp_send_json_error( $response );
@@ -466,7 +454,7 @@ function bp_nouveau_ajax_addremove_friends_from_engagements() {
 				$response = array(
 					'feedback' => sprintf(
 						'<div class="bp-feedback success">%s</div>',
-						esc_html__( 'Friendship cancelled.', 'buddypress' )
+						esc_html__( 'friendship cancelled.', 'buddypress' )
 					),
 					'type'     => 'success',
 					'is_user'  => $is_user,
@@ -475,11 +463,12 @@ function bp_nouveau_ajax_addremove_friends_from_engagements() {
 
 			wp_send_json_success( $response );
 		}
-	// Trying to cancel friendship in existed button..
-	} elseif ( 'exist_more_friends' === $check_is_friend ) {
+	// Trying to stop engagementship in existed button.
+	} elseif ( 'awaiting_response' === $check_is_friend &&  $_POST['action'] == 'engagements_remove_friends_from_engagements') {
 		// todo:
-		error_log('>>exist_more_friends -e 230: '. bp_loggedin_user_id() . ' - ' . $friend_id);
-		if ( ! friends_remove_friend( $friend_id, bp_loggedin_user_id() ) ) {
+		error_log('>>exist_more_friends -e 497: '. bp_loggedin_user_id() . ' - ' . $friend_id);
+		
+		if ( ! friends_remove_friend( bp_loggedin_user_id(), $friend_id ) ) {
 			$response['feedback'] = sprintf(
 				'<div class="bp-feedback error">%s</div>',
 				esc_html__( 'friendship could not be cancelled. 230 -e', 'buddypress' )
@@ -531,6 +520,21 @@ function bp_nouveau_ajax_addremove_friends_from_engagements() {
 		} else {
 			wp_send_json_success( array( 'contents' => bp_get_add_friend_button( $friend_id ) ) );
 		}
+
+	// Trying to cancel pending request - reverse.
+	} elseif ( 'pending_friend' === $check_is_friend && $_POST['action'] == 'engagements_remove_friends_from_engagements') {
+		error_log(json_encode('pending_friend -e 536'));
+		if ( friends_withdraw_friendship( $friend_id, bp_loggedin_user_id() ) ) {
+			wp_send_json_success( array( 'contents' => bp_get_add_friend_button( $friend_id ) ) );
+		} else {
+			$response['feedback'] = sprintf(
+				'<div class="bp-feedback error">%s</div>',
+				esc_html__( 'Friendship request could not be cancelled. 542', 'buddypress' )
+			);
+
+			wp_send_json_error( $response );
+		}
+
 	// Trying to cancel pending request.
 	} elseif ( 'pending_friend' === $check_is_friend ) {
 		error_log(json_encode('pending_friend -e 500'));
@@ -547,7 +551,7 @@ function bp_nouveau_ajax_addremove_friends_from_engagements() {
 
 	// Request already pending.
 	} else {
-		error_log(json_encode('>>> default Request Pending Frien 514 -e'));
+		error_log(json_encode('>>> default Request Pending Frien 554 -e'));
 		$response['feedback'] = sprintf(
 			'<div class="bp-feedback error">%s</div>',
 			esc_html__( 'Request Pending Friend', 'buddypress' )

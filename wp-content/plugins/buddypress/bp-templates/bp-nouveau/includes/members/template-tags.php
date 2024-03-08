@@ -201,7 +201,6 @@ function bp_nouveau_members_loop_buttons( $args = array() ) {
 		$action       = 'bp_engagement_requests_item_action';
 	}
 	
-
 	$output = join( ' ', bp_nouveau_get_members_buttons( $args ) );
 
 

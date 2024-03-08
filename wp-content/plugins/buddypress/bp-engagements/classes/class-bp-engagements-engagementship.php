@@ -527,7 +527,7 @@ class BP_Engagements_Engagementship {
 			'engagement_user_id'    => $engagement_id,
 		);
 		$result = self::get_engagementships( $user_id, $args, 'OR' );
-		error_log('---------->class e get_engagementship_id');
+		// error_log('---------->class e get_engagementship_id');
 		// error_log('user_id:'.$user_id);
 		// error_log('engagement_id:'.$engagement_id);
 		$result = array_filter($result, function($v, $k) use ($user_id) {
@@ -865,8 +865,8 @@ class BP_Engagements_Engagementship {
 		global $wpdb;
 
 		$bp = buddypress();
-		error_log('>>>withdraw $engagementship_id: '.json_encode($engagementship_id));
 		// @todo: shortcut withdraw
+		error_log('>>>withdraw $engagementship_id 868: '.json_encode($engagementship_id));
 		return;
 		return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->engagements->table_name} WHERE id = %d AND initiator_user_id = %d", $engagementship_id, bp_loggedin_user_id() ) );
 	}
@@ -885,7 +885,9 @@ class BP_Engagements_Engagementship {
 		global $wpdb;
 
 		$bp = buddypress();
-
+		// @todo: shortcut reject
+		error_log('delete id: '.json_encode($engagementship_id));
+		return;
 		return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->engagements->table_name} WHERE id = %d AND engagement_user_id = %d", $engagementship_id, bp_loggedin_user_id() ) );
 	}
 
