@@ -98,7 +98,7 @@ function engagements_add_engagement( $initiator_userid, $engagement_userid, $for
  * @param int $engagement_userid    ID of the engagement user.
  * @return bool True on success, false on failure.
  */
-function engagements_remove_engagement( $initiator_userid, $engagement_userid ) {
+function engagements_remove_engagements( $initiator_userid, $engagement_userid ) {
 
 	$engagementship_id = BP_Engagements_Engagementship::get_engagementship_id( $initiator_userid, $engagement_userid );
 	$engagementship    = new BP_Engagements_Engagementship( $engagementship_id );

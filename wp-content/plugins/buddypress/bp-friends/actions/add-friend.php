@@ -30,7 +30,7 @@ function friends_action_add_friend() {
 
 	if ( 'not_friends' === $friendship_status ) {
 
-		if ( ! check_admin_referer( 'friends_add_friend' ) ) {
+		if ( ! check_admin_referer( 'friends_add_friends' ) ) {
 			return false;
 		}
 

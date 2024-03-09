@@ -224,8 +224,6 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 		}
 
 		$button_args = get_button_args($potential_engagement_id, 'engagement');
-		error_log('<<<<<<<<-e');
-		error_log('');
 
 		/**
 		 * Filters the HTML for the add engagement button.

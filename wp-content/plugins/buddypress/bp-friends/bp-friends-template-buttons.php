@@ -50,7 +50,7 @@ function friend_initiator_btn_args($friendship_status, $potential_friend_id, $fr
                 'wrapper_id'        => 'friendship-button-' . $potential_friend_id,
                 'link_href'         => wp_nonce_url(
                     bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'remove-friend', array( $potential_friend_id ) ) ) ),
-                    'friends_remove_friend'
+                    'friends_remove_friends'
                 ),
                 'link_text'         => __( "Stop Supply-R f-i {$flid}", 'buddypress' ),
                 'link_title'        => __( "Stop Supply-R f-i {$flid}", 'buddypress' ),
@@ -91,7 +91,7 @@ function friend_initiator_btn_args($friendship_status, $potential_friend_id, $fr
                 'wrapper_id'        => 'friendship-button-' . $potential_friend_id,
                 'link_href'         => wp_nonce_url(
                     bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'add-friend', array( $potential_friend_id ) ) ) ),
-                    'friends_add_friend'
+                    'friends_add_friends'
                 ),
                 'link_text'         => __( "Supply-R f-i {$flid}", 'buddypress' ),
                 'link_title'        => __( "Supply-R f-i {$flid}", 'buddypress' ),
@@ -147,7 +147,6 @@ function friend_reciver_btn_args($friendship_status, $potential_friend_id, $frie
 
         case 'remove_initiator_friend':
         case 'exist_initiator_friend':
-        case 'is_friend':
             $button_args = array(
                 'id'                => 'is_engagement',
                 'component'         => 'friends',
@@ -157,13 +156,34 @@ function friend_reciver_btn_args($friendship_status, $potential_friend_id, $frie
                 'wrapper_id'        => 'engagementship-button-' . $potential_friend_id,
                 'link_href'         => wp_nonce_url(
                     bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'remove-engagement', array( $potential_friend_id ) ) ) ),
-                    'friends_remove_friend'
+                    'friends_remove_friends'
                 ),
                 'link_text'         => __( "Stop Resell-S f-r {$flid}", 'buddypress' ),
                 'link_title'        => __( "Stop Resell-S f-r {$flid}", 'buddypress' ),
                 'link_id'           => 'engagement-' . $potential_friend_id,
                 'link_rel'          => 'remove',
                 'link_class'        => 'engagementship-button is_friend remove',
+            );
+            break;
+
+            case 'is_friend':
+            error_log(json_encode('>exist_more_friends -f-r'));
+            $button_args = array(
+                'id'                => 'is_friend',
+                'component'         => 'friends',
+                'must_be_logged_in' => true,
+                'block_self'        => false,
+                'wrapper_class'     => 'friendship-button is_friend',
+                'wrapper_id'        => 'friendship-button-' . $potential_friend_id,
+                'link_href'         => wp_nonce_url(
+                    bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'remove-friend', array( $potential_friend_id ) ) ) ),
+                    'friends_remove_friends'
+                ),
+                'link_text'         => __( "Stop Supply-R f-r {$flid}", 'buddypress' ),
+                'link_title'        => __( "Stop Supply-R f-r {$flid}", 'buddypress' ),
+                'link_id'           => 'friend-' . $potential_friend_id,
+                'link_rel'          => 'remove',
+                'link_class'        => 'friendship-button remove_friends remove',
             );
             break;
 

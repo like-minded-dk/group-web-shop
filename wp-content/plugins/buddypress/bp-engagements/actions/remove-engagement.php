@@ -13,6 +13,7 @@
  * @since 1.0.1
  */
 function engagements_action_remove_engagement() {
+	error_log(json_encode('>>>>>>>engagements_action_remove_engagement'));
 	if ( ! bp_is_engagements_component() || ! bp_is_current_action( 'remove-engagement' ) ) {
 		return false;
 	}
@@ -30,11 +31,11 @@ function engagements_action_remove_engagement() {
 
 	if ( 'is_engagement' === $engagementship_status ) {
 
-		if ( ! check_admin_referer( 'engagements_remove_engagement' ) ) {
+		if ( ! check_admin_referer( 'engagements_remove_engagements' ) ) {
 			return false;
 		}
 
-		if ( ! engagements_remove_engagement( bp_loggedin_user_id(), $potential_engagement_id ) ) {
+		if ( ! engagements_remove_engagements( bp_loggedin_user_id(), $potential_engagement_id ) ) {
 			bp_core_add_message( __( 'engagementship could not be canceled.', 'buddypress' ), 'error' );
 		} else {
 			bp_core_add_message( __( 'engagementship canceled', 'buddypress' ) );
@@ -44,10 +45,21 @@ function engagements_action_remove_engagement() {
 			return false;
 		}
 
-		if ( ! engagements_remove_engagement( bp_loggedin_user_id(), $potential_engagement_id ) ) {
+		if ( ! engagements_remove_engagements( bp_loggedin_user_id(), $potential_engagement_id ) ) {
 			bp_core_add_message( __( '(friends) engagementship could not be canceled.', 'buddypress' ), 'error' );
 		} else {
 			bp_core_add_message( __( '(friends) engagementship canceled', 'buddypress' ) );
+		}
+	} elseif ( 'remove_engagements' === $engagementship_status ) {
+		error_log(json_encode('1234.remove_engagements'));
+		if ( ! check_admin_referer( 'engagements_remove_engagements' ) ) {
+			return false;
+		}
+
+		if ( ! engagements_remove_engagements( bp_loggedin_user_id(), $potential_engagement_id ) ) {
+			bp_core_add_message( __( '(remove_engagements) engagementship could not be canceled.', 'buddypress' ), 'error' );
+		} else {
+			bp_core_add_message( __( '(remove_engagements) engagementship canceled', 'buddypress' ) );
 		}
 	} elseif ( 'not_engagements' === $engagementship_status ) {
 		bp_core_add_message( __( 'You are not yet engagements with this user', 'buddypress' ), 'error' );

@@ -840,7 +840,7 @@ class BP_Friends_Friendship {
 
 		$bp = buddypress();
 		// @todo: shortcut
-		error_log('!Remove friendship 843 f: '.json_encode($friendship_id));
+		error_log('!withdraw friendship 843 f: '.json_encode($friendship_id));
 		return;
 		return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->friends->table_name} WHERE id = %d AND initiator_user_id = %d", $friendship_id, bp_loggedin_user_id() ) );
 	}

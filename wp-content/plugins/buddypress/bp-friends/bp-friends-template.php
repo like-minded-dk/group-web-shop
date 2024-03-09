@@ -224,8 +224,6 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 		}
 
 		$button_args = get_button_args($potential_friend_id, 'friend');
-		error_log("<<<<<<<<-f");
-		error_log("");
 
 		/**
 		 * Filters the HTML for the add friend button.

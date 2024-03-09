@@ -688,20 +688,22 @@ window.bp = window.bp || {};
 			// Unfortunately unlike groups
 			// Friends actions does not match the wpnonce
 			var friends_actions_map = {
+				remove_friends: 'remove_friends',
 				remove_engagements_from_friends: 'remove_engagements_from_friends',
 				not_engagements_from_friends: 'not_engagements_from_friends',
-				is_friend         : 'remove_friend',
-				not_friends       : 'add_friend',
+				is_friend         : 'remove_friends',
+				not_friends       : 'add_friends',
 				pending_friend    : 'withdraw_friendship',
 				accept_friendship : 'accept_friendship',
 				reject_friendship : 'reject_friendship'
 			};
 
 			var engagements_actions_map = {
+				remove_engagements: 'remove_engagements',
 				remove_friends_from_engagements: 'remove_friends_from_engagements',
 				not_friends_from_engagements: 'not_friends_from_engagements',
-				is_engagement         : 'remove_engagement',
-				not_engagements       : 'add_engagement',
+				is_engagement         : 'remove_engagements',
+				not_engagements       : 'add_engagements',
 				pending_engagement    : 'withdraw_engagementship',
 				accept_engagementship : 'accept_engagementship',
 				reject_engagementship : 'reject_engagementship'
@@ -719,6 +721,7 @@ window.bp = window.bp || {};
 
 			// Add a pending class to prevent queries while we're processing the action.
 			target.addClass( 'pending loading' );
+            // eslint-disable-next-line no-console
 
 			self.ajax( {
 				action   : object + '_' + action,
@@ -750,7 +753,7 @@ window.bp = window.bp || {};
 					if ( $( self.objectNavParent + ' [data-bp-scope="personal"]' ).length ) {
 						var personal_count = Number( $( self.objectNavParent + ' [data-bp-scope="personal"] span' ).html() ) || 0;
 
-						if ( -1 !== $.inArray( action, ['leave_group', 'remove_friend'] ) ) {
+						if ( -1 !== $.inArray( action, ['leave_group', 'remove_friends'] ) ) {
 							personal_count -= 1;
 						} else if ( -1 !== $.inArray( action, ['join_group'] ) ) {
 							personal_count += 1;
