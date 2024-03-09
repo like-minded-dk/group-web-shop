@@ -1,131 +1,110 @@
 <?php
 function get_button_args ($pid, $comp) {
 	$oppo = $comp == 'friend' ? 'engagement' : 'friend'; 
-	//friend_initiator_btn_args
-	$initiator_func = "{$comp}_initiator_btn_args";
-	//friend_reciver_btn_args
-	$reciver_func   = "{$comp}_reciver_btn_args";
 	$mk = $comp[0];
 	$button_args = array();
 	list(
-		$ini_e,
-		$ini_f,
-		$fst,
-		$est,
 		$pid,
 		$sg,
-		$f_rel_id,
-		$e_rel_id,
 		$is_reversed,
 		$status,
-		$rev_e_awa,
-		$rev_f_awa,
-		$ini_e_awa,
-		$ini_f_awa,
-		$ini_f_id,
-		$rev_f_id,
-		$ini_e_id,
-		$rev_e_id,
-		$is_member
+		$is_member,
+		$button_func,
+		$comp_st,
+		$oppo_st,
+		$rel_id,
+		$ini_aw,
+		$rev_aw
 	) = get_template_vars($pid, $comp);
 
-	$ini_id = ($comp == 'friend' ? $ini_f_id  : $ini_e_id) ?? $f_rel_id ;
-	$rev_id = ($comp == 'friend' ? $rev_e_id  : $rev_f_id) ?? $e_rel_id ;
+	// 	// engagement_initiator_btn_args();
+	// 	// friend_initiator_btn_args();
+	// 	// friend_initiator_btn_args();
+	// 	// engagement_initiator_btn_args();
 
-	$ini_aw = ($comp == 'friend' ? $ini_e_awa  : $ini_f_awa);
-	$rev_aw = ($comp == 'friend' ? $rev_e_awa  : $rev_f_awa);
-
-	$comp_st = ($comp == 'friend' ? $fst  : $est);
-	$oppo_st = ($comp == 'friend' ? $est  : $fst);
-
-	$status = ($comp == 'friend' ? $fst  : $est);
-
-	$button_func = $is_reversed == '1' ? $reciver_func : $initiator_func;
-	// error_log('----sts--comp_st--oppo_st');
-	// error_log(json_encode($comp_st));
-	// error_log(json_encode($oppo_st));
-	
 	if (false) {
 		return;
-	} elseif ($is_member ) {
+	} elseif ( $is_member ) {
 		// one initiator
 		error_log(json_encode("is_member "). $button_func);
-		$button_args = $button_func($status, $pid, $sg, $ini_id ?? $rev_id);
+		$button_args = $button_func($status, $pid, $sg, $rel_id);
 
 	} elseif ($comp_st == "is_{$comp}" && $oppo_st == "is_{$oppo}" ) {
 		// one initiator
 		error_log(json_encode("1.1 isf ise"));
-		$button_args = $button_func("is_{$comp}", $pid, $sg, $ini_id);
+		$button_args = $button_func("is_{$comp}", $pid, $sg, $rel_id);
 
 	} elseif ($comp_st == "pending_{$comp}" && $oppo_st == "is_{$oppo}" ) {
 		// both relations are initiator
 		error_log(json_encode("1.1 pef ise"));
-		$button_args = $button_func("pending_{$comp}", $pid, $sg, $ini_id);
-
-	} elseif ($comp_st == "not_{$comp}s" && $oppo_st == "exist_initiator_{$oppo}") {
-		// one reciver
-		error_log(json_encode("3.0 nof exi"));
-		$button_args = $button_func("remove_initiator_{$oppo}", $pid, $sg, $rev_id);
+		$button_args = $button_func("pending_{$comp}", $pid, $sg, $rel_id);
 
 	} elseif ($comp_st == "exist_initiator_{$comp}" && $oppo_st == "exist_initiator_{$oppo}") {
 		// both relations are reciver
 		error_log(json_encode("3.3 eif eie"));
-		$button_args = $button_func("remove_initiator_{$comp}", $pid, $sg, $rev_id);
+		$button_args = $button_func("remove_initiator_{$comp}", $pid, $sg, $rel_id);
 
 	} elseif ($comp_st == "awaiting_response" && $oppo_st == "exist_initiator_{$oppo}") {
 		// both relations are reciver
 		error_log(json_encode("3.3 awr eie"));
-		$button_args = $button_func("awaiting_response", $pid, $sg, $rev_id);
-		
-	} elseif ($comp_st == "not_{$comp}s" && $oppo_st == "exist_more_{$oppo}s" && $rev_aw == "1" ) {
-		// 17 e 1 + 9 e 0						
-		error_log(json_encode("4.0 nof eme re"));
-		$button_args = $button_func("awaiting_response", $pid, $sg, $rev_id);
+		$button_args = $button_func("awaiting_response", $pid, $sg, $rel_id);
 
-	} elseif ($comp_st == "not_{$comp}s" && $oppo_st == "exist_more_{$oppo}s" && $ini_aw == "1" ) {
-		// 17 e 1 + 9 e 0						
-		error_log(json_encode("4.0 not_ exist_more_ ia=1"));
-		$button_args = $button_func("remove_more_engagements", $pid, $sg, $rev_id);
+	} elseif ($comp_st == "not_{$comp}s") {
+		if (false) {
+			return;
 
-	} elseif ($status === "exist_more_{$comp}s") {
-		error_log(json_encode("em comp"));
-		$button_args = $button_func("is_{$comp}", $pid, $sg, $ini_id);
+		} elseif ($oppo_st == "exist_initiator_{$oppo}") {
+			error_log(json_encode("3.0 nof exi"));
+			$button_args = $button_func("remove_initiator_{$oppo}", $pid, $sg, $rel_id);
 
-	} elseif ($status === "exist_initiator_{$comp}") {
-		error_log(json_encode("eif"));
-		$button_args = $button_func("remove_initiator_{$comp}", $pid, $sg, $rev_id);
+		} elseif ($oppo_st == "pending_{$oppo}") {
+			if ($is_reversed == "0") {
+				// initial
+				error_log(json_encode("nof pee rev0"));
+				$button_args = $button_func("pending_{$comp}", $pid, $sg, $rel_id);
+			} else {
+				// reversed
+				error_log(json_encode("not pending rev1"));
+				$button_args = $button_func("remove_more_{$oppo}s", $pid, $sg, $rel_id);
+			}
 
-	} elseif ($comp_st == "not_{$comp}s" && $oppo_st == "pending_{$oppo}" && $is_reversed == "0") {
-		error_log(json_encode("nof pee rev0"));
-		$button_args = $button_func("pending_{$comp}", $pid, $sg, $rev_id);
+		} elseif ($oppo_st == "awaiting_response") {
+			if ($is_reversed == "1") {
+				// reversed
+				error_log(json_encode("nof awr rev1 107"));
+				$button_args = $button_func("exist_more_{$oppo}s", $pid, $sg, $rel_id);
+			} else {
+				// initial
+				error_log(json_encode("nof awr rev0 110"));
+				$button_args = $button_func("awaiting_response", $pid, $sg, $rel_id);
+			}
 
-	} elseif ($comp_st == "not_{$comp}s" && $oppo_st == "pending_{$oppo}" && $is_reversed == "1") {
-		error_log(json_encode("not pending rev1"));
-		$button_args = $button_func("remove_more_{$oppo}s", $pid, $sg, $rev_id);
-
-	} elseif ($comp_st == "not_{$comp}s" && $oppo_st == "awaiting_response" && $is_reversed == "1") {
-		error_log(json_encode("nof awr rev1"));
-		$button_args = $button_func("exist_more_{$oppo}s", $pid, $sg, $ini_id);
-
-	} elseif ($comp_st == "not_{$comp}s" && $oppo_st == "awaiting_response" && $is_reversed == "0") {
-		error_log(json_encode("nof awr rev0"));
-		$button_args = $button_func("awaiting_response", $pid, $sg, $rev_id);
-
-	} elseif ($comp_st == "not_{$comp}s" && $oppo_st== "exist_more_{$oppo}s" && $ini_aw == "1" ) {
-		error_log(json_encode("em oppo inia"));
-		$button_args = $button_func("remove_more_{$oppo}s", $pid, $sg, $rev_id);
-	
-	} elseif ($comp_st == "not_{$comp}s" && $oppo_st== "exist_more_{$oppo}s" && $rev_aw == "1" ) {
-		error_log(json_encode("em oppo reva"));
-		$button_args = $button_func("remove_more_{$oppo}s", $pid, $sg, $rev_id);
-
+		} elseif ($oppo_st == "exist_more_{$oppo}s") {
+			if ($ini_aw == "1") {
+				// ini awating
+				error_log(json_encode("em oppo inia"));
+				$button_args = $button_func("remove_more_{$oppo}s", $pid, $sg, $rel_id);
+			} elseif ($rev_aw == "1") {
+				// rev awating
+				error_log(json_encode("4.0 nof eme re"));
+				$button_args = $button_func("awaiting_response", $pid, $sg, $rel_id);
+			} elseif ($is_reversed == "1") {
+				// reversed
+				error_log(json_encode("exist_more_126 reversed"));
+				$button_args = $button_func($status, $pid, $sg, $rel_id);
+			} else {
+				// initial
+				error_log(json_encode("exist_more_129 initial"));
+				$button_args = $button_func($status, $pid, $sg, $rel_id);
+			}
+		}
 	} elseif ($is_reversed == 1) {
 		error_log(json_encode("rev only "));
-		$button_args = $button_func($status, $pid, $sg, $rev_id);
+		$button_args = $button_func($status, $pid, $sg, $rel_id);
 
 	} else {
 		error_log(json_encode("els only "));
-		$button_args = $button_func($status, $pid, $sg, $ini_id);
+		$button_args = $button_func($status, $pid, $sg, $rel_id);
 	}
 
 	error_log('<<<<<<<<-: '.$mk);
@@ -133,6 +112,7 @@ function get_button_args ($pid, $comp) {
 	return $button_args;
 }
 function get_template_vars($pid, $comp) {
+		$oppo = $comp == 'friend' ? 'engagement' : 'friend'; 
 		$user_id = bp_loggedin_user_id();
 		$fst = bp_is_friend( $pid );
 		$est = bp_is_engagement( $pid );
@@ -156,6 +136,25 @@ function get_template_vars($pid, $comp) {
 		$ini_e_awa = is_initial_awating('engagement');
 		$rev_f_awa = is_reciver_awating('friend');
 		$ini_f_awa = is_initial_awating('friend');
+
+		$ini_id = ($comp == 'friend' ? $ini_f_id  : $ini_e_id) ?? $f_rel_id ;
+		$rev_id = ($comp == 'friend' ? $rev_e_id  : $rev_f_id) ?? $e_rel_id ;
+
+		$ini_aw = ($comp == 'friend' ? $ini_e_awa  : $ini_f_awa);
+		$rev_aw = ($comp == 'friend' ? $rev_e_awa  : $rev_f_awa);
+
+		$comp_st = ($comp == 'friend' ? $fst  : $est);
+		$oppo_st = ($comp == 'friend' ? $est  : $fst);
+
+		$aw = ($is_reversed == '1' ? $rev_aw  : $ini_aw);
+		$rel_id = ($is_reversed == '1' ? $rev_id  : $ini_id);
+
+		$initiator_func = "{$comp}_initiator_btn_args";
+		$reciver_func   = "{$comp}_reciver_btn_args";
+		$button_func = $is_reversed == '1' ? $reciver_func : $initiator_func;
+
+		error_log('----sts--comp_st--oppo_st');
+		error_log('comp '.json_encode($comp) . ' oppo '.json_encode($oppo) . ' comp_st '.json_encode($comp_st) . ' oppo_st '.json_encode($oppo_st));
 		
 		error_log('');
 		error_log('>>await rfa ifa rea iea: '.json_encode( $rev_f_awa . ', ' .$ini_f_awa . ', ' . $rev_e_awa . ', ' .$ini_e_awa ));
@@ -172,27 +171,20 @@ function get_template_vars($pid, $comp) {
 		error_log('================$status: '.$status);
 		error_log('====================$sg: '.$sg);
 		error_log('==$bp_current_component: '.bp_current_component());
+		
 
 		return [
-			$ini_e,
-			$ini_f,
-			$fst,
-			$est,
 			$pid,
 			$sg,
-			$f_rel_id,
-			$e_rel_id,
 			$is_reversed,
 			$status,
-			$rev_e_awa,
-			$rev_f_awa,
-			$ini_e_awa,
-			$ini_f_awa,
-			$ini_f_id,
-			$rev_f_id,
-			$ini_e_id,
-			$rev_e_id,
-			$is_member
+			$is_member,
+			$button_func,
+			$comp_st,
+			$oppo_st,
+			$rel_id,
+			$ini_aw,
+			$rev_aw
 		];
 }
 

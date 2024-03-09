@@ -3,6 +3,7 @@ function engagement_initiator_btn_args($engagementship_status, $potential_engage
     error_log('status e-i '.$engagementship_status);
     switch ( $engagementship_status ) {
         case 'pending_engagement':
+            error_log(json_encode('>>pending_engagement e-i'));
             $button_args = array(
                 'id'                => 'pending_engagement',
                 'component'         => 'engagements',
@@ -23,6 +24,7 @@ function engagement_initiator_btn_args($engagementship_status, $potential_engage
             break;
 
         case 'awaiting_response':
+            error_log(json_encode('>>awaiting_response e-i'));
             $button_args = array(
                 'id'                => 'awaiting_response',
                 'component'         => 'engagements',
@@ -41,6 +43,7 @@ function engagement_initiator_btn_args($engagementship_status, $potential_engage
 
         case 'exist_initiator_engagement':
         case 'is_engagement':
+            error_log(json_encode('>>is_engagement e-i'));
             $button_args = array(
                 'id'                => 'is_engagement',
                 'component'         => 'engagements',
@@ -60,7 +63,9 @@ function engagement_initiator_btn_args($engagementship_status, $potential_engage
             );
             break;
 
+        case 'exist_more_engagements':
         case 'exist_more_friends':
+            error_log(json_encode('>>exist_more_friends e-i'));
             $button_args = array(
                 'id'                => 'is_engagement',
                 'component'         => 'engagements',
@@ -109,6 +114,7 @@ function engagement_reciver_btn_args($engagementship_status, $potential_engageme
     error_log('status e-r '.$engagementship_status);
     switch ( $engagementship_status ) {
         case 'pending_engagement':
+            error_log(json_encode('>>pending_engagement e-r'));
             $button_args = array(
                 'id'                => 'pending_engagement',
                 'component'         => 'engagements',
@@ -129,6 +135,7 @@ function engagement_reciver_btn_args($engagementship_status, $potential_engageme
             break;
 
         case 'awaiting_response':
+            error_log(json_encode('>>awaiting_response e-r'));
             $button_args = array(
                 'id'                => 'awaiting_response',
                 'component'         => 'engagements',
@@ -147,6 +154,7 @@ function engagement_reciver_btn_args($engagementship_status, $potential_engageme
 
         case 'remove_initiator_engagement':
         case 'exist_initiator_engagement':
+            error_log(json_encode('>>exist_initiator_engagement e-r'));
             $button_args = array(
                 'id'                => 'is_friend',
                 'component'         => 'engagements',
@@ -167,6 +175,7 @@ function engagement_reciver_btn_args($engagementship_status, $potential_engageme
             break;
 
         case 'is_engagement':
+            error_log(json_encode('>>is_engagement e-r'));
             $button_args = array(
                 'id'                => 'is_engagement',
                 'component'         => 'engagements',
@@ -187,6 +196,7 @@ function engagement_reciver_btn_args($engagementship_status, $potential_engageme
             break;
 
         case 'remove_more_friends':
+            error_log(json_encode('>>remove_more_friends e-r'));
             $button_args = array(
                 'id'                => 'remove_more_friends',
                 'component'         => 'engagements',
@@ -207,6 +217,7 @@ function engagement_reciver_btn_args($engagementship_status, $potential_engageme
             break;
 
         case 'exist_more_engagements':
+            error_log(json_encode('>>exist_more_engagements e-r'));
             $button_args = array(
                 'id'                => 'exist_more_engagements',
                 'component'         => 'engagements',
