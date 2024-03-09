@@ -83,7 +83,28 @@ function engagement_initiator_btn_args($engagementship_status, $potential_engage
                 'link_class'        => 'engagementship-button remove_friends_from_engagements remove',
             );
             break;
-    
+
+        case 'remove_initiator_engagement':
+            error_log(json_encode('>>remove_initiator_engagement e-i'));
+            $button_args = array(
+                'id'                => 'is_engagement',
+                'component'         => 'engagements',
+                'must_be_logged_in' => true,
+                'block_self'        => false,
+                'wrapper_class'     => 'engagementship-button is_engagement',
+                'wrapper_id'        => 'engagementship-button-' . $potential_engagement_id,
+                'link_href'         => wp_nonce_url(
+                    bp_loggedin_user_url( bp_members_get_path_chunks( array( $engagements_slug, 'remove-engagement', array( $potential_engagement_id ) ) ) ),
+                    'friends_remove_engagements_from_friends'
+                ),
+                'link_text'         => __( "Stop Supply-R e-r {$elid}", 'buddypress' ),
+                'link_title'        => __( "Stop Supply-R e-r {$elid}", 'buddypress' ),
+                'link_id'           => 'engagement-' . $potential_engagement_id,
+                'link_rel'          => 'remove',
+                'link_class'        => 'engagementship-button remove_engagements_from_friends remove',
+            );
+            break;
+   
         default:
             error_log(json_encode('>>default e-i'));
             $button_args = array(
