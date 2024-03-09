@@ -295,8 +295,22 @@ function bp_nouveau_ajax_addremove_engagement() {
 		}
 	
 	// Trying to cancel pending reques
-	} elseif ( 'pending_engagement' === $check_is_engagement ) {
+	} elseif ( 'pending_engagement' === $check_is_engagement && $_POST['action'] == 'engagements_withdraw_engagementship') {
 		error_log(json_encode('>pending_engagement -f 299: friend_id '. $engagement_id));
+		if ( engagements_withdraw_engagementship( $engagement_id,  $user_id ) ) {
+			wp_send_json_success( array( 'contents' => bp_get_add_engagement_button( $engagement_id ) ) );
+		} else {
+			$response['feedback'] = sprintf(
+				'<div class="bp-feedback error">%s</div>',
+				esc_html__( 'engagementship request could not be cancelled.', 'buddypress' )
+			);
+
+			wp_send_json_error( $response );
+		}
+
+	// Trying to cancel pending reques
+	} elseif ( 'pending_engagement' === $check_is_engagement ) {
+		error_log(json_encode('>pending_engagement -f 313: friend_id '. $engagement_id));
 		if ( engagements_withdraw_engagementship( $user_id, $engagement_id ) ) {
 			wp_send_json_success( array( 'contents' => bp_get_add_engagement_button( $engagement_id ) ) );
 		} else {
@@ -518,7 +532,7 @@ function bp_nouveau_ajax_addremove_friends_from_engagements() {
 		if ( ! engagements_remove_engagement( $user_id, $friend_id ) ) {
 			$response['feedback'] = sprintf(
 				'<div class="bp-feedback error">%s</div>',
-				esc_html__( 'friendship could not be cancelled. 507 -e', 'buddypress' )
+				esc_html__( 'engagementship could not be cancelled. 507 -e', 'buddypress' )
 			);
 
 			wp_send_json_error( $response );
@@ -531,7 +545,7 @@ function bp_nouveau_ajax_addremove_friends_from_engagements() {
 				$response = array(
 					'feedback' => sprintf(
 						'<div class="bp-feedback success">%s</div>',
-						esc_html__( 'friendship cancelled.', 'buddypress' )
+						esc_html__( 'engagementship cancelled.', 'buddypress' )
 					),
 					'type'     => 'success',
 					'is_user'  => $is_user,
@@ -540,6 +554,7 @@ function bp_nouveau_ajax_addremove_friends_from_engagements() {
 
 			wp_send_json_success( $response );
 		}
+	// Trying to request friendship.
 	} elseif ( 'not_friends' === $check_is_friend ) {
 		error_log('>>not_friends -e 473: '. $user_id . ' - ' . $friend_id);
 		if ( ! friends_add_friend( $user_id, $friend_id ) ) {

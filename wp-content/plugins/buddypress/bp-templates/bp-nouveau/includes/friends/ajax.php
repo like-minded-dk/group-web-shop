@@ -295,6 +295,20 @@ function bp_nouveau_ajax_addremove_friend() {
 		}
 
 	// Trying to cancel pending request.
+	} elseif ( 'pending_friend' === $check_is_friend && $_POST['action'] == 'friends_withdraw_friendship' ) {
+		error_log(json_encode('>pending_friend -f 299: friend_id '. $friend_id));
+		if ( friends_withdraw_friendship( $friend_id,  $user_id ) ) {
+			wp_send_json_success( array( 'contents' => bp_get_add_friend_button( $friend_id ) ) );
+		} else {
+			$response['feedback'] = sprintf(
+				'<div class="bp-feedback error">%s</div>',
+				esc_html__( 'Friendship request could not be cancelled.', 'buddypress' )
+			);
+
+			wp_send_json_error( $response );
+		}
+
+	// Trying to cancel pending request.
 	} elseif ( 'pending_friend' === $check_is_friend ) {
 		error_log(json_encode('>pending_friend -f 299: friend_id '. $friend_id));
 		if ( friends_withdraw_friendship( $user_id, $friend_id ) ) {

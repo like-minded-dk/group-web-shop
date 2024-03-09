@@ -97,8 +97,8 @@ function friend_initiator_btn_args($friendship_status, $potential_friend_id, $fr
                     bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'remove-friend', array( $potential_friend_id ) ) ) ),
                     'engagements_remove_friends_from_engagements'
                 ),
-                'link_text'         => __( "Stop Supply-R e-r {$flid}", 'buddypress' ),
-                'link_title'        => __( "Stop Supply-R e-r {$flid}", 'buddypress' ),
+                'link_text'         => __( "Stop Resell-S f-i {$flid}", 'buddypress' ),
+                'link_title'        => __( "Stop Resell-S f-i {$flid}", 'buddypress' ),
                 'link_id'           => 'friend-' . $potential_friend_id,
                 'link_rel'          => 'remove',
                 'link_class'        => 'friendship-button remove_friends_from_engagements remove',
@@ -233,6 +233,27 @@ function friend_reciver_btn_args($friendship_status, $potential_friend_id, $frie
                 'link_id'           => 'friend-' . $potential_friend_id,
                 'link_rel'          => 'remove',
                 'link_class'        => 'friendship-button remove_engagements_from_friends remove',
+            );
+            break;
+
+        case 'remove_engagements':
+            error_log(json_encode('>remove_more_engagements f-r'));
+            $button_args = array(
+                'id'                => 'remove_more_engagements',
+                'component'         => 'friends',
+                'must_be_logged_in' => true,
+                'block_self'        => false,
+                'wrapper_class'     => 'friendship-button is_friend',
+                'wrapper_id'        => 'friendship-button-' . $potential_friend_id,
+                'link_href'         => wp_nonce_url(
+                    bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'remove-friend', array( $potential_friend_id ) ) ) ),
+                    'engagements_remove_engagements'
+                ),
+                'link_text'         => __( "Stop Supply-R f-r {$flid}", 'buddypress' ),
+                'link_title'        => __( "Stop Supply-R f-r {$flid}", 'buddypress' ),
+                'link_id'           => 'friend-' . $potential_friend_id,
+                'link_rel'          => 'remove',
+                'link_class'        => 'friendship-button remove_engagements remove',
             );
             break;
 

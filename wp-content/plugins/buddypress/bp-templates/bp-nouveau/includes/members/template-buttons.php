@@ -68,6 +68,11 @@ function get_button_args ($pid, $comp) {
 			error_log(json_encode("||||> init rev same"));
 			$button_args = $button_func("remove_more_{$oppo}s", $pid, $sg, $rel_id);
 		}
+	} elseif ($comp_st == "not_{$comp}s" && $oppo_st == "pending_{$oppo}") {
+		// stop existed in same table
+		error_log(json_encode("||||> rev pending_comp in same"));
+		$button_args = $button_func("remove_{$oppo}s", $pid, $sg, $rel_id);	
+
 	} elseif ($oppo_st == "not_{$oppo}s") {
 		if (false) {
 			return;
