@@ -31,11 +31,11 @@ function engagements_action_remove_engagement() {
 
 	if ( 'is_engagement' === $engagementship_status ) {
 
-		if ( ! check_admin_referer( 'engagements_remove_engagements' ) ) {
+		if ( ! check_admin_referer( 'engagements_remove_engagement' ) ) {
 			return false;
 		}
 
-		if ( ! engagements_remove_engagements( bp_loggedin_user_id(), $potential_engagement_id ) ) {
+		if ( ! engagements_remove_engagement( bp_loggedin_user_id(), $potential_engagement_id ) ) {
 			bp_core_add_message( __( 'engagementship could not be canceled.', 'buddypress' ), 'error' );
 		} else {
 			bp_core_add_message( __( 'engagementship canceled', 'buddypress' ) );
@@ -45,18 +45,18 @@ function engagements_action_remove_engagement() {
 			return false;
 		}
 
-		if ( ! engagements_remove_engagements( bp_loggedin_user_id(), $potential_engagement_id ) ) {
+		if ( ! engagements_remove_engagement( bp_loggedin_user_id(), $potential_engagement_id ) ) {
 			bp_core_add_message( __( '(friends) engagementship could not be canceled.', 'buddypress' ), 'error' );
 		} else {
 			bp_core_add_message( __( '(friends) engagementship canceled', 'buddypress' ) );
 		}
 	} elseif ( 'remove_engagements' === $engagementship_status ) {
 		error_log(json_encode('1234.remove_engagements'));
-		if ( ! check_admin_referer( 'engagements_remove_engagements' ) ) {
+		if ( ! check_admin_referer( 'engagements_remove_engagement' ) ) {
 			return false;
 		}
 
-		if ( ! engagements_remove_engagements( bp_loggedin_user_id(), $potential_engagement_id ) ) {
+		if ( ! engagements_remove_engagement( bp_loggedin_user_id(), $potential_engagement_id ) ) {
 			bp_core_add_message( __( '(remove_engagements) engagementship could not be canceled.', 'buddypress' ), 'error' );
 		} else {
 			bp_core_add_message( __( '(remove_engagements) engagementship canceled', 'buddypress' ) );

@@ -3,6 +3,7 @@ function friend_initiator_btn_args($friendship_status, $potential_friend_id, $fr
     error_log('status f-i '.$friendship_status);
     switch ( $friendship_status ) {
         case 'pending_friend':
+            error_log(json_encode('>>pending_engagement f-i'));
             $button_args = array(
                 'id'                => 'pending_friend',
                 'component'         => 'friends',
@@ -23,6 +24,7 @@ function friend_initiator_btn_args($friendship_status, $potential_friend_id, $fr
             break;
 
         case 'awaiting_response':
+            error_log(json_encode('>>awaiting_response f-i'));
             $button_args = array(
                 'id'                => 'awaiting_response',
                 'component'         => 'friends',
@@ -61,6 +63,7 @@ function friend_initiator_btn_args($friendship_status, $potential_friend_id, $fr
             break;
     
         case 'exist_more_engagements':
+            error_log(json_encode('>>exist_more_friends f-i'));
             $button_args = array(
                 'id'                => 'is_friend',
                 'component'         => 'friends',
