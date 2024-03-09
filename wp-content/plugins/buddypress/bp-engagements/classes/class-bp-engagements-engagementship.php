@@ -749,7 +749,7 @@ class BP_Engagements_Engagementship {
 				OR (initiator_user_id IN ({$engagement_ids_sql}) AND engagement_user_id = %d )
 		SQL, $user_id, $user_id );
 		$engagementships = $wpdb->get_results( $sql );
-		error_log('   >>>>start cls e>>> ');
+		// error_log('   >>>>start cls e>>> ');
 		// error_log('class e 717 $sql'.json_encode($sql));
 		// Use $handled to keep track of all of the $possible_engagement_ids we've matched.
 		$handled = array();

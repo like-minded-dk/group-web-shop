@@ -14,6 +14,7 @@
  * @since 1.0.1
  */
 function engagements_action_add_engagement() {
+	error_log(json_encode('>>>>>>>engagements_action_add_engagement'));
 	if ( ! bp_is_engagements_component() || ! bp_is_current_action( 'add-engagement' ) ) {
 		return false;
 	}

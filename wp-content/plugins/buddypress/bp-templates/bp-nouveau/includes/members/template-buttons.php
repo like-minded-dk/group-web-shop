@@ -48,16 +48,21 @@ function get_button_args ($pid, $comp) {
 		// both relations are reciver
 		error_log(json_encode("||||> 3.3 awr eie"));
 		$button_args = $button_func("awaiting_response", $pid, $sg, $rel_id);
+	
+	} elseif ($comp_st == "not_{$comp}s" && $oppo_st == "exist_more_{$oppo}s") {
+		// has init and rev in same table
+		error_log(json_encode("||||> init rev same"));
+		$button_args = $button_func("remove_more_{$oppo}s", $pid, $sg, $rel_id);
 
-	} elseif ($comp_st == "not_{$comp}s") {
+	} elseif ($oppo_st == "not_{$oppo}s") {
 		if (false) {
 			return;
 
-		} elseif ($oppo_st == "exist_initiator_{$oppo}") {
+		} elseif ($comp_st == "exist_initiator_{$comp}") {
 			error_log(json_encode("||||> 3.0 nof exi"));
-			$button_args = $button_func("remove_initiator_{$oppo}", $pid, $sg, $rel_id);
+			$button_args = $button_func("remove_initiator_{$comp}", $pid, $sg, $rel_id);
 
-		} elseif ($oppo_st == "pending_{$oppo}") {
+		} elseif ($comp_st == "pending_{$comp}") {
 			if ($is_reversed == "0") {
 				// initial
 				error_log(json_encode("||||> nof pee rev0"));
@@ -65,25 +70,25 @@ function get_button_args ($pid, $comp) {
 			} else {
 				// reversed
 				error_log(json_encode("||||> not pending rev1"));
-				$button_args = $button_func("remove_more_{$oppo}s", $pid, $sg, $rel_id);
+				$button_args = $button_func("remove_more_{$comp}s", $pid, $sg, $rel_id);
 			}
 
-		} elseif ($oppo_st == "awaiting_response") {
+		} elseif ($comp_st == "awaiting_response") {
 			if ($is_reversed == "1") {
 				// reversed
 				error_log(json_encode("||||> nof awr rev1 107"));
-				$button_args = $button_func("exist_more_{$oppo}s", $pid, $sg, $rel_id);
+				$button_args = $button_func("exist_more_{$comp}s", $pid, $sg, $rel_id);
 			} else {
 				// initial
 				error_log(json_encode("||||> nof awr rev0 110"));
 				$button_args = $button_func("awaiting_response", $pid, $sg, $rel_id);
 			}
 
-		} elseif ($oppo_st == "exist_more_{$oppo}s") {
+		} elseif ($comp_st == "exist_more_{$comp}s") {
 			if ($ini_aw == "1") {
 				// ini awating
 				error_log(json_encode("||||> em oppo inia"));
-				$button_args = $button_func("remove_more_{$oppo}s", $pid, $sg, $rel_id);
+				$button_args = $button_func("remove_more_{$comp}s", $pid, $sg, $rel_id);
 			} elseif ($rev_aw == "1") {
 				// rev awating
 				error_log(json_encode("||||> 4.0 nof eme re"));
@@ -95,7 +100,7 @@ function get_button_args ($pid, $comp) {
 			} else {
 				// initial
 				error_log(json_encode("||||> exist_more_129 initial"));
-				$button_args = $button_func($status, $pid, $sg, $rel_id);
+				$button_args = $button_func("is_{$comp}", $pid, $sg, $rel_id);
 			}
 		}
 	} elseif ($is_reversed == 1) {
@@ -153,42 +158,38 @@ function get_template_vars($pid, $comp) {
 		$reciver_func   = "{$comp}_reciver_btn_args";
 		$button_func = $is_reversed == '1' ? $reciver_func : $initiator_func;
 
-	if ($comp == 'engagement' ) {
-
+	if ($comp == 'friend' ) {
 		error_log('');
 		error_log('----sts--comp_st--oppo_st');
 		error_log('comp '.json_encode($comp) . ' oppo '.json_encode($oppo) . ' comp_st '.json_encode($comp_st) . ' oppo_st '.json_encode($oppo_st));
-		error_log('>>await rfa ifa rea iea: '.json_encode( $rev_f_awa . ', ' .$ini_f_awa . ', ' . $rev_e_awa . ', ' .$ini_e_awa ));
-		error_log('>>>>>>>>>>>>>>>e $ini_e: '.$ini_e);
-		error_log('=================$ini_f: '.$ini_f);
-		error_log('==========friend_status: '.$fst);
-		error_log('======engagement_status: '.$est);
-		error_log('===========$is_reversed: '.$is_reversed);
-		// error_log('===============$user_id: '.$user_id);
-		// error_log('===================$pid: '.$pid);
-		error_log('============$relation_f: '.$f_rel_id);	
-		error_log('============$relation_e: '.$e_rel_id);	
-		error_log('========ifi rfi iei rei: '.$ini_f_id . ', ' . $rev_f_id . ', ' . $ini_e_id  . ', ' . $rev_e_id );
-		error_log('================$status: '.$status);
-		error_log('====================$sg: '.$sg);
-		error_log('==$bp_current_component: '.bp_current_component());
+		error_log('>rev_f_awa ini_f_awa rev_e_awa ini_e_awa: '.json_encode( $rev_f_awa . ', ' .$ini_f_awa . ', ' . $rev_e_awa . ', ' .$ini_e_awa ));
+		error_log('================================= $ini_e: '.$ini_e);
+		error_log('==================================$ini_f: '.$ini_f);
+		error_log('===========================friend_status: '.$fst);
+		error_log('=======================engagement_status: '.$est);
+		error_log('============================$is_reversed: '.$is_reversed);
+		error_log('=============================$relation_f: '.$f_rel_id);	
+		error_log('=============================$relation_e: '.$e_rel_id);	
+		error_log('=====ini_f_id rev_f_id ini_e_id rev_e_id: '.$ini_f_id . ', ' . $rev_f_id . ', ' . $ini_e_id  . ', ' . $rev_e_id );
+		error_log('=================================$status: '.$status);
+		error_log('=====================================$sg: '.$sg);
+		error_log('============================$button_func: '.$button_func);
 		error_log(' ');
 	}
-		
 
-		return [
-			$pid,
-			$sg,
-			$is_reversed,
-			$status,
-			$is_member,
-			$button_func,
-			$comp_st,
-			$oppo_st,
-			$rel_id,
-			$ini_aw,
-			$rev_aw
-		];
+	return [
+		$pid,
+		$sg,
+		$is_reversed,
+		$status,
+		$is_member,
+		$button_func,
+		$comp_st,
+		$oppo_st,
+		$rel_id,
+		$ini_aw,
+		$rev_aw
+	];
 }
 
 function get_friend_id($user_id, $potential_engagement_id) {

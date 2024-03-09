@@ -43,6 +43,7 @@ function friend_initiator_btn_args($friendship_status, $potential_friend_id, $fr
 
         case 'exist_initiator_friend':
         case 'is_friend':
+            error_log(json_encode('>>is_engagement f-i'));
             $button_args = array(
                 'id'                => 'is_friend',
                 'component'         => 'friends',
@@ -58,12 +59,12 @@ function friend_initiator_btn_args($friendship_status, $potential_friend_id, $fr
                 'link_title'        => __( "Stop Supply-R f-i {$flid}", 'buddypress' ),
                 'link_id'           => 'friend-' . $potential_friend_id,
                 'link_rel'          => 'remove',
-                'link_class'        => 'friendship-button is_friend remove',
+                'link_class'        => 'friendship-button remove_friends remove',
             );
             break;
     
         case 'exist_more_engagements':
-            error_log(json_encode('>>exist_more_friends f-i'));
+            error_log(json_encode('>>exist_more_engagements f-i'));
             $button_args = array(
                 'id'                => 'is_friend',
                 'component'         => 'friends',
@@ -112,6 +113,7 @@ function friend_reciver_btn_args($friendship_status, $potential_friend_id, $frie
     error_log('status f-r '.$friendship_status);
     switch ( $friendship_status ) {
         case 'pending_friend':
+            error_log(json_encode('>>pending_friend f-r'));
             $button_args = array(
                 'id'                => 'pending_friend',
                 'component'         => 'friends',
@@ -132,6 +134,7 @@ function friend_reciver_btn_args($friendship_status, $potential_friend_id, $frie
             break;
 
         case 'awaiting_response':
+            error_log(json_encode('>>awaiting_response f-r'));
             $button_args = array(
                 'id'                => 'awaiting_response',
                 'component'         => 'friends',
@@ -150,6 +153,7 @@ function friend_reciver_btn_args($friendship_status, $potential_friend_id, $frie
 
         case 'remove_initiator_friend':
         case 'exist_initiator_friend':
+            error_log(json_encode('>>exist_initiator_friend f-r'));
             $button_args = array(
                 'id'                => 'is_engagement',
                 'component'         => 'friends',
@@ -169,8 +173,8 @@ function friend_reciver_btn_args($friendship_status, $potential_friend_id, $frie
             );
             break;
 
-            case 'is_friend':
-            error_log(json_encode('>exist_more_friends -f-r'));
+        case 'is_friend':
+            error_log(json_encode('>is_friend f-r'));
             $button_args = array(
                 'id'                => 'is_friend',
                 'component'         => 'friends',
@@ -191,7 +195,7 @@ function friend_reciver_btn_args($friendship_status, $potential_friend_id, $frie
             break;
 
         case 'remove_more_engagements':
-            error_log(json_encode('>exist_more_friends -f-r'));
+            error_log(json_encode('>remove_more_engagements f-r'));
             $button_args = array(
                 'id'                => 'remove_more_engagements',
                 'component'         => 'friends',

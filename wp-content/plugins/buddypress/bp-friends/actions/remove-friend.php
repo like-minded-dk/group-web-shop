@@ -13,6 +13,7 @@
  * @since 1.0.1
  */
 function friends_action_remove_friend() {
+	error_log(json_encode('>>>>>>>engagements_action_remove_friend'));
 	if ( ! bp_is_friends_component() || ! bp_is_current_action( 'remove-friend' ) ) {
 		return false;
 	}

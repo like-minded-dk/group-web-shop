@@ -412,7 +412,7 @@ function bp_nouveau_ajax_addremove_engagements_from_friends() {
 	} elseif ( 'is_engagement' === $check_is_engagement ) {
 		error_log('>>is_engagement -f 360: '. $user_id . ' - ' . $engagement_id);
 
-		if ( ! engagements_remove_engagements( $user_id, $engagement_id ) ) {
+		if ( ! engagements_remove_engagement( $user_id, $engagement_id ) ) {
 			$response['feedback'] = sprintf(
 				'<div class="bp-feedback error">%s</div>',
 				esc_html__( 'engagementship could not be cancelled 327 -f.', 'buddypress' )
@@ -440,10 +440,9 @@ function bp_nouveau_ajax_addremove_engagements_from_friends() {
 
 	// Trying to cancel engagementship in existed button.
 	} elseif ( 'exist_more_engagements' === $check_is_engagement ) {
-		// todo:
 		error_log('>>exist_more_engagements -f 435: '. $user_id . ' - ' . $engagement_id);
 
-		if ( ! engagements_remove_engagements( $engagement_id, $user_id ) ) {
+		if ( ! engagements_remove_engagement( $engagement_id, $user_id ) ) {
 			$response['feedback'] = sprintf(
 				'<div class="bp-feedback error">%s</div>',
 				esc_html__( 'engagementship could not be removed. 470 -f', 'buddypress' )
@@ -468,15 +467,44 @@ function bp_nouveau_ajax_addremove_engagements_from_friends() {
 
 			wp_send_json_success( $response );
 		}
-	// Trying to stop engagementship in existed button.
+	// Trying to stop awaiting engagementship from friend.
 	} elseif ( 'awaiting_response' === $check_is_engagement &&  $_POST['action'] == 'friends_remove_engagements_from_friends') {
 		// todo:
 		error_log('>>friends_remove_engagements_from_friends -f 495: '. $user_id . ' - ' . $engagement_id);
 
-		if ( ! engagements_remove_engagements( $user_id, $engagement_id ) ) {
+		if ( ! engagements_remove_engagement( $user_id, $engagement_id ) ) {
 			$response['feedback'] = sprintf(
 				'<div class="bp-feedback error">%s</div>',
 				esc_html__( 'engagementship could not be removed. 500 -f', 'buddypress' )
+			);
+
+			wp_send_json_error( $response );
+		} else {
+			$is_user = bp_is_my_profile();
+
+			if ( ! $is_user ) {
+				$response = array( 'contents' => bp_get_add_engagement_button( $engagement_id ) );
+			} else {
+				$response = array(
+					'feedback' => sprintf(
+						'<div class="bp-feedback success">%s</div>',
+						esc_html__( 'engagementship cancelled.', 'buddypress' )
+					),
+					'type'     => 'success',
+					'is_user'  => $is_user,
+				);
+			}
+
+			wp_send_json_success( $response );
+		}
+	// Trying to request engagementship.
+	} elseif ( 'not_engagement' === $check_is_engagement &&  $_POST['action'] == 'friends_remove_engagements_from_friends') {
+		error_log('>>not_engagement -f 435: '. $user_id . ' - ' . $engagement_id);
+
+		if ( ! engagements_remove_engagement( $user_id, $engagement_id ) ) {
+			$response['feedback'] = sprintf(
+				'<div class="bp-feedback error">%s</div>',
+				esc_html__( 'engagementship could not be removed. 470 -f', 'buddypress' )
 			);
 
 			wp_send_json_error( $response );

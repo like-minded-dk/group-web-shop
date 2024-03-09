@@ -723,7 +723,7 @@ class BP_Friends_Friendship {
 		SQL,
 		$user_id, $user_id );
 		$friendships = $wpdb->get_results( $sql );
-		error_log('   >>>>start cls f>>> ');
+		// error_log('   >>>>start cls f>>> ');
 		//error_log('class f 714 $sql'.json_encode($sql));
 		// Use $handled to keep track of all of the $possible_friend_ids we've matched.
 		$handled = array();

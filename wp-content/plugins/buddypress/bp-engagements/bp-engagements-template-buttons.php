@@ -63,7 +63,6 @@ function engagement_initiator_btn_args($engagementship_status, $potential_engage
             );
             break;
 
-        case 'exist_more_engagements':
         case 'exist_more_friends':
             error_log(json_encode('>>exist_more_friends e-i'));
             $button_args = array(
@@ -212,7 +211,7 @@ function engagement_reciver_btn_args($engagementship_status, $potential_engageme
                 'link_title'        => __( "Stop Supply-R e-r {$elid}", 'buddypress' ),
                 'link_id'           => 'engagement-' . $potential_engagement_id,
                 'link_rel'          => 'remove',
-                'link_class'        => 'engagementship-button remove_friends_from_engagements remove',
+                'link_class'        => 'engagementship-button remove_engagements_from_friends remove',
             );
             break;
 

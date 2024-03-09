@@ -688,9 +688,9 @@ window.bp = window.bp || {};
 			// Unfortunately unlike groups
 			// Friends actions does not match the wpnonce
 			var friends_actions_map = {
-				remove_friends: 'remove_friends',
 				remove_engagements_from_friends: 'remove_engagements_from_friends',
 				not_engagements_from_friends: 'not_engagements_from_friends',
+				remove_friends    : 'remove_friends',
 				is_friend         : 'remove_friends',
 				not_friends       : 'add_friends',
 				pending_friend    : 'withdraw_friendship',
@@ -699,9 +699,9 @@ window.bp = window.bp || {};
 			};
 
 			var engagements_actions_map = {
-				remove_engagements: 'remove_engagements',
 				remove_friends_from_engagements: 'remove_friends_from_engagements',
 				not_friends_from_engagements: 'not_friends_from_engagements',
+				remove_engagements    : 'remove_engagements',
 				is_engagement         : 'remove_engagements',
 				not_engagements       : 'add_engagements',
 				pending_engagement    : 'withdraw_engagementship',
@@ -721,7 +721,6 @@ window.bp = window.bp || {};
 
 			// Add a pending class to prevent queries while we're processing the action.
 			target.addClass( 'pending loading' );
-            // eslint-disable-next-line no-console
 
 			self.ajax( {
 				action   : object + '_' + action,

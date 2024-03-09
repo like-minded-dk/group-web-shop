@@ -34,7 +34,6 @@ function engagements_action_remove_engagement() {
 		if ( ! check_admin_referer( 'engagements_remove_engagement' ) ) {
 			return false;
 		}
-
 		if ( ! engagements_remove_engagement( bp_loggedin_user_id(), $potential_engagement_id ) ) {
 			bp_core_add_message( __( 'engagementship could not be canceled.', 'buddypress' ), 'error' );
 		} else {
