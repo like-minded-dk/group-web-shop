@@ -63,6 +63,27 @@ function engagement_initiator_btn_args($engagementship_status, $potential_engage
             );
             break;
 
+        case 'remove_engagements':
+            error_log(json_encode('>>remove_engagements e-r'));
+            $button_args = array(
+                'id'                => 'remove_engagements',
+                'component'         => 'engagements',
+                'must_be_logged_in' => true,
+                'block_self'        => false,
+                'wrapper_class'     => 'engagementship-button is_engagement',
+                'wrapper_id'        => 'engagementship-button-' . $potential_engagement_id,
+                'link_href'         => wp_nonce_url(
+                    bp_loggedin_user_url( bp_members_get_path_chunks( array( $engagements_slug, 'remove-engagement', array( $potential_engagement_id ) ) ) ),
+                    'engagements_remove_engagements'
+                ),
+                'link_text'         => __( "Cancel Resell-S e-i {$elid}", 'buddypress' ),
+                'link_title'        => __( "Cancel Resell-S e-i {$elid}", 'buddypress' ),
+                'link_id'           => 'engagement-' . $potential_engagement_id,
+                'link_rel'          => 'remove',
+                'link_class'        => 'engagementship-button remove_engagements remove',
+            );
+            break;
+            
         case 'exist_more_friends':
             error_log(json_encode('>>exist_more_friends e-i'));
             $button_args = array(
@@ -237,7 +258,7 @@ function engagement_reciver_btn_args($engagementship_status, $potential_engageme
             break;
 
         case 'remove_friends':
-            error_log(json_encode('>remove_more_friends e-r'));
+            error_log(json_encode('>>remove_friends e-r'));
             $button_args = array(
                 'id'                => 'remove_more_friends',
                 'component'         => 'engagements',

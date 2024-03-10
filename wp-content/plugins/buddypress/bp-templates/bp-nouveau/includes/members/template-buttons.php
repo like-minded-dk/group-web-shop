@@ -54,25 +54,33 @@ function get_button_args ($pid, $comp) {
 		error_log(json_encode("||||> 3.3 awr eie"));
 		$button_args = $button_func("awaiting_response", $pid, $sg, $rel_id);
 	
-	} elseif ($comp_st == "not_{$comp}s" && $oppo_st == "exist_more_{$oppo}s") {
-		if (false) {
-			return;
-		} elseif ($rev_e_awa == "1") {
-			error_log(json_encode("||||> rev_e_awa = 1 not ext more"));
-			$button_args = $button_func("awaiting_response", $pid, $sg, $rel_id);
-		} elseif ($ini_e_awa == "1") {
-			error_log(json_encode("||||> ini_e_awa = 1 not ext more"));
-			$button_args = $button_func("remove_more_{$oppo}s", $pid, $sg, $rel_id);
+	} elseif ($comp_st == "not_{$comp}s") {
+		if ($oppo_st == "exist_more_{$oppo}s") {
+			if (false) {
+				return;
+			} elseif ($rev_e_awa == "1") {
+				error_log(json_encode("||||> rev_e_awa = 1 not ext more"));
+				$button_args = $button_func("awaiting_response", $pid, $sg, $rel_id);
+			} elseif ($ini_e_awa == "1") {
+				error_log(json_encode("||||> ini_e_awa = 1 not ext more"));
+				$button_args = $button_func("remove_more_{$oppo}s", $pid, $sg, $rel_id);
+			} else {
+				// has init and rev in same table
+				error_log(json_encode("||||> init rev same"));
+				$button_args = $button_func("remove_more_{$oppo}s", $pid, $sg, $rel_id);
+			}
+		} elseif ($oppo_st == "pending_{$oppo}") {
+			// stop existed in same table
+			error_log(json_encode("||||> 17 e 0 + 9 e 1 LS F"));
+			$button_args = $button_func("remove_{$oppo}s", $pid, $sg, $rel_id);	
+		} elseif ($comp_st == "not_{$comp}s" && $oppo_st == "awaiting_response") {
+			// stop existed in same table
+			error_log(json_encode("||||> 17 e 0 + 9 e 1 GD F"));
+			$button_args = $button_func('awaiting_response', $pid, $sg, $rel_id);
 		} else {
-			// has init and rev in same table
-			error_log(json_encode("||||> init rev same"));
-			$button_args = $button_func("remove_more_{$oppo}s", $pid, $sg, $rel_id);
+			error_log(json_encode("||||> els only in not comp"));
+			$button_args = $button_func($status, $pid, $sg, $rel_id);
 		}
-	} elseif ($comp_st == "not_{$comp}s" && $oppo_st == "pending_{$oppo}") {
-		// stop existed in same table
-		error_log(json_encode("||||> rev pending_comp in same"));
-		$button_args = $button_func("remove_{$oppo}s", $pid, $sg, $rel_id);	
-
 	} elseif ($oppo_st == "not_{$oppo}s") {
 		if (false) {
 			return;
@@ -86,7 +94,10 @@ function get_button_args ($pid, $comp) {
 			$button_args = $button_func("remove_initiator_{$comp}", $pid, $sg, $rel_id);
 
 		} elseif ($comp_st == "pending_{$comp}") {
-			if ($is_reversed == "0") {
+			if ($is_reversed == "0" && $ini_e_awa == 1) {
+				error_log(json_encode("||||> 17 e 0 + 9 e 1 LS E"));
+				$button_args = $button_func("remove_{$comp}s", $pid, $sg, $rel_id);
+			} elseif ($is_reversed == "0") {
 				// initial
 				error_log(json_encode("||||> nof pee rev0"));
 				$button_args = $button_func("pending_{$comp}", $pid, $sg, $rel_id);
@@ -99,8 +110,8 @@ function get_button_args ($pid, $comp) {
 			
 			if ($rev_e_awa == "1" && $mk == 'e' ) {
 				// reversed
-				error_log(json_encode("||||> not f rev_e_awa 1"));
-				$button_args = $button_func("remove_initiator_{$comp}", $pid, $sg, $rev_e_id);
+				error_log(json_encode("||||> 17 e 0 + 9 e 1 GD E"));
+				$button_args = $button_func("remove_initiator_{$comp}", $pid, $sg, $ini_e_id);
 			} elseif ($is_reversed == "1") {
 				// reversed
 				error_log(json_encode("||||> nof awr rev1 107"));

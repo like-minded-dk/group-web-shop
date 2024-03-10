@@ -145,10 +145,7 @@ class BP_Engagements_Engagementship {
 
 		// Cache missed, so query the DB.
 		if ( false === $engagementship ) {
-			$engagementship = $wpdb->get_row( $wpdb->prepare( <<<SQL
-				SELECT * FROM {$bp->engagements->table_name} WHERE id = %d
-			SQL
-			, $this->id ) );
+			$engagementship = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$bp->engagements->table_name} WHERE id = %d", $this->id ) );
 
 			wp_cache_set( $this->id, $engagementship, 'bp_engagements_engagementships' );
 		}
@@ -321,8 +318,6 @@ class BP_Engagements_Engagementship {
 		);
 
 		// First, we get all engagementships that involve the user.
-
-		
 		$engagementship_ids = wp_cache_get( $user_id, 'bp_engagements_engagementships_for_user' );
 		if ( false === $engagementship_ids ) {
 			$engagementship_ids = self::get_engagementship_ids_for_user( $user_id );
@@ -457,7 +452,6 @@ class BP_Engagements_Engagementship {
 	 * @return array $fids IDs of engagements for provided user.
 	 */
 	public static function get_engagement_user_ids( $user_id, $engagement_requests_only = false, $assoc_arr = false ) {
-
 		if ( ! empty( $engagement_requests_only ) ) {
 			$args = array(
 				'is_confirmed'   => 0,
@@ -527,19 +521,13 @@ class BP_Engagements_Engagementship {
 			'engagement_user_id'    => $engagement_id,
 		);
 		$result = self::get_engagementships( $user_id, $args, 'OR' );
-		// error_log('---------->class e get_engagementship_id');
-		// error_log('user_id:'.$user_id);
-		// error_log('engagement_id:'.$engagement_id);
 		$result = array_filter($result, function($v, $k) use ($user_id) {
 			return $v->initiator_user_id == $user_id;
 		}, ARRAY_FILTER_USE_BOTH);
-		// error_log(count($result));
+		 error_log('>>filter-first '. count($result));
 		if ( $result ) {
 			$engagementship_id = current( $result )->id;
 		}
-		// error_log('=engagementship_id 540>> '.json_encode($engagementship_id));
-		// error_log('----------<class e');
-		// return;
 		return $engagementship_id;
 	}
 
@@ -745,40 +733,102 @@ class BP_Engagements_Engagementship {
 		$sql = $wpdb->prepare( <<<SQL
 			SELECT initiator_user_id, engagement_user_id, is_confirmed 
 			FROM {$bp->engagements->table_name} 
-			WHERE (initiator_user_id = %d AND engagement_user_id IN ({$engagement_ids_sql}) ) 
-				OR (initiator_user_id IN ({$engagement_ids_sql}) AND engagement_user_id = %d )
-		SQL, $user_id, $user_id );
-		$engagementships = $wpdb->get_results( $sql );
-		// error_log('   >>>>start cls e>>> ');
-		// error_log('class e 717 $sql'.json_encode($sql));
+			WHERE (initiator_user_id = %d
+			AND engagement_user_id IN ({$engagement_ids_sql}) ) 
+			OR (initiator_user_id IN ({$engagement_ids_sql})
+			AND engagement_user_id = %d )
+		SQL,
+		$user_id, $user_id );
+		$relationships = $wpdb->get_results( $sql );
+
+		 error_log('   >>>>start cls e>>> ');
+		 error_log('>>>> class e 717 $sql'.json_encode($sql));
 		// Use $handled to keep track of all of the $possible_engagement_ids we've matched.
 		$handled = array();
-		foreach ( $engagementships as $engagementship ) {
-			$initiator_user_id = (int) $engagementship->initiator_user_id;
-			$engagement_user_id    = (int) $engagementship->engagement_user_id;
-			if ( 1 === (int) $engagementship->is_confirmed) {
-				//error_log('>>confirmed id2 '.json_encode($engagementship));
-				//error_log('');
-				//error_log('>>class bp_current_component -e 756');
-				// error_log(bp_current_component());
-				// error_log('initiator_user_id:'.$initiator_user_id);
-				// error_log('user_id:'.$user_id);
-				if (($initiator_user_id === $user_id && count($engagementships) == 1 )|| bp_current_component() === 'members') {
-					// error_log('>>is_engagement');
-					$status_initiator = $status_engagement = 'is_engagement';
-				} elseif ($engagement_user_id === $user_id && count($engagementships) == 1) {
-					// error_log('>>exist_initiator_engagement');
-					$status_initiator = $status_engagement = 'exist_initiator_engagement';
+
+		// count_confirmed;
+		$filteredArray = array_filter($relationships, function ($item) {
+			return $item->is_confirmed === "1";
+		});
+		$confirm_counts = count($filteredArray);
+		foreach ( $relationships as $relationship ) {
+			$initiator_user_id = (int) $relationship->initiator_user_id;
+			$engagement_user_id    = (int) $relationship->engagement_user_id;
+			error_log('   <<<<<');
+			if ($confirm_counts >= 2) {
+				error_log('----- ');
+				error_log('----->>> title both exist and confirmed ');
+				error_log('----->>>>>>>>> both confirmed ');
+				$status_initiator = $status_engagement = 'exist_more_engagements';
+			} elseif (count($relationships) == 1 && 1 === (int) $relationship->is_confirmed) {
+				error_log('----- ');
+				error_log('----->>> title: only one, Has been confirmed');
+				if ($initiator_user_id === $user_id) {
+					error_log('----->>>>>>>>> Only one , I am confirmed ');
+					$status_initiator = 'is_engagement';
+					$status_engagement = 'exist_initiator_engagement';
 				} else {
-					// error_log('>>exist_more_engagements : '. count($engagementships) );
-					$status_initiator = $status_engagement = 'exist_more_engagements';
+					error_log('----->>>>>>>>> Only one , Another is confirmed ');
+					$status_initiator = 'exist_initiator_engagement';
+					$status_engagement = 'is_engagement';
 				}
-				// error_log('<<<class -e');
+			} elseif (count($relationships) == 1 && 0 === (int) $relationship->is_confirmed) {
+				error_log('----- ');
+				error_log('----->>> title: only one, waiting for confirmation');
+				if ($initiator_user_id === $user_id) {
+					error_log('----->>>>>>>>> Only one , I am waiting for confirmation');
+					$status_initiator = 'pending_engagement';
+					$status_engagement = 'awaiting_response';
+				} else {
+					error_log('----->>>>>>>>> Only one , Another has not been confirmed');
+					$status_initiator = 'awaiting_response';
+					$status_engagement = 'pending_engagement';
+				}
+			} elseif (count($relationships) >= 2 && $confirm_counts == 1 && 1 === (int) $relationship->is_confirmed) {
+				error_log('----- ');
+				error_log('----->>> title: Both exist, One has been confirmed');
+				if ($initiator_user_id === $user_id) {
+					error_log('----->>>>>>>>> Both exist ,One from me is confirmed ');
+					$status_initiator = 'is_engagement';
+					$status_engagement = 'pending_engagement';
+				} else {
+					error_log('----->>>>>>>>> Both exist ,One from Another is confirmed ');
+					$status_initiator = 'pending_engagement';
+					$status_engagement = 'is_engagement';
+				}
+			} elseif (count($relationships) >= 2 && $confirm_counts == 1 && 0 === (int) $relationship->is_confirmed) {
+				error_log('----- ');
+				error_log('----->>> title: Both exist, One is Waiting for confirmation');
+				if ($initiator_user_id === $user_id) {
+					error_log('----->>>>>>>>> Both exist ,One from me is waiting for confirmation');
+					$status_initiator = 'pending_engagement';
+					$status_engagement = 'is_engagement';
+				} else {
+					error_log('----->>>>>>>>> Both exist ,One from Another has not been confirmed');
+					$status_initiator = 'is_engagement';
+					$status_engagement = 'pending_engagement';
+				}
 			} else {
-				//error_log('>>pending id3 '.json_encode($engagementship));
+				error_log('----- ');
+				error_log('----->>> title: 2 engagements, both not confirmed');
+				error_log('----->>>>>>>>> none confirmed ');
 				$status_initiator = 'pending_engagement';
 				$status_engagement    = 'awaiting_response';
 			}
+			error_log('----->>>>>>status_initiator '. json_encode($status_initiator));
+			error_log('----->>>>>status_engagement '. json_encode($status_engagement));
+
+			error_log('>>bp_current_component '. bp_current_component());
+			error_log('>>>>$initiator_user_id '. $initiator_user_id);
+			error_log('>>>>>>>>>>>>>>>user_id '. $user_id);
+			error_log('>>>>>>>>engagementship '. json_encode($relationship));
+			error_log('>>>>>>status_initiator '. json_encode($status_initiator));
+			error_log('>>>>>status_engagement '. json_encode($status_engagement));
+			error_log('>>>cache: ' . $initiator_user_id . ':' . $engagement_user_id . ' - bp_friends - ' . $status_initiator);
+			error_log('>>>cache: ' . $engagement_user_id . ':' . $initiator_user_id . ' - bp_friends - ' . $status_engagement);
+			error_log('<<<<<<<<< each class -e');
+			error_log('----- ');
+			
 			bp_core_set_incremented_cache( $initiator_user_id . ':' . $engagement_user_id, 'bp_engagements', $status_initiator );
 			bp_core_set_incremented_cache( $engagement_user_id . ':' . $initiator_user_id, 'bp_engagements', $status_engagement );
 
@@ -788,10 +838,11 @@ class BP_Engagements_Engagementship {
 		// Set all those with no matching entry to "not engagements" status.
 		$not_engagements = array_diff( $fetch, $handled );
 
-		// error_log('handled '.json_encode($handled));
-		// error_log('fetch '.json_encode($fetch));
-		// error_log('diff '.json_encode(array_diff( $fetch, $handled )));
-		// error_log('   ----end----');
+		 error_log('>>> handled '.json_encode($handled));
+		 error_log('>>> fetch '.json_encode($fetch));
+		 error_log('>>> diff '.json_encode(array_diff( $fetch, $handled )));
+		 error_log('>>>    ----end----');
+		error_log('>>> ----- ');
 		foreach ( $not_engagements as $not_engagement_id ) {
 			bp_core_set_incremented_cache( $user_id . ':' . $not_engagement_id, 'bp_engagements', 'not_engagements' );
 			bp_core_set_incremented_cache( $not_engagement_id . ':' . $user_id, 'bp_engagements', 'not_engagements' );

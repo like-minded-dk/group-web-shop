@@ -43,7 +43,7 @@ function friend_initiator_btn_args($friendship_status, $potential_friend_id, $fr
 
         case 'exist_initiator_friend':
         case 'is_friend':
-            error_log(json_encode('>>is_engagement f-i'));
+            error_log(json_encode('>>is_friend f-i'));
             $button_args = array(
                 'id'                => 'is_friend',
                 'component'         => 'friends',
@@ -62,7 +62,28 @@ function friend_initiator_btn_args($friendship_status, $potential_friend_id, $fr
                 'link_class'        => 'friendship-button remove_friends remove',
             );
             break;
-    
+
+        case 'remove_friends':
+            error_log(json_encode('>remove_friends f-r'));
+            $button_args = array(
+                'id'                => 'remove_friends',
+                'component'         => 'friends',
+                'must_be_logged_in' => true,
+                'block_self'        => false,
+                'wrapper_class'     => 'friendship-button is_friend',
+                'wrapper_id'        => 'friendship-button-' . $potential_friend_id,
+                'link_href'         => wp_nonce_url(
+                    bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'remove-friend', array( $potential_friend_id ) ) ) ),
+                    'friends_remove_friends'
+                ),
+                'link_text'         => __( "Cancel Resell-S f-i {$flid}", 'buddypress' ),
+                'link_title'        => __( "Cancel Resell-S f-i {$flid}", 'buddypress' ),
+                'link_id'           => 'friend-' . $potential_friend_id,
+                'link_rel'          => 'remove',
+                'link_class'        => 'friendship-button remove_friends remove',
+            );
+            break;
+
         case 'exist_more_engagements':
             error_log(json_encode('>>exist_more_engagements f-i'));
             $button_args = array(
@@ -85,7 +106,7 @@ function friend_initiator_btn_args($friendship_status, $potential_friend_id, $fr
             break;
 
         case 'remove_initiator_friend':
-            error_log(json_encode('>>remove_initiator_friend e-i'));
+            error_log(json_encode('>>remove_initiator_friend f-i'));
             $button_args = array(
                 'id'                => 'is_friend',
                 'component'         => 'friends',
@@ -237,7 +258,7 @@ function friend_reciver_btn_args($friendship_status, $potential_friend_id, $frie
             break;
 
         case 'remove_engagements':
-            error_log(json_encode('>remove_more_engagements f-r'));
+            error_log(json_encode('>remove_engagements f-r'));
             $button_args = array(
                 'id'                => 'remove_more_engagements',
                 'component'         => 'friends',
@@ -258,7 +279,7 @@ function friend_reciver_btn_args($friendship_status, $potential_friend_id, $frie
             break;
 
         case 'exist_more_friends':
-            error_log(json_encode('>exist_more_friends -f-r'));
+            error_log(json_encode('>exist_more_friends f-r'));
             $button_args = array(
                 'id'                => 'exist_more_friends',
                 'component'         => 'friends',

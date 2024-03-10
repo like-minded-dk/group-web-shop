@@ -41,13 +41,20 @@ function is_oppsit_relation($table) {
 	global $wpdb;
 	$initial_comp_relation = $wpdb->get_results( "SELECT * FROM wp_bp_{$table}s WHERE initiator_user_id = {$user_id} AND {$table}_user_id = {$member_id}", OBJECT );
 	$reverse_oppo_relation = $wpdb->get_results( "SELECT * FROM wp_bp_{$oppsite}s WHERE initiator_user_id = {$member_id} AND {$oppsite}_user_id = {$user_id}", OBJECT );
+    $reverse_comp_relation = $wpdb->get_results( "SELECT * FROM wp_bp_{$table}s WHERE initiator_user_id = {$member_id} AND {$table}_user_id = {$user_id}", OBJECT );
 
 	if (count($initial_comp_relation)) {
 		return 0;
 	}
+
 	if (count($reverse_oppo_relation)) {
 		return 1;
 	}
+    
+    if (count($reverse_comp_relation)) {
+        return 1;
+    }
+
 	return 0;
 }
 

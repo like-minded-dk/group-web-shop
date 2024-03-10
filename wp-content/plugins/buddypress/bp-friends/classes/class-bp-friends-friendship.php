@@ -202,12 +202,38 @@ class BP_Friends_Friendship {
 
 		// Update.
 		if ( ! empty( $this->id ) ) {
-			$result = $wpdb->query( $wpdb->prepare( "UPDATE {$bp->friends->table_name} SET initiator_user_id = %d, friend_user_id = %d, is_confirmed = %d, is_limited = %d, date_created = %s WHERE id = %d", $this->initiator_user_id, $this->friend_user_id, $this->is_confirmed, $this->is_limited, $this->date_created, $this->id ) );
-
+			$result = $wpdb->query( $wpdb->prepare( <<<SQL
+				UPDATE {$bp->friends->table_name}
+				SET initiator_user_id = %d,
+					friend_user_id = %d,
+					is_confirmed = %d,
+					is_limited = %d,
+					date_created = %s
+				WHERE id = %d
+				SQL,
+				$this->initiator_user_id,
+				$this->friend_user_id,
+				$this->is_confirmed,
+				$this->is_limited,
+				$this->date_created,
+				$this->id ) );
 		// Save.
 		} else {
-			$result = $wpdb->query( $wpdb->prepare( "INSERT INTO {$bp->friends->table_name} ( initiator_user_id, friend_user_id, is_confirmed, is_limited, date_created ) VALUES ( %d, %d, %d, %d, %s )", $this->initiator_user_id, $this->friend_user_id, $this->is_confirmed, $this->is_limited, $this->date_created ) );
-			$this->id = $wpdb->insert_id;
+			$result = $wpdb->query( $wpdb->prepare( <<<SQL
+				INSERT INTO {$bp->friends->table_name} 
+					( initiator_user_id,
+					friend_user_id,
+					is_confirmed,
+					is_limited,
+					date_created )
+				VALUES ( %d, %d, %d, %d, %s )
+				SQL,
+				$this->initiator_user_id,
+				$this->friend_user_id,
+				$this->is_confirmed,
+				$this->is_limited,
+				$this->date_created ) );
+				$this->id = $wpdb->insert_id;
 		}
 
 		/**
@@ -389,7 +415,6 @@ class BP_Friends_Friendship {
 			$start       = ( $r['page'] - 1 ) * ( $r['per_page'] );
 			$friendships = array_slice( $friendships, $start, $r['per_page'] );
 		}
-
 		return $friendships;
 	}
 
@@ -496,19 +521,13 @@ class BP_Friends_Friendship {
 			'friend_user_id'    => $friend_id,
 		);
 		$result = self::get_friendships( $user_id, $args, 'OR' );
-		// error_log('---------->class f');
-		// error_log('user_id:'.$user_id);
-		// error_log('friend_id:'.$friend_id);
 		$result = array_filter($result, function($v, $k) use ($user_id) {
 			return $v->initiator_user_id == $user_id;
 		}, ARRAY_FILTER_USE_BOTH);
-		//error_log(count($result));
+		error_log('>>filter-first '. count($result));
 		if ( $result ) {
 			$friendship_id = current( $result )->id;
 		}
-		// error_log('=====friendship_id 508>> :'.json_encode($friendship_id));
-		// error_log('----------<class f');
-		// return;
 		return $friendship_id;
 	}
 
@@ -534,7 +553,6 @@ class BP_Friends_Friendship {
 		if ( ! empty( $friend_requests ) ) {
 			$friend_requests = array_map( 'intval', $friend_requests );
 		}
-
 		return $friend_requests;
 	}
 
@@ -613,7 +631,6 @@ class BP_Friends_Friendship {
 		}
 
 		$friend_ids = self::get_friend_user_ids( $user_id );
-
 		if ( ! $friend_ids ) {
 			return false;
 		}
@@ -722,53 +739,113 @@ class BP_Friends_Friendship {
 			AND friend_user_id = %d )
 		SQL,
 		$user_id, $user_id );
-		$friendships = $wpdb->get_results( $sql );
-		// error_log('   >>>>start cls f>>> ');
-		//error_log('class f 714 $sql'.json_encode($sql));
-		// Use $handled to keep track of all of the $possible_friend_ids we've matched.
+		$relationships = $wpdb->get_results( $sql );
+
+		error_log('   >>>>start cls e>>> ');
+		error_log('>>>> class e 717 $sql'.json_encode($sql));
+		// Use $handled to keep track of all of the $possible_engagement_ids we've matched.
 		$handled = array();
-		foreach ( $friendships as $friendship ) {
-			$initiator_user_id = (int) $friendship->initiator_user_id;
-			$friend_user_id    = (int) $friendship->friend_user_id;
-			
-			if ( 1 === (int) $friendship->is_confirmed ) {
-				//error_log('>>confirmed id2 '.json_encode($friendship));
-				// error_log('>>class bp_current_component -f 721');
-				// error_log(bp_current_component());
-				// error_log($initiator_user_id);
-				// error_log($user_id);
-				// if ($initiator_user_id === $user_id || bp_current_component() === 'members') {
-				if (($initiator_user_id === $user_id && count($friendships) == 1 )|| bp_current_component() === 'members') {
-					// error_log('is_friend');
-					$status_initiator = $status_friend = 'is_friend';
-				} elseif ($friend_user_id === $user_id && count($friendships) == 1) {
-					// error_log('>>exist_initiator_friend');
-					$status_initiator = $status_friend = 'exist_initiator_friend';
+
+		// count_confirmed;
+		$filteredArray = array_filter($relationships, function ($item) {
+			return $item->is_confirmed === "1";
+		});
+		$confirm_counts = count($filteredArray);
+		foreach ( $relationships as $relationship ) {
+			$initiator_user_id = (int) $relationship->initiator_user_id;
+			$friend_user_id    = (int) $relationship->friend_user_id;
+			error_log('   <<<<<');
+			if ($confirm_counts >= 2) {
+				error_log('----- ');
+				error_log('----->>> title both exist and confirmed ');
+				error_log('----->>>>>>>>> both confirmed ');
+				$status_initiator = $status_friend = 'exist_more_friends';
+			} elseif (count($relationships) == 1 && 1 === (int) $relationship->is_confirmed) {
+				error_log('----- ');
+				error_log('----->>> title: only one, Has been confirmed');
+				if ($initiator_user_id === $user_id) {
+					error_log('----->>>>>>>>> Only one , I am confirmed ');
+					$status_initiator = 'is_friend';
+					$status_friend = 'exist_initiator_friend';
 				} else {
-					// error_log('>>exist_more_friends : '. count($friendships) );
-					$status_initiator = $status_friend = 'exist_more_friends';
+					error_log('----->>>>>>>>> Only one , Another is confirmed ');
+					$status_initiator = 'exist_initiator_friend';
+					$status_friend = 'is_friend';
 				}
-				// error_log('<<<class -f');
+			} elseif (count($relationships) == 1 && 0 === (int) $relationship->is_confirmed) {
+				error_log('----- ');
+				error_log('----->>> title: only one, waiting for confirmation');
+				if ($initiator_user_id === $user_id) {
+					error_log('----->>>>>>>>> Only one , I am waiting for confirmation');
+					$status_initiator = 'pending_friend';
+					$status_friend = 'awaiting_response';
+				} else {
+					error_log('----->>>>>>>>> Only one , Another has not been confirmed');
+					$status_initiator = 'awaiting_response';
+					$status_friend = 'pending_friend';
+				}
+			} elseif (count($relationships) >= 2 && $confirm_counts == 1 && 1 === (int) $relationship->is_confirmed) {
+				error_log('----- ');
+				error_log('----->>> title: Both exist, One has been confirmed');
+				if ($initiator_user_id === $user_id) {
+					error_log('----->>>>>>>>> Both exist ,One from me is confirmed ');
+					$status_initiator = 'is_friend';
+					$status_friend = 'pending_friend';
+				} else {
+					error_log('----->>>>>>>>> Both exist ,One from Another is confirmed ');
+					$status_initiator = 'pending_friend';
+					$status_friend = 'is_friend';
+				}
+			} elseif (count($relationships) >= 2 && $confirm_counts == 1 && 0 === (int) $relationship->is_confirmed) {
+				error_log('----- ');
+				error_log('----->>> title: Both exist, One is Waiting for confirmation');
+				if ($initiator_user_id === $user_id) {
+					error_log('----->>>>>>>>> Both exist ,One from me is waiting for confirmation');
+					$status_initiator = 'pending_friend';
+					$status_friend = 'is_friend';
+				} else {
+					error_log('----->>>>>>>>> Both exist ,One from Another has not been confirmed');
+					$status_initiator = 'is_friend';
+					$status_friend = 'pending_friend';
+				}
 			} else {
-				//error_log('>>pending id3 '.json_encode($friendship));
+				error_log('----- ');
+				error_log('----->>> title: 2 friends, both not confirmed');
+				error_log('----->>>>>>>>> none confirmed ');
 				$status_initiator = 'pending_friend';
 				$status_friend    = 'awaiting_response';
 			}
+			error_log('----->>>>>>status_initiator '. json_encode($status_initiator));
+			error_log('----->>>>>status_friend '. json_encode($status_friend));
+
+			error_log('>>bp_current_component '. bp_current_component());
+			error_log('>>>>$initiator_user_id '. $initiator_user_id);
+			error_log('>>>>>>>>>>>>>>>user_id '. $user_id);
+			error_log('>>>>>>>>friendship '. json_encode($relationship));
+			error_log('>>>>>>status_initiator '. json_encode($status_initiator));
+			error_log('>>>>>status_friend '. json_encode($status_friend));
+			error_log('>>>cache: ' . $initiator_user_id . ':' . $friend_user_id . ' - bp_friends - ' . $status_initiator);
+			error_log('>>>cache: ' . $friend_user_id . ':' . $initiator_user_id . ' - bp_friends - ' . $status_friend);
+			error_log('<<<<<<<<< each class -e');
+			error_log('----- ');
+			
 			bp_core_set_incremented_cache( $initiator_user_id . ':' . $friend_user_id, 'bp_friends', $status_initiator );
 			bp_core_set_incremented_cache( $friend_user_id . ':' . $initiator_user_id, 'bp_friends', $status_friend );
 
 			$handled[] = ( $initiator_user_id === $user_id ) ? $friend_user_id : $initiator_user_id;
 		}
-		// Set all those with no matching entry to "not friends" status.
-		$not_friends = array_diff( $fetch, $handled );
-		
-		// error_log('handled '.json_encode($handled));
-		// error_log('fetch '.json_encode($fetch));
-		// error_log('diff '.json_encode(array_diff( $fetch, $handled )));
-		// error_log('   ----end----');
-		foreach ( $not_friends as $not_friend_id ) {
-			bp_core_set_incremented_cache( $user_id . ':' . $not_friend_id, 'bp_friends', 'not_friends' );
-			bp_core_set_incremented_cache( $not_friend_id . ':' . $user_id, 'bp_friends', 'not_friends' );
+
+		// Set all those with no matching entry to "not engagements" status.
+		$not_engagements = array_diff( $fetch, $handled );
+
+		error_log('>>> handled '.json_encode($handled));
+		error_log('>>> fetch '.json_encode($fetch));
+		error_log('>>> diff '.json_encode(array_diff( $fetch, $handled )));
+		error_log('>>>    ----end----');
+		error_log('>>> ----- ');
+		foreach ( $not_engagements as $not_engagement_id ) {
+			bp_core_set_incremented_cache( $user_id . ':' . $not_engagement_id, 'bp_engagements', 'not_engagements' );
+			bp_core_set_incremented_cache( $not_engagement_id . ':' . $user_id, 'bp_engagements', 'not_engagements' );
 		}
 	}
 
