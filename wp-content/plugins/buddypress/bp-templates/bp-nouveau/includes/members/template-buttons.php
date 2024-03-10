@@ -206,8 +206,8 @@ function get_template_vars($pid, $comp) {
 	error_log('>rev_f_awa ini_f_awa rev_e_awa ini_e_awa: '.json_encode( $rev_f_awa . ', ' .$ini_f_awa . ', ' . $rev_e_awa . ', ' .$ini_e_awa ));
 	error_log('================================= $ini_e: '.$ini_e);
 	error_log('==================================$ini_f: '.$ini_f);
-	error_log('===========================friend_status: '.$fst);
-	error_log('=======================engagement_status: '.$est);
+	error_log('ssss ======================friend_status: '.$fst);
+	error_log('ssss ==================engagement_status: '.$est);
 	error_log('============================$is_reversed: '.$is_reversed);
 	error_log('=============================$relation_f: '.$f_rel_id);	
 	error_log('=============================$relation_e: '.$e_rel_id);	

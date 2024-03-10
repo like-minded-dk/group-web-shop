@@ -50,7 +50,6 @@ function engagements_action_remove_engagement() {
 			bp_core_add_message( __( '(friends) engagementship canceled', 'buddypress' ) );
 		}
 	} elseif ( 'remove_engagements' === $engagementship_status ) {
-		error_log(json_encode('1234.remove_engagements'));
 		if ( ! check_admin_referer( 'engagements_remove_engagement' ) ) {
 			return false;
 		}

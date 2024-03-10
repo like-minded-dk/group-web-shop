@@ -682,7 +682,6 @@ class BP_Friends_Friendship {
 	 *                             'is_friend', 'pending_friend', and 'awaiting_response'.
 	 */
 	public static function check_is_friend( $initiator_userid, $possible_friend_userid ) {
-
 		if ( empty( $initiator_userid ) || empty( $possible_friend_userid ) ) {
 			return false;
 		}
@@ -719,6 +718,8 @@ class BP_Friends_Friendship {
 		$fetch = array();
 		foreach ( $possible_friend_ids as $friend_id ) {
 			// Check for cached items in both friendship directions.
+			// error_log('>>cache', json_encode(bp_core_get_incremented_cache( $user_id . ':' . $friend_id, 'bp_friends' )));
+			// error_log('>>cache', json_encode(bp_core_get_incremented_cache( $friend_id . ':' . $user_id, 'bp_friends' )));
 			if ( false === bp_core_get_incremented_cache( $user_id . ':' . $friend_id, 'bp_friends' )
 				|| false === bp_core_get_incremented_cache( $friend_id . ':' . $user_id, 'bp_friends' ) ) {
 				$fetch[] = $friend_id;
@@ -730,13 +731,12 @@ class BP_Friends_Friendship {
 		}
 
 		$friend_ids_sql = implode( ',', array_unique( $fetch ) );
-		$sql = $wpdb->prepare(<<<SQL
+		$sql = $wpdb->prepare( <<<SQL
 			SELECT id, initiator_user_id, friend_user_id, is_confirmed 
 			FROM {$bp->friends->table_name} 
-			WHERE (initiator_user_id = %d 
-			AND friend_user_id IN ({$friend_ids_sql}) ) 
-			OR (initiator_user_id IN ({$friend_ids_sql}) 
-			AND friend_user_id = %d )
+			WHERE (initiator_user_id = %d AND friend_user_id IN ({$friend_ids_sql}) ) 
+				OR (initiator_user_id IN ({$friend_ids_sql}) 
+				AND friend_user_id = %d )
 		SQL,
 		$user_id, $user_id );
 		$relationships = $wpdb->get_results( $sql );
@@ -835,17 +835,17 @@ class BP_Friends_Friendship {
 			$handled[] = ( $initiator_user_id === $user_id ) ? $friend_user_id : $initiator_user_id;
 		}
 
-		// Set all those with no matching entry to "not engagements" status.
-		$not_engagements = array_diff( $fetch, $handled );
+		// Set all those with no matching entry to "not not_friends" status.
+		$not_friends = array_diff( $fetch, $handled );
 
-		error_log('>>> handled '.json_encode($handled));
-		error_log('>>> fetch '.json_encode($fetch));
-		error_log('>>> diff '.json_encode(array_diff( $fetch, $handled )));
-		error_log('>>>    ----end----');
-		error_log('>>> ----- ');
-		foreach ( $not_engagements as $not_engagement_id ) {
-			bp_core_set_incremented_cache( $user_id . ':' . $not_engagement_id, 'bp_engagements', 'not_engagements' );
-			bp_core_set_incremented_cache( $not_engagement_id . ':' . $user_id, 'bp_engagements', 'not_engagements' );
+		// error_log('>>> handled '.json_encode($handled));
+		// error_log('>>> fetch '.json_encode($fetch));
+		// error_log('>>> diff '.json_encode(array_diff( $fetch, $handled )));
+		// error_log('>>>    ----end----');
+		// error_log('>>> ----- ');
+		foreach ( $not_friends as $not_friend_id ) {
+			bp_core_set_incremented_cache( $user_id . ':' . $not_friend_id, 'bp_friends', 'not_friends' );
+			bp_core_set_incremented_cache( $not_friend_id . ':' . $user_id, 'bp_friends', 'not_friends' );
 		}
 	}
 
