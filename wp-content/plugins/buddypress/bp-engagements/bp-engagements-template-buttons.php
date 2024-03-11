@@ -24,9 +24,7 @@ function engagement_initiator_btn_args($status, $pid, $sg, $rel_id) {
             );
             break;
 
-        case 'exist_initiator_engagement':
-        case 'is_engagement':
-        case 'c1_is_engagement_ini':
+        case 'stop_supply':
             $button_args = get_button_args_x(
                 'engagement', $pid, $sg, 'err:',
                 'remove_engagements',

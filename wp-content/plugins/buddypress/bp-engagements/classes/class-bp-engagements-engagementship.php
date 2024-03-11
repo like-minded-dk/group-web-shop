@@ -683,7 +683,7 @@ class BP_Engagements_Engagementship {
 	 *                             'is_engagement', 'pending_engagement', and 'awaiting_response'.
 	 */
 	public static function check_is_engagement( $initiator_userid, $possible_engagement_userid ) {
-		error_log('ssss >>>>check_is_engagement>>>>: '. json_encode($initiator_userid . ' - ' . $possible_engagement_userid));
+		error_log('classE >>>>>check_is_engagement>>>>: '. json_encode($initiator_userid . ' - ' . $possible_engagement_userid));
 		if ( empty( $initiator_userid ) || empty( $possible_engagement_userid ) ) {
 			return false;
 		}
@@ -711,7 +711,7 @@ class BP_Engagements_Engagementship {
 	 *                                              to check engagementship status with primary user.
 	 */
 	public static function update_bp_engagements_cache( $user_id, $possible_engagement_ids ) {
-		error_log('ssss '. json_encode('>>>update_bp_engagements_cache'));
+		error_log('classE >'. json_encode('>>>update_bp_engagements_cache'));
 		global $wpdb;
 
 		$bp                  = buddypress();
@@ -721,14 +721,14 @@ class BP_Engagements_Engagementship {
 		$fetch = array();
 		foreach ( $possible_engagement_ids as $engagement_id ) {
 			// Check for cached items in both engagementship directions.
-			error_log('ssss >>cache ' . $user_id . ':' . $engagement_id . ' ' . json_encode(bp_core_get_incremented_cache( $user_id . ':' . $engagement_id, 'bp_engagements' )));
-			error_log('ssss >>cache ' . $engagement_id . ':' . $user_id . ' ' . json_encode(bp_core_get_incremented_cache( $engagement_id . ':' . $user_id, 'bp_engagements' )));
+			error_log('classE >>>cache ' . $user_id . ':' . $engagement_id . ' ' . json_encode(bp_core_get_incremented_cache( $user_id . ':' . $engagement_id, 'bp_engagements' )));
+			error_log('classE >>>cache ' . $engagement_id . ':' . $user_id . ' ' . json_encode(bp_core_get_incremented_cache( $engagement_id . ':' . $user_id, 'bp_engagements' )));
 			if ( false === bp_core_get_incremented_cache( $user_id . ':' . $engagement_id, 'bp_engagements' )
 				|| false === bp_core_get_incremented_cache( $engagement_id . ':' . $user_id, 'bp_engagements' ) ) {
 				$fetch[] = $engagement_id;
 			}
 		}
-		error_log('ssss $fetch e : '.json_encode($fetch));
+		error_log('classE >$fetch e : '.json_encode($fetch));
 		if ( empty( $fetch ) ) {
 			return;
 		}
@@ -757,98 +757,98 @@ class BP_Engagements_Engagementship {
 		foreach ( $relationships as $relationship ) {
 			$initiator_user_id = (int) $relationship->initiator_user_id;
 			$engagement_user_id    = (int) $relationship->engagement_user_id;
-			error_log('   <<<<<');
+			error_log('class   <<<<<');
 
 			if ($confirm_counts >= 2) {
-				error_log('ssss  ');
-				error_log('ssss >>> title both exist and confirmed ');
-				error_log('ssss >>>>>>>>> both confirmed ');
+				error_log('classE > ');
+				error_log('classE >>>> title both exist and confirmed ');
+				error_log('classE >>>>>>>>>> both confirmed ');
 
 				if ($initiator_user_id === $user_id) {
-					error_log('ssss >>>>>>>>> Only one , I am confirmed ');
+					error_log('classE >>>>>>>>>> Only one , I am confirmed ');
 
 					$status_initiator = 'e_c2_exist_both_engagements_v1_ini';
 					$status_engagement = 'e_c2_exist_both_engagements_v2_ini';
 				} else {
-					error_log('ssss >>>>>>>>> Only one , Another is confirmed ');
+					error_log('classE >>>>>>>>>> Only one , Another is confirmed ');
 
 					$status_initiator = 'e_c2_exist_both_engagements_v2_rev';
 					$status_engagement = 'e_c2_exist_both_engagements_v1_rev';
 				}
 			} elseif (count($relationships) == 1 && 1 === (int) $relationship->is_confirmed) {
-				error_log('ssss  ');
-				error_log('ssss >>> title: only one, Has been confirmed');
+				error_log('classE > ');
+				error_log('classE >>>> title: only one, Has been confirmed');
 
 				if ($initiator_user_id === $user_id) {
-					error_log('ssss >>>>>>>>> Only one , I am confirmed ');
+					error_log('classE >>>>>>>>>> Only one , I am confirmed ');
 
 					$status_initiator = 'e_c1_is_engagement_ini';
 					$status_engagement = 'e_c1_is_reversed_friend_ini';
 				} else {
-					error_log('ssss >>>>>>>>> Only one , Another is confirmed ');
+					error_log('classE >>>>>>>>>> Only one , Another is confirmed ');
 
 					$status_initiator = 'e_c1_is_engagement_rev';
 					$status_engagement = 'e_c1_is_reverse_friend_rev';
 				}
 			} elseif (count($relationships) == 1 && 0 === (int) $relationship->is_confirmed) {
-				error_log('ssss  ');
-				error_log('ssss >>> title: only one, waiting for confirmation');
+				error_log('classE > ');
+				error_log('classE >>>> title: only one, waiting for confirmation');
 
 				if ($initiator_user_id === $user_id) {
-					error_log('ssss >>>>>>>>> Only one , I am waiting for confirmation');
+					error_log('classE >>>>>>>>>> Only one , I am waiting for confirmation');
 
 					$status_initiator = 'e_c1_pending_engagement_ini';
 					$status_engagement = 'e_c1_awaiting_response_ini';
 				} else {
-					error_log('ssss >>>>>>>>> Only one , Another has not been confirmed');
+					error_log('classE >>>>>>>>>> Only one , Another has not been confirmed');
 
 					$status_initiator = 'e_c1_pending_engagement_rev';
 					$status_engagement = 'e_c1_awaiting_response_rev';
 				}
 			} elseif (count($relationships) >= 2 && $confirm_counts == 1 && 1 === (int) $relationship->is_confirmed) {
-				error_log('ssss >>> title: Both exist, One has been confirmed');
+				error_log('classE >>>> title: Both exist, One has been confirmed');
 
 				if ($initiator_user_id === $user_id) {
-					error_log('ssss >>>>>>>>> Both exist ,One from me is confirmed ');
+					error_log('classE >>>>>>>>>> Both exist ,One from me is confirmed ');
 
 					$status_initiator = 'e_c2_fm1_is_engagement_ini';
 					$status_engagement = 'e_c2_fm1_is_reverse_friend_ini';
 				} else {
-					error_log('ssss >>>>>>>>> Both exist ,One from Another is confirmed ');
+					error_log('classE >>>>>>>>>> Both exist ,One from Another is confirmed ');
 
 					$status_initiator = 'e_c2_fm1_is_engagement_rev';
 					$status_engagement = 'e_c2_fm1_is_reverse_friend_rev';
 				}
 			} elseif (count($relationships) >= 2 && $confirm_counts == 1 && 0 === (int) $relationship->is_confirmed) {
-				error_log('ssss >>> title: Both exist, One is Waiting for confirmation');
+				error_log('classE >>>> title: Both exist, One is Waiting for confirmation');
 
 				if ($initiator_user_id === $user_id) {
-					error_log('ssss >>>>>>>>> Both exist ,One from me is waiting for confirmation');
+					error_log('classE >>>>>>>>>> Both exist ,One from me is waiting for confirmation');
 
 					$status_initiator = 'e_c2_fm0_pending_engagement_ini';
 					$status_engagement = 'e_c2_fm0_awaiting_response_ini';
 				} else {
-					error_log('ssss >>>>>>>>> Both exist ,One from Another has not been confirmed');
+					error_log('classE >>>>>>>>>> Both exist ,One from Another has not been confirmed');
 
 					$status_initiator = 'e_c2_fm0_pending_engagement_rev';
 					$status_engagement = 'e_c2_fm0_awaiting_response_rev';
 				}
 			} else {
-				error_log('ssss >>> title: 2 engagements, both not confirmed');
-				error_log('ssss >>>>>>>>> none confirmed ');
+				error_log('classE >>>> title: 2 engagements, both not confirmed');
+				error_log('classE >>>>>>>>>> none confirmed ');
 
 				$status_initiator = 'e_c2_pending_engagement_def';
 				$status_engagement    = 'e_c2_awaiting_response_def';
 			}
-			error_log('ssss >>>>>>status_initiator '. json_encode($status_initiator));
-			error_log('ssss >>>>>status_engagement '. json_encode($status_engagement));
+			error_log('classE >>>>>>>status_initiator '. json_encode($status_initiator));
+			error_log('classE >>>>>>status_engagement '. json_encode($status_engagement));
 
 			error_log('>>bp_current_component '. bp_current_component());
 			error_log('>>>>$initiator_user_id '. $initiator_user_id);
 			error_log('>>>>>>>>>>>>>>>user_id '. $user_id);
 			error_log('>>>>>>>>engagementship '. json_encode($relationship));
 			error_log('<<<<<<<<< each class -e');
-			error_log('ssss  ');
+			error_log('classE > ');
 			
 			bp_core_set_incremented_cache( $initiator_user_id . ':' . $engagement_user_id, 'bp_engagements', $status_initiator );
 			bp_core_set_incremented_cache( $engagement_user_id . ':' . $initiator_user_id, 'bp_engagements', $status_engagement );
