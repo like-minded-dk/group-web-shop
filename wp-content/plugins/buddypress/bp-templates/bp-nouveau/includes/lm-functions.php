@@ -9,14 +9,14 @@ function get_button_args_x(
     $chuck_array,
     $verify,
     $rel_id = 0,
-    $mk = 'f-i',
+    $mk = '_ba',
     $link_rel = 'remove',
     $block_self = true,
     $must_be_logged_in = true,
 ) {
     $class = $comp == 'friend' ? 'friendship-button' : 'engagement-button'; 
     error_log(json_encode(">>> {$error} {$id} {$mk}"));
-    $text = __( "{$link_text} {$mk} {$rel_id}", 'buddypress' );
+    $text = __( "{$link_text} {$rel_id}", 'buddypress' );
     return array(
         'id'                => $id,
         'component'         => $comp == 'friend' ? 'friends' : 'engagements',

@@ -12,13 +12,13 @@ defined( 'ABSPATH' ) || exit;
 add_action( 'admin_init', function() {
 	$ajax_actions = array(
 		array(
-			'engagements_remove_friends_from_engagements' => array(
+			'engagements_remove_engagements_from_reciver' => array(
 				'function' => 'bp_nouveau_ajax_addremove_engagement',
 				'nopriv'   => false,
 			),
 		),
 		array(
-			'engagements_not_friends_from_engagements' => array(
+			'engagements_add_engagements_from_reciver' => array(
 				'function' => 'bp_nouveau_ajax_addremove_engagement',
 				'nopriv'   => false,
 			),
@@ -221,7 +221,7 @@ function bp_nouveau_ajax_addremove_engagement() {
 
 	// Request already pending.
 	} else {
-		error_log(json_encode('>>> default Request Pending Frien 554 -f'));
+		error_log(json_encode('>>> default Request Pending E 554 -f'));
 		$response['feedback'] = sprintf(
 			'<div class="bp-feedback error">%s</div>',
 			esc_html__( 'Request Pending Engagement (engagement)', 'buddypress' )

@@ -688,8 +688,9 @@ window.bp = window.bp || {};
 			// Unfortunately unlike groups
 			// Friends actions does not match the wpnonce
 			var friends_actions_map = {
-				not_engagements_from_friends: 'not_engagements_from_friends',
-				remove_engagements_from_friends: 'remove_engagements_from_friends',
+				add_friends_from_reciver: 'add_friends_from_reciver',
+				remove_friends_from_reciver: 'remove_friends_from_reciver',
+				
 				remove_friends    : 'remove_friends',
 				is_friend         : 'remove_friends',
 				not_friends       : 'add_friends',
@@ -700,8 +701,9 @@ window.bp = window.bp || {};
 
 
 			var object_friends_actions_map = {
-				not_engagements_from_friends: 'friends_not_engagements_from_friends',
-				remove_engagements_from_friends: 'friends_remove_engagements_from_friends',
+				add_friends_from_reciver: 'friends_add_friends_from_reciver',
+				remove_friends_from_reciver: 'friends_remove_friends_from_reciver',
+
 				remove_friends    : 'friends_remove_friends',
 				is_friend         : 'friends_remove_friends',
 				not_friends       : 'friends_add_friends',
@@ -711,8 +713,9 @@ window.bp = window.bp || {};
 			};
 
 			var engagements_actions_map = {
-				not_friends_from_engagements: 'not_friends_from_engagements',
-				remove_friends_from_engagements: 'remove_friends_from_engagements',
+				add_engagements_from_reciver: 'add_engagements_from_reciver',
+				remove_engagements_from_reciver: 'remove_engagements_from_reciver',
+
 				remove_engagements    : 'remove_engagements',
 				is_engagement         : 'remove_engagements',
 				not_engagements       : 'add_engagements',
@@ -722,8 +725,9 @@ window.bp = window.bp || {};
 			};
 
 			var object_engagements_actions_map = {
-				not_friends_from_engagements: 'engagements_not_friends_from_engagements',
-				remove_friends_from_engagements: 'engagements_remove_friends_from_engagements',
+				add_engagements_from_reciver: 'engagements_add_engagements_from_reciver',
+				remove_engagements_from_reciver: 'engagements_remove_engagements_from_reciver',
+
 				remove_engagements    : 'engagements_remove_engagements',
 				is_engagement         : 'engagements_remove_engagements',
 				not_engagements       : 'engagements_add_engagements',
@@ -733,6 +737,8 @@ window.bp = window.bp || {};
 			};
 
 			var changed_action = false;
+			            // eslint-disable-next-line no-console
+						console.log(`1111111111`, action );
 			if ( action.includes('friend') && 'members' === object && undefined !== friends_actions_map[ action ] ) {
 				changed_action = true;
 				new_action = object_friends_actions_map[ action ];

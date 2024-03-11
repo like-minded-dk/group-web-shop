@@ -1,185 +1,138 @@
 <?php
-function friend_initiator_btn_args($status, $pid, $sg, $rel_id) {
-    error_log('status f-i '.$status);
+function friend_btn_args($status, $pid, $sg, $rel_id) {
+    error_log('friend_btn_args     , btn_status: '.$status);
     switch ( $status ) {
         case 'pending_friend':
             $button_args = get_button_args_x(
                 'friend', $pid, $sg, 'err:',
                 'pending_friend',
-                'Cancel Resell-S',
+                'Cancel Supply-R pf Fri _ba',
                 ['requests', array( 'cancel', $pid )],
-                'friends_remove_friends',
-                $rel_id, 'f-i', 'remove',  true, true
+                'friends_withdraw_friendship',
+                $rel_id, '_ba', 'remove',  true, true
             );
             break;
 
-        case 'awaiting_response':
+        case 'awaiting_response_friend':
             $button_args = get_button_args_x(
                 'friend', $pid, $sg, 'err:',
                 'awaiting_response_friend',
-                'Approve Supply-R',
+                'Approve Supply-S arf Fri _ba',
                 ['requests'],
                 '',
-                $rel_id, 'f-i', 'remove',  true, true
+                $rel_id, '_ba', 'remove',  true, true
             );
-            break;
-
-        case 'exist_initiator_friend':
-        case 'is_friend':
-            $button_args = get_button_args_x(
-                'friend', $pid, $sg, 'err:',
-                'remove_friends',
-                'Stop Supply-R',
-                ['remove-friend', array( $pid )],
-                'friends_remove_friends',
-                $rel_id, 'f-i', 'remove',  true, false
-            );
-
             break;
 
         case 'remove_friends':
             $button_args = get_button_args_x(
                 'friend', $pid, $sg, 'err:',
                 'remove_friends',
-                'Cancel Resell-S',
+                'Stop Supply-R rf Fri _ba',
                 ['remove-friend', array( $pid )],
                 'friends_remove_friends',
-                $rel_id, 'f-i', 'remove',  true, false
-            );
-
-        case 'exist_more_engagements':
-            $button_args = get_button_args_x(
-                'friend', $pid, $sg, 'err:',
-                'remove_engagements_from_friends',
-                'Stop Supply-R',
-                ['remove-friend', array( $pid )],
-                'friends_remove_engagements_from_friends',
-                $rel_id, 'f-i', 'remove',  true, false
-            );
-
-            break;
-
-        case 'remove_initiator_friend':
-            $button_args = get_button_args_x(
-                'friend', $pid, $sg, 'err:',
-                'remove_friends_from_engagements',
-                'Stop Resell-S',
-                ['remove-friend', array( $pid )],
-                'engagements_remove_friends_from_engagements',
-                $rel_id, 'f-i', 'remove',  true, false
+                $rel_id, '_ba', 'remove',  true, false
             );
             break;
 
-        default:
+        case 'not_friends':
             $button_args = get_button_args_x(
                 'friend', $pid, $sg, 'err:',
                 'not_friends',
-                'Supply-R',
+                'Supply-R nf Fri _ba',
                 ['add-friend', array( $pid )],
                 'friends_add_friends',
-                $rel_id, 'f-i', 'add',  true, true
+                $rel_id, '_ba', 'add',  true, true
             );
-
         break;
-    }
-
-    return $button_args;
-}
-
-function friend_reciver_btn_args($status, $pid, $sg, $rel_id) {
-    error_log('status f-r '.$status);
-    switch ( $status ) {
-        case 'pending_friend':
-            $button_args = get_button_args_x(
-                'friend', $pid, $sg, 'err:',
-                'pending_friend',
-                'Cancel Supply-R',
-                ['requests', array( 'cancel', $pid )],
-                'friends_withdraw_friendship',
-                $rel_id, 'f-r', 'remove',  true, true
-            );
-
-            break;
-
-        case 'awaiting_response':
-            $button_args = get_button_args_x(
-                'friend', $pid, $sg, 'err:',
-                'awaiting_response_friend',
-                'Approve Supply-R',
-                ['requests'],
-                '',
-                $rel_id, 'f-r', 'remove',  true, true
-            );
-
-            break;
-
-        case 'remove_initiator_friend':
-        case 'exist_initiator_friend':
-            $button_args = get_button_args_x(
-                'friend', $pid, $sg, 'err:',
-                'is_friend',
-                'Stop Resell-S',
-                ['remove-engagement', array( $pid )],
-                'friends_remove_friends',
-                $rel_id, 'f-r', 'remove',  true, false
-            );
-            break;
 
         case 'is_friend':
             $button_args = get_button_args_x(
                 'friend', $pid, $sg, 'err:',
-                'remove_friends',
-                'Stop Supply-R',
-                ['remove-friend', array( $pid )],
+                'is_friend',
+                'Stop Resell-S if Fri _ba',
+                ['remove-engagement', array( $pid )],
                 'friends_remove_friends',
-                $rel_id, 'f-r', 'remove',  true, false
+                $rel_id, '_ba', 'remove',  true, false
             );
             break;
 
-        case 'remove_more_engagements':
+        case 'pending_engagement':
             $button_args = get_button_args_x(
                 'friend', $pid, $sg, 'err:',
-                'remove_engagements_from_friends',
-                'Stop Supply-R',
-                ['remove-friend', array( $pid )],
-                'friends_remove_engagements_from_friends',
-                $rel_id, 'f-r', 'remove',  true, false
+                'pending_engagement',
+                'Cancel Supply-R Fri _ba',
+                ['requests', array( 'cancel', $pid )],
+                'friends_withdraw_friendship',
+                $rel_id, '_ba', 'remove',  true, true
             );
             break;
 
+        case 'awaiting_response_engagement':
+            $button_args = get_button_args_x(
+                'friend', $pid, $sg, 'err:',
+                'awaiting_response_engagement',
+                'Approve Supply-R are Fri _ba',
+                ['requests'],
+                '',
+                $rel_id, '_ba', 'remove',  true, true
+            );
+            break;
+            
         case 'remove_engagements':
             $button_args = get_button_args_x(
                 'friend', $pid, $sg, 'err:',
                 'remove_engagements',
-                'Stop Supply-R',
+                'Stop Resell-R re Fri _ba',
                 ['remove-friend', array( $pid )],
                 'engagements_remove_engagements',
-                $rel_id, 'f-r', 'remove',  true, false
+                $rel_id, '_ba', 'remove',  true, false
+            );
+            break;
+            
+        case 'not_engagements':
+            $button_args = get_button_args_x(
+                'friend', $pid, $sg, 'err:',
+                'add_friends_from_reciver',
+                'Supply-R ne Fri _ba',
+                ['add-engagements', array( $pid )],
+                'friends_add_friends_from_reciver',
+                $rel_id, '_ba', 'add',  true, true
             );
             break;
 
-        case 'exist_more_friends':
+        case 'remove_engagements_from_reciver':
             $button_args = get_button_args_x(
                 'friend', $pid, $sg, 'err:',
-                'remove_friends_from_engagements',
-                'Stop Resell-S',
+                'remove_engagements_from_reciver',
+                'Stop Supply-R reff Fri _ba',
                 ['remove-friend', array( $pid )],
-                'engagements_remove_friends_from_engagements',
-                $rel_id, 'f-r', 'remove',  true, false
+                'friends_remove_friends_from_reciver',
+                $rel_id, '_ba', 'remove',  true, false
+            );
+            break;
+
+        case 'remove_friends_from_reciver':
+            $button_args = get_button_args_x(
+                'friend', $pid, $sg, 'err:',
+                'remove_friends_from_reciver',
+                'Stop Supply-S rffr Fri _ba',
+                ['remove-friend', array( $pid )],
+                'friends_remove_friends_from_reciver',
+                $rel_id, '_ba', 'remove',  true, false
             );
             break;
         
-        case 'exist_initiator_friend':
+        case 'add_friends_from_reciver':
         default:
             $button_args = get_button_args_x(
                 'friend', $pid, $sg, 'err:',
-                'not_engagements_from_friends',
-                'Resell-S',
+                'add_friends_from_reciver',
+                'Supply-R affr Fri _ba',
                 ['add-engagements', array( $pid )],
-                'friends_not_engagements_from_friends',
-                $rel_id, 'f-r', 'add',  true, true
+                'friends_add_friends_from_reciver',
+                $rel_id, '_ba', 'add',  true, true
             );
-
             break;
     }
 
