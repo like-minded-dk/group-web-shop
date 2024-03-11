@@ -688,8 +688,8 @@ window.bp = window.bp || {};
 			// Unfortunately unlike groups
 			// Friends actions does not match the wpnonce
 			var friends_actions_map = {
-				remove_engagements_from_friends: 'remove_engagements_from_friends',
 				not_engagements_from_friends: 'not_engagements_from_friends',
+				remove_engagements_from_friends: 'remove_engagements_from_friends',
 				remove_friends    : 'remove_friends',
 				is_friend         : 'remove_friends',
 				not_friends       : 'add_friends',
@@ -698,9 +698,21 @@ window.bp = window.bp || {};
 				reject_friendship : 'reject_friendship'
 			};
 
+
+			var object_friends_actions_map = {
+				not_engagements_from_friends: 'friends_not_engagements_from_friends',
+				remove_engagements_from_friends: 'friends_remove_engagements_from_friends',
+				remove_friends    : 'friends_remove_friends',
+				is_friend         : 'friends_remove_friends',
+				not_friends       : 'friends_add_friends',
+				pending_friend    : 'friends_withdraw_friendship',
+				accept_friendship : 'friends_accept_friendship',
+				reject_friendship : 'friends_reject_friendship'
+			};
+
 			var engagements_actions_map = {
-				remove_friends_from_engagements: 'remove_friends_from_engagements',
 				not_friends_from_engagements: 'not_friends_from_engagements',
+				remove_friends_from_engagements: 'remove_friends_from_engagements',
 				remove_engagements    : 'remove_engagements',
 				is_engagement         : 'remove_engagements',
 				not_engagements       : 'add_engagements',
@@ -709,21 +721,37 @@ window.bp = window.bp || {};
 				reject_engagementship : 'reject_engagementship'
 			};
 
+			var object_engagements_actions_map = {
+				not_friends_from_engagements: 'engagements_not_friends_from_engagements',
+				remove_friends_from_engagements: 'engagements_remove_friends_from_engagements',
+				remove_engagements    : 'engagements_remove_engagements',
+				is_engagement         : 'engagements_remove_engagements',
+				not_engagements       : 'engagements_add_engagements',
+				pending_engagement    : 'engagements_withdraw_engagementship',
+				accept_engagementship : 'engagements_accept_engagementship',
+				reject_engagementship : 'engagements_reject_engagementship'
+			};
+
+			var changed_action = false;
 			if ( action.includes('friend') && 'members' === object && undefined !== friends_actions_map[ action ] ) {
-				action = friends_actions_map[ action ];
+				changed_action = true;
+				new_action = object_friends_actions_map[ action ];
 				object = 'friends';
 			}
 
 			if ( action.includes('engagement') && 'members' === object && undefined !== engagements_actions_map[ action ] ) {
-				action = engagements_actions_map[ action ];
+				changed_action = true;
+				new_action = object_engagements_actions_map[ action ];
 				object = 'engagements';
 			}
 
 			// Add a pending class to prevent queries while we're processing the action.
 			target.addClass( 'pending loading' );
 
+			console.log(`>>>>todo action`, new_action , action);
+
 			self.ajax( {
-				action   : object + '_' + action,
+				action   : changed_action ? new_action : object + '_' + action,
 				item_id  : item_id,
 				_wpnonce : nonce
 			}, object ).done( function( response ) {

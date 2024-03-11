@@ -80,11 +80,13 @@ class BP_Nouveau_Engagements {
 	 */
 	protected function setup_filters() {
 		$buttons = array(
-			'engagements_pending_engagement',
-			'engagements_is_engagement',
-			'engagements_not_engagements',
 			'engagements_not_friends_from_engagements',
 			'engagements_remove_friends_from_engagements',
+			'engagements_remove_engagements',
+			'engagements_is_engagement',
+			'engagements_not_engagements',
+			'engagements_pending_engagement',
+
 			'engagements_member_engagementship',
 			'engagements_accept_engagementship',
 			'engagements_reject_engagementship',
@@ -134,6 +136,7 @@ class BP_Nouveau_Engagements {
 			'engagements_not_friends_from_engagements',
 			'engagements_remove_engagements',
 			'engagements_add_engagements',
+
 			'engagements_withdraw_engagementship',
 			'engagements_accept_engagementship',
 			'engagements_reject_engagementship'

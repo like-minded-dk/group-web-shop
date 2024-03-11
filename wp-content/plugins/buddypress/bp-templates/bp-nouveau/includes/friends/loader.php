@@ -80,11 +80,13 @@ class BP_Nouveau_Friends {
 	 */
 	protected function setup_filters() {
 		$buttons = array(
-			'friends_pending_friend',
-			'friends_is_friend',
-			'friends_not_friends',
 			'friends_not_engagements_from_friends',
 			'friends_remove_engagements_from_friends',
+			'friends_remove_friend',
+			'friends_is_friend',
+			'friends_not_friends',
+			'friends_pending_friend',
+
 			'friends_member_friendship',
 			'friends_accept_friendship',
 			'friends_reject_friendship',
@@ -134,6 +136,7 @@ class BP_Nouveau_Friends {
 			'friends_not_engagements_from_friends',
 			'friends_remove_friends',
 			'friends_add_friends',
+
 			'friends_withdraw_friendship',
 			'friends_accept_friendship',
 			'friends_reject_friendship'
