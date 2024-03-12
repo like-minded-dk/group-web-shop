@@ -49,171 +49,265 @@ function get_button_args_wrapper(
     );
 }
 
-
 function relation_btn_args($comp, $status, $pid, $sg, $rel_id) {
     error_log('||> '.$comp.' btn_args, btn_status: '.$status);
 
     if ($comp == 'friend') {
-        $pending_comp = array('act' => 'pending_friend', 'ver' => 'friends_withdraw_friendship');
-        $awaiting_comp = array('act' => 'awaiting_response_friend', 'ver' => '');
-        $remove_comp = array('act' => 'remove_friends', 'ver' => 'friends_remove_friends');
-        $not_comp = array('act' => 'not_friends', 'ver' => 'friends_add_friends');
-        $is_comp = array('act' => 'is_friend', 'ver' => 'friends_remove_friends');
+        $pending_comp = array(
+            'act' => 'pending_friend',
+            'ver' => 'friends_withdraw_friendship',
+            'text' => 'Cancel Supply-R PDF',
+        );
+        $awaiting_comp = array(
+            'act' => 'awaiting_response_friend',
+            'ver' => '',
+            'text' => 'Approve Supply-S AWF',
+        );
+        $remove_comp = array(
+            'act' => 'remove_friends',
+            'ver' => 'friends_remove_friends',
+            'text' => 'Stop Supply-R RMF',
+        );
+        $not_comp = array(
+            'act' => 'not_friends',
+            'ver' => 'friends_add_friends',
+            'text' => 'Supply-R NTF',
+        );
+        $is_comp = array(
+            'act' => 'is_friend',
+            'ver' => 'friends_remove_friends',
+            'text' => 'Stop Resell-S ISF',
+        );
 
-        $pending_oppo = array('act' => 'pending_engagement', 'ver' => 'engagements_withdraw_engagementship');
-        $awaiting_oppo = array('act' => 'awaiting_response_engagement', 'ver' => '');
-        $remove_oppo = array('act' => 'remove_engagements', 'ver' => 'engagements_remove_engagements');
-        $not_oppo = array('act' => 'not_engagements', 'ver' => 'friends_add_friends_from_receiver');
-        $remove_oppo_from_receiver = array('act' => 'remove_engagements_from_receiver', 'ver' => 'engagements_remove_engagements_from_receiver');
-        $remove_receiver_comp = array('act' => 'remove_friends_from_receiver', 'ver' => 'friends_remove_friends_from_receiver');
-        $add_comp_from_receiver = array('act' => 'add_friends_from_receiver', 'ver' => 'friends_add_friends_from_receiver');
+        $pending_oppo = array(
+            'act' => 'pending_engagement',
+            'ver' => 'engagements_withdraw_engagementship',
+            'text' => 'Cancel Supply-R PDF',
+        );
+        $awaiting_oppo = array(
+            'act' => 'awaiting_response_engagement',
+            'ver' => '',
+            'text' => 'Approve Supply-R AWE',
+        );
+        $remove_oppo = array(
+            'act' => 'remove_engagements',
+            'ver' => 'engagements_remove_engagements',
+            'text' => 'Stop Resell-R RME',
+        );
+        $not_oppo = array(
+            'act' => 'not_engagements',
+            'ver' => 'friends_add_friends_from_receiver',
+            'text' => 'Supply-R NTE',
+        );
+        $remove_receiver_oppo = array(
+            'act' => 'remove_engagements_from_receiver',
+            'ver' => 'engagements_remove_engagements_from_receiver',
+            'text' => 'Stop Supply-R RER',
+        );
+        $remove_receiver_comp = array(
+            'act' => 'remove_friends_from_receiver',
+            'ver' => 'friends_remove_friends_from_receiver',
+            'text' => 'Stop Supply-S RFR',
+        );
+        $add_receiver_comp = array(
+            'act' => 'add_friends_from_receiver',
+            'ver' => 'friends_add_friends_from_receiver',
+            'text' => 'Supply-R AFR',
+        );
     } else {
-        $pending_comp = array('act' => 'pending_engagement', 'ver' => 'engagements_withdraw_engagementship');
-        $awaiting_comp = array('act' => 'awaiting_response_engagement', 'ver' => '');
-        $remove_comp = array('act' => 'remove_engagements', 'ver' => 'engagements_remove_engagements');
-        $not_comp = array('act' => 'not_engagements', 'ver' => 'engagements_add_engagements');
-        $is_comp = array('act' => 'is_engagement', 'ver' => 'engagements_remove_engagements');
+        $pending_comp = array(
+            'act' => 'pending_engagement',
+            'ver' => 'engagements_withdraw_engagementship',
+            'text' => 'Cancel Resell-S pf',
+        );
+        $awaiting_comp = array(
+            'act' => 'awaiting_response_engagement',
+            'ver' => '',
+            'text' => 'Approve Resell-S AWE',
+        );
+        $remove_comp = array(
+            'act' => 'remove_engagements',
+            'ver' => 'engagements_remove_engagements',
+            'text' => 'Stop Resell-S RME',
+        );
+        $not_comp = array(
+            'act' => 'not_engagements',
+            'ver' => 'engagements_add_engagements',
+            'text' => 'Resell-S NTE',
+        );
+        $is_comp = array(
+            'act' => 'is_engagement',
+            'ver' => 'engagements_remove_engagements',
+            'text' => 'Stop Supply-R ISE',
+        );
 
-        $pending_oppo = array('act' => 'pending_friend', 'ver' => 'friends_withdraw_friendship');
-        $awaiting_oppo = array('act' => 'awaiting_response_friend', 'ver' => '');
-        $remove_oppo = array('act' => 'remove_friends', 'ver' => 'friends_remove_friends');
-        $not_oppo = array('act' => 'not_friends', 'ver' => 'engagements_add_engagements_from_receiver');
-        $remove_oppo_from_receiver = array('act' => 'remove_friends_from_receiver', 'ver' => 'friends_remove_friends_from_receiver');
-        $remove_receiver_comp = array('act' => 'remove_engagements_from_receiver', 'ver' => 'engagements_remove_engagements_from_receiver');
-        $add_comp_from_receiver = array('act' => 'add_engagements_from_receiver', 'ver' => 'engagements_add_engagements_from_receiver');
+        $pending_oppo = array(
+            'act' => 'pending_friend',
+            'ver' => 'friends_withdraw_friendship',
+            'text' => 'Cancel Resell-S PDF',
+        );
+        $awaiting_oppo = array(
+            'act' => 'awaiting_response_friend',
+            'ver' => '',
+            'text' => 'Approve Resell-S AWF',
+        );
+        $remove_oppo = array(
+            'act' => 'remove_friends',
+            'ver' => 'friends_remove_friends',
+            'text' => 'Stop Supply-R RMF',
+        );
+        $not_oppo = array(
+            'act' => 'not_friends',
+            'ver' => 'engagements_add_engagements_from_receiver',
+            'text' => 'Resell-S NTF',
+        );
+        $remove_receiver_oppo = array(
+            'act' => 'remove_friends_from_receiver',
+            'ver' => 'friends_remove_friends_from_receiver',
+            'text' => 'Stop Resell-S RFR',
+        );
+        $remove_receiver_comp = array(
+            'act' => 'remove_engagements_from_receiver',
+            'ver' => 'engagements_remove_engagements_from_receiver',
+            'text' => 'Stop Resell-S RER',
+        );
+        $add_receiver_comp = array(
+            'act' => 'add_engagements_from_receiver',
+            'ver' => 'engagements_add_engagements_from_receiver',
+            'text' => 'Resell-S AER',
+        );
     }
 
-    error_log('||> friend_btn_args     , btn_status: '.$status);
     switch ( $status ) {
-        case $pending_comp:
+        case $pending_comp['act']:
             $button_args = get_button_args_wrapper(
                 $comp, $pid, $sg, 'err:',
                 $pending_comp['act'],
-                'Cancel Supply-R pf',
+                $pending_comp['text'],
                 ['requests', array( 'cancel', $pid )],
                 $pending_comp['ver'],
                 $rel_id, '_ba', 'remove',  true, true
             );
             break;
 
-        case $awaiting_comp:
+        case $awaiting_comp['act']:
             $button_args = get_button_args_wrapper(
                 $comp, $pid, $sg, 'err:',
                 $awaiting_comp['act'],
-                'Approve Supply-S arf',
+                $awaiting_comp['text'],
                 ['requests'],
                 $awaiting_comp['ver'],
                 $rel_id, '_ba', 'remove',  true, true
             );
             break;
 
-        case $remove_comp:
+        case $remove_comp['act']:
             $button_args = get_button_args_wrapper(
                 $comp, $pid, $sg, 'err:',
                 $remove_comp['act'],
-                'Stop Supply-R rf',
+                $remove_comp['text'],
                 ['remove-friend', array( $pid )],
                 $remove_comp['ver'],
                 $rel_id, '_ba', 'remove',  true, false
             );
             break;
 
-        case $not_comp:
+        case $not_comp['act']:
             $button_args = get_button_args_wrapper(
                 $comp, $pid, $sg, 'err:',
                 $not_comp['act'],
-                'Supply-R nf',
+                $not_comp['text'],
                 ['add-friend', array( $pid )],
                 $not_comp['ver'],
                 $rel_id, '_ba', 'add',  true, true
             );
         break;
 
-        case $is_comp:
+        case $is_comp['act']:
             $button_args = get_button_args_wrapper(
                 $comp, $pid, $sg, 'err:',
                 $is_comp['act'],
-                'Stop Resell-S if',
+                $is_comp['text'],
                 ['remove-engagement', array( $pid )],
                 $is_comp['ver'],
                 $rel_id, '_ba', 'remove',  true, false
             );
             break;
 
-        case $pending_oppo:
+        case $pending_oppo['act']:
             $button_args = get_button_args_wrapper(
                 $comp, $pid, $sg, 'err:',
                 $pending_oppo['act'],
-                'Cancel Supply-R',
+                $pending_oppo['text'],
                 ['requests', array( 'cancel', $pid )],
                 $pending_oppo['ver'],
                 $rel_id, '_ba', 'remove',  true, true
             );
             break;
 
-        case $awaiting_oppo:
+        case $awaiting_oppo['act']:
             $button_args = get_button_args_wrapper(
                 $comp, $pid, $sg, 'err:',
                 $awaiting_oppo['act'],
-                'Approve Supply-R are',
+                $awaiting_oppo['text'],
                 ['requests'],
                 $awaiting_oppo['ver'],
                 $rel_id, '_ba', 'remove',  true, true
             );
             break;
             
-        case $remove_oppo:
+        case $remove_oppo['act']:
             $button_args = get_button_args_wrapper(
                 $comp, $pid, $sg, 'err:',
                 $remove_oppo['act'],
-                'Stop Resell-R re',
+                $remove_oppo['text'],
                 ['remove-friend', array( $pid )],
                 $remove_oppo['ver'],
                 $rel_id, '_ba', 'remove',  true, false
             );
             break;
             
-        case $not_oppo:
+        case $not_oppo['act']:
             $button_args = get_button_args_wrapper(
                 $comp, $pid, $sg, 'err:',
                 $not_oppo['act'],
-                'Supply-R ne',
+                $not_oppo['text'],
                 ['add-engagements', array( $pid )],
                 $not_oppo['ver'],
                 $rel_id, '_ba', 'add',  true, true
             );
             break;
 
-        case $remove_oppo_from_receiver:
+        case $remove_receiver_oppo['act']:
             $button_args = get_button_args_wrapper(
                 $comp, $pid, $sg, 'err:',
-                $remove_oppo_from_receiver['act'],
-                'Stop Supply-R reff',
+                $remove_receiver_oppo['act'],
+                $remove_receiver_oppo['text'],
                 ['remove-engagement', array( $pid )],
-                $remove_oppo_from_receiver['ver'],
+                $remove_receiver_oppo['ver'],
                 $rel_id, '_ba', 'remove',  true, false
             );
             break;
 
-        case $remove_receiver_comp:
+        case $remove_receiver_comp['act']:
             $button_args = get_button_args_wrapper(
                 $comp, $pid, $sg, 'err:',
                 $remove_receiver_comp['act'],
-                'Stop Supply-S rffr',
+                $remove_receiver_comp['text'],
                 ['remove-friend', array( $pid )],
                 $remove_receiver_comp['ver'],
                 $rel_id, '_ba', 'remove',  true, false
             );
             break;
         
-        case $add_comp_from_receiver:
+        case $add_receiver_comp['act']:
         default:
             $button_args = get_button_args_wrapper(
                 $comp, $pid, $sg, 'err:',
-                $add_comp_from_receiver['act'],
-                'Supply-R affr',
+                $add_receiver_comp['act'],
+                $add_receiver_comp['text'],
                 ['add-engagements', array( $pid )],
-                $add_comp_from_receiver['ver'],
+                $add_receiver_comp['ver'],
                 $rel_id, '_ba', 'add',  true, true
             );
             break;

@@ -221,7 +221,7 @@ function ajax_switch_each_action($comp, $action, $user_id, $member_id, $response
 		$check_is_comp_initial_count1 = 'f_c2_fm1_is_friend_ini';
 		$check_is_comp_from_reverse = 'f_c2_fm1_is_friend_rev';
 		$check_pending_comp = 'f_c1_pending_friend_ini';
-        $check_reverse_awaiting = 'e_c1_awaiting_response_rev';
+        $check_reverse_awaiting = 'f_c1_awaiting_response_rev';
 		$check_not_comp = 'not_friends';
 	} else {
 		$check_relation_fn = 'BP_engagements_engagementship::check_is_relation';
@@ -246,7 +246,7 @@ function ajax_switch_each_action($comp, $action, $user_id, $member_id, $response
 
     $check_is_relation = $check_relation_fn( $user_id, $member_id );
 
-	error_log('ajaxfile act and check: ' . $action . ' - ' . $check_is_relation);
+	error_log('ajaxfile check ' . $check_is_relation . ' - act: ' . $action );
 
 	if ( ! empty( $action ) && $accpt_action === $action ) {
 		ajax_accept_relation($comp, $member_id, $response);
@@ -304,7 +304,7 @@ function ajax_switch_each_action($comp, $action, $user_id, $member_id, $response
 
 	// Request already pending.
 	} else {
-        error_log($check_is_relation . ' - ' . $receiver_add_action  . ' - ' . $action . ' - ' .  $check_reverse_awaiting);
+        error_log($check_is_relation . ' - ' . $action );
 		error_log('ajaxfile ' . json_encode('>>> default Request Pending ' . $comp));
 		$response['feedback'] = sprintf(
 			'<div class="bp-feedback error">%s</div>',
