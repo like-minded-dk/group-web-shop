@@ -3,7 +3,7 @@ function engagement_btn_args($status, $pid, $sg, $rel_id) {
     error_log('||> engagement_btn_args , btn_status: '.$status);
     switch ( $status ) {
         case 'pending_engagement':
-            $button_args = get_button_args_x(
+            $button_args = get_button_args_wrapper(
                 'engagement', $pid, $sg, 'err:',
                 'pending_engagement',
                 'Cancel Resell-S pe Eng _ba',
@@ -14,7 +14,7 @@ function engagement_btn_args($status, $pid, $sg, $rel_id) {
             break;
 
         case 'awaiting_response_engagement':
-            $button_args = get_button_args_x(
+            $button_args = get_button_args_wrapper(
                 'engagement', $pid, $sg, 'err:',
                 'awaiting_response_engagement',
                 'Approve Resell-S are Eng _ba',
@@ -25,7 +25,7 @@ function engagement_btn_args($status, $pid, $sg, $rel_id) {
             break;
 
         case 'remove_engagements':
-            $button_args = get_button_args_x(
+            $button_args = get_button_args_wrapper(
                 'engagement', $pid, $sg, 'err:',
                 'remove_engagements',
                 'Stop Resell-R rf Eng _ba',
@@ -36,7 +36,7 @@ function engagement_btn_args($status, $pid, $sg, $rel_id) {
             break;
 
         case 'not_engagements':
-            $button_args = get_button_args_x(
+            $button_args = get_button_args_wrapper(
                 'engagement', $pid, $sg, 'err:',
                 'not_engagements',
                 'Resell-R ne Eng _ba',
@@ -47,7 +47,7 @@ function engagement_btn_args($status, $pid, $sg, $rel_id) {
         break;
 
         case 'is_engagement':
-            $button_args = get_button_args_x(
+            $button_args = get_button_args_wrapper(
                 'engagement', $pid, $sg, 'err:',
                 'is_engagement',
                 'Stop Resell-S ie Eng _ba',
@@ -58,7 +58,7 @@ function engagement_btn_args($status, $pid, $sg, $rel_id) {
             break;
 
         case 'pending_friend':
-            $button_args = get_button_args_x(
+            $button_args = get_button_args_wrapper(
                 'engagement', $pid, $sg, 'err:',
                 'pending_friend',
                 'Cancel Resell-S pf Eng _ba',
@@ -69,7 +69,7 @@ function engagement_btn_args($status, $pid, $sg, $rel_id) {
             break;
 
         case 'awaiting_response_friend':
-            $button_args = get_button_args_x(
+            $button_args = get_button_args_wrapper(
                 'engagement', $pid, $sg, 'err:',
                 'awaiting_response_friend',
                 'Approve Resell-S arf Eng _ba',
@@ -80,7 +80,7 @@ function engagement_btn_args($status, $pid, $sg, $rel_id) {
             break;
             
         case 'remove_friends':
-            $button_args = get_button_args_x(
+            $button_args = get_button_args_wrapper(
                 'engagement', $pid, $sg, 'err:',
                 'remove_friends',
                 'Stop Supply-R re Eng _ba',
@@ -91,46 +91,46 @@ function engagement_btn_args($status, $pid, $sg, $rel_id) {
             break;
             
         case 'not_friends':
-            $button_args = get_button_args_x(
+            $button_args = get_button_args_wrapper(
                 'engagement', $pid, $sg, 'err:',
-                'add_engagements_from_reciver',
+                'add_engagements_from_receiver',
                 'Resell-S nf Eng _ba',
                 ['add-friends', array( $pid )],
-                'engagements_add_engagements_from_reciver',
+                'engagements_add_engagements_from_receiver',
                 $rel_id, '_ba', 'add',  true, true
             );
             break;
 
-        case 'remove_friends_from_reciver':
-            $button_args = get_button_args_x(
+        case 'remove_friends_from_receiver':
+            $button_args = get_button_args_wrapper(
                 'engagement', $pid, $sg, 'err:',
-                'remove_friends_from_reciver',
+                'remove_friends_from_receiver',
                 'Stop Resell-R rffr Eng _ba',
                 ['remove-friend', array( $pid )],
-                'friends_remove_friends_from_reciver',
+                'friends_remove_friends_from_receiver',
                 $rel_id, '_ba', 'remove',  true, false
             );
             break;
     
-        case 'remove_engagements_from_reciver':
-            $button_args = get_button_args_x(
+        case 'remove_engagements_from_receiver':
+            $button_args = get_button_args_wrapper(
                 'engagement', $pid, $sg, 'err:',
-                'remove_engagements_from_reciver',
+                'remove_engagements_from_receiver',
                 'Stop Resell-S refr Eng _ba',
                 ['remove-engagement', array( $pid )],
-                'engagements_remove_engagements_from_reciver',
+                'engagements_remove_engagements_from_receiver',
                 $rel_id, '_ba', 'remove',  true, false
             );
             break;
         
-        case 'add_engagements_from_reciver':
+        case 'add_engagements_from_receiver':
         default:
-            $button_args = get_button_args_x(
+            $button_args = get_button_args_wrapper(
                 'engagement', $pid, $sg, 'err:',
-                'add_engagements_from_reciver',
+                'add_engagements_from_receiver',
                 'Resell-S aefr Eng _ba',
                 ['add-friends', array( $pid )],
-                'engagements_add_engagements_from_reciver',
+                'engagements_add_engagements_from_receiver',
                 $rel_id, '_ba', 'add',  true, true
             );
             break;

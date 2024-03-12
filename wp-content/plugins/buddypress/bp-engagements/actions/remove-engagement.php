@@ -39,7 +39,7 @@ function engagements_action_remove_engagement() {
 		} else {
 			bp_core_add_message( __( 'engagementship canceled', 'buddypress' ) );
 		}
-	} elseif ( 'remove_friends_from_reciver' === $engagementship_status ) {
+	} elseif ( 'remove_friends_from_receiver' === $engagementship_status ) {
 		if ( ! check_admin_referer( 'friends_remove_engagement' ) ) {
 			return false;
 		}
@@ -61,7 +61,7 @@ function engagements_action_remove_engagement() {
 		}
 	} elseif ( 'not_engagements' === $engagementship_status ) {
 		bp_core_add_message( __( 'You are not yet engagements with this user', 'buddypress' ), 'error' );
-	} elseif ( 'add_friends_from_reciver' === $engagementship_status ) {
+	} elseif ( 'add_friends_from_receiver' === $engagementship_status ) {
 		bp_core_add_message( __( 'You are not yet friends with this user', 'buddypress' ), 'error' );
 	} else {
 		bp_core_add_message( __( 'You have a pending engagementship request with this user', 'buddypress' ), 'error' );

@@ -205,7 +205,7 @@ class BP_Engagements_Engagementship {
 		if ( ! empty( $this->id ) ) {
 
 			try {
-				break_sql('update table engagement: '. $bp->friends->table_name . ' user: ' . $this->initiator_user_id . ' reciver: ' . $this->engagement_user_id);
+				break_sql('update table engagement: '. $bp->friends->table_name . ' user: ' . $this->initiator_user_id . ' receiver: ' . $this->engagement_user_id);
 
 				$result = $wpdb->query( $wpdb->prepare( <<<SQL
 					INSERT INTO {$bp->engagements->table_name} 
@@ -229,7 +229,7 @@ class BP_Engagements_Engagementship {
 		} else {
 
 			try {
-				break_sql('add table engagement: '. $bp->friends->table_name . ' user: ' . $this->initiator_user_id . ' reciver: ' . $this->engagement_user_id);
+				break_sql('add table engagement: '. $bp->engagements->table_name . ' user: ' . $this->initiator_user_id . ' receiver: ' . $this->engagement_user_id);
 
 				$result = $wpdb->query( $wpdb->prepare( <<<SQL
 					INSERT INTO {$bp->engagements->table_name} 
@@ -479,17 +479,13 @@ class BP_Engagements_Engagementship {
 			if (bp_current_component() == 'engagements') {
 				$args = array(
 					'initiator_user_id' => $user_id,
-					'is_confirmed' => 1,
 				);
 			} elseif (bp_current_component() == 'friends') {
 				$args = array(
 					'engagement_user_id' => $user_id,
-					'is_confirmed' => 1,
 				);
 			} else {
-				$args = array(
-					'is_confirmed' => 1,
-				);
+				$args = array();
 			}
 		}
 

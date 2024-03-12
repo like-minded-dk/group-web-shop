@@ -205,7 +205,7 @@ class BP_Friends_Friendship {
 		if ( ! empty( $this->id ) ) {
 
 			try {
-				break_sql('update table friend : '. $bp->friends->table_name . ' user: ' . $this->initiator_user_id . ' reciver: ' . $this->friend_user_id);
+				break_sql('update table friend : '. $bp->friends->table_name . ' user: ' . $this->initiator_user_id . ' receiver: ' . $this->friend_user_id);
 
 				$result = $wpdb->query( $wpdb->prepare( <<<SQL
 				UPDATE {$bp->friends->table_name}
@@ -229,7 +229,7 @@ class BP_Friends_Friendship {
 		} else {
 
 			try {
-				break_sql('add table friend : '. $bp->friends->table_name . ' user: ' . $this->initiator_user_id . ' reciver: ' . $this->friend_user_id);
+				break_sql('add table friend : '. $bp->friends->table_name . ' user: ' . $this->initiator_user_id . ' receiver: ' . $this->friend_user_id);
 
 				$result = $wpdb->query( $wpdb->prepare( <<<SQL
 				INSERT INTO {$bp->friends->table_name} 
@@ -478,17 +478,13 @@ class BP_Friends_Friendship {
 			if (bp_current_component() == 'friends') {
 				$args = array(
 					'initiator_user_id' => $user_id,
-					'is_confirmed' => 1,
 				);
 			} elseif (bp_current_component() == 'engagements') {
 				$args = array(
 					'friend_user_id' => $user_id,
-					'is_confirmed' => 1,
 				);
 			} else {
-				$args = array(
-					'is_confirmed' => 1,
-				);
+				$args = array();
 			}
 		}
 

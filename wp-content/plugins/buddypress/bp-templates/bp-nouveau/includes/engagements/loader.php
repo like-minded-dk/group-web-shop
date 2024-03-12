@@ -80,8 +80,8 @@ class BP_Nouveau_Engagements {
 	 */
 	protected function setup_filters() {
 		$buttons = array(
-			'engagements_add_engagements_from_reciver',
-			'friends_remove_friends_from_reciver',
+			'engagements_add_engagements_from_receiver',
+			'friends_remove_friends_from_receiver',
 			'engagements_remove_engagements',
 			'engagements_is_engagement',
 			'engagements_not_engagements',
@@ -132,8 +132,8 @@ class BP_Nouveau_Engagements {
 	 */
 	public function register_ajax_actions() {
 		$ajax_actions = array(
-			'engagements_add_engagements_from_reciver',
-			'friends_remove_friends_from_reciver',
+			'engagements_add_engagements_from_receiver',
+			'friends_remove_friends_from_receiver',
 			'engagements_remove_engagements',
 			'engagements_add_engagements',
 

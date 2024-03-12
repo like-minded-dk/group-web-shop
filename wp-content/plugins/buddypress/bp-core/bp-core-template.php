@@ -710,9 +710,9 @@ function bp_button( $args = '' ) {
 	function bp_get_button( $args = '' ) {
 		$button = new BP_Button( $args );
 		// @todo lm log button
-		error_log(json_encode($args));
-		error_log(' ');
-		error_log(json_encode($button));
+		// error_log(json_encode($args));
+		// error_log(' ');
+		// error_log(json_encode($button));
 		/**
 		 * Filters the requested button output.
 		 *

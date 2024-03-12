@@ -40,7 +40,7 @@ function friends_action_add_friend() {
 		} else {
 			bp_core_add_message( __( 'Friendship requested', 'buddypress' ) );
 		}
-	} elseif ( 'add_engagements_from_reciver' === $friendship_status ) {
+	} elseif ( 'add_engagements_from_receiver' === $friendship_status ) {
 		if ( ! check_admin_referer( 'friends_add_engagements' ) ) {
 			return false;
 		}

@@ -40,7 +40,7 @@ function engagements_action_add_engagement() {
 		} else {
 			bp_core_add_message( __( 'engagementship requested', 'buddypress' ) );
 		}
-	} elseif ( 'add_friends_from_reciver' === $engagementship_status ) {
+	} elseif ( 'add_friends_from_receiver' === $engagementship_status ) {
 		if ( ! check_admin_referer( 'engagements_add_friend' ) ) {
 			return false;
 		}

@@ -40,7 +40,7 @@ function friends_action_remove_friend() {
 		} else {
 			bp_core_add_message( __( 'Friendship canceled', 'buddypress' ) );
 		}
-	} elseif ( 'remove_engagements_from_reciver' === $friendship_status ) {
+	} elseif ( 'remove_engagements_from_receiver' === $friendship_status ) {
 		if ( ! check_admin_referer( 'engagements_remove_friend' ) ) {
 			return false;
 		}
@@ -62,7 +62,7 @@ function friends_action_remove_friend() {
 		}
 	} elseif ( 'not_friends' === $friendship_status ) {
 		bp_core_add_message( __( 'You are not yet friends with this user', 'buddypress' ), 'error' );
-	} elseif ( 'add_engagement_from_reciver' === $friendship_status ) {
+	} elseif ( 'add_engagement_from_receiver' === $friendship_status ) {
 		bp_core_add_message( __( 'You are not yet engagements with this user', 'buddypress' ), 'error' );
 	} else {
 		bp_core_add_message( __( 'You have a pending friendship request with this user', 'buddypress' ), 'error' );

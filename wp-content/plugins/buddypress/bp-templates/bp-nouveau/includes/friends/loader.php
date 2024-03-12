@@ -80,8 +80,8 @@ class BP_Nouveau_Friends {
 	 */
 	protected function setup_filters() {
 		$buttons = array(
-			'friends_add_friends_from_reciver',
-			'friends_remove_friends_from_reciver',
+			'friends_add_friends_from_receiver',
+			'friends_remove_friends_from_receiver',
 			'friends_remove_friend',
 			'friends_is_friend',
 			'friends_not_friends',
@@ -132,8 +132,8 @@ class BP_Nouveau_Friends {
 	 */
 	public function register_ajax_actions() {
 		$ajax_actions = array(
-			'friends_add_friends_from_reciver',
-			'friends_remove_friends_from_reciver',
+			'friends_add_friends_from_receiver',
+			'friends_remove_friends_from_receiver',
 			'friends_remove_friends',
 			'friends_add_friends',
 

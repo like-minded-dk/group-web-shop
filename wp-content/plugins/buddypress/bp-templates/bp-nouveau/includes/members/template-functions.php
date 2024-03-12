@@ -58,7 +58,7 @@ function is_oppsit_relation($table) {
 	return 0;
 }
 
-function is_reciver_awating($table) {
+function is_receiver_awating($table) {
 	$user_id = bp_loggedin_user_id();
 	$member_id = bp_get_member_user_id();
 	global $wpdb;
@@ -70,7 +70,7 @@ function is_reciver_awating($table) {
 			({$table}_user_id = {$user_id}
 			AND initiator_user_id = {$member_id})
 	SQL, OBJECT );
-	//error_log('>>is_reciver_awating  '.json_encode($result));
+	//error_log('>>is_receiver_awating  '.json_encode($result));
 	return (string) count($result);
 }
 
@@ -92,7 +92,7 @@ function is_initial_awating($table) {
 // $state could be 0, 1, 3, 4
 // 0  = no record
 // 1  = initiator record only
-// 3  = reciver record only
+// 3  = receiver record only
 // 4  = both record
 function is_initiator($component = '') {
 	$user_id = bp_loggedin_user_id();

@@ -688,8 +688,8 @@ window.bp = window.bp || {};
 			// Unfortunately unlike groups
 			// Friends actions does not match the wpnonce
 			var friends_actions_map = {
-				add_friends_from_reciver: 'add_friends_from_reciver',
-				remove_friends_from_reciver: 'remove_friends_from_reciver',
+				add_friends_from_receiver: 'add_friends_from_receiver',
+				remove_friends_from_receiver: 'remove_friends_from_receiver',
 				
 				remove_friends    : 'remove_friends',
 				is_friend         : 'remove_friends',
@@ -701,8 +701,8 @@ window.bp = window.bp || {};
 
 
 			var object_friends_actions_map = {
-				add_friends_from_reciver: 'friends_add_friends_from_reciver',
-				remove_friends_from_reciver: 'friends_remove_friends_from_reciver',
+				add_friends_from_receiver: 'friends_add_friends_from_receiver',
+				remove_friends_from_receiver: 'friends_remove_friends_from_receiver',
 
 				remove_friends    : 'friends_remove_friends',
 				is_friend         : 'friends_remove_friends',
@@ -713,8 +713,8 @@ window.bp = window.bp || {};
 			};
 
 			var engagements_actions_map = {
-				add_engagements_from_reciver: 'add_engagements_from_reciver',
-				remove_engagements_from_reciver: 'remove_engagements_from_reciver',
+				add_engagements_from_receiver: 'add_engagements_from_receiver',
+				remove_engagements_from_receiver: 'remove_engagements_from_receiver',
 
 				remove_engagements    : 'remove_engagements',
 				is_engagement         : 'remove_engagements',
@@ -725,8 +725,8 @@ window.bp = window.bp || {};
 			};
 
 			var object_engagements_actions_map = {
-				add_engagements_from_reciver: 'engagements_add_engagements_from_reciver',
-				remove_engagements_from_reciver: 'engagements_remove_engagements_from_reciver',
+				add_engagements_from_receiver: 'engagements_add_engagements_from_receiver',
+				remove_engagements_from_receiver: 'engagements_remove_engagements_from_receiver',
 
 				remove_engagements    : 'engagements_remove_engagements',
 				is_engagement         : 'engagements_remove_engagements',
