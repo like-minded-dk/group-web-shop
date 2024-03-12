@@ -525,7 +525,7 @@ class BP_Friends_Friendship {
 		$result = array_filter($result, function($v, $k) use ($user_id) {
 			return $v->initiator_user_id == $user_id;
 		}, ARRAY_FILTER_USE_BOTH);
-		error_log('>>filter-first '. count($result));
+		// error_log('classF >>filter-first '. count($result));
 		if ( $result ) {
 			$friendship_id = current( $result )->id;
 		}
@@ -683,7 +683,7 @@ class BP_Friends_Friendship {
 	 *                             'is_friend', 'pending_friend', and 'awaiting_response'.
 	 */
 	public static function check_is_friend( $initiator_userid, $possible_friend_userid ) {
-		error_log('classF >>>>>check_is_friend>>>>: '. json_encode($initiator_userid . ' - ' . $possible_friend_userid));
+		// error_log('classF >>>>>check_is_friend>>>>: '. json_encode($initiator_userid . ' - ' . $possible_friend_userid));
 		if ( empty( $initiator_userid ) || empty( $possible_friend_userid ) ) {
 			return false;
 		}
@@ -711,7 +711,7 @@ class BP_Friends_Friendship {
 	 *                                              to check friendship status with primary user.
 	 */
 	public static function update_bp_friends_cache( $user_id, $possible_friend_ids ) {
-		error_log('classF >'. json_encode('>>>update_bp_friends_cache'));
+		// error_log('classF >'. json_encode('>>>update_bp_friends_cache'));
 		global $wpdb;
 
 		$bp                  = buddypress();
@@ -721,14 +721,14 @@ class BP_Friends_Friendship {
 		$fetch = array();
 		foreach ( $possible_friend_ids as $friend_id ) {
 			// Check for cached items in both friendship directions.
-			error_log('classF >>>cache ' . $user_id . ':' . $friend_id . ' ' . json_encode(bp_core_get_incremented_cache( $user_id . ':' . $friend_id, 'bp_friends' )));
-			error_log('classF >>>cache ' . $friend_id . ':' . $user_id . ' ' . json_encode(bp_core_get_incremented_cache( $friend_id . ':' . $user_id, 'bp_friends' )));
+			// error_log('classF >>>cache ' . $user_id . ':' . $friend_id . ' ' . json_encode(bp_core_get_incremented_cache( $user_id . ':' . $friend_id, 'bp_friends' )));
+			// error_log('classF >>>cache ' . $friend_id . ':' . $user_id . ' ' . json_encode(bp_core_get_incremented_cache( $friend_id . ':' . $user_id, 'bp_friends' )));
 			if ( false === bp_core_get_incremented_cache( $user_id . ':' . $friend_id, 'bp_friends' )
 				|| false === bp_core_get_incremented_cache( $friend_id . ':' . $user_id, 'bp_friends' ) ) {
 				$fetch[] = $friend_id;
 			}
 		}
-		error_log('classF >$fetch f : '.json_encode($fetch));
+		// error_log('classF >$fetch f : '.json_encode($fetch));
 		if ( empty( $fetch ) ) {
 			return;
 		}
@@ -744,8 +744,8 @@ class BP_Friends_Friendship {
 		$user_id, $user_id );
 		$relationships = $wpdb->get_results( $sql );
 
-		error_log('   >>>>start cls e>>> ');
-		error_log('>>>> class e 717 $sql'.json_encode($sql));
+		// error_log('classF >>>>start cls e>>> ');
+		// // error_log('classF >>>> 717 $sql'.json_encode($sql));
 		// Use $handled to keep track of all of the $possible_engagement_ids we've matched.
 		$handled = array();
 
@@ -757,98 +757,98 @@ class BP_Friends_Friendship {
 		foreach ( $relationships as $relationship ) {
 			$initiator_user_id = (int) $relationship->initiator_user_id;
 			$friend_user_id    = (int) $relationship->friend_user_id;
-			error_log('   <<<<<');
+			// error_log('classF   <<<<<');
 
 			if ($confirm_counts >= 2) {
-				error_log('classF > ');
-				error_log('classF >>>> title both exist and confirmed ');
-				error_log('classF >>>>>>>>>> both confirmed ');
+				// error_log('classF > ');
+				// error_log('classF >>>> title both exist and confirmed ');
+				// error_log('classF >>>>>>>>>> both confirmed ');
 
 				if ($initiator_user_id === $user_id) {
-					error_log('classF >>>>>>>>>> Only one , I am confirmed ');
+					// error_log('classF >>>>>>>>>> Only one , I am confirmed ');
 
 					$status_initiator = 'f_c2_exist_both_engagements_v1_ini';
 					$status_friend = 'f_c2_exist_both_engagements_v2_ini';
 				} else {
-					error_log('classF >>>>>>>>>> Only one , Another is confirmed ');
+					// error_log('classF >>>>>>>>>> Only one , Another is confirmed ');
 
 					$status_initiator = 'f_c2_exist_both_engagements_v2_rev';
 					$status_friend = 'f_c2_exist_both_engagements_v1_rev';
 				}
 			} elseif (count($relationships) == 1 && 1 === (int) $relationship->is_confirmed) {
-				error_log('classF > ');
-				error_log('classF >>>> title: only one, Has been confirmed');
+				// error_log('classF > ');
+				// error_log('classF >>>> title: only one, Has been confirmed');
 
 				if ($initiator_user_id === $user_id) {
-					error_log('classF >>>>>>>>>> Only one , I am confirmed ');
+					// error_log('classF >>>>>>>>>> Only one , I am confirmed ');
 
 					$status_initiator = 'f_c1_is_friend_ini';
 					$status_friend = 'f_c1_is_reversed_engagement_ini';
 				} else {
-					error_log('classF >>>>>>>>>> Only one , Another is confirmed ');
+					// error_log('classF >>>>>>>>>> Only one , Another is confirmed ');
 
 					$status_initiator = 'f_c1_is_friend_rev';
 					$status_friend = 'f_c1_is_reverse_engagement_rev';
 				}
 			} elseif (count($relationships) == 1 && 0 === (int) $relationship->is_confirmed) {
-				error_log('classF > ');
-				error_log('classF >>>> title: only one, waiting for confirmation');
+				// error_log('classF > ');
+				// error_log('classF >>>> title: only one, waiting for confirmation');
 
 				if ($initiator_user_id === $user_id) {
-					error_log('classF >>>>>>>>>> Only one , I am waiting for confirmation');
+					// error_log('classF >>>>>>>>>> Only one , I am waiting for confirmation');
 
 					$status_initiator = 'f_c1_pending_friend_ini';
 					$status_friend = 'f_c1_awaiting_response_ini';
 				} else {
-					error_log('classF >>>>>>>>>> Only one , Another has not been confirmed');
+					// error_log('classF >>>>>>>>>> Only one , Another has not been confirmed');
 
 					$status_initiator = 'f_c1_pending_friend_rev';
 					$status_friend = 'f_c1_awaiting_response_rev';
 				}
 			} elseif (count($relationships) >= 2 && $confirm_counts == 1 && 1 === (int) $relationship->is_confirmed) {
-				error_log('classF >>>> title: Both exist, One has been confirmed');
+				// error_log('classF >>>> title: Both exist, One has been confirmed');
 
 				if ($initiator_user_id === $user_id) {
-					error_log('classF >>>>>>>>>> Both exist ,One from me is confirmed ');
+					// error_log('classF >>>>>>>>>> Both exist ,One from me is confirmed ');
 
 					$status_initiator = 'f_c2_fm1_is_friend_ini';
 					$status_friend = 'f_c2_fm1_is_reverse_engagement_ini';
 				} else {
-					error_log('classF >>>>>>>>>> Both exist ,One from Another is confirmed ');
+					// error_log('classF >>>>>>>>>> Both exist ,One from Another is confirmed ');
 
 					$status_initiator = 'f_c2_fm1_is_reverse_engagement_rev';
 					$status_friend = 'f_c2_fm1_is_friend_rev';
 				}
 			} elseif (count($relationships) >= 2 && $confirm_counts == 1 && 0 === (int) $relationship->is_confirmed) {
-				error_log('classF >>>> title: Both exist, One is Waiting for confirmation');
+				// error_log('classF >>>> title: Both exist, One is Waiting for confirmation');
 
 				if ($initiator_user_id === $user_id) {
-					error_log('classF >>>>>>>>>> Both exist ,One from me is waiting for confirmation');
+					// error_log('classF >>>>>>>>>> Both exist ,One from me is waiting for confirmation');
 
 					$status_initiator = 'f_c2_fm0_pending_friend_ini';
 					$status_friend = 'f_c2_fm0_awaiting_response_ini';
 				} else {
-					error_log('classF >>>>>>>>>> Both exist ,One from Another has not been confirmed');
+					// error_log('classF >>>>>>>>>> Both exist ,One from Another has not been confirmed');
 
 					$status_initiator = 'f_c2_fm0_awaiting_response_rev';
 					$status_friend = 'f_c2_fm0_pending_friend_rev';
 				}
 			} else {
-				error_log('classF >>>> title: 2 friends, both not confirmed');
-				error_log('classF >>>>>>>>>> none confirmed ');
+				// error_log('classF >>>> title: 2 friends, both not confirmed');
+				// error_log('classF >>>>>>>>>> none confirmed ');
 
 				$status_initiator = 'f_c2_pending_friend_def';
 				$status_friend = 'f_c2_awaiting_response_def';
 			}
-			error_log('classF >>>>>>>status_initiator '. json_encode($status_initiator));
-			error_log('classF >>>>>>status_friend '. json_encode($status_friend));
+			// error_log('classF >>>>>>>status_initiator '. json_encode($status_initiator));
+			// error_log('classF >>>>>>status_friend '. json_encode($status_friend));
 
-			error_log('>>bp_current_component '. bp_current_component());
-			error_log('>>>>$initiator_user_id '. $initiator_user_id);
-			error_log('>>>>>>>>>>>>>>>user_id '. $user_id);
-			error_log('>>>>>>>>friendship '. json_encode($relationship));
-			error_log('<<<<<<<<< each class -e');
-			error_log('classF > ');
+			// error_log('classF >>bp_current_component '. bp_current_component());
+			// error_log('classF >>>>$initiator_user_id '. $initiator_user_id);
+			// error_log('classF >>>>>>>>>>>>>>>user_id '. $user_id);
+			// error_log('classF >>>>>>>>friendship '. json_encode($relationship));
+			// error_log('classF <<<<<<<<< each class -e');
+			// error_log('classF ');
 			
 			bp_core_set_incremented_cache( $initiator_user_id . ':' . $friend_user_id, 'bp_friends', $status_initiator );
 			bp_core_set_incremented_cache( $friend_user_id . ':' . $initiator_user_id, 'bp_friends', $status_friend );

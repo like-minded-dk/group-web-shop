@@ -1,6 +1,6 @@
 <?php
 function friend_btn_args($status, $pid, $sg, $rel_id) {
-    error_log('friend_btn_args     , btn_status: '.$status);
+    error_log('||> friend_btn_args     , btn_status: '.$status);
     switch ( $status ) {
         case 'pending_friend':
             $button_args = get_button_args_x(
@@ -63,7 +63,7 @@ function friend_btn_args($status, $pid, $sg, $rel_id) {
                 'pending_engagement',
                 'Cancel Supply-R Fri _ba',
                 ['requests', array( 'cancel', $pid )],
-                'friends_withdraw_friendship',
+                'engagements_withdraw_engagementship',
                 $rel_id, '_ba', 'remove',  true, true
             );
             break;
@@ -106,15 +106,15 @@ function friend_btn_args($status, $pid, $sg, $rel_id) {
                 'friend', $pid, $sg, 'err:',
                 'remove_engagements_from_reciver',
                 'Stop Supply-R reff Fri _ba',
-                ['remove-friend', array( $pid )],
-                'friends_remove_friends_from_reciver',
+                ['remove-engagement', array( $pid )],
+                'engagements_remove_engagements_from_reciver',
                 $rel_id, '_ba', 'remove',  true, false
             );
             break;
 
         case 'remove_friends_from_reciver':
             $button_args = get_button_args_x(
-                'friend', $pid, $sg, 'err:',
+                'engagements', $pid, $sg, 'err:',
                 'remove_friends_from_reciver',
                 'Stop Supply-S rffr Fri _ba',
                 ['remove-friend', array( $pid )],

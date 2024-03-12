@@ -16,6 +16,8 @@ function get_button_args_x(
 ) {
     $class = $comp == 'friend' ? 'friendship-button' : 'engagement-button'; 
     error_log(json_encode(">>> {$error} {$id} {$mk}"));
+    error_log(bp_loggedin_user_url( bp_members_get_path_chunks( array_merge([$sg], $chuck_array) ) ));
+    error_log(json_encode($verify));
     $text = __( "{$link_text} {$rel_id}", 'buddypress' );
     return array(
         'id'                => $id,

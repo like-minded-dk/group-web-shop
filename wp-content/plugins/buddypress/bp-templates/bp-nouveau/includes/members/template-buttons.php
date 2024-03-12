@@ -78,7 +78,7 @@ function add_engagement_button(&$buttons, $user_id, $type, $parent_class, $butto
 				);
 
 				// If button element set add nonce link to data attr
-				if ( 'button' === $button_element && 'awaiting_response' !== $button_args['id'] ) {
+				if ( 'button' === $button_element && 'awaiting_response_engagement' !== $button_args['id'] && 'awaiting_response_friend' !== $button_args['id']) {
 					$buttons['member_engagementship']['button_attr']['data-bp-nonce'] = $button_args['link_href'];
 				} else {
 					$buttons['member_engagementship']['button_element'] = 'a';

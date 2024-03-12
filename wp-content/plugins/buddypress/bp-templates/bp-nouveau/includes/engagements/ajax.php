@@ -74,6 +74,8 @@ add_action( 'admin_init', function() {
  * @return string HTML
  */
 function bp_nouveau_ajax_addremove_engagement() {
+	$action = $_POST['action'];
+	error_log(json_encode('ajaxfile nonce: ' . $_POST['nonce'] . ' action: ' . $action. ' - _wpnonce: '. $_POST['_wpnonce']));
 	$user_id = bp_loggedin_user_id();
 	$response = array(
 		'feedback' => sprintf(
@@ -96,12 +98,13 @@ function bp_nouveau_ajax_addremove_engagement() {
 	$check = 'bp_nouveau_engagements';
 
 	// Use a specific one for actions needed it
-	if ( ! empty( $_POST['_wpnonce'] ) && ! empty( $_POST['action'] ) ) {
+	if ( ! empty( $_POST['_wpnonce'] ) && ! empty( $action ) ) {
 		$nonce = $_POST['_wpnonce'];
-		$check = $_POST['action'];
+		$check = $action;
 	}
 	// Nonce check!
 	if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, $check ) ) {
+		error_log(json_encode('ajaxfile verify nonce error!'));
 		wp_send_json_error( $response );
 	}
 
@@ -109,7 +112,7 @@ function bp_nouveau_ajax_addremove_engagement() {
 	$engagement_id = (int) $_POST['item_id'];
 
 	// Check if the user exists only when the engagement ID is not a Frienship ID.
-	if ( isset( $_POST['action'] ) && $_POST['action'] !== 'engagements_accept_engagementship' && $_POST['action'] !== 'engagements_reject_engagementship' ) {
+	if ( isset( $action ) && $action !== 'engagements_accept_engagementship' && $action !== 'engagements_reject_engagementship' ) {
 		$user = get_user_by( 'id', $engagement_id );
 		if ( ! $user ) {
 			wp_send_json_error(
@@ -125,10 +128,10 @@ function bp_nouveau_ajax_addremove_engagement() {
 
 	$check_is_engagement = BP_engagements_engagementship::check_is_engagement( $user_id, $engagement_id );
 
-	error_log('ajax_addremove_e POST action -e 127: '.$_POST['action']);
-	error_log('$check_is_engagement -e 128: '.$check_is_engagement);
+	error_log('ajaxfile ajax_add remove_e POST action -e 127: '.$action);
+	error_log('ajaxfile $check_is_engagement -e 128: '.$check_is_engagement);
 	// In the 2 first cases the $engagement_id is a engagementship id.
-	if ( ! empty( $_POST['action'] ) && 'engagements_accept_engagementship' === $_POST['action'] ) {
+	if ( ! empty( $action ) && 'engagements_accept_engagementship' === $action ) {
 		if ( ! engagements_accept_engagementship( $engagement_id ) ) {
 			wp_send_json_error(
 				array(
@@ -152,7 +155,7 @@ function bp_nouveau_ajax_addremove_engagement() {
 		}
 
 	// Rejecting a engagementship
-	} elseif ( ! empty( $_POST['action'] ) && 'engagements_reject_engagementship' === $_POST['action'] ) {
+	} elseif ( ! empty( $action ) && 'engagements_reject_engagementship' === $action ) {
 		if ( ! engagements_reject_engagementship( $engagement_id ) ) {
 			wp_send_json_error(
 				array(
@@ -177,51 +180,46 @@ function bp_nouveau_ajax_addremove_engagement() {
 
 	// Trying to remove engagementship.
 	} elseif ( 'is_engagement' === $check_is_engagement ) {
-		// todo : user ajax_remove_engagement 'contents' => bp_get_add_friend_button( $friend_id ) );
-		ajax_remove_relation( 'engagement',  $user_id, $engagement_id, '>>is_engagement 168');
+		ajax_remove_relation( 'engagement',  $user_id, $engagement_id, '>>is_engagement 181');
+	
+	// Trying to remove engagementship.
+	} elseif ( 'e_c1_is_engagement_ini' === $check_is_engagement && 'engagements_remove_engagements') {
+		ajax_remove_relation( 'engagement',  $user_id, $engagement_id, '>>is_engagement 189x');
 
-	// Trying to cancel engagementship in existed button.
-	} elseif ( 'exist_initiator_engagement' === $check_is_engagement ) {
-		ajax_remove_relation( 'engagement',  $engagement_id, $user_id, 'exist_initiator_engagement 197' );
+	// Trying to remove engagementship.
+	} elseif ( 'e_c1_is_reverse_engagement_rev' === $check_is_engagement && $action == 'engagements_remove_engagements') {
+		ajax_remove_relation( 'engagement',  $user_id, $engagement_id, '>>is_engagement 191');
 
-	// Trying to stop in existed button.
-	} elseif ( 'exist_more_engagements' === $check_is_engagement ) {
-		ajax_remove_relation( 'engagement', $user_id, $engagement_id, 'exist_more_engagements 241');
+	} elseif ( 'e_c1_is_reverse_friend_rev' === $check_is_engagement && $action == 'engagements_remove_engagements_from_reciver') {
+		ajax_remove_relation( 'engagement',  $engagement_id,  $user_id, '>>is_engagement 186x');
 
-	// Trying to cancel pending request.
-	} elseif ( 'not_engagements' === $check_is_engagement && $_POST['action'] == 'engagements_withdraw_engagementship' ) {
-		// todo : user ajax_remove_engagement 'contents' => bp_get_add_friend_button( $friend_id ) );
-		ajax_withdraw('engagement', $user_id, $engagement_id, 'not_engagements -e 271');
+	// Trying to stop friendship from engagement reversed.
+	} elseif ( 'e_c2_fm1_is_engagement_ini' === $check_is_engagement && $action == 'engagements_remove_engagements') {
+		ajax_remove_relation( 'engagement', $engagement_id, $user_id, 'reverse pending_engagement_remove_engagement -187');
 
-	// Trying to request engagementship.
-	} elseif ( 'not_engagements' === $check_is_engagement ) {
-		error_log('>>not_engagements -f 420: '. $user_id . ' - ' . $engagement_id);
-		if ( ! engagements_add_engagement( $user_id, $engagement_id ) ) {
-			$response['feedback'] = sprintf(
-				'<div class="bp-feedback error">%s</div>',
-				esc_html__( 'engagementship could not be requested.', 'buddypress' )
-			);
+	// Trying to stop friendship from engagement.
+	} elseif ( 'e_c2_fm1_is_engagement_rev' === $check_is_engagement && $action == 'engagements_remove_engagements_from_reciver' ) {
+		ajax_remove_relation( 'engagement', $engagement_id, $user_id, '>>engagements_remove_engagements_from_reciver -f 201: ');
 
-			wp_send_json_error( $response );
-		} else {
-			wp_send_json_success( array( 'contents' => bp_get_add_engagement_button( $engagement_id ) ) );
-		}
+	// Trying to cancel friendship in existed button..
+	} elseif ( 'e_c2_fm1_is_engagement_ini' === $check_is_engagement && $action == 'engagements_remove_engagements' ) {
+		ajax_remove_relation( 'friend', $user_id, $engagement_id, '>>exist_initiator_friend -f 205');
 
-	// Trying to cancel pending request
-	} elseif ( 'pending_engagement' === $check_is_engagement && $_POST['action'] == 'engagements_withdraw_engagementship') {
-		ajax_withdraw('engagement', $engagement_id, $user_id, '>pending_engagement -f 220');
-
-	// Trying to cancel pending request - reversed.
-	} elseif ( 'pending_engagement' === $check_is_engagement && $_POST['action'] == 'engagements_remove_engagements') {
-		ajax_remove_relation( 'engagement', $engagement_id, $user_id, 'reverse pending_engagement_remove_engagement -215');
+	// Trying to stop awaiting friendship.
+	} elseif ( 'e_c2_fm1_is_engagement_rev' === $check_is_engagement && $action == 'engagements_withdraw_engagementship' ) {
+		ajax_withdraw('friend',  $user_id, $engagement_id, '>friends_withdraw_friendship -f 197');
 
 	// Trying to cancel pending request.
-	} elseif ( 'pending_engagement' === $check_is_engagement ) {
-		ajax_withdraw('engagement', $user_id, $engagement_id, '>pending_engagement -f 234');
+	} elseif ( 'e_c1_pending_engagement_ini' === $check_is_engagement && $action == 'engagements_withdraw_engagementship' ) {
+		ajax_withdraw('engagement', $user_id, $engagement_id, 'e_c1_pending_engagement_ini -e 271x');
+
+	// Trying to request friendship.
+	} elseif ( 'f_c1_is_reverse_friend_rev' === $check_is_engagement && $action = 'engagements_add_engagements_from_reciver' ) {
+		ajax_add_relation('engagement',  $user_id, $engagement_id,  'ajaxfile >>engagements_add_engagements_from_reciver -e 210x: '. $user_id . ' - ' . $engagement_id);
 
 	// Request already pending.
 	} else {
-		error_log(json_encode('>>> default Request Pending E 554 -f'));
+		error_log('ajaxfile '. json_encode('>>> default Request Pending E 554 -f'));
 		$response['feedback'] = sprintf(
 			'<div class="bp-feedback error">%s</div>',
 			esc_html__( 'Request Pending Engagement (engagement)', 'buddypress' )

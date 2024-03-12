@@ -34,12 +34,13 @@ function get_button_args ($pid, $comp) {
 		$ini_f_id,
 		$rev_f_id,
 	) = get_template_vars($pid, $comp);
-
+    error_log(json_encode('  ||> '));
 	if (false) {
 		return;
 	} elseif ( $is_member ) {
 		// one initiator
-		error_log(json_encode('||||>  is_member '). $button_func);
+		error_log(json_encode('gba||>  is_member '). $button_func);
+        error_log('gba||> {$comp} : '.json_encode($comp) . ', {$oppo} : '.json_encode($oppo) . ', $comp_st : '.json_encode($comp_st) . ', $oppo_st : '.json_encode($oppo_st));
 		$button_args = $button_func($status, $pid, $sg, $rel_id);
 
     
@@ -50,12 +51,12 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "engagement", {$oppo} : "friend", $comp_st : "not_engagements", $oppo_st : "f_c1_is_friend_ini"
         $cond_str = (int) ($comp_st == 'e_c1_is_engagement_ini' && $oppo_st == 'not_friends') . '-' . (int) ($comp_st == 'not_engagements' && $oppo_st == 'f_c1_is_friend_ini');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 05: E_T 17->9-conf_1 LS-L_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 05: E_T 17->9-conf_1 LS-L_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 05-1'));
+            error_log(json_encode('gba||> btn_id: 05-1'));
             $button_args = $button_func("remove_{$comp}s", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 05-2'));
+            error_log(json_encode('gba||> btn_id: 05-2'));
             $button_args = $button_func("not_{$comp}s", $pid, $sg, $rel_id);
         }
 
@@ -65,12 +66,12 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "friend", {$oppo} : "engagement", $comp_st : "f_c1_is_friend_ini", $oppo_st : "not_engagements"
         $cond_str = (int) ($comp_st == 'not_friends' && $oppo_st == 'e_c1_is_engagement_ini') . '-' . (int) ($comp_st == 'f_c1_is_friend_ini' && $oppo_st == 'not_engagements');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 06: E_T 17->9-conf_1 LS-R_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 06: E_T 17->9-conf_1 LS-R_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 06-1'));
+            error_log(json_encode('gba||> btn_id: 06-1'));
             $button_args = $button_func("not_{$oppo}s", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 06-2'));
+            error_log(json_encode('gba||> btn_id: 06-2'));
             $button_args = $button_func("remove_{$comp}s", $pid, $sg, $rel_id);
         }
 
@@ -80,13 +81,13 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "engagement", {$oppo} : "friend", $comp_st : "not_engagements", $oppo_st : "f_c1_is_reverse_engagement_rev"
         $cond_str = (int) ($comp_st == 'e_c1_is_reverse_friend_rev' && $oppo_st == 'not_friends') . '-' . (int) ($comp_st == 'not_engagements' && $oppo_st == 'f_c1_is_reverse_engagement_rev');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 07: E_T 17->9-conf_1 GD-L_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 07: E_T 17->9-conf_1 GD-L_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 07-1'));
+            error_log(json_encode('gba||> btn_id: 07-1'));
             $button_args = $button_func("add_{$comp}s_from_reciver", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 07-2'));
-            $button_args = $button_func("remove_{$comp}s_from_reciver", $pid, $sg, $rel_id);
+            error_log(json_encode('gba||> btn_id: 07-2'));
+            $button_args = $button_func("remove_{$oppo}s_from_reciver", $pid, $sg, $rel_id);
         }
 
     } elseif  ( ($comp_st == 'not_friends' && $oppo_st == 'e_c1_is_reverse_friend_rev')
@@ -95,12 +96,12 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "friend", {$oppo} : "engagement", $comp_st : "f_c1_is_reverse_engagement_rev", $oppo_st : "not_engagements"
         $cond_str = (int) ($comp_st == 'not_friends' && $oppo_st == 'e_c1_is_reverse_friend_rev') . '-' . (int) ($comp_st == 'f_c1_is_reverse_engagement_rev' && $oppo_st == 'not_engagements');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 08: E_T 17->9-conf_1 GD-R_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 08: E_T 17->9-conf_1 GD-R_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 08-1')); 
+            error_log(json_encode('gba||> btn_id: 08-1')); 
             $button_args = $button_func("remove_{$oppo}s_from_reciver", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 08-2'));
+            error_log(json_encode('gba||> btn_id: 08-2'));
             $button_args = $button_func("add_{$comp}s_from_reciver", $pid, $sg, $rel_id);
         }
 
@@ -111,12 +112,12 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "engagement", {$oppo} : "friend", $comp_st : "e_c1_pending_engagement_ini", $oppo_st : "f_c1_is_friend_ini"
         $cond_str = (int) ($comp_st == 'e_c1_is_engagement_ini' && $oppo_st == 'f_c1_pending_friend_ini') . '-' . (int) ($comp_st == 'e_c1_pending_engagement_ini' && $oppo_st == 'f_c1_is_friend_ini');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 09: E_T 17->9-conf_1 + F_T 17->9-0 LS-L_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 09: E_T 17->9-conf_1 + F_T 17->9-0 LS-L_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 09-1')); 
+            error_log(json_encode('gba||> btn_id: 09-1')); 
             $button_args = $button_func("remove_{$comp}s", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 09-2'));
+            error_log(json_encode('gba||> btn_id: 09-2'));
             $button_args = $button_func("pending_{$comp}", $pid, $sg, $rel_id);
         }
 
@@ -126,12 +127,12 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "friend", {$oppo} : "engagement", $comp_st : "f_c1_is_friend_ini", $oppo_st : "e_c1_pending_engagement_ini"
         $cond_str = (int) ($comp_st == 'f_c1_pending_friend_ini' && $oppo_st == 'e_c1_is_engagement_ini') . '-' . (int) ($comp_st == 'f_c1_is_friend_ini' && $oppo_st == 'e_c1_pending_engagement_ini');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 10: E_T 17->9-conf_1 + F_T 17->9-0 LS-R_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 10: E_T 17->9-conf_1 + F_T 17->9-0 LS-R_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 10-1')); 
+            error_log(json_encode('gba||> btn_id: 10-1')); 
             $button_args = $button_func("pending_{$comp}", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 10-2'));
+            error_log(json_encode('gba||> btn_id: 10-2'));
             $button_args = $button_func("remove_{$comp}s", $pid, $sg, $rel_id);
         }
 
@@ -141,12 +142,12 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "engagement", {$oppo} : "friend", $comp_st : "e_c1_awaiting_response_rev", $oppo_st : "f_c1_is_reverse_engagement_rev"
         $cond_str = (int) ($comp_st == 'e_c1_is_reverse_friend_rev' && $oppo_st == 'f_c1_awaiting_response_rev') . '-' . (int) ($comp_st == 'e_c1_awaiting_response_rev' && $oppo_st == 'f_c1_is_reverse_engagement_rev');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 11: E_T 17->9-conf_1 + F_T 17->9-0 GD-L_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 11: E_T 17->9-conf_1 + F_T 17->9-0 GD-L_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 11-1')); 
+            error_log(json_encode('gba||> btn_id: 11-1')); 
             $button_args = $button_func("awaiting_response_{$oppo}", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 11-2'));
+            error_log(json_encode('gba||> btn_id: 11-2'));
             $button_args = $button_func("awaiting_response_{$comp}", $pid, $sg, $rel_id);
         }
 
@@ -156,12 +157,12 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "friend", {$oppo} : "engagement", $comp_st : "f_c1_is_reverse_engagement_rev", $oppo_st : "e_c1_awaiting_response_rev"
         $cond_str = (int) ($comp_st == 'f_c1_awaiting_response_rev' && $oppo_st == 'e_c1_is_reverse_friend_rev') . '-' . (int) ($comp_st == 'f_c1_is_reverse_engagement_rev' && $oppo_st == 'e_c1_awaiting_response_rev');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 12: E_T 17->9-conf_1 + F_T 17->9-0 GD-R_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 12: E_T 17->9-conf_1 + F_T 17->9-0 GD-R_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 12-1')); 
+            error_log(json_encode('gba||> btn_id: 12-1')); 
             $button_args = $button_func("remove_{$oppo}s_from_reciver", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 12-2'));
+            error_log(json_encode('gba||> btn_id: 12-2'));
             $button_args = $button_func("remove_{$comp}s_from_reciver", $pid, $sg, $rel_id);
         }
 
@@ -174,12 +175,12 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "engagement", {$oppo} : "friend", $comp_st : "c1_is_engagement_ini", $oppo_st : "c1_is_friend_ini"
         $cond_str = (int) ($comp_st == 'e_c1_is_engagement_ini' && $oppo_st == 'f_c1_is_friend_ini') . '-' . (int) ($comp_st == 'e_c1_is_engagement_ini' && $oppo_st == 'f_c1_is_friend_ini');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 13: E_T 17->9-conf_1 + 17 f 1 LS-L_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 13: E_T 17->9-conf_1 + 17 f 1 LS-L_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 13-1')); 
+            error_log(json_encode('gba||> btn_id: 13-1')); 
             $button_args = $button_func("remove_{$comp}s", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 13-2'));
+            error_log(json_encode('gba||> btn_id: 13-2'));
             $button_args = $button_func("remove_{$oppo}s", $pid, $sg, $rel_id);
         }
 
@@ -189,12 +190,12 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "friend", {$oppo} : "engagement", $comp_st : "f_c1_is_friend_ini", $oppo_st : "e_c1_is_engagement_ini"
         $cond_str = (int) ($comp_st == 'f_c1_is_friend_ini' && $oppo_st == 'e_c1_is_engagement_ini') . '-' . (int) ($comp_st == 'f_c1_is_friend_ini' && $oppo_st == 'e_c1_is_engagement_ini');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 14: E_T 17->9-conf_1 + 17 f 1 LS-R_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 14: E_T 17->9-conf_1 + 17 f 1 LS-R_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 14-1')); 
+            error_log(json_encode('gba||> btn_id: 14-1')); 
             $button_args = $button_func("remove_{$comp}s", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 14-2'));
+            error_log(json_encode('gba||> btn_id: 14-2'));
             $button_args = $button_func("remove_{$oppo}s", $pid, $sg, $rel_id);
         }
 
@@ -204,12 +205,12 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "engagement", {$oppo} : "friend", $comp_st : "e_c1_is_reverse_friend_rev", $oppo_st : "f_c1_is_reverse_engagement_rev"
         $cond_str = (int) ($comp_st == 'e_c1_is_reverse_friend_rev' && $oppo_st == 'f_c1_is_reverse_engagement_rev') . '-' . (int) ($comp_st == 'e_c1_is_reverse_friend_rev' && $oppo_st == 'f_c1_is_reverse_engagement_rev');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 15: E_T 17->9-conf_1 + 17 f 1 GD-L_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 15: E_T 17->9-conf_1 + 17 f 1 GD-L_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 15-1')); 
+            error_log(json_encode('gba||> btn_id: 15-1')); 
             $button_args = $button_func("remove_{$oppo}s_from_reciver", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 15-2'));
+            error_log(json_encode('gba||> btn_id: 15-2'));
             $button_args = $button_func("remove_{$comp}s_from_reciver", $pid, $sg, $rel_id);
         }
 
@@ -219,12 +220,12 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "friend", {$oppo} : "engagement", $comp_st : "f_c1_is_reverse_engagement_rev", $oppo_st : "e_c1_is_reverse_friend_rev"
         $cond_str = (int) ($comp_st == 'f_c1_is_reverse_engagement_rev' && $oppo_st == 'e_c1_is_reverse_friend_rev') . '-' . (int) ($comp_st == 'f_c1_is_reverse_engagement_rev' && $oppo_st == 'e_c1_is_reverse_friend_rev');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 16: E_T 17->9-conf_1 + 17 f 1 GD-R_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 16: E_T 17->9-conf_1 + 17 f 1 GD-R_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 16-1')); 
+            error_log(json_encode('gba||> btn_id: 16-1')); 
             $button_args = $button_func("remove_{$oppo}s_from_reciver", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 16-2'));
+            error_log(json_encode('gba||> btn_id: 16-2'));
             $button_args = $button_func("remove_{$comp}s_from_reciver", $pid, $sg, $rel_id);
         }
 
@@ -237,13 +238,13 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "engagement", {$oppo} : "friend", $comp_st : "not_engagements", $oppo_st : "f_c2_fm1_is_friend_ini"
         $cond_str = (int) ($comp_st == 'e_c2_fm1_is_engagement_ini' && $oppo_st == 'not_friends') . '-' . (int) ($comp_st == 'not_engagements' && $oppo_st == 'f_c2_fm1_is_friend_ini');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 17: E_T 17->9-conf_1 + E_T 9->17-0 LS-L_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 17: E_T 17->9-conf_1 + E_T 9->17-0 LS-L_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 17-1')); 
+            error_log(json_encode('gba||> btn_id: 17-1')); 
             $button_args = $button_func("remove_{$comp}s", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 17-2'));
-            $button_args = $button_func("pending_{$oppo}", $pid, $sg, $rel_id);
+            error_log(json_encode('gba||> btn_id: 17-2'));
+            $button_args = $button_func("awaiting_response_{$oppo}", $pid, $sg, $rel_id);
         }
 
     } elseif  ( ($comp_st == 'not_friends' && $oppo_st == 'e_c2_fm1_is_engagement_ini')
@@ -252,12 +253,12 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "friend", {$oppo} : "engagement", $comp_st : "f_c2_fm1_is_friend_ini", $oppo_st : "not_engagements"
         $cond_str = (int) ($comp_st == 'not_friends' && $oppo_st == 'e_c2_fm1_is_engagement_ini') . '-' . (int) ($comp_st == 'f_c2_fm1_is_friend_ini' && $oppo_st == 'not_engagements');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 18: E_T 17->9-conf_1 + E_T 9->17-0 LS-R_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 18: E_T 17->9-conf_1 + E_T 9->17-0 LS-R_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 18-1')); 
+            error_log(json_encode('gba||> btn_id: 18-1')); 
             $button_args = $button_func("pending_{$oppo}", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 18-2'));
+            error_log(json_encode('gba||> btn_id: 18-2'));
             $button_args = $button_func("remove_{$comp}s", $pid, $sg, $rel_id);
         }
 
@@ -267,12 +268,12 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "engagement", {$oppo} : "friend", $comp_st : "not_engagements", $oppo_st : "f_c2_fm1_is_friend_rev"
         $cond_str = (int) ($comp_st == 'e_c2_fm1_is_reverse_friend_rev' && $oppo_st == 'not_friends') . '-' . (int) ($comp_st == 'not_engagements' && $oppo_st == 'f_c2_fm1_is_friend_rev');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 19: E_T 17->9-conf_1 + E_T 9->17-0 GD-L_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 19: E_T 17->9-conf_1 + E_T 9->17-0 GD-L_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 19-1')); 
+            error_log(json_encode('gba||> btn_id: 19-1')); 
             $button_args = $button_func("awaiting_response_{$comp}", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 19-2'));
+            error_log(json_encode('gba||> btn_id: 19-2'));
             $button_args = $button_func("remove_{$oppo}s_from_reciver", $pid, $sg, $rel_id);
         }
 
@@ -282,16 +283,14 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "friend", {$oppo} : "engagement", $comp_st : "f_c2_fm1_is_friend_rev", $oppo_st : "not_engagements"
         $cond_str = (int) ($comp_st == 'not_friends' && $oppo_st == 'e_c2_fm1_is_reverse_friend_rev') . '-' . (int) ($comp_st == 'f_c2_fm1_is_friend_rev' && $oppo_st == 'not_engagements');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 20: E_T 17->9-conf_1 + E_T 9->17-0 GD-R_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 20: E_T 17->9-conf_1 + E_T 9->17-0 GD-R_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 20-1')); 
+            error_log(json_encode('gba||> btn_id: 20-1')); 
             $button_args = $button_func("remove_{$oppo}s_from_reciver", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 20-2'));
-            $button_args = $button_func("awaiting_response_{$comp}", $pid, $sg, $rel_id);
+            error_log(json_encode('gba||> btn_id: 20-2'));
+            $button_args = $button_func("pending_{$comp}", $pid, $sg, $rel_id);
         }
-
-
 
     ////////////////////// E_T 17->9-conf_1 + E_T 9->17-conf_1 | F_T 17->9-conf_1 + F_T 9->17-conf_1
     } elseif  ( ($comp_st == 'e_c2_exist_both_engagements_v1_ini' && $oppo_st == 'not_friends')
@@ -300,12 +299,12 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "engagement", {$oppo} : "friend", $comp_st : "not_engagements", $oppo_st : "f_c2_exist_both_engagements_v1_ini"
         $cond_str = (int) ($comp_st == 'e_c2_exist_both_engagements_v1_ini' && $oppo_st == 'f_c1_is_reverse_engagement_rev') . '-' . (int) ($comp_st == 'not_engagements' && $oppo_st == 'f_c2_exist_both_engagements_v1_ini');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 21: E_T 17->9-conf_1 + E_T 9->17-conf_1 LS-L_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 21: E_T 17->9-conf_1 + E_T 9->17-conf_1 LS-L_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 21-1')); 
+            error_log(json_encode('gba||> btn_id: 21-1')); 
             $button_args = $button_func("remove_{$comp}s", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 21-2'));
+            error_log(json_encode('gba||> btn_id: 21-2'));
             $button_args = $button_func("remove_{$oppo}s_from_reciver", $pid, $sg, $rel_id);
         }
 
@@ -315,12 +314,12 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "friend", {$oppo} : "engagement", $comp_st : "f_c2_exist_both_engagements_v1_ini", $oppo_st : "not_engagements"
         $cond_str = (int) ($comp_st == 'f_c1_is_reverse_engagement_rev' && $oppo_st == 'e_c2_exist_both_engagements_v1_ini') . '-' . (int) ($comp_st == 'f_c2_exist_both_engagements_v1_ini' && $oppo_st == 'not_engagements');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 22: E_T 17->9-conf_1 + E_T 9->17-conf_1 LS-R_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 22: E_T 17->9-conf_1 + E_T 9->17-conf_1 LS-R_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 22-1')); 
+            error_log(json_encode('gba||> btn_id: 22-1')); 
             $button_args = $button_func("remove_{$oppo}s_from_reciver", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 22-2'));
+            error_log(json_encode('gba||> btn_id: 22-2'));
             $button_args = $button_func("remove_{$comp}s", $pid, $sg, $rel_id);
         }
 
@@ -330,12 +329,12 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "engagement", {$oppo} : "friend", $comp_st : "not_engagements", $oppo_st : "f_c2_exist_both_engagements_v1_rev"
         $cond_str = (int) ($comp_st == 'e_c2_exist_both_engagements_v1_rev' && $oppo_st == 'not_friends') . '-' . (int) ($comp_st == 'not_engagements' && $oppo_st == 'f_c2_exist_both_engagements_v1_rev');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 23: E_T 17->9-conf_1 + E_T 9->17-conf_1 GD-L_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 23: E_T 17->9-conf_1 + E_T 9->17-conf_1 GD-L_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 23-1')); 
+            error_log(json_encode('gba||> btn_id: 23-1')); 
             $button_args = $button_func("remove_{$oppo}s_from_reciver", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 23-2'));
+            error_log(json_encode('gba||> btn_id: 23-2'));
             $button_args = $button_func("remove_{$oppo}s_from_reciver", $pid, $sg, $rel_id);
         }
 
@@ -345,12 +344,12 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "friend", {$oppo} : "engagement", $comp_st : "f_c2_exist_both_engagements_v1_rev", $oppo_st : "not_engagements"
         $cond_str = (int) ($comp_st == 'not_friends' && $oppo_st == 'e_c2_exist_both_engagements_v1_rev') . '-' . (int) ($comp_st == 'f_c2_exist_both_engagements_v1_rev' && $oppo_st == 'not_engagements');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 24: E_T 17->9-conf_1 + E_T 9->17-conf_1 GD-R_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 24: E_T 17->9-conf_1 + E_T 9->17-conf_1 GD-R_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 24-1')); 
+            error_log(json_encode('gba||> btn_id: 24-1')); 
             $button_args = $button_func("remove_{$oppo}s_from_reciver", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 24-2'));
+            error_log(json_encode('gba||> btn_id: 24-2'));
             $button_args = $button_func("remove_{$comp}s", $pid, $sg, $rel_id);
         }
 
@@ -361,12 +360,12 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "engagement", {$oppo} : "friend", $comp_st : "not_engagements", $oppo_st : "f_c2_fm0_pending_friend_ini"
         $cond_str = (int) ($comp_st == 'e_c2_fm0_pending_engagement_ini' && $oppo_st == 'not_friends') . '-' . (int) ($comp_st == 'not_engagements' && $oppo_st == 'f_c2_fm0_pending_friend_ini');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 25: E_T 17->9-0 + E_T 9->17-conf_1 LS-L_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 25: E_T 17->9-0 + E_T 9->17-conf_1 LS-L_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 25-1')); 
+            error_log(json_encode('gba||> btn_id: 25-1')); 
             $button_args = $button_func("pending_{$comp}", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 25-2'));
+            error_log(json_encode('gba||> btn_id: 25-2'));
             $button_args = $button_func("remove_{$oppo}s_from_reciver", $pid, $sg, $rel_id);
         }
 
@@ -376,12 +375,12 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "friend", {$oppo} : "engagement", $comp_st : "f_c2_fm0_pending_friend_ini", $oppo_st : "not_engagements"
         $cond_str = (int) ($comp_st == 'not_friends' && $oppo_st == 'e_c2_fm0_pending_engagement_ini') . '-' . (int) ($comp_st == 'f_c2_fm0_pending_friend_ini' && $oppo_st == 'not_engagements');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 26: E_T 17->9-0 + E_T 9->17-conf_1 LS-R_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 26: E_T 17->9-0 + E_T 9->17-conf_1 LS-R_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 26-1')); 
+            error_log(json_encode('gba||> btn_id: 26-1')); 
             $button_args = $button_func("remove_{$oppo}s_from_reciver", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 26-2'));
+            error_log(json_encode('gba||> btn_id: 26-2'));
             $button_args = $button_func("pending_{$comp}", $pid, $sg, $rel_id);
         }
 
@@ -391,12 +390,12 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "engagement", {$oppo} : "friend", $comp_st : "not_engagements", $oppo_st : "f_c2_fm0_pending_friend_rev"
         $cond_str = (int) ($comp_st == 'e_c2_fm0_awaiting_response_rev' && $oppo_st == 'not_friends') . '-' . (int) ($comp_st == 'not_engagements' && $oppo_st == 'f_c2_fm0_pending_friend_rev');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 27: E_T 17->9-0 + E_T 9->17-conf_1 GD-L_btn'));
+        error_log(json_encode('gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 27: E_T 17->9-0 + E_T 9->17-conf_1 GD-L_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 27-1')); 
+            error_log(json_encode('gba||> btn_id: 27-1')); 
             $button_args = $button_func("remove_{$comp}s", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 27-2'));
+            error_log(json_encode('gba||> btn_id: 27-2'));
             $button_args = $button_func("awaiting_response_{$oppo}", $pid, $sg, $rel_id);
         }
 
@@ -406,12 +405,13 @@ function get_button_args ($pid, $comp) {
         // F_cond {$comp} : "friend", {$oppo} : "engagement", $comp_st : "f_c2_fm0_pending_friend_rev", $oppo_st : "not_engagements"
         $cond_str = (int) ($comp_st == 'not_friends' && $oppo_st == 'e_c2_fm0_awaiting_response_rev') . '-' . (int) ($comp_st == 'f_c2_fm0_pending_friend_rev' && $oppo_st == 'not_engagements');
         $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-        error_log(json_encode('||||> btn_status conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 28: E_T 17->9-0 + E_T 9->17-conf_1 GD-R_btn'));
+        error_log(json_encode('
+        gba||> conds: ' . $cond_str . ' From_db: '  . $db . ' condition_Id: 28: E_T 17->9-0 + E_T 9->17-conf_1 GD-R_btn'));
         if ($db == 'Ed') {
-            error_log(json_encode('btn_status 28-1')); 
+            error_log(json_encode('gba||> btn_id: 28-1')); 
             $button_args = $button_func("awaiting_response_{$comp}", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status 28-2'));
+            error_log(json_encode('gba||> btn_id: 28-2'));
             $button_args = $button_func("remove_{$comp}s", $pid, $sg, $rel_id);
         }
 
@@ -422,23 +422,23 @@ function get_button_args ($pid, $comp) {
         // error_log(json_encode( $oppo_st == "c2_exist_both_{$oppo}s_v1_ini" ));
         // error_log(json_encode( $comp_st == "not_{$comp}s" ));
 
-		error_log(json_encode('||||>  rev only '));
+		error_log(json_encode('gba||>  rev only '));
 		if (true) {
-            error_log(json_encode('btn_status rev only-1')); 
+            error_log(json_encode('gba||> btn_id: rev only-1')); 
             $button_args = $button_func("remove_{$oppo}_from_reciver", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status rev only-2'));
+            error_log(json_encode('gba||> btn_id: rev only-2'));
             $button_args = $button_func("add_{$comp}s_from_reciver", $pid, $sg, $rel_id);
         }
 
 	} else {
         
-		error_log(json_encode('||||>  els only '));
+		error_log(json_encode('gba||>  els only '));
 		if (true) {
-            error_log(json_encode('btn_status els only-1')); 
+            error_log(json_encode('gba||> btn_id: els only-1')); 
             $button_args = $button_func("remove_{$oppo}_from_reciver", $pid, $sg, $rel_id);
         } else {
-            error_log(json_encode('btn_status els only-2'));
+            error_log(json_encode('gba||> btn_id: els only-2'));
             $button_args = $button_func("add_{$comp}s_from_reciver", $pid, $sg, $rel_id);
         }
 	}
@@ -492,21 +492,20 @@ function get_template_vars($pid, $comp) {
 	// $button_func = $is_reversed == '1' ? $reciver_func : $initiator_func;
     $button_func = $comp == 'friend' ? 'friend_btn_args' : 'engagement_btn_args';
 
-	error_log('');
-	error_log('||||> {$comp} : '.json_encode($comp) . ', {$oppo} : '.json_encode($oppo) . ', $comp_st : '.json_encode($comp_st) . ', $oppo_st : '.json_encode($oppo_st));
-	error_log('>rev_f_awa ini_f_awa rev_e_awa ini_e_awa: '.json_encode( $rev_f_awa . ', ' .$ini_f_awa . ', ' . $rev_e_awa . ', ' .$ini_e_awa ));
-	error_log('================================= $ini_e: '.$ini_e);
-	error_log('==================================$ini_f: '.$ini_f);
-	error_log('===========================friend_status: '.$fst);
-	error_log('=======================engagement_status: '.$est);
-	error_log('============================$is_reversed: '.$is_reversed);
-	error_log('=============================$relation_f: '.$f_rel_id);	
-	error_log('=============================$relation_e: '.$e_rel_id);	
-	error_log('=====ini_f_id rev_f_id ini_e_id rev_e_id: '.$ini_f_id . ', ' . $rev_f_id . ', ' . $ini_e_id  . ', ' . $rev_e_id );
-	error_log('=================================$status: '.$status);
-	error_log('=====================================$sg: '.$sg);
-	error_log('============================$button_func: '.$button_func);
-	error_log(' ');
+	error_log('gtv ');
+	error_log('gtv >rev_f_awa ini_f_awa rev_e_awa ini_e_awa: '.json_encode( $rev_f_awa . ', ' .$ini_f_awa . ', ' . $rev_e_awa . ', ' .$ini_e_awa ));
+	error_log('gtv ================================= $ini_e: '.$ini_e);
+	error_log('gtv ==================================$ini_f: '.$ini_f);
+	error_log('gtv ===========================friend_status: '.$fst);
+	error_log('gtv =======================engagement_status: '.$est);
+	error_log('gtv ============================$is_reversed: '.$is_reversed);
+	error_log('gtv =============================$relation_f: '.$f_rel_id);	
+	error_log('gtv =============================$relation_e: '.$e_rel_id);	
+	error_log('gtv =====ini_f_id rev_f_id ini_e_id rev_e_id: '.$ini_f_id . ', ' . $rev_f_id . ', ' . $ini_e_id  . ', ' . $rev_e_id );
+	error_log('gtv =================================$status: '.$status);
+	error_log('gtv =====================================$sg: '.$sg);
+	error_log('gtv ============================$button_func: '.$button_func);
+	error_log('gtv  ');
 
 	return [
 		$pid,

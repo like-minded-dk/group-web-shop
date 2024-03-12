@@ -74,6 +74,8 @@ add_action( 'admin_init', function() {
  * @return string HTML
  */
 function bp_nouveau_ajax_addremove_friend() {
+	$action = $_POST['action'];
+	error_log(json_encode('ajaxfile nonce: ' . $_POST['nonce'] . ' action: ' . $action . ' - _wpnonce: '. $_POST['_wpnonce']));
 	$user_id = bp_loggedin_user_id();
 	$response = array(
 		'feedback' => sprintf(
@@ -96,12 +98,13 @@ function bp_nouveau_ajax_addremove_friend() {
 	$check = 'bp_nouveau_friends';
 
 	// Use a specific one for actions needed it
-	if ( ! empty( $_POST['_wpnonce'] ) && ! empty( $_POST['action'] ) ) {
+	if ( ! empty( $_POST['_wpnonce'] ) && ! empty( $action ) ) {
 		$nonce = $_POST['_wpnonce'];
-		$check = $_POST['action'];
+		$check = $action;
 	}
 	// Nonce check!
 	if ( empty( $nonce ) || ! wp_verify_nonce( $nonce, $check ) ) {
+		error_log(json_encode('ajaxfile verify nonce error!'));
 		wp_send_json_error( $response );
 	}
 
@@ -109,7 +112,7 @@ function bp_nouveau_ajax_addremove_friend() {
 	$friend_id = (int) $_POST['item_id'];
 
 	// Check if the user exists only when the Friend ID is not a Frienship ID.
-	if ( isset( $_POST['action'] ) && $_POST['action'] !== 'friends_accept_friendship' && $_POST['action'] !== 'friends_reject_friendship' ) {
+	if ( isset( $action ) && $action !== 'friends_accept_friendship' && $action !== 'friends_reject_friendship' ) {
 		$user = get_user_by( 'id', $friend_id );
 		if ( ! $user ) {
 			wp_send_json_error(
@@ -125,10 +128,10 @@ function bp_nouveau_ajax_addremove_friend() {
 
 	$check_is_friend = BP_Friends_Friendship::check_is_friend( $user_id, $friend_id );
 	
-	error_log('>>ajax_addremove_f -f 127post action '. $_POST['action']);
-	error_log('$check_is_friend -f 128: '.$check_is_friend);
+	error_log('ajaxfile >> ajax_addremove_f -f 127 post action '. $action);
+	error_log('ajaxfile $check_is_friend -f 128: '.$check_is_friend);
 	// In the 2 first cases the $friend_id is a friendship id.
-	if ( ! empty( $_POST['action'] ) && 'friends_accept_friendship' === $_POST['action'] ) {
+	if ( ! empty( $action ) && 'friends_accept_friendship' === $action ) {
 		if ( ! friends_accept_friendship( $friend_id ) ) {
 			wp_send_json_error(
 				array(
@@ -152,7 +155,7 @@ function bp_nouveau_ajax_addremove_friend() {
 		}
 
 	// Rejecting a friendship
-	} elseif ( ! empty( $_POST['action'] ) && 'friends_reject_friendship' === $_POST['action'] ) {
+	} elseif ( ! empty( $action ) && 'friends_reject_friendship' === $action ) {
 		if ( ! friends_reject_friendship( $friend_id ) ) {
 			wp_send_json_error(
 				array(
@@ -177,51 +180,46 @@ function bp_nouveau_ajax_addremove_friend() {
 
 	// Trying to remove friendship.
 	} elseif ( 'is_friend' === $check_is_friend ) {
-		// todo : user ajax_remove_engagement 'contents' => bp_get_add_friend_button( $friend_id ) );
 		ajax_remove_relation( 'friend',  $user_id, $friend_id , '>>is_friend -f 181');
+	
+	// Trying to remove friendship.
+	} elseif ( 'f_c1_is_friend_ini' === $check_is_friend && 'friends_remove_friends') {
+		ajax_remove_relation( 'friend',  $user_id, $friend_id , '>>is_friend -f 189x');
 
-	// Trying to cancel friendship in existed button..
-	} elseif ( 'exist_initiator_friend' === $check_is_friend ) {
-		ajax_remove_relation( 'friend',  $friend_id, $user_id , '>>exist_initiator_friend -f 205');
+	// Trying to remove friendship.
+	} elseif ( 'f_c1_is_reverse_friend_rev' === $check_is_friend && $action == 'friends_remove_friends') {
+		ajax_remove_relation( 'friend',  $friend_id , $user_id, '>>is_friend -f 191');
 
-	// Trying to stop awaiting friendship from engagement.
-	} elseif ( 'exist_more_friends' === $check_is_friend ) {
-		ajax_remove_relation( 'friend',  $user_id, $friend_id , '>>exist_more_friends -f 266: ');
+	} elseif ( 'f_c1_is_reverse_engagement_rev' === $check_is_friend && $action == 'friends_remove_friends_from_reciver') {
+		ajax_remove_relation( 'friend', $friend_id, $user_id, '>>is_friend -f 186x');
+
+	// Trying to stop friendship from friend reversed.
+	} elseif ( 'f_c2_fm1_is_friend_ini' === $check_is_friend && $action == 'friends_remove_friends') {
+		ajax_remove_relation( 'friend', $friend_id, $user_id, 'reverse friends_remove_friends -187x');
+
+	// Trying to stop friendship from engagement.
+	} elseif ( 'f_c2_fm1_is_friend_rev' === $check_is_friend && $action == 'friends_remove_friends_from_reciver' ) {
+		ajax_remove_relation( 'friend', $friend_id,  $user_id, '>>friends_remove_friends_from_reciver -f 201x: ');
 
 	// Trying to cancel pending request.
-	} elseif ( 'not_friends' === $check_is_friend && $_POST['action'] == 'friends_withdraw_friendship') {
-		// todo : user ajax_remove_engagement 'contents' => bp_get_add_friend_button( $friend_id ) );
-		ajax_withdraw('friend',  $user_id, $friend_id, '>>not_friends -f 271');
+	} elseif ( 'f_c1_is_friend_ini' === $check_is_friend && $action == 'friends_remove_friends' ) {
+		ajax_remove_relation('friend', $user_id, $friend_id, '>friends_remove_friends -f 206x');
+
+	// Trying to stop awaiting friendship.
+	} elseif ( 'f_c2_fm1_is_friend_rev' === $check_is_friend && $action == 'friends_withdraw_friendship' ) {
+		ajax_withdraw('friend',  $user_id, $friend_id, '>friends_withdraw_friendship -f 197x');
+
+	// Trying to cancel pending request.
+	} elseif ( 'f_c1_pending_friend_ini' === $check_is_friend && $action == 'friends_withdraw_friendship') {
+		ajax_withdraw('friend',  $user_id, $friend_id, '>>friends_withdraw_friendship -f 271x');
 
 	// Trying to request friendship.
-	} elseif ( 'not_friends' === $check_is_friend ) {
-		error_log('>>not_friends -e 473: '. $user_id . ' - ' . $friend_id);
-		if ( ! friends_add_friend( $user_id, $friend_id ) ) {
-			$response['feedback'] = sprintf(
-				'<div class="bp-feedback error">%s</div>',
-				esc_html__( 'Friendship could not be requested.', 'buddypress' )
-			);
-
-			wp_send_json_error( $response );
-		} else {
-			wp_send_json_success( array( 'contents' => bp_get_add_friend_button( $friend_id ) ) );
-		}
-
-	// Trying to cancel pending request.
-	} elseif ( 'pending_friend' === $check_is_friend && $_POST['action'] == 'friends_withdraw_friendship' ) {
-		ajax_withdraw('friend',  $user_id, $friend_id, '>friends_withdraw_friendship -f 22');
-
-	// Trying to cancel reverse pending request.
-	} elseif ( 'pending_friend' === $check_is_friend && $_POST['action'] == 'friends_remove_friends') {
-		ajax_remove_relation( 'friend', $friend_id, $user_id, 'reverse pending_friend_remove_friend -215');
-
-	// Trying to cancel pending request.
-	} elseif ( 'pending_friend' === $check_is_friend ) {
-		ajax_withdraw('friend',  $user_id, $friend_id, '>>pending_friend -f 235');
+	} elseif ( 'f_c1_is_reverse_engagement_rev' === $check_is_friend && $action = 'friends_add_friends_from_reciver' ) {
+		ajax_add_relation('friend',  $user_id, $friend_id,  'ajaxfile >>friends_add_friends_from_reciver -e 210x: '. $user_id . ' - ' . $friend_id);
 
 	// Request already pending.
 	} else {
-		error_log(json_encode('>>> default Request Pending F 554 -e'));
+		error_log('ajaxfile ' . json_encode('>>> default Request Pending F 554 -e'));
 		$response['feedback'] = sprintf(
 			'<div class="bp-feedback error">%s</div>',
 			esc_html__( 'Request Pending Friend', 'buddypress' )

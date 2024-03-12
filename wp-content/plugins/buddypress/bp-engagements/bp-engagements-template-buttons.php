@@ -1,6 +1,6 @@
 <?php
 function engagement_btn_args($status, $pid, $sg, $rel_id) {
-    error_log('engagement_btn_args , btn_status: '.$status);
+    error_log('||> engagement_btn_args , btn_status: '.$status);
     switch ( $status ) {
         case 'pending_engagement':
             $button_args = get_button_args_x(
@@ -63,7 +63,7 @@ function engagement_btn_args($status, $pid, $sg, $rel_id) {
                 'pending_friend',
                 'Cancel Resell-S pf Eng _ba',
                 ['requests', array( 'cancel', $pid )],
-                'engagements_withdraw_engagementship',
+                'friends_withdraw_friendship',
                 $rel_id, '_ba', 'remove',  true, true
             );
             break;
@@ -78,7 +78,6 @@ function engagement_btn_args($status, $pid, $sg, $rel_id) {
                 $rel_id, '_ba', 'remove',  true, true
             );
             break;
-
             
         case 'remove_friends':
             $button_args = get_button_args_x(
@@ -107,8 +106,8 @@ function engagement_btn_args($status, $pid, $sg, $rel_id) {
                 'engagement', $pid, $sg, 'err:',
                 'remove_friends_from_reciver',
                 'Stop Resell-R rffr Eng _ba',
-                ['remove-engagement', array( $pid )],
-                'engagements_remove_engagements_from_reciver',
+                ['remove-friend', array( $pid )],
+                'friends_remove_friends_from_reciver',
                 $rel_id, '_ba', 'remove',  true, false
             );
             break;

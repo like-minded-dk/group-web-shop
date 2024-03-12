@@ -737,8 +737,7 @@ window.bp = window.bp || {};
 			};
 
 			var changed_action = false;
-			            // eslint-disable-next-line no-console
-						console.log(`1111111111`, action );
+
 			if ( action.includes('friend') && 'members' === object && undefined !== friends_actions_map[ action ] ) {
 				changed_action = true;
 				new_action = object_friends_actions_map[ action ];
