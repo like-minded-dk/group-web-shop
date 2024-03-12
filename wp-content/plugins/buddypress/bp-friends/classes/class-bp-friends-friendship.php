@@ -203,7 +203,11 @@ class BP_Friends_Friendship {
 
 		// Update.
 		if ( ! empty( $this->id ) ) {
-			$result = $wpdb->query( $wpdb->prepare( <<<SQL
+
+			try {
+				break_sql('update table friend : '. $bp->friends->table_name . ' user: ' . $this->initiator_user_id . ' reciver: ' . $this->friend_user_id);
+
+				$result = $wpdb->query( $wpdb->prepare( <<<SQL
 				UPDATE {$bp->friends->table_name}
 				SET initiator_user_id = %d,
 					friend_user_id = %d,
@@ -218,9 +222,16 @@ class BP_Friends_Friendship {
 				$this->is_limited,
 				$this->date_created,
 				$this->id ) );
+
+			} catch (Exception $e) { $result = false; }
+
 		// Save.
 		} else {
-			$result = $wpdb->query( $wpdb->prepare( <<<SQL
+
+			try {
+				break_sql('add table friend : '. $bp->friends->table_name . ' user: ' . $this->initiator_user_id . ' reciver: ' . $this->friend_user_id);
+
+				$result = $wpdb->query( $wpdb->prepare( <<<SQL
 				INSERT INTO {$bp->friends->table_name} 
 					( initiator_user_id,
 					friend_user_id,
@@ -235,6 +246,8 @@ class BP_Friends_Friendship {
 				$this->is_limited,
 				$this->date_created ) );
 				$this->id = $wpdb->insert_id;
+
+			} catch (Exception $e) { $result = false; }
 		}
 
 		/**
@@ -262,10 +275,13 @@ class BP_Friends_Friendship {
 		global $wpdb;
 
 		$bp = buddypress();
-		// @todo: shortcut delete
-		error_log('delete id: '.json_encode($this->id));
-		return;
-		return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->friends->table_name} WHERE id = %d", $this->id ) );
+
+		try {
+			break_sql('delete friend id: '.json_encode($this->id));
+
+			return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->friends->table_name} WHERE id = %d", $this->id ) );
+
+		} catch (Exception $e) { $result = false; }
 	}
 
 	/** Static Methods ********************************************************/
@@ -932,10 +948,13 @@ class BP_Friends_Friendship {
 		global $wpdb;
 
 		$bp = buddypress();
-		// @todo: shortcut
-		error_log('!withdraw friendship 843 f: '.json_encode($friendship_id));
-		return;
-		return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->friends->table_name} WHERE id = %d AND initiator_user_id = %d", $friendship_id, bp_loggedin_user_id() ) );
+
+		try {
+			break_sql('!withdraw friendship 843 f: '.json_encode($friendship_id));
+
+			return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->friends->table_name} WHERE id = %d AND initiator_user_id = %d", $friendship_id, bp_loggedin_user_id() ) );
+
+		} catch (Exception $e) { $result = false; }
 	}
 
 	/**
@@ -952,10 +971,13 @@ class BP_Friends_Friendship {
 		global $wpdb;
 
 		$bp = buddypress();
-		// @todo: shortcut reject
-		error_log('delete id: '.json_encode($friendship_id));
-		return;
-		return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->friends->table_name} WHERE id = %d AND friend_user_id = %d", $friendship_id, bp_loggedin_user_id() ) );
+
+		try {
+			break_sql('delete id: '.json_encode($friendship_id));
+
+			return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->friends->table_name} WHERE id = %d AND friend_user_id = %d", $friendship_id, bp_loggedin_user_id() ) );
+
+		} catch (Exception $e) {}	
 	}
 
 	/**

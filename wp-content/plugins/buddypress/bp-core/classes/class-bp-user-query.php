@@ -405,12 +405,11 @@ class BP_User_Query {
 
 		$is_engagment = bp_is_active( 'engagements' ) && bp_is_current_component('engagements');
 		$is_friend = bp_is_active( 'friends' ) && bp_is_current_component('friends');
-		// bp_current_component() == 'engagements';
-		// bp_current_component() == 'friends';
+
 		$friend_ids = friends_get_friend_user_ids( $user_id );
 		$engagement_ids = engagements_get_engagement_user_ids( $user_id );
 		if ( ! empty( $user_id ) && ($is_engagment || $is_friend) ) {
-			// todo: merge friend and engagement
+			// todo lm  merge friend and engagement
 			$relation_ids = array_merge($friend_ids, $engagement_ids);
 			$relation_ids = implode( ',', wp_parse_id_list( $relation_ids ) );
 			if ( ! empty( $relation_ids ) ) {

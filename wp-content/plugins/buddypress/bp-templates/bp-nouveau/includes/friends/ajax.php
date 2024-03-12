@@ -217,6 +217,10 @@ function bp_nouveau_ajax_addremove_friend() {
 	} elseif ( 'f_c1_is_reverse_engagement_rev' === $check_is_friend && $action = 'friends_add_friends_from_reciver' ) {
 		ajax_add_relation('friend',  $user_id, $friend_id,  'ajaxfile >>friends_add_friends_from_reciver -e 210x: '. $user_id . ' - ' . $friend_id);
 
+	// Trying to request friendship.
+	} elseif ( 'not_friends' === $check_is_friend && $action = 'friends_add_friends' ) {
+		ajax_add_relation('friend',  $user_id, $friend_id,  'ajaxfile >>friends_add_friends_from_reciver -e 210x: '. $user_id . ' - ' . $friend_id);
+
 	// Request already pending.
 	} else {
 		error_log('ajaxfile ' . json_encode('>>> default Request Pending F 554 -e'));

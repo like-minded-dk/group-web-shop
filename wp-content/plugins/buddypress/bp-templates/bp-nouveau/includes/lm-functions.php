@@ -1,4 +1,11 @@
 <?php
+
+function break_sql($error = '') {
+    // @todo lm shortcut delete
+    error_log($error ?? 'break call');
+    throw new ErrorException($error);
+}
+
 function get_button_args_x(
     $comp,
     $pid,
@@ -9,15 +16,15 @@ function get_button_args_x(
     $chuck_array,
     $verify,
     $rel_id = 0,
-    $mk = '_ba',
+    $mk = '_mk',
     $link_rel = 'remove',
     $block_self = true,
     $must_be_logged_in = true,
 ) {
     $class = $comp == 'friend' ? 'friendship-button' : 'engagement-button'; 
-    error_log(json_encode(">>> {$error} {$id} {$mk}"));
-    error_log(bp_loggedin_user_url( bp_members_get_path_chunks( array_merge([$sg], $chuck_array) ) ));
-    error_log(json_encode($verify));
+    error_log("||> {$error} {$id} {$mk}");
+    error_log('>> user_url:' . bp_loggedin_user_url( bp_members_get_path_chunks( array_merge([$sg], $chuck_array) ) ));
+    error_log('>> verify:' . json_encode($verify));
     $text = __( "{$link_text} {$rel_id}", 'buddypress' );
     return array(
         'id'                => $id,
@@ -31,6 +38,7 @@ function get_button_args_x(
         'link_title'        => $text,
         'link_id'           => $comp . '-' . $pid,
         'link_rel'          => $link_rel,
+        'button_element'    => 'button',
         'link_class'        => "{$class} {$id} requested",
     );
 }
@@ -38,8 +46,10 @@ function get_button_args_x(
 
 function ajax_add_relation($comp,  $user_id, $member_id,  $error = '', $note='') {
     error_log(json_encode($error));
+
     $add_fn = $comp == 'friend' ? 'friends_add_friend' : 'engagements_add_engagement';
-    $btn_fn = $comp == 'friend' ? 'bp_get_add_friend_button' : 'bp_get_add_engagement_button';
+    $back_btn_fn = $comp == 'friend' ? 'bp_get_add_friend_button' : 'bp_get_add_engagement_button';
+    
     if ( ! $add_fn( $user_id, $member_id,  $error = '', $note='' ) ) {
         $response['feedback'] = sprintf(
             '<div class="bp-feedback error">%s</div>',
@@ -47,8 +57,10 @@ function ajax_add_relation($comp,  $user_id, $member_id,  $error = '', $note='')
         );
 
         wp_send_json_error( $response );
+        
     } else {
-        wp_send_json_success( array( 'contents' => $btn_fn( $member_id ) ) );
+        // $back_btn_fn( $member_id )
+        wp_send_json_success( array( 'contents' => $back_btn_fn( $member_id ) ) );
     }
 }
 

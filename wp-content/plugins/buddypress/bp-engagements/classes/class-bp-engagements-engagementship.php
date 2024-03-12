@@ -203,38 +203,52 @@ class BP_Engagements_Engagementship {
 
 		// Update.
 		if ( ! empty( $this->id ) ) {
-			$result = $wpdb->query( $wpdb->prepare( <<<SQL
-				UPDATE {$bp->engagements->table_name} 
-				SET initiator_user_id = %d, 
-					engagement_user_id = %d, 
-					is_confirmed = %d, 
-					is_limited = %d, 
-					date_created = %s 
-				WHERE id = %d
-				SQL,
-				$this->initiator_user_id,
-				$this->engagement_user_id,
-				$this->is_confirmed,
-				$this->is_limited,
-				$this->date_created,
-				$this->id ) );
+
+			try {
+				break_sql('update table engagement: '. $bp->friends->table_name . ' user: ' . $this->initiator_user_id . ' reciver: ' . $this->engagement_user_id);
+
+				$result = $wpdb->query( $wpdb->prepare( <<<SQL
+					INSERT INTO {$bp->engagements->table_name} 
+						( initiator_user_id,
+						engagement_user_id,
+						is_confirmed,
+						is_limited,
+						date_created ) 
+					VALUES ( %d, %d, %d, %d, %s )
+					SQL,
+					$this->initiator_user_id,
+					$this->engagement_user_id,
+					$this->is_confirmed,
+					$this->is_limited,
+					$this->date_created )
+				);
+				$this->id = $wpdb->insert_id;
+
+			} catch (Exception $e) { $result = false; }
 		// Save.
 		} else {
-			$result = $wpdb->query( $wpdb->prepare( <<<SQL
-			INSERT INTO {$bp->engagements->table_name} 
-				( initiator_user_id,
-				engagement_user_id,
-				is_confirmed,
-				is_limited,
-				date_created ) 
-			VALUES ( %d, %d, %d, %d, %s )
-			SQL,
-			$this->initiator_user_id,
-			$this->engagement_user_id,
-			$this->is_confirmed,
-			$this->is_limited,
-			$this->date_created ) );
-			$this->id = $wpdb->insert_id;
+
+			try {
+				break_sql('add table engagement: '. $bp->friends->table_name . ' user: ' . $this->initiator_user_id . ' reciver: ' . $this->engagement_user_id);
+
+				$result = $wpdb->query( $wpdb->prepare( <<<SQL
+					INSERT INTO {$bp->engagements->table_name} 
+						( initiator_user_id,
+						engagement_user_id,
+						is_confirmed,
+						is_limited,
+						date_created ) 
+					VALUES ( %d, %d, %d, %d, %s )
+					SQL,
+					$this->initiator_user_id,
+					$this->engagement_user_id,
+					$this->is_confirmed,
+					$this->is_limited,
+					$this->date_created )
+				);
+				$this->id = $wpdb->insert_id;
+
+			} catch (Exception $e) { $result = false; }
 		}
 
 		/**
@@ -262,10 +276,13 @@ class BP_Engagements_Engagementship {
 		global $wpdb;
 
 		$bp = buddypress();
-		// @todo: shortcut
-		error_log('delete id: '.json_encode($this->id));
-		return;
-		return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->engagements->table_name} WHERE id = %d", $this->id ) );
+
+		try {
+			break_sql('delete engagement id: '.json_encode($this->id));
+
+			return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->engagements->table_name} WHERE id = %d", $this->id ) );
+
+		} catch (Exception $e) { $result = false; }
 	}
 
 	/** Static Methods ********************************************************/
@@ -932,10 +949,13 @@ class BP_Engagements_Engagementship {
 		global $wpdb;
 
 		$bp = buddypress();
-		// @todo: shortcut withdraw
-		error_log('>>>withdraw $engagementship_id 868: '.json_encode($engagementship_id));
-		return;
-		return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->engagements->table_name} WHERE id = %d AND initiator_user_id = %d", $engagementship_id, bp_loggedin_user_id() ) );
+
+		try {
+			break_sql('>>>withdraw $engagementship_id 868: '.json_encode($engagementship_id));
+
+			return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->engagements->table_name} WHERE id = %d AND initiator_user_id = %d", $engagementship_id, bp_loggedin_user_id() ) );
+
+		} catch (Exception $e) { $result = false; }	
 	}
 
 	/**
@@ -952,10 +972,13 @@ class BP_Engagements_Engagementship {
 		global $wpdb;
 
 		$bp = buddypress();
-		// @todo: shortcut reject
-		error_log('delete id: '.json_encode($engagementship_id));
-		return;
-		return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->engagements->table_name} WHERE id = %d AND engagement_user_id = %d", $engagementship_id, bp_loggedin_user_id() ) );
+		
+		try {
+			break_sql('delete id: '.json_encode($engagementship_id));
+
+			return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->engagements->table_name} WHERE id = %d AND engagement_user_id = %d", $engagementship_id, bp_loggedin_user_id() ) );
+
+		} catch (Exception $e) { $result = false; }
 	}
 
 	/**
