@@ -261,7 +261,7 @@ function friends_withdraw_friendship( $initiator_userid, $friend_userid ) {
  * @return bool Returns true if the two users are friends, otherwise false.
  */
 function friends_check_friendship( $user_id, $possible_friend_id ) {
-	return ( 'is_friend' === BP_Friends_Friendship::check_is_friend( $user_id, $possible_friend_id ) );
+	return ( 'is_friend' === BP_Friends_Friendship::check_is_relation( $user_id, $possible_friend_id ) );
 }
 
 /**
@@ -288,7 +288,7 @@ function friends_check_friendship_status( $user_id, $possible_friend_id ) {
 		}
 	}
 
-	return BP_Friends_Friendship::check_is_friend( $user_id, $possible_friend_id );
+	return BP_Friends_Friendship::check_is_relation( $user_id, $possible_friend_id );
 }
 
 /**

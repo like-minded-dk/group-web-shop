@@ -40,7 +40,7 @@ function bp_engagements_filter_user_query_populate_extras( $user_query, $user_id
 	BP_Engagements_Engagementship::update_bp_engagements_cache( $user_id, $maybe_engagement_ids );
 
 	foreach ( $maybe_engagement_ids as $engagement_id ) {
-		$status = BP_Engagements_Engagementship::check_is_engagement( $user_id, $engagement_id );
+		$status = BP_Engagements_Engagementship::check_is_relation( $user_id, $engagement_id );
 		$user_query->results[ $engagement_id ]->engagementship_status = $status;
 		if ( 'is_engagement' === $status ) {
 			$user_query->results[ $engagement_id ]->is_engagement = 1;

@@ -27,7 +27,7 @@ function friends_action_remove_friend() {
 		return false;
 	}
 
-	$friendship_status = BP_Friends_Friendship::check_is_friend( bp_loggedin_user_id(), $potential_friend_id );
+	$friendship_status = BP_Friends_Friendship::check_is_relation( bp_loggedin_user_id(), $potential_friend_id );
 
 	if ( 'is_friend' === $friendship_status ) {
 

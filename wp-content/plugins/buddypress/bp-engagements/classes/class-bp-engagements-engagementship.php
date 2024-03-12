@@ -699,8 +699,7 @@ class BP_Engagements_Engagementship {
 	 * @return string|false $value The engagementship status, from among 'not_engagements',
 	 *                             'is_engagement', 'pending_engagement', and 'awaiting_response'.
 	 */
-	public static function check_is_engagement( $initiator_userid, $possible_engagement_userid ) {
-		// error_log('classE >>>>>check_is_engagement>>>>: '. json_encode($initiator_userid . ' - ' . $possible_engagement_userid));
+	public static function check_is_relation( $initiator_userid, $possible_engagement_userid ) {
 		if ( empty( $initiator_userid ) || empty( $possible_engagement_userid ) ) {
 			return false;
 		}

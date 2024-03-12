@@ -698,8 +698,7 @@ class BP_Friends_Friendship {
 	 * @return string|false $value The friendship status, from among 'not_friends',
 	 *                             'is_friend', 'pending_friend', and 'awaiting_response'.
 	 */
-	public static function check_is_friend( $initiator_userid, $possible_friend_userid ) {
-		// error_log('classF >>>>>check_is_friend>>>>: '. json_encode($initiator_userid . ' - ' . $possible_friend_userid));
+	public static function check_is_relation( $initiator_userid, $possible_friend_userid ) {
 		if ( empty( $initiator_userid ) || empty( $possible_friend_userid ) ) {
 			return false;
 		}

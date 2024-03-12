@@ -28,7 +28,7 @@ function engagements_action_add_engagement() {
 		return false;
 	}
 
-	$engagementship_status = BP_Engagements_Engagementship::check_is_engagement( bp_loggedin_user_id(), $potential_engagement_id );
+	$engagementship_status = BP_Engagements_Engagementship::check_is_relation( bp_loggedin_user_id(), $potential_engagement_id );
 
 	if ( 'not_engagements' === $engagementship_status ) {
 		if ( ! check_admin_referer( 'engagement' ) ) {

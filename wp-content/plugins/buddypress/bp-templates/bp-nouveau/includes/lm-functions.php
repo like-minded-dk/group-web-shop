@@ -1,5 +1,5 @@
 <?php
-
+require 'lm-ajax-functions.php';
 function break_sql($error = '') {
     // @todo lm shortcut delete
     error_log($error ?? 'break call');
@@ -41,73 +41,4 @@ function get_button_args_x(
         'button_element'    => 'button',
         'link_class'        => "{$class} {$id} requested",
     );
-}
-
-
-function ajax_add_relation($comp,  $user_id, $member_id,  $error = '', $note='') {
-    error_log(json_encode($error));
-
-    $add_fn = $comp == 'friend' ? 'friends_add_friend' : 'engagements_add_engagement';
-    $back_btn_fn = $comp == 'friend' ? 'bp_get_add_friend_button' : 'bp_get_add_engagement_button';
-    
-    if ( ! $add_fn( $user_id, $member_id,  $error = '', $note='' ) ) {
-        $response['feedback'] = sprintf(
-            '<div class="bp-feedback error">%s</div>',
-            esc_html__( $comp . ' - Relationship could not be requested -44.', 'buddypress' )
-        );
-
-        wp_send_json_error( $response );
-        
-    } else {
-        // $back_btn_fn( $member_id )
-        wp_send_json_success( array( 'contents' => $back_btn_fn( $member_id ) ) );
-    }
-}
-
-function ajax_withdraw($comp,  $user_id, $member_id,  $error = '', $note='') {
-    error_log(json_encode($error));
-
-    if ( $comp == 'engagement' ? engagements_withdraw_engagementship( $user_id, $member_id ) : friends_withdraw_friendship( $user_id, $member_id ) ) {
-        wp_send_json_success( array( 'contents' => bp_get_add_engagement_button( $member_id ) ) );
-    } else {
-        $response['feedback'] = sprintf(
-            '<div class="bp-feedback error">%s</div>',
-            esc_html__( $comp . ' - Relationship request could not be cancelled.', 'buddypress' )
-        );
-
-        wp_send_json_error( $response );
-    }
-}
-
-
-function ajax_remove_relation($comp, $user_id, $member_id, $error='', $note ='') {
-    $remove_fn = $comp == 'friend' ? 'friends_remove_friend' : 'engagements_remove_engagement';
-    $add_fn = $comp == 'friend' ? 'bp_get_add_friend_button' : 'bp_get_add_engagement_button';
-
-    error_log($error . ': ' . $user_id . ' - ' . $member_id);
-    if ( ! $remove_fn( $user_id, $member_id ) ) {
-        $response['feedback'] = sprintf(
-            '<div class="bp-feedback error">%s</div>',
-            esc_html__( $comp . ' - Relationship could not be removed.', 'buddypress' )
-        );
-
-        wp_send_json_error( $response );
-    } else {
-        $is_user = bp_is_my_profile();
-
-        if ( ! $is_user ) {
-            $response = array( 'contents' => $add_fn( $member_id ) );
-        } else {
-            $response = array(
-                'feedback' => sprintf(
-                    '<div class="bp-feedback success">%s</div>',
-                    esc_html__( $comp .  ' - Relationship cancelled.', 'buddypress' )
-                ),
-                'type'     => 'success',
-                'is_user'  => $is_user,
-            );
-        }
-
-        wp_send_json_success( $response );
-    }
 }

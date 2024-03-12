@@ -261,7 +261,7 @@ function engagements_withdraw_engagementship( $initiator_userid, $engagement_use
  * @return bool Returns true if the two users are engagements, otherwise false.
  */
 function engagements_check_engagementship( $user_id, $possible_engagement_id ) {
-	return ( 'is_engagement' === BP_Engagements_Engagementship::check_is_engagement( $user_id, $possible_engagement_id ) );
+	return ( 'is_engagement' === BP_Engagements_Engagementship::check_is_relation( $user_id, $possible_engagement_id ) );
 }
 
 /**
@@ -288,7 +288,7 @@ function engagements_check_engagementship_status( $user_id, $possible_engagement
 		}
 	}
 
-	return BP_Engagements_Engagementship::check_is_engagement( $user_id, $possible_engagement_id );
+	return BP_Engagements_Engagementship::check_is_relation( $user_id, $possible_engagement_id );
 }
 
 /**

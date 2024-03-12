@@ -27,7 +27,7 @@ function engagements_action_remove_engagement() {
 		return false;
 	}
 
-	$engagementship_status = BP_Engagements_Engagementship::check_is_engagement( bp_loggedin_user_id(), $potential_engagement_id );
+	$engagementship_status = BP_Engagements_Engagementship::check_is_relation( bp_loggedin_user_id(), $potential_engagement_id );
 
 	if ( 'is_engagement' === $engagementship_status ) {
 
