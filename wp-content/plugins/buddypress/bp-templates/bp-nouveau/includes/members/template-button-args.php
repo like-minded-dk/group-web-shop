@@ -27,8 +27,10 @@ function get_button_args ($pid, $comp) {
     $button_args = array();
 
     if (false) {
-        return;
-    } elseif (true) {
+        return;   
+    } elseif (true) {  
+        
+
         ////////////////////// ETB 17->9-conf_0 | FTB 17->9-conf_0
         // 01-ETB $comp = engagement, $oppo = friend, $comp_st = e_c1_pending_engagement_ini, $oppo_st = not_friends
         // 01-FTB $comp = engagement, $oppo = friend, $comp_st = not_engagements, $oppo_st = f_c1_pending_friend_ini
@@ -54,9 +56,7 @@ function get_button_args ($pid, $comp) {
             "not_{$comp}s",
             "pending_{$comp}",
         ) ;
-        if ($cond_args) { return $cond_args; }
-
-    
+        if ($cond_args) { return $cond_args; }    
         // 03-ETB  $comp = engagement, $oppo = friend, $comp_st = e_c1_awaiting_response_rev, $oppo_st = not_friends
         // 03-ETB $comp = engagement, $oppo = friend, $comp_st = not_engagements, $oppo_st = f_c1_awaiting_response_rev
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '03',
@@ -84,8 +84,6 @@ function get_button_args ($pid, $comp) {
 
     
         
-
-
         ////////////////////// ETB 17->9-conf_1 | FTB 17->9-conf_1
         // 00-ETB $comp = engagement, $oppo = friend, $comp_st = e_c1_is_engagement_ini, $oppo_st = not_friends
         // 00-FTB $comp = engagement, $oppo = friend, $comp_st = not_engagements, $oppo_st = f_c1_is_friend_ini
@@ -99,8 +97,6 @@ function get_button_args ($pid, $comp) {
         ) ;
         if ($cond_args) { return $cond_args;}
 
-    
-        
         // 00-ETB $comp = friend, $oppo = engagement, $comp_st = not_friends, $oppo_st = e_c1_is_engagement_ini
         // 00-FTB $comp = friend, $oppo = engagement, $comp_st = f_c1_is_friend_ini, $oppo_st = not_engagements
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '06',
@@ -112,9 +108,7 @@ function get_button_args ($pid, $comp) {
             "remove_{$comp}s",
         ) ;
         if ($cond_args) { return $cond_args;}
-
-    
-        
+            
         // 00-ETB $comp = engagement, $oppo = friend, $comp_st = e_c1_is_reverse_friend_rev, $oppo_st = not_friends
         // 00-FTB $comp = engagement, $oppo = friend, $comp_st = not_engagements, $oppo_st = f_c1_is_reverse_engagement_rev
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '07',
@@ -127,8 +121,6 @@ function get_button_args ($pid, $comp) {
         ) ;
         if ($cond_args) { return $cond_args;}
 
-    
-        
         // 00-ETB $comp = friend, $oppo = engagement, $comp_st = not_friends, $oppo_st = e_c1_is_reverse_friend_rev
         // 00-FTB $comp = friend, $oppo = engagement, $comp_st = f_c1_is_reverse_engagement_rev, $oppo_st = not_engagements
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '08',
@@ -143,8 +135,6 @@ function get_button_args ($pid, $comp) {
 
     
         
-
-
         ////////////////////// ETB 17->9-conf_1 + FTB 17->9-conf_0 | FTB 17->9-conf_1 + ETB 17->9-conf_0
         // 00-ETB $comp = engagement, $oppo = friend, $comp_st = e_c1_is_engagement_ini, $oppo_st = f_c1_pending_friend_ini
         // 00-FTB $comp = engagement, $oppo = friend, $comp_st = e_c1_pending_engagement_ini, $oppo_st = f_c1_is_friend_ini
@@ -158,8 +148,6 @@ function get_button_args ($pid, $comp) {
         ) ;
         if ($cond_args) { return $cond_args;}
 
-    
-        
         // 00-ETB $comp = friend, $oppo = engagement, $comp_st = f_c1_pending_friend_ini, $oppo_st = e_c1_is_engagement_ini
         // 00-FTB $comp = friend, $oppo = engagement, $comp_st = f_c1_is_friend_ini, $oppo_st = e_c1_pending_engagement_ini
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '10',
@@ -171,9 +159,7 @@ function get_button_args ($pid, $comp) {
             "remove_{$comp}s",
         ) ;
         if ($cond_args) { return $cond_args;}
-
-    
-        
+            
         // 00-ETB $comp = engagement, $oppo = friend, $comp_st = e_c1_is_reverse_friend_rev, $oppo_st = f_c1_awaiting_response_rev
         // 00-FTB $comp = engagement, $oppo = friend, $comp_st = e_c1_awaiting_response_rev, $oppo_st = f_c1_is_reverse_engagement_rev
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '11',
@@ -186,8 +172,6 @@ function get_button_args ($pid, $comp) {
         ) ;
         if ($cond_args) { return $cond_args;}
 
-    
-        
         // 00-ETB $comp = friend, $oppo = engagement, $comp_st = f_c1_awaiting_response_rev, $oppo_st = e_c1_is_reverse_friend_rev
         // 00-FTB $comp = friend, $oppo = engagement, $comp_st = f_c1_is_reverse_engagement_rev, $oppo_st = e_c1_awaiting_response_rev
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '12',
@@ -200,10 +184,8 @@ function get_button_args ($pid, $comp) {
         ) ;
         if ($cond_args) { return $cond_args;}
 
-    
+
         
-
-
         // this condition always take 1st/Ed condition
         ////////////////////// ETB 17->9-conf_1 + FTB 17->9-conf_1 | FTB 17->9-conf_1 + ETB 17->9-conf_1 
         // 00-ETB $comp = engagement, $oppo = friend, $comp_st = e_c1_is_engagement_ini, $oppo_st = f_c1_is_friend_ini
@@ -218,8 +200,6 @@ function get_button_args ($pid, $comp) {
         ) ;
         if ($cond_args) { return $cond_args;}
 
-    
-        
         // 00-ETB $comp = friend, $oppo = engagement, $comp_st = f_c1_is_friend_ini, $oppo_st = e_c1_is_engagement_ini
         // 00-FTB $comp = friend, $oppo = engagement, $comp_st = f_c1_is_friend_ini, $oppo_st = e_c1_is_engagement_ini
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '14',
@@ -231,9 +211,7 @@ function get_button_args ($pid, $comp) {
             "remove_{$oppo}s",
         ) ;
         if ($cond_args) { return $cond_args;}
-
-    
-        
+            
         // 00-ETB $comp = engagement, $oppo = friend, $comp_st = e_c1_is_reverse_friend_rev, $oppo_st = f_c1_is_reverse_engagement_rev
         // 00-FTB $comp = engagement, $oppo = friend, $comp_st = e_c1_is_reverse_friend_rev, $oppo_st = f_c1_is_reverse_engagement_rev
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '15',
@@ -246,8 +224,6 @@ function get_button_args ($pid, $comp) {
         ) ;
         if ($cond_args) { return $cond_args;}
 
-    
-        
         // 00-ETB $comp = friend, $oppo = engagement, $comp_st = f_c1_is_reverse_engagement_rev, $oppo_st = e_c1_is_reverse_friend_rev
         // 00-FTB $comp = friend, $oppo = engagement, $comp_st = f_c1_is_reverse_engagement_rev, $oppo_st = e_c1_is_reverse_friend_rev
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '16',
@@ -260,8 +236,6 @@ function get_button_args ($pid, $comp) {
         ) ;
         if ($cond_args) { return $cond_args;}
 
-    
-        
 
 
         ////////////////////// ETB 17->9-conf_1 + ETB 9->17-conf_0 | FTB 17->9-conf_1 + FTB 9->17-conf_0
@@ -277,8 +251,6 @@ function get_button_args ($pid, $comp) {
         ) ;
         if ($cond_args) { return $cond_args;}
 
-    
-        
         // 00-ETB $comp = friend, $oppo = engagement, $comp_st = not_friends, $oppo_st = e_c2_fm1_is_engagement_ini
         // 00-FTB $comp = friend, $oppo = engagement, $comp_st = f_c2_fm1_is_friend_ini, $oppo_st = not_engagements
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '18',
@@ -290,9 +262,7 @@ function get_button_args ($pid, $comp) {
             "remove_{$comp}s",
         ) ;
         if ($cond_args) { return $cond_args;}
-
-    
-        
+            
         // 00-ETB $comp = engagement, $oppo = friend, $comp_st = e_c2_fm1_is_reverse_friend_rev, $oppo_st = not_friends
         // 00-FTB $comp = engagement, $oppo = friend, $comp_st = not_engagements, $oppo_st = f_c2_fm1_is_friend_rev
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '19',
@@ -305,8 +275,6 @@ function get_button_args ($pid, $comp) {
         ) ;
         if ($cond_args) { return $cond_args;}
 
-    
-        
         // 00-ETB $comp = friend, $oppo = engagement, $comp_st = not_friends, $oppo_st = e_c2_fm1_is_reverse_friend_rev
         // 00-FTB $comp = friend, $oppo = engagement, $comp_st = f_c2_fm1_is_friend_rev, $oppo_st = not_engagements
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '20',
@@ -321,8 +289,6 @@ function get_button_args ($pid, $comp) {
 
     
 
-
-
         ////////////////////// ETB 17->9-conf_1 + ETB 9->17-conf_1 | FTB 17->9-conf_1 + FTB 9->17-conf_1
         // 00-ETB $comp = engagement, $oppo = friend, $comp_st = e_c2_exist_both_engagements_v1_ini, $oppo_st = not_friends
         // 00-FTB $comp = engagement, $oppo = friend, $comp_st = not_engagements, $oppo_st = f_c2_exist_both_engagements_v1_ini
@@ -336,8 +302,6 @@ function get_button_args ($pid, $comp) {
         ) ;
         if ($cond_args) { return $cond_args;}
 
-    
-        
         // 00-ETB $comp = friend, $oppo = engagement, $comp_st = not_friends, $oppo_st = e_c2_exist_both_engagements_v1_ini
         // 00-FTB $comp = friend, $oppo = engagement, $comp_st = f_c2_exist_both_engagements_v1_ini, $oppo_st = not_engagements
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '22',
@@ -349,9 +313,7 @@ function get_button_args ($pid, $comp) {
             "remove_{$comp}s",
         ) ;
         if ($cond_args) { return $cond_args;}
-
-    
-        
+            
         // 00-ETB $comp = engagement, $oppo = friend, $comp_st = e_c2_exist_both_engagements_v1_rev, $oppo_st = not_friends
         // 00-FTB $comp = engagement, $oppo = friend, $comp_st = not_engagements, $oppo_st = f_c2_exist_both_engagements_v1_rev
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '23',
@@ -364,8 +326,6 @@ function get_button_args ($pid, $comp) {
         ) ;
         if ($cond_args) { return $cond_args;}
 
-    
-        
         // 00-ETB $comp = friend, $oppo = engagement, $comp_st = not_friends, $oppo_st = e_c2_exist_both_engagements_v1_rev
         // 00-FTB $comp = friend, $oppo = engagement, $comp_st = f_c2_exist_both_engagements_v1_rev, $oppo_st = not_engagements
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '24',
@@ -380,8 +340,6 @@ function get_button_args ($pid, $comp) {
 
     
         
-
-
         ////////////////////// ETB 17->9-conf_0 + ETB 9->17-conf_1 | FTB 17->9-conf_0 + FTB 9->17-conf_1
         // 00-ETB $comp = engagement, $oppo = friend, $comp_st = e_c2_fm0_pending_engagement_ini, $oppo_st = not_friends
         // 00-FTB $comp = engagement, $oppo = friend, $comp_st = not_engagements, $oppo_st = f_c2_fm0_pending_friend_ini
@@ -395,8 +353,6 @@ function get_button_args ($pid, $comp) {
         ) ;
         if ($cond_args) { return $cond_args;}
 
-    
-        
         // 00-ETB $comp = friend, $oppo = engagement, $comp_st = not_friends, $oppo_st = e_c2_fm0_pending_engagement_ini
         // 00-FTB $comp = friend, $oppo = engagement, $comp_st = f_c2_fm0_pending_friend_ini, $oppo_st = not_engagements
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '26',
@@ -408,9 +364,7 @@ function get_button_args ($pid, $comp) {
             "pending_{$comp}",
         ) ;
         if ($cond_args) { return $cond_args;}
-
-    
-        
+            
         // 00-ETB $comp = engagement, $oppo = friend, $comp_st = e_c2_fm0_awaiting_response_rev, $oppo_st = not_friends
         // 00-FTB $comp = engagement, $oppo = friend, $comp_st = not_engagements, $oppo_st = f_c2_fm0_pending_friend_rev
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '27',
@@ -423,8 +377,6 @@ function get_button_args ($pid, $comp) {
         ) ;
         if ($cond_args) { return $cond_args;}
 
-    
-        
         // 00-ETB $comp = friend, $opment, $comp_st = not_friends, $oppo_st = e_c2_fm0_awaiting_response_rev
         // 00-FTB $comp = friend, $oppo = engagement, $comp_st = f_c2_fm0_pending_friend_rev, $oppo_st = not_engagements
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '28',
@@ -437,10 +389,9 @@ function get_button_args ($pid, $comp) {
         ) ;
         if ($cond_args) { return $cond_args;}
 
-    
-        
 
-        // this condition always take 1st/Ed condition
+
+        // this condition always take 1st/Ed condition 
         ////////////////////// ETB 17->9-conf_0 + ETB 17->9-conf_0 | FTB 9->17-conf_0 + FTB 9->17-conf_0
         // 29-ETB $comp = engagement, $oppo = friend, $comp_st = e_c1_pending_engagement_ini, $oppo_st = f_c1_pending_friend_ini
         // 29-FTB $comp = engagement, $oppo = friend, $comp_st = e_c1_pending_engagement_ini, $oppo_st = f_c1_pending_friend_ini
@@ -450,12 +401,10 @@ function get_button_args ($pid, $comp) {
             'e_c1_pending_engagement_ini',
             'f_c1_pending_friend_ini',
             "pending_{$comp}",
-            "remove_{$oppo}s_from_receiver",
+            "pending_{$comp}",
         ) ;
         if ($cond_args) { return $cond_args;}
 
-    
-        
         // 30-ETB $comp = friend, $oppo = engagement, $comp_st = f_c1_pending_friend_ini, $oppo_st = e_c1_pending_engagement_ini
         // 30-FTB $comp = friend, $oppo = engagement, $comp_st = f_c1_pending_friend_ini, $oppo_st = e_c1_pending_engagement_ini
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '30',
@@ -463,13 +412,11 @@ function get_button_args ($pid, $comp) {
             'e_c1_pending_engagement_ini',
             'f_c1_pending_friend_ini' ,
             'e_c1_pending_engagement_ini',
-            "remove_{$oppo}s_from_receiver",
-            "pending_{$comp}",
+            "pending_{$oppo}",
+            "pending_{$oppo}",
         ) ;
         if ($cond_args) { return $cond_args;}
-
-    
-        
+            
         // 31-ETB $comp = engagement, $oppo = friend, $comp_st = e_c1_awaiting_response_rev, $oppo_st = f_c1_awaiting_response_rev
         // 31-FTB $comp = engagement, $oppo = friend, $comp_st = e_c1_awaiting_response_rev, $oppo_st = f_c1_awaiting_response_rev
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '31',
@@ -477,13 +424,11 @@ function get_button_args ($pid, $comp) {
             'f_c1_awaiting_response_rev',
             'e_c1_awaiting_response_rev' ,
             'f_c1_awaiting_response_rev',
-            "remove_{$comp}s",
+            "awaiting_response_{$oppo}",
             "awaiting_response_{$oppo}",
         ) ;
         if ($cond_args) { return $cond_args;}
 
-    
-        
         // 32-ETB $comp = friend, $oppo = engagement, $comp_st = f_c1_awaiting_response_rev, $oppo_st = e_c1_awaiting_response_rev
         // 32-FTB $comp = friend, $oppo = engagement, $comp_st = f_c1_awaiting_response_rev, $oppo_st = e_c1_awaiting_response_rev
         $cond_args = cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, '32',
@@ -492,13 +437,13 @@ function get_button_args ($pid, $comp) {
             'f_c1_awaiting_response_rev' ,
             'e_c1_awaiting_response_rev',
             "awaiting_response_{$comp}",
-            "remove_{$comp}s",
+            "awaiting_response_{$comp}",
         ) ;
         if ($cond_args) { return $cond_args;}
 
     
     
-    ////////////////////// fallback buttons
+        ////////////////////// fallback buttons
     } else {
     	error_log('|>>>>  els only ');
 		if (true) {
@@ -528,17 +473,17 @@ function get_template_vars($pid, $comp) {
 	$ini_f_id = get_relation('friend');
 	$rev_f_id = get_relation('friend', false);
 
-	$f_rel_id = get_friend_id($user_id, $pid);
-	$e_rel_id = get_engagement_id($user_id, $pid);
+	// $f_rel_id = get_friend_id($user_id, $pid);
+	// $e_rel_id = get_engagement_id($user_id, $pid);
 	
 	$ini_f = (int) is_initiator('friend');
 	$ini_e = (int) is_initiator('engagement');
-	$status = $ini_f > $ini_e ? $fst : $est ;
+	// $status = $ini_f > $ini_e ? $fst : $est ;
 
-	$ini_e_awa = is_initial_awating('engagement');
-	$rev_e_awa = is_receiver_awating('engagement');
-	$ini_f_awa = is_initial_awating('friend');
-	$rev_f_awa = is_receiver_awating('friend');
+	// $ini_e_awa = is_initial_awating('engagement');
+	// $rev_e_awa = is_receiver_awating('engagement');
+	// $ini_f_awa = is_initial_awating('friend');
+	// $rev_f_awa = is_receiver_awating('friend');
 
     $is_btn_reversed = $is_relation_reversed;
 	$ini_id = ($comp == 'friend' ? $ini_f_id  : $ini_e_id) ;
