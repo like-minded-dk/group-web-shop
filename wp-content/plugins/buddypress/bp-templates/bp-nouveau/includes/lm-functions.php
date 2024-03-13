@@ -6,9 +6,9 @@ function break_sql($error = '') {
     throw new ErrorException($error);
 }
 
-function get_db_and_log( $cond_str ) {
+function get_db_and_log( $cond_str, $cond_note ) {
     $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-    error_log('gba||> ' . $cond_str . ' - '  . $db . ' - condId: 01: ETB 17->9-conf_0 LS-L_btn');
+    error_log('gba||> ' . $cond_str . ' - '  . $db . ' - condId: ' . $cond_note);
     return $db;
 }
 
@@ -118,7 +118,7 @@ function relation_btn_args($comp, $status, $pid, $sg, $rel_id) {
         $pending_comp = array(
             'act' => 'pending_engagement',
             'ver' => 'engagements_withdraw_engagementship',
-            'text' => 'Cancel Resell-S pf',
+            'text' => 'Cancel Resell-S PDE',
         );
         $awaiting_comp = array(
             'act' => 'awaiting_response_engagement',

@@ -215,14 +215,20 @@ function ajax_switch_each_action($comp, $action, $user_id, $member_id, $response
 		$receiver_remove_action = 'friends_remove_friends_from_receiver';
 
 		$check_is_comp = 'is_friend';
-		$check_is_comp_initial = 'f_c1_is_friend_ini';
+		$check_is_comp_c1i = 'f_c1_is_friend_ini';
 		$check_reverse_comp = 'f_c1_is_reverse_friend_rev';
-		$check_reverse_oppo = 'f_c1_is_reverse_engagement_rev';
-		$check_is_comp_initial_count1 = 'f_c2_fm1_is_friend_ini';
-		$check_is_comp_from_reverse = 'f_c2_fm1_is_friend_rev';
-		$check_pending_comp = 'f_c1_pending_friend_ini';
-        $check_reverse_awaiting = 'f_c1_awaiting_response_rev';
+		$check_reverse_oppo_c1r = 'f_c1_is_reverse_engagement_rev';
+		$check_is_comp_c2i = 'f_c2_fm1_is_friend_ini';
+        $check_reverse_oppo_c2r = 'f_c2_fm1_is_reverse_engagement_rev';
+		$check_is_comp_c2r = 'f_c2_fm1_is_friend_rev';
+		$check_pending_comp_c1i = 'f_c1_pending_friend_ini';
+        $check_awaiting_c1r = 'f_c1_awaiting_response_rev';
 		$check_not_comp = 'not_friends';
+        $check_both_comp_v1r = 'f_c2_exist_both_friends_v1_rev';
+        $check_both_oppo_v1i = 'f_c2_exist_both_friends_v1_ini';
+        $check_pending_comp_c2i = 'f_c2_fm0_pending_friend_ini';
+        $check_awaiting_c2r = 'f_c2_fm0_awaiting_response_rev';
+
 	} else {
 		$check_relation_fn = 'BP_engagements_engagementship::check_is_relation';
 		$accpt_action = 'engagements_accept_engagementship';
@@ -234,19 +240,24 @@ function ajax_switch_each_action($comp, $action, $user_id, $member_id, $response
 		$receiver_remove_action = 'engagements_remove_engagements_from_receiver';
 
 		$check_is_comp = 'is_engagement';
-		$check_is_comp_initial = 'e_c1_is_engagement_ini';
+		$check_is_comp_c1i = 'e_c1_is_engagement_ini';
 		$check_reverse_comp = 'e_c1_is_reverse_engagement_rev';
-		$check_reverse_oppo = 'e_c1_is_reverse_friend_rev';
-		$check_is_comp_initial_count1 = 'e_c2_fm1_is_engagement_ini';
-		$check_is_comp_from_reverse = 'e_c2_fm1_is_engagement_rev';
-		$check_pending_comp = 'e_c1_pending_engagement_ini';
-		$check_reverse_awaiting = 'e_c1_awaiting_response_rev';
+		$check_reverse_oppo_c1r = 'e_c1_is_reverse_friend_rev';
+		$check_is_comp_c2i = 'e_c2_fm1_is_engagement_ini';
+        $check_reverse_oppo_c2r = 'e_c2_fm1_is_reverse_friend_rev';
+		$check_is_comp_c2r = 'e_c2_fm1_is_engagement_rev';
+		$check_pending_comp_c1i = 'e_c1_pending_engagement_ini';
+		$check_awaiting_c1r = 'e_c1_awaiting_response_rev';
 		$check_not_comp = 'not_engagements';
+        $check_both_comp_v1r = 'e_c2_exist_both_engagements_v1_rev';
+        $check_both_oppo_v1i = 'e_c2_exist_both_engagements_v1_ini';
+        $check_pending_comp_c2i = 'e_c2_fm0_pending_engagement_ini';
+        $check_awaiting_c2r = 'e_c2_fm0_awaiting_response_rev';
 	}
 
     $check_is_relation = $check_relation_fn( $user_id, $member_id );
 
-	error_log('ajaxfile check ' . $check_is_relation . ' - act: ' . $action );
+	error_log('ajaxfile >>> check: ' . $check_is_relation . ' - act: ' . $action );
 
 	if ( ! empty( $action ) && $accpt_action === $action ) {
 		ajax_accept_relation($comp, $member_id, $response);
@@ -260,52 +271,93 @@ function ajax_switch_each_action($comp, $action, $user_id, $member_id, $response
 		ajax_remove_relation( $comp,  $user_id, $member_id , $response, 'ajaxfile>> 107');
 	
 	// Trying to remove relationship.
-	} elseif ( $check_is_relation === $check_is_comp_initial && $remove_action) {
-		ajax_remove_relation( $comp,  $user_id, $member_id , $response, 'ajaxfile>> 111');
+	} elseif ( $check_is_relation === $check_is_comp_c1i && $action === $remove_action) {
+		ajax_remove_relation( $comp,  $user_id, $member_id , $response, 'ajaxfile>> 111x');
 
 	// Trying to remove relationship.
 	} elseif ( $check_is_relation === $check_reverse_comp && $action === $remove_action) {
 		ajax_remove_relation( $comp,  $member_id , $user_id, $response, 'ajaxfile>> 115');
 
-	} elseif ( $check_is_relation === $check_reverse_oppo && $action === $receiver_remove_action) {
-		ajax_remove_relation( $comp, $member_id, $user_id, $response, 'ajaxfile>> 118');
+    // Trying to remove relationship.
+	} elseif ( $check_is_relation === $check_reverse_oppo_c1r && $action === $receiver_remove_action) {
+		ajax_remove_relation( $comp, $member_id, $user_id, $response, 'ajaxfile>> 118x');
 
-	// Trying to stop friendship from friend reversed.
-	} elseif ( $check_is_relation === $check_is_comp_initial_count1 && $action === $remove_action) {
-		ajax_remove_relation( $comp, $member_id, $user_id, $response, 'ajaxfile>> 122');
+    // Trying to remove receiver relation from current button RER RFR.
+	} elseif ( $check_is_relation === $check_reverse_oppo_c2r && $action === $receiver_remove_action) {
+		ajax_remove_relation( $comp, $member_id, $user_id, $response, 'ajaxfile>> 278x');
+    
+    // Trying to remove receiver relation from current button RER RFR.
+	} elseif ( $check_is_relation === $check_both_comp_v1r && $action === $receiver_remove_action) {
+		ajax_remove_relation( $comp, $member_id, $user_id, $response, 'ajaxfile>> 286x');
+    
+    // Trying to remove initial relation RME RMF.
+	} elseif ( $check_is_relation === $check_both_comp_v1r && $action === $remove_action) {
+		ajax_remove_relation( $comp, $user_id, $member_id, $response, 'ajaxfile>> 290x');
+
+	// Trying to stop relation RME RMF.
+	} elseif ( $check_is_relation === $check_is_comp_c2i && $action === $remove_action) {
+		ajax_remove_relation( $comp, $user_id, $member_id, $response, 'ajaxfile>> 122x');
 
 	// Trying to stop friendship from engagement.
-	} elseif ( $check_is_relation === $check_is_comp_from_reverse && $action === $receiver_remove_action ) {
+	} elseif ( $check_is_relation === $check_is_comp_c2r && $action === $receiver_remove_action ) {
 		ajax_remove_relation( $comp, $member_id, $user_id, $response, 'ajaxfile>> 126');
 
 	// Trying to cancel pending request.
-	} elseif ( $check_is_relation === $check_is_comp_initial && $action === $remove_action ) {
+	} elseif ( $check_is_relation === $check_is_comp_c1i && $action === $remove_action ) {
 		ajax_remove_relation($comp, $user_id, $member_id, $response, 'ajaxfile>> 130');
+	
+    // Trying to cancel pending request RME RMF.
+	} elseif ( $check_is_relation === $check_both_oppo_v1i && $action === $remove_action ) {
+		ajax_remove_relation($comp, $user_id, $member_id, $response, 'ajaxfile>> 302x');
+    
+    // Trying to cancel pending request RME RMF.
+	} elseif ( $check_is_relation === $check_awaiting_c2r && $action === $remove_action ) {
+		ajax_remove_relation($comp, $user_id, $member_id, $response, 'ajaxfile>> 315x');
+
+    // Trying to remove reversed relation RER RFR.
+	} elseif ( $check_is_relation === $check_both_oppo_v1i && $action === $receiver_remove_action ) {
+		ajax_remove_relation($comp, $member_id, $user_id, $response, 'ajaxfile>> 306x');
+    
+    // Trying to remove reversed relation RER RFR.
+	} elseif ( $check_is_relation === $check_pending_comp_c2i && $action === $receiver_remove_action ) {
+		ajax_remove_relation($comp, $member_id, $user_id, $response, 'ajaxfile>> 317x');
 
 	// Trying to stop awaiting friendship.
-	} elseif ( $check_is_relation === $check_is_comp_from_reverse && $action === $withdraw_action ) {
+	} elseif ( $check_is_relation === $check_is_comp_c2r && $action === $withdraw_action ) {
 		ajax_withdraw_relation($comp, $user_id, $member_id, $response, 'ajaxfile>> 197');
 
 	// Trying to cancel pending request.
-	} elseif ( $check_is_relation === $check_pending_comp && $action === $withdraw_action) {
+	} elseif ( $check_is_relation === $check_pending_comp_c1i && $action === $withdraw_action) {
 		ajax_withdraw_relation($comp, $user_id, $member_id, $response, 'ajaxfile>> 138');
 	
+    // Trying to cancel pending request PDE PDF.
+	} elseif ( $check_is_relation === $check_pending_comp_c2i && $action === $withdraw_action) {
+		ajax_withdraw_relation($comp, $user_id, $member_id, $response, 'ajaxfile>> 325x');
+
+	// Trying to withdraw reversed initial PDE PDF
+	} elseif ( $check_is_relation === $check_reverse_oppo_c2r && $action === $withdraw_action) {
+		ajax_withdraw_relation($comp, $user_id, $member_id, $response, 'ajaxfile>> 339x');
+	
     // Trying to add revers action.
-	} elseif ( $check_is_relation === $check_reverse_awaiting && $action === $receiver_add_action) {
-		ajax_add_relation($comp, $member_id, $user_id, $response, 'ajaxfile>> 294');
+	} elseif ( $check_is_relation === $check_awaiting_c1r && $action === $receiver_add_action) {
+		ajax_add_relation($comp, $member_id, $user_id, $response, 'ajaxfile>> 343');
+    
+    // Trying to add revers action AER AFR.
+	} elseif ( $check_is_relation === $check_both_comp_v1r && $action === $receiver_add_action) {
+		ajax_add_relation($comp, $user_id, $member_id, $response, 'ajaxfile>> 347');
 
 	// Trying to request friendship.
-	} elseif ( $check_is_relation === $check_reverse_oppo && $action = $receiver_add_action ) {
-		ajax_add_relation($comp, $user_id, $member_id, $response, 'ajaxfile >> 142: ' . $comp . ' ' . $user_id . ' - ' . $member_id);
+	} elseif ( $check_is_relation === $check_reverse_oppo_c1r && $action = $receiver_add_action ) {
+		ajax_add_relation($comp, $user_id, $member_id, $response, 'ajaxfile >> 142x: ' . $comp . ' ' . $user_id . ' - ' . $member_id);
 
 	// Trying to request friendship.
 	} elseif ( $check_is_relation === $check_not_comp && $action = $add_action ) {
-		ajax_add_relation($comp, $user_id, $member_id, $response, 'ajaxfile >> 146: ' . $comp . ' ' . $member_id);
+		ajax_add_relation($comp, $user_id, $member_id, $response, 'ajaxfile >> 146x: ' . $comp . ' ' . $member_id);
 
 	// Request already pending.
 	} else {
         error_log($check_is_relation . ' - ' . $action );
-		error_log('ajaxfile ' . json_encode('>>> default Request Pending ' . $comp));
+		error_log('ajaxfile >>> default Request Pending - comp: ' . $comp);
 		$response['feedback'] = sprintf(
 			'<div class="bp-feedback error">%s</div>',
 			esc_html__( 'Request Fallback Error - ' . $comp, 'buddypress' )

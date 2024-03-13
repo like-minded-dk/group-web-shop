@@ -15,9 +15,7 @@ function get_button_args ($pid, $comp) {
 	$button_args = array();
 	list(
 		$pid,
-		$sg,
-		$is_reversed,
-		$status,
+		$is_btn_reversed,
 		$is_member,
 		$comp_st,
 		$oppo_st,
@@ -130,7 +128,7 @@ function get_button_args ($pid, $comp) {
         $db = get_db_and_log($cond_str, '06: ETB 17->9-conf_1 LS-R_btn');
         if ($db == 'Ed') {
             error_log('gba||> btn_id: 06-ETB');
-            $button_args = $relation_btn("not_{$oppo}s");
+            $button_args = $relation_btn("not_{$comp}s");
         } else {
             error_log('gba||> btn_id: 06-FTB');
             $button_args = $relation_btn("remove_{$comp}s");
@@ -341,7 +339,7 @@ function get_button_args ($pid, $comp) {
         
         if ($db == 'Ed') {
             error_log('gba||> btn_id: 18-ETB');
-            $button_args = $relation_btn("pending_{$oppo}");
+            $button_args = $relation_btn("awaiting_response_{$oppo}");
         } else {
             error_log('gba||> btn_id: 18-FTB');
             $button_args = $relation_btn("remove_{$comp}s");
@@ -358,7 +356,7 @@ function get_button_args ($pid, $comp) {
         
         if ($db == 'Ed') {
             error_log('gba||> btn_id: 19-ETB');
-            $button_args = $relation_btn("awaiting_response_{$comp}");
+            $button_args = $relation_btn("pending_{$comp}");
         } else {
             error_log('gba||> btn_id: 19-FTB');
             $button_args = $relation_btn("remove_{$oppo}s_from_receiver");
@@ -427,7 +425,7 @@ function get_button_args ($pid, $comp) {
         
         if ($db == 'Ed') {
             error_log('gba||> btn_id: 23-ETB');
-            $button_args = $relation_btn("remove_{$oppo}s_from_receiver");
+            $button_args = $relation_btn("remove_{$comp}s");
         } else {
             error_log('gba||> btn_id: 23-FTB');
             $button_args = $relation_btn("remove_{$oppo}s_from_receiver");
@@ -522,7 +520,7 @@ function get_button_args ($pid, $comp) {
 
 
     ////////////////////// fallback buttons
-	} elseif ($is_reversed == 1) {
+	} elseif ($is_btn_reversed == 1) {
 		error_log('gba||>  rev only ');
 		if (true) {
             error_log('gba||> btn_id: re-ETB');
@@ -554,7 +552,7 @@ function get_template_vars($pid, $comp) {
 	$est = bp_is_engagement( $pid );
 	$sg = $comp == 'friend' ? bp_get_friends_slug() : bp_get_engagements_slug() ;
 
-	$is_reversed = (int) is_oppsit_relation($comp);
+	$is_relation_reversed = (int) is_oppsit_relation($comp);
 	$is_member = bp_current_component() == 'members';
 
 	$ini_e_id = get_relation('engagement');
@@ -569,18 +567,19 @@ function get_template_vars($pid, $comp) {
 	$ini_e = (int) is_initiator('engagement');
 	$status = $ini_f > $ini_e ? $fst : $est ;
 
-	$rev_e_awa = is_receiver_awating('engagement');
 	$ini_e_awa = is_initial_awating('engagement');
-	$rev_f_awa = is_receiver_awating('friend');
+	$rev_e_awa = is_receiver_awating('engagement');
 	$ini_f_awa = is_initial_awating('friend');
+	$rev_f_awa = is_receiver_awating('friend');
 
-	$ini_id = ($comp == 'friend' ? $ini_f_id  : $ini_e_id) ?? $f_rel_id ;
-	$rev_id = ($comp == 'friend' ? $rev_e_id  : $rev_f_id) ?? $e_rel_id ;
+    $is_btn_reversed = $is_relation_reversed;
+	$ini_id = ($comp == 'friend' ? $ini_f_id  : $ini_e_id) ;
+	$rev_id = ($comp == 'friend' ? $rev_e_id  : $rev_f_id) ;
 
 	$comp_st = ($comp == 'friend' ? $fst  : $est);
 	$oppo_st = ($comp == 'friend' ? $est  : $fst);
 
-	$rel_id = ($is_reversed == '1' ? $rev_id  : $ini_id);
+	$rel_id = ($is_btn_reversed == '1' ? $rev_id  : $ini_id);
     $relation_btn = function ($status) use ($comp, $pid, $sg, $rel_id) { return relation_btn_args($comp, $status, $pid, $sg, $rel_id); };
 
 	error_log('gtv ');
@@ -589,7 +588,7 @@ function get_template_vars($pid, $comp) {
 	error_log('gtv ==================================$ini_f: '.$ini_f);
 	error_log('gtv ===========================friend_status: '.$fst);
 	error_log('gtv =======================engagement_status: '.$est);
-	error_log('gtv ============================$is_reversed: '.$is_reversed);
+	error_log('gtv ======================= $is_btn_reversed: '.$is_btn_reversed);
 	error_log('gtv =============================$relation_f: '.$f_rel_id);	
 	error_log('gtv =============================$relation_e: '.$e_rel_id);	
 	error_log('gtv =====ini_f_id rev_f_id ini_e_id rev_e_id: '.$ini_f_id . ', ' . $rev_f_id . ', ' . $ini_e_id  . ', ' . $rev_e_id );
@@ -599,9 +598,7 @@ function get_template_vars($pid, $comp) {
 
 	return [
 		$pid,
-		$sg,
-		$is_reversed,
-		$status,
+		$is_btn_reversed,
 		$is_member,
 		$comp_st,
 		$oppo_st,
