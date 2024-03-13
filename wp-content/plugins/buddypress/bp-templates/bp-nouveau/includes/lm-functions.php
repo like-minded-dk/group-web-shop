@@ -8,7 +8,7 @@ function break_sql($error = '') {
 
 function get_db_and_log( $cond_str, $cond_note ) {
     $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;
-    error_log('gba||> ' . $cond_str . ' - '  . $db . ' - condId: ' . $cond_note);
+    error_log('|>>>> ' . $cond_str . ' - '  . $db . ' - condId: ' . $cond_note);
     return $db;
 }
 
@@ -315,3 +315,21 @@ function relation_btn_args($comp, $status, $pid, $sg, $rel_id) {
 
     return $button_args;
 }
+
+function cond_btn_args( $comp, $comp_st, $oppo_st, $relation_btn, $condId, $compE, $oppE, $compF, $oppF, $caseE, $caseF ) {
+    if (                  ($comp_st == $compE && $oppo_st == $oppE)   ||          ($comp_st == $compF && $oppo_st == $oppF)) {
+        $cond_str = (int) ($comp_st == $compE && $oppo_st == $oppE) . '-' . (int) ($comp_st == $compF && $oppo_st == $oppF);
+        $db = get_db_and_log($cond_str, $condId);
+        $args = '';
+        if ($db == 'Ed') {
+            error_log('|>>>> condId: '.$condId.' - ETB');
+            $args = $relation_btn($caseE);
+        } else {
+            error_log('|>>>> condId: '.$condId.' - FTB');
+            $args = $relation_btn($caseF);
+        }
+        
+        error_log('>>args_id: '.json_encode($args['id']));
+        return $args;
+    } 
+ }
