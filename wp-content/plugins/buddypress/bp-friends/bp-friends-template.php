@@ -159,13 +159,13 @@ function bp_potential_friend_id( $user_id = 0 ) {
 /**
  * Check whether a given user is a friend of the logged-in user.
  *
- * Returns - 'is_friend', 'not_friends', 'pending_friend'.
+ * Returns - 'is_friend', 'not_friend', 'pending_friend'.
  *
  * @since 1.2.6
  *
  * @param int $user_id ID of the potential friend. Default: the value of
  *                     {@link bp_get_potential_friend_id()}.
- * @return bool|string 'is_friend', 'not_friends', or 'pending_friend'.
+ * @return bool|string 'is_friend', 'not_friend', or 'pending_friend'.
  */
 function bp_is_friend( $user_id = 0 ) {
 
@@ -186,7 +186,7 @@ function bp_is_friend( $user_id = 0 ) {
 	 *
 	 * @since 1.2.10
 	 *
-	 * @param string $value   String status of friendship. Possible values are 'is_friend', 'not_friends', 'pending_friend'.
+	 * @param string $value   String status of friendship. Possible values are 'is_friend', 'not_friend', 'pending_friend'.
 	 * @param int    $user_id ID of the potential friend.
 	 */
 	return apply_filters( 'bp_is_friend', friends_check_friendship_status( bp_loggedin_user_id(), $user_id ), $user_id );

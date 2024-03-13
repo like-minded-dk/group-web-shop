@@ -30,7 +30,7 @@ function engagements_action_add_engagement() {
 
 	$engagementship_status = BP_Engagements_Engagementship::check_is_relation( bp_loggedin_user_id(), $potential_engagement_id );
 
-	if ( 'not_engagements' === $engagementship_status ) {
+	if ( 'not_engagement' === $engagementship_status ) {
 		if ( ! check_admin_referer( 'engagement' ) ) {
 			return false;
 		}

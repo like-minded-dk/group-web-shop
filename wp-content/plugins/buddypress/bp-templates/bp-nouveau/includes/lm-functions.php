@@ -69,9 +69,9 @@ function relation_btn_args($comp, $status, $pid, $sg, $rel_id) {
             'text' => 'Stop Supply-R RMF',
         );
         $not_comp = array(
-            'act' => 'not_friends',
+            'act' => 'not_friend',
             'ver' => 'friends_add_friends',
-            'text' => 'Supply-R NTF',
+            'text' => 'Supply-R ADF',
         );
         $is_comp = array(
             'act' => 'is_friend',
@@ -95,7 +95,7 @@ function relation_btn_args($comp, $status, $pid, $sg, $rel_id) {
             'text' => 'Stop Resell-R RME',
         );
         $not_oppo = array(
-            'act' => 'not_engagements',
+            'act' => 'not_engagement',
             'ver' => 'friends_add_friends_from_receiver',
             'text' => 'Supply-R NTE',
         );
@@ -131,7 +131,7 @@ function relation_btn_args($comp, $status, $pid, $sg, $rel_id) {
             'text' => 'Stop Resell-S RME',
         );
         $not_comp = array(
-            'act' => 'not_engagements',
+            'act' => 'not_engagement',
             'ver' => 'engagements_add_engagements',
             'text' => 'Resell-S NTE',
         );
@@ -157,9 +157,9 @@ function relation_btn_args($comp, $status, $pid, $sg, $rel_id) {
             'text' => 'Stop Supply-R RMF',
         );
         $not_oppo = array(
-            'act' => 'not_friends',
+            'act' => 'not_friend',
             'ver' => 'engagements_add_engagements_from_receiver',
-            'text' => 'Resell-S NTF',
+            'text' => 'Resell-S ADF',
         );
         $remove_receiver_oppo = array(
             'act' => 'remove_friends_from_receiver',

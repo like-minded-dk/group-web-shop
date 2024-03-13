@@ -223,7 +223,7 @@ function ajax_switch_each_action($comp, $action, $user_id, $member_id, $response
 		$check_is_comp_c2r = 'f_c2_fm1_is_friend_rev';
 		$check_pending_comp_c1i = 'f_c1_pending_friend_ini';
         $check_awaiting_c1r = 'f_c1_awaiting_response_rev';
-		$check_not_comp = 'not_friends';
+		$check_not_comp = 'not_friend';
         $check_both_comp_v1r = 'f_c2_exist_both_friends_v1_rev';
         $check_both_oppo_v1i = 'f_c2_exist_both_friends_v1_ini';
         $check_pending_comp_c2i = 'f_c2_fm0_pending_friend_ini';
@@ -248,7 +248,7 @@ function ajax_switch_each_action($comp, $action, $user_id, $member_id, $response
 		$check_is_comp_c2r = 'e_c2_fm1_is_engagement_rev';
 		$check_pending_comp_c1i = 'e_c1_pending_engagement_ini';
 		$check_awaiting_c1r = 'e_c1_awaiting_response_rev';
-		$check_not_comp = 'not_engagements';
+		$check_not_comp = 'not_engagement';
         $check_both_comp_v1r = 'e_c2_exist_both_engagements_v1_rev';
         $check_both_oppo_v1i = 'e_c2_exist_both_engagements_v1_ini';
         $check_pending_comp_c2i = 'e_c2_fm0_pending_engagement_ini';

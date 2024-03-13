@@ -29,7 +29,7 @@ function friends_action_add_friend() {
 
 	$friendship_status = BP_Friends_Friendship::check_is_relation( bp_loggedin_user_id(), $potential_friend_id );
 
-	if ( 'not_friends' === $friendship_status ) {
+	if ( 'not_friend' === $friendship_status ) {
 
 		if ( ! check_admin_referer( 'friends_add_friends' ) ) {
 			return false;

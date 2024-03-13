@@ -59,7 +59,7 @@ function engagements_action_remove_engagement() {
 		} else {
 			bp_core_add_message( __( '(remove_engagements) engagementship canceled', 'buddypress' ) );
 		}
-	} elseif ( 'not_engagements' === $engagementship_status ) {
+	} elseif ( 'not_engagement' === $engagementship_status ) {
 		bp_core_add_message( __( 'You are not yet engagements with this user', 'buddypress' ), 'error' );
 	} elseif ( 'add_friends_from_receiver' === $engagementship_status ) {
 		bp_core_add_message( __( 'You are not yet friends with this user', 'buddypress' ), 'error' );

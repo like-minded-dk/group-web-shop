@@ -84,7 +84,7 @@ class BP_Nouveau_Friends {
 			'friends_remove_friends_from_receiver',
 			'friends_remove_friend',
 			'friends_is_friend',
-			'friends_not_friends',
+			'friends_not_friend',
 			'friends_pending_friend',
 
 			'friends_member_friendship',

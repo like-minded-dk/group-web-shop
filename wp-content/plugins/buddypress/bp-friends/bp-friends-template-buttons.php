@@ -35,10 +35,10 @@ function friend_btn_args($status, $pid, $sg, $rel_id) {
             );
             break;
 
-        case 'not_friends':
+        case 'not_friend':
             $button_args = get_button_args_wrapper(
                 'friend', $pid, $sg, 'err:',
-                'not_friends',
+                'not_friend',
                 'Supply-R nf Fri _ba',
                 ['add-friend', array( $pid )],
                 'friends_add_friends',
@@ -90,7 +90,7 @@ function friend_btn_args($status, $pid, $sg, $rel_id) {
             );
             break;
             
-        case 'not_engagements':
+        case 'not_engagement':
             $button_args = get_button_args_wrapper(
                 'friend', $pid, $sg, 'err:',
                 'add_friends_from_receiver',

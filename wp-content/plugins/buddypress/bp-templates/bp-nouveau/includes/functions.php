@@ -197,14 +197,14 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 			'remove_friends_from_receiver',
 			'remove_engagements',
 			'is_engagement',
-			'not_engagements',
+			'not_engagement',
 			'pending_engagement',
 			
 			'add_engagements_from_receiver',
 			'remove_engagements_from_receiver',
 			'remove_friends',
 			'is_friend',
-			'not_friends',
+			'not_friend',
 			'pending_friend',
 			
 			'leave-group',

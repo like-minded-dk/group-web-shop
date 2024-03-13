@@ -60,7 +60,7 @@ function friends_action_remove_friend() {
 		} else {
 			bp_core_add_message( __( '(remove_friends) friendship canceled', 'buddypress' ) );
 		}
-	} elseif ( 'not_friends' === $friendship_status ) {
+	} elseif ( 'not_friend' === $friendship_status ) {
 		bp_core_add_message( __( 'You are not yet friends with this user', 'buddypress' ), 'error' );
 	} elseif ( 'add_engagement_from_receiver' === $friendship_status ) {
 		bp_core_add_message( __( 'You are not yet engagements with this user', 'buddypress' ), 'error' );

@@ -691,7 +691,7 @@ class BP_Friends_Friendship {
 	 *                                    of the potential friendship/request.
 	 * @param int $possible_friend_userid The ID of the user who is the
 	 *                                    recipient of the potential friendship/request.
-	 * @return string|false $value The friendship status, from among 'not_friends',
+	 * @return string|false $value The friendship status, from among 'not_friend',
 	 *                             'is_friend', 'pending_friend', and 'awaiting_response'.
 	 */
 	public static function check_is_relation( $initiator_userid, $possible_friend_userid ) {
@@ -701,7 +701,7 @@ class BP_Friends_Friendship {
 
 		// Can't friend yourself.
 		if ( (int) $initiator_userid === (int) $possible_friend_userid ) {
-			return 'not_friends';
+			return 'not_friend';
 		}
 
 		self::update_bp_friends_cache( $initiator_userid, $possible_friend_userid );
@@ -867,12 +867,12 @@ class BP_Friends_Friendship {
 			$handled[] = ( $initiator_user_id === $user_id ) ? $friend_user_id : $initiator_user_id;
 		}
 
-		// Set all those with no matching entry to "not not_friends" status.
-		$not_friends = array_diff( $fetch, $handled );
+		// Set all those with no matching entry to "not not_friend" status.
+		$not_friend = array_diff( $fetch, $handled );
 
-		foreach ( $not_friends as $not_friend_id ) {
-			bp_core_set_incremented_cache( $user_id . ':' . $not_friend_id, 'bp_friends', 'not_friends' );
-			bp_core_set_incremented_cache( $not_friend_id . ':' . $user_id, 'bp_friends', 'not_friends' );
+		foreach ( $not_friend as $not_friend_id ) {
+			bp_core_set_incremented_cache( $user_id . ':' . $not_friend_id, 'bp_friends', 'not_friend' );
+			bp_core_set_incremented_cache( $not_friend_id . ':' . $user_id, 'bp_friends', 'not_friend' );
 		}
 	}
 

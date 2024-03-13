@@ -159,13 +159,13 @@ function bp_potential_engagement_id( $user_id = 0 ) {
 /**
  * Check whether a given user is a engagement of the logged-in user.
  *
- * Returns - 'is_engagement', 'not_engagements', 'pending_engagement'.
+ * Returns - 'is_engagement', 'not_engagement', 'pending_engagement'.
  *
  * @since 1.2.6
  *
  * @param int $user_id ID of the potential engagement. Default: the value of
  *                     {@link bp_get_potential_engagement_id()}.
- * @return bool|string 'is_engagement', 'not_engagements', or 'pending_engagement'.
+ * @return bool|string 'is_engagement', 'not_engagement', or 'pending_engagement'.
  */
 function bp_is_engagement( $user_id = 0 ) {
 
@@ -186,7 +186,7 @@ function bp_is_engagement( $user_id = 0 ) {
 	 *
 	 * @since 1.2.10
 	 *
-	 * @param string $value   String status of engagementship. Possible values are 'is_engagement', 'not_engagements', 'pending_engagement'.
+	 * @param string $value   String status of engagementship. Possible values are 'is_engagement', 'not_engagement', 'pending_engagement'.
 	 * @param int    $user_id ID of the potential engagement.
 	 */
 	return apply_filters( 'bp_is_engagement', engagements_check_engagementship_status( bp_loggedin_user_id(), $user_id ), $user_id );

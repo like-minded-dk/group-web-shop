@@ -692,7 +692,7 @@ class BP_Engagements_Engagementship {
 	 *                                    of the potential engagementship/request.
 	 * @param int $possible_engagement_userid The ID of the user who is the
 	 *                                    recipient of the potential engagementship/request.
-	 * @return string|false $value The engagementship status, from among 'not_engagements',
+	 * @return string|false $value The engagementship status, from among 'not_engagement',
 	 *                             'is_engagement', 'pending_engagement', and 'awaiting_response'.
 	 */
 	public static function check_is_relation( $initiator_userid, $possible_engagement_userid ) {
@@ -702,7 +702,7 @@ class BP_Engagements_Engagementship {
 
 		// Can't engagement yourself.
 		if ( (int) $initiator_userid === (int) $possible_engagement_userid ) {
-			return 'not_engagements';
+			return 'not_engagement';
 		}
 
 		self::update_bp_engagements_cache( $initiator_userid, $possible_engagement_userid );
@@ -869,11 +869,11 @@ class BP_Engagements_Engagementship {
 		}
 
 		// Set all those with no matching entry to "not engagements" status.
-		$not_engagements = array_diff( $fetch, $handled );
+		$not_engagement = array_diff( $fetch, $handled );
 
-		foreach ( $not_engagements as $not_engagement_id ) {
-			bp_core_set_incremented_cache( $user_id . ':' . $not_engagement_id, 'bp_engagements', 'not_engagements' );
-			bp_core_set_incremented_cache( $not_engagement_id . ':' . $user_id, 'bp_engagements', 'not_engagements' );
+		foreach ( $not_engagement as $not_engagement_id ) {
+			bp_core_set_incremented_cache( $user_id . ':' . $not_engagement_id, 'bp_engagements', 'not_engagement' );
+			bp_core_set_incremented_cache( $not_engagement_id . ':' . $user_id, 'bp_engagements', 'not_engagement' );
 		}
 	}
 

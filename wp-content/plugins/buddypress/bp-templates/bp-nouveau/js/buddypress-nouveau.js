@@ -693,7 +693,7 @@ window.bp = window.bp || {};
 				
 				remove_friends    : 'remove_friends',
 				is_friend         : 'remove_friends',
-				not_friends       : 'add_friends',
+				not_friend       : 'add_friends',
 				pending_friend    : 'withdraw_friendship',
 				accept_friendship : 'accept_friendship',
 				reject_friendship : 'reject_friendship'
@@ -706,7 +706,7 @@ window.bp = window.bp || {};
 
 				remove_friends    : 'friends_remove_friends',
 				is_friend         : 'friends_remove_friends',
-				not_friends       : 'friends_add_friends',
+				not_friend       : 'friends_add_friends',
 				pending_friend    : 'friends_withdraw_friendship',
 				accept_friendship : 'friends_accept_friendship',
 				reject_friendship : 'friends_reject_friendship'
@@ -718,7 +718,7 @@ window.bp = window.bp || {};
 
 				remove_engagements    : 'remove_engagements',
 				is_engagement         : 'remove_engagements',
-				not_engagements       : 'add_engagements',
+				not_engagement       : 'add_engagements',
 				pending_engagement    : 'withdraw_engagementship',
 				accept_engagementship : 'accept_engagementship',
 				reject_engagementship : 'reject_engagementship'
@@ -730,7 +730,7 @@ window.bp = window.bp || {};
 
 				remove_engagements    : 'engagements_remove_engagements',
 				is_engagement         : 'engagements_remove_engagements',
-				not_engagements       : 'engagements_add_engagements',
+				not_engagement       : 'engagements_add_engagements',
 				pending_engagement    : 'engagements_withdraw_engagementship',
 				accept_engagementship : 'engagements_accept_engagementship',
 				reject_engagementship : 'engagements_reject_engagementship'
