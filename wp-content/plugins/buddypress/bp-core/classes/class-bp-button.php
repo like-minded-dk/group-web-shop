@@ -235,7 +235,7 @@ class BP_Button {
 	 * @param array|string $args See {@BP_Button}.
 	 */
 	public function __construct( $args = '' ) {
-
+		error_log(json_encode('>>>>>>>>__construct'));
 		$r = bp_parse_args(
 			$args,
 			get_class_vars( __CLASS__ )
@@ -252,7 +252,7 @@ class BP_Button {
 		if ( !empty( $r['link_rel']   ) ) $this->link_rel   = ' rel="' .   $r['link_rel']   . '"';
 		if ( !empty( $r['link_class'] ) ) $this->link_class = ' class="' . $r['link_class'] . '"';
 		if ( !empty( $r['link_text']  ) ) $this->link_text  =              $r['link_text'];
-		error_log('>>> button Rgs r " '.json_encode($r));
+		// error_log('>>> button Rgs r " '.json_encode($r));
 		// Required button properties.
 		$this->id                = $r['id'];
 		$this->component         = $r['component'];

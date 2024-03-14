@@ -229,6 +229,7 @@ function bp_nouveau_members_loop_buttons( $args = array() ) {
 	 * @return array
 	 */
 	function bp_nouveau_get_members_buttons( $args ) {
+		error_log(json_encode('____>>>>>> 1 bp_nouveau_get_members_buttons'));
 		$buttons = array();
 		$type = ( ! empty( $args['type'] ) ) ? $args['type'] : '';
 
@@ -276,8 +277,8 @@ function bp_nouveau_members_loop_buttons( $args = array() ) {
 			$parent_class = $args['parent_attr']['class'];
 		}
 
-		add_engagement_button($buttons, $user_id, $type, $parent_class, $button_element, $parent_element);
-		add_friend_button($buttons, $user_id, $type, $parent_class, $button_element, $parent_element);
+		add_relation_button('engagement', $buttons, $user_id, $type, $parent_class, $button_element, $parent_element);
+		add_relation_button('friend', $buttons, $user_id, $type, $parent_class, $button_element, $parent_element);
 		add_profile_button($buttons, $type, $parent_class, $parent_element);
 
 		/**
@@ -323,7 +324,7 @@ function bp_nouveau_members_loop_buttons( $args = array() ) {
 		 * @param string $type    Whether we're displaying a members loop or a user's page
 		 */
 		do_action_ref_array( 'bp_nouveau_return_members_buttons', array( &$return, $user_id, $type ) );
-
+		error_log(json_encode('___________>>>> 2 bp_nouveau_get_members_buttons'));
 		return $return;
 	}
 
