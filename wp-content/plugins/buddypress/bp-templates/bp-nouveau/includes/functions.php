@@ -193,15 +193,15 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 		}
 		error_log('parse_class   >  '.json_encode($parse_class));
 		$find_id = array_intersect( $parse_class, array(
-			'add_friends_from_receiver',
-			'remove_friends_from_receiver',
+			'add_friends_as_receiver',
+			'remove_friends_as_receiver',
 			'remove_engagements',
 			'is_engagement',
 			'not_engagement',
 			'pending_engagement',
 			
-			'add_engagements_from_receiver',
-			'remove_engagements_from_receiver',
+			'add_engagements_as_receiver',
+			'remove_engagements_as_receiver',
 			'remove_friends',
 			'is_friend',
 			'not_friend',

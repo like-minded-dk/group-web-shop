@@ -1,30 +1,15 @@
 <?php
 function get_actions_array($comp) {
-    // "friends_remove_friends_from_receiver"
-    // "friends_add_friends_from_receiver"
-    // "friends_remove_friends"
-    // "friends_add_friends"
-    // "friends_withdraw_friendship"
-    // "friends_accept_friendship"
-    // "friends_reject_friendship"
-
-    // "engagements_remove_engagements_from_receiver"
-    // "engagements_add_engagements_from_receiver"
-    // "engagements_remove_engagements"
-    // "engagements_add_engagements"
-    // "engagements_withdraw_engagementship"
-    // "engagements_accept_engagementship"
-    // "engagements_reject_engagementship"
 
     return array(
 		array(
-			"{$comp}s_remove_{$comp}s_from_receiver" => array(
+			"{$comp}s_remove_{$comp}s_as_receiver" => array(
 				"function" => "bp_nouveau_ajax_addremove_fn",
 				"nopriv"   => false,
 			),
 		),
 		array(
-			"{$comp}s_add_{$comp}s_from_receiver" => array(
+			"{$comp}s_add_{$comp}s_as_receiver" => array(
 				"function" => "bp_nouveau_ajax_addremove_fn",
 				"nopriv"   => false,
 			),
@@ -80,7 +65,7 @@ function add_ajax_admin_init_action($comp) {
 
 function ajax_add_relation($comp, $user_id, $member_id, $response, $error = '', $note='') {
     error_log('>>ajax_add_relation ' . $error . ' : ' . $user_id . ' - ' . $member_id);
-    $call_fn = $comp == 'friend' ? 'friends_add_friend' : 'engagements_add_engagement';
+    $call_fn = $comp == 'friend' ? 'friends_add_friend' : 'engagements_add_engagement_as_receiver';
     $back_btn_fn = $comp == 'friend' ? 'bp_get_add_friend_button' : 'bp_get_add_engagement_button';
     
     if ( ! $call_fn( $user_id, $member_id,  $error = '', $note='' ) ) {
@@ -98,7 +83,7 @@ function ajax_add_relation($comp, $user_id, $member_id, $response, $error = '', 
 
 function ajax_withdraw_relation($comp, $user_id, $member_id, $response,  $error = '', $note='') {
     error_log('>>ajax_withdraw_relation ' . $error . ' : ' . $user_id . ' - ' . $member_id);
-    $call_fn = $comp == 'friend' ? 'friends_withdraw_friendship' : 'engagements_withdraw_engagementship';
+    $call_fn = $comp == 'friend' ? 'friends_withdraw_friend' : 'engagements_withdraw_engagement';
     $back_btn_fn = $comp == 'friend' ? 'bp_get_add_friend_button' : 'bp_get_add_engagement_button';
 
     if ( $call_fn( $user_id, $member_id ) ) {
@@ -149,7 +134,7 @@ function ajax_remove_relation($comp, $user_id, $member_id, $response, $error='',
 
 function ajax_reject_relation($comp, $member_id, $response, $error = '') {
     error_log('>>ajax_reject_relation ' . $error . ' : ' . $member_id);
-    $call_fn = $comp == 'friend' ? 'friends_reject_friendship' : 'engagments_reject_engagmentship';
+    $call_fn = $comp == 'friend' ? 'friends_reject_friend' : 'engagments_reject_engagmentship';
 
     if ( ! $call_fn( $member_id ) ) {
         wp_send_json_error(
@@ -177,7 +162,7 @@ function ajax_reject_relation($comp, $member_id, $response, $error = '') {
 
 function ajax_accept_relation($comp, $member_id, $response, $error = '') {
     error_log('>>ajax_accept_relation ' . $error . ' : ' . $member_id);
-    $call_fn = $comp == 'friend' ? 'friends_accept_friendship' : 'engagements_accept_engagementship';
+    $call_fn = $comp == 'friend' ? 'friends_accept_friend' : 'engagement_accept_engagement';
 
     if ( ! $call_fn( $member_id ) ) {
         wp_send_json_error(
@@ -206,13 +191,13 @@ function ajax_accept_relation($comp, $member_id, $response, $error = '') {
 function ajax_switch_each_action($comp, $action, $user_id, $member_id, $response) {
     if ($comp == 'friend') {
 		$check_relation_fn = 'BP_Friends_Friendship::check_is_relation';
-		$accpt_action = 'friends_accept_friendship';
-		$reject_action = 'friends_reject_friendship';
-		$add_action = 'friends_add_friends';
-		$receiver_add_action = 'friends_add_friends_from_receiver';
-		$withdraw_action = 'friends_withdraw_friendship';
-		$remove_action = 'friends_remove_friends';
-		$receiver_remove_action = 'friends_remove_friends_from_receiver';
+		$accpt_action = 'friends_accept_friend';
+		$reject_action = 'friends_reject_friend';
+		$add_action = 'friends_add_friend';
+		$receiver_add_action = 'friends_add_friend_as_receiver';
+		$withdraw_action = 'friends_withdraw_friend';
+		$remove_action = 'friends_remove_friend';
+		$receiver_remove_action = 'friends_remove_friend_as_receiver';
 
 		$check_is_comp = 'is_friend';
 		$check_is_comp_c1i = 'f_c1_is_friend_ini';
@@ -225,19 +210,19 @@ function ajax_switch_each_action($comp, $action, $user_id, $member_id, $response
         $check_awaiting_c1r = 'f_c1_awaiting_response_rev';
 		$check_not_comp = 'not_friend';
         $check_both_comp_v1r = 'f_c2_exist_both_friends_v1_rev';
-        $check_both_oppo_v1i = 'f_c2_exist_both_friends_v1_ini';
+        $check_both_oppo_v1i = 'f_c2_exist_both_friends_v1_ini'; 
         $check_pending_comp_c2i = 'f_c2_fm0_pending_friend_ini';
         $check_awaiting_c2r = 'f_c2_fm0_awaiting_response_rev';
 
 	} else {
 		$check_relation_fn = 'BP_engagements_engagementship::check_is_relation';
-		$accpt_action = 'engagements_accept_engagementship';
-		$reject_action = 'engagements_reject_engagementship';
-		$add_action = 'engagements_add_engagements';
-		$receiver_add_action = 'engagements_add_engagements_from_receiver';
-		$withdraw_action = 'engagements_withdraw_engagementship';
+		$accpt_action = 'engagements_accept_engagement';
+		$reject_action = 'engagements_reject_engagement';
+		$add_action = 'engagements_add_engagement_as_receivers';
+		$receiver_add_action = 'engagements_add_engagement_as_receiver';
+		$withdraw_action = 'engagements_withdraw_engagement';
 		$remove_action = 'engagements_remove_engagements';
-		$receiver_remove_action = 'engagements_remove_engagements_from_receiver';
+		$receiver_remove_action = 'engagements_remove_engagements_as_receiver';
 
 		$check_is_comp = 'is_engagement';
 		$check_is_comp_c1i = 'e_c1_is_engagement_ini';
@@ -256,6 +241,9 @@ function ajax_switch_each_action($comp, $action, $user_id, $member_id, $response
 	}
 
     $check_is_relation = $check_relation_fn( $user_id, $member_id );
+    $check_is_engagement = BP_engagements_engagementship::check_is_relation( $user_id, $member_id );
+	$check_is_friend     = BP_Friends_Friendship::check_is_relation( $user_id, $member_id );
+	error_log('--- check both ' . json_encode($check_is_engagement . ' ' . $check_is_friend));
 
 	error_log('ajaxfile >>> check: ' . $check_is_relation . ' - act: ' . $action );
 
@@ -426,11 +414,11 @@ function ajax_check_nonce($comp, $error_response) {
 
 function ajax_check_user_exist($comp, $member_id) {
     if ($comp == 'friend') {
-		$accpt_action = 'friends_accept_friendship';
-		$reject_action = 'friends_reject_friendship';
+		$accpt_action = 'friends_accept_friend';
+		$reject_action = 'friends_reject_friend';
 	} else {
-		$accpt_action = 'engagements_accept_engagementship';
-		$reject_action = 'engagements_reject_engagementship';
+		$accpt_action = 'engagements_accept_engagement';
+		$reject_action = 'engagements_reject_engagement';
 	}
 
     // Check if the user exists only when the action is accpet or reject.

@@ -17,9 +17,9 @@ function engagements_screen_requests() {
 
 	if ( bp_is_action_variable( 'accept', 0 ) && is_numeric( bp_action_variable( 1 ) ) ) {
 		// Check the nonce.
-		check_admin_referer( 'engagements_accept_engagementship' );
+		check_admin_referer( 'engagements_accept_engagement' );
 
-		if ( engagements_accept_engagementship( bp_action_variable( 1 ) ) ) {
+		if ( engagements_accept_engagement( bp_action_variable( 1 ) ) ) {
 			bp_core_add_message( __( 'engagementship accepted', 'buddypress' ) );
 		} else {
 			bp_core_add_message( __( 'engagementship could not be accepted', 'buddypress' ), 'error' );
@@ -29,9 +29,9 @@ function engagements_screen_requests() {
 
 	} elseif ( bp_is_action_variable( 'reject', 0 ) && is_numeric( bp_action_variable( 1 ) ) ) {
 		// Check the nonce.
-		check_admin_referer( 'engagements_reject_engagementship' );
+		check_admin_referer( 'engagements_reject_engagement' );
 
-		if ( engagements_reject_engagementship( bp_action_variable( 1 ) ) ) {
+		if ( engagements_reject_engagement( bp_action_variable( 1 ) ) ) {
 			bp_core_add_message( __( 'engagementship rejected', 'buddypress' ) );
 		} else {
 			bp_core_add_message( __( 'engagementship could not be rejected', 'buddypress' ), 'error' );
@@ -41,9 +41,9 @@ function engagements_screen_requests() {
 
 	} elseif ( bp_is_action_variable( 'cancel', 0 ) && is_numeric( bp_action_variable( 1 ) ) ) {
 		// Check the nonce.
-		check_admin_referer( 'engagements_withdraw_engagementship' );
+		check_admin_referer( 'engagements_withdraw_engagement' );
 
-		if ( engagements_withdraw_engagementship( bp_loggedin_user_id(), bp_action_variable( 1 ) ) ) {
+		if ( engagements_withdraw_engagement( bp_loggedin_user_id(), bp_action_variable( 1 ) ) ) {
 			bp_core_add_message( __( 'engagementship request withdrawn', 'buddypress' ) );
 		} else {
 			bp_core_add_message( __( 'engagementship request could not be withdrawn', 'buddypress' ), 'error' );

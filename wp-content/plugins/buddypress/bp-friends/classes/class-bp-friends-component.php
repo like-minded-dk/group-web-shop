@@ -244,7 +244,7 @@ class BP_Friends_Component extends BP_Component {
 			$friends_slug = bp_get_friends_slug();
 
 			// Pending friend requests.
-			$count = count( friends_get_friendship_request_user_ids( bp_loggedin_user_id() ) );
+			$count = count( friends_get_relationship_request_user_ids( bp_loggedin_user_id() ) );
 			if ( ! empty( $count ) ) {
 				$title = sprintf(
 					/* translators: %s: Pending friend request count for the current user */

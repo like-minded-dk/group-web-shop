@@ -9,7 +9,7 @@
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
-require ('bp-engagements-template-buttons.php');
+
 /**
  * Output the engagements component slug.
  *
@@ -303,7 +303,7 @@ function bp_get_engagementship_requests( $user_id = 0 ) {
 		return 0;
 	}
 
-	$requests = engagements_get_engagementship_request_user_ids( $user_id );
+	$requests = engagements_get_relationship_request_user_ids( $user_id );
 
 	if ( ! empty( $requests ) ) {
 		$requests = implode( ',', (array) $requests );
@@ -344,7 +344,7 @@ function bp_engagement_engagementship_id() {
 		global $members_template;
 
 		if ( ! $engagementship_id = wp_cache_get( 'engagementship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), 'bp' ) ) {
-			$engagementship_id = engagements_get_engagementship_id( $members_template->member->id, bp_loggedin_user_id() );
+			$engagementship_id = engagements_get_relationship_id( $members_template->member->id, bp_loggedin_user_id() );
 			wp_cache_set( 'engagementship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), $engagementship_id, 'bp' );
 		}
 
@@ -379,7 +379,7 @@ function bp_engagement_accept_request_link() {
 		global $members_template;
 
 		if ( ! $engagementship_id = wp_cache_get( 'engagementship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), 'bp' ) ) {
-			$engagementship_id = engagements_get_engagementship_id( $members_template->member->id, bp_loggedin_user_id() );
+			$engagementship_id = engagements_get_relationship_id( $members_template->member->id, bp_loggedin_user_id() );
 			wp_cache_set( 'engagementship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), $engagementship_id, 'bp' );
 		}
 
@@ -421,7 +421,7 @@ function bp_engagement_reject_request_link() {
 		global $members_template;
 
 		if ( ! $engagementship_id = wp_cache_get( 'engagementship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), 'bp' ) ) {
-			$engagementship_id = engagements_get_engagementship_id( $members_template->member->id, bp_loggedin_user_id() );
+			$engagementship_id = engagements_get_relationship_id( $members_template->member->id, bp_loggedin_user_id() );
 			wp_cache_set( 'engagementship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), $engagementship_id, 'bp' );
 		}
 

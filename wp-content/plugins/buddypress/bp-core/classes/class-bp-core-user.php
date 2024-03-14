@@ -758,6 +758,17 @@ class BP_Core_User {
 			}
 		}
 
+		// Fetch whether or not the user is a engagement.
+		if ( bp_is_active( 'engagements' ) ) {
+			$engagement_status = $wpdb->get_results( $wpdb->prepare( "SELECT initiator_user_id, engagement_user_id, is_confirmed FROM {$bp->engagements->table_name} WHERE (initiator_user_id = %d AND engagement_user_id IN ( {$user_ids} ) ) OR (initiator_user_id IN ( {$user_ids} ) AND engagement_user_id = %d )", bp_loggedin_user_id(), bp_loggedin_user_id() ) );
+			for ( $i = 0, $count = count( $paged_users ); $i < $count; ++$i ) {
+				foreach ( (array) $engagement_status as $status ) {
+					if ( $status->initiator_user_id == $paged_users[$i]->id || $status->engagement_user_id == $paged_users[$i]->id )
+						$paged_users[$i]->is_engagement = $status->is_confirmed;
+				}
+			}
+		}
+
 		// Fetch the user's last_activity.
 		if ( 'active' != $type ) {
 			$user_activity = self::get_last_activity( $user_ids );

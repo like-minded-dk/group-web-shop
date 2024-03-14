@@ -247,7 +247,7 @@ class BP_Engagements_Component extends BP_Component {
 			$engagements_slug = bp_get_engagements_slug();
 
 			// Pending engagement requests.
-			$count = count( engagements_get_engagementship_request_user_ids( bp_loggedin_user_id() ) );
+			$count = count( engagements_get_relationship_request_user_ids( bp_loggedin_user_id() ) );
 
 			if ( ! empty( $count ) ) {
 				$title = sprintf(

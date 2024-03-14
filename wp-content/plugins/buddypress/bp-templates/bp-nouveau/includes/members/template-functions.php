@@ -1,8 +1,8 @@
 <?php
 function get_friend_id($user_id, $potential_engagement_id) {
-	$friendship_id = BP_Friends_Friendship::get_friendship_id($user_id, $potential_engagement_id);
+	$friendship_id = BP_Friends_Friendship::get_relationship_id($user_id, $potential_engagement_id);
 	if (!empty($friendship_id)) {
-		$fri_rel = BP_Friends_Friendship::get_friendships_by_id($friendship_id)[0];
+		$fri_rel = BP_Friends_Friendship::get_relationships_by_id($friendship_id)[0];
 		if ( ! empty($fri_rel)) {
 			$f_rel_id = $fri_rel->id;
 		}
@@ -11,9 +11,9 @@ function get_friend_id($user_id, $potential_engagement_id) {
 }
 
 function get_engagement_id($user_id, $potential_engagement_id) {
-	$engagementship_id = BP_Engagements_Engagementship::get_engagementship_id($user_id, $potential_engagement_id);
+	$engagementship_id = BP_Engagements_Engagementship::get_relationship_id($user_id, $potential_engagement_id);
 	if (!empty($engagementship_id)) {
-		$eng_rel = BP_Engagements_Engagementship::get_engagementships_by_id($engagementship_id)[0];
+		$eng_rel = BP_Engagements_Engagementship::get_relationships_by_id($engagementship_id)[0];
 		if ( ! empty($eng_rel)) {
 			$e_rel_id = $eng_rel->id;
 		}

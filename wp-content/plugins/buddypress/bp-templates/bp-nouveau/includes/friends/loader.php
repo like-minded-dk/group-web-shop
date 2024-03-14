@@ -80,16 +80,14 @@ class BP_Nouveau_Friends {
 	 */
 	protected function setup_filters() {
 		$buttons = array(
-			'friends_add_friends_from_receiver',
-			'friends_remove_friends_from_receiver',
+			'friends_remove_friend_as_receiver',
 			'friends_remove_friend',
-			'friends_is_friend',
-			'friends_not_friend',
+			'friends_add_friend',
 			'friends_pending_friend',
 
-			'friends_member_friendship',
-			'friends_accept_friendship',
-			'friends_reject_friendship',
+			'friends_member_friend',
+			'friends_accept_friend',
+			'friends_reject_friend',
 		);
 
 		foreach ( $buttons as $button ) {
@@ -132,14 +130,13 @@ class BP_Nouveau_Friends {
 	 */
 	public function register_ajax_actions() {
 		$ajax_actions = array(
-			'friends_add_friends_from_receiver',
-			'friends_remove_friends_from_receiver',
-			'friends_remove_friends',
-			'friends_add_friends',
+			'friends_add_friend',
+			'friends_remove_friend',
+			'friends_remove_friend_as_receiver',
 
-			'friends_withdraw_friendship',
-			'friends_accept_friendship',
-			'friends_reject_friendship'
+			'friends_withdraw_friend',
+			'friends_accept_friend',
+			'friends_reject_friend'
 		);
 
 		foreach ( $ajax_actions as $ajax_action ) {

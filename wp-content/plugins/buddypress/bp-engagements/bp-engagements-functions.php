@@ -100,7 +100,7 @@ function engagements_add_engagement( $initiator_userid, $engagement_userid, $for
  */
 function engagements_remove_engagement( $initiator_userid, $engagement_userid ) {
 
-	$engagementship_id = BP_Engagements_Engagementship::get_engagementship_id( $initiator_userid, $engagement_userid );
+	$engagementship_id = BP_Engagements_Engagementship::get_relationship_id( $initiator_userid, $engagement_userid );
 	$engagementship    = new BP_Engagements_Engagementship( $engagementship_id );
 
 	/**
@@ -227,7 +227,7 @@ function engagements_reject_engagementship( $engagementship_id ) {
  * @return bool True on success, false on failure.
  */
 function engagements_withdraw_engagementship( $initiator_userid, $engagement_userid ) {
-	$engagementship_id = BP_Engagements_Engagementship::get_engagementship_id( $initiator_userid, $engagement_userid );
+	$engagementship_id = BP_Engagements_Engagementship::get_relationship_id( $initiator_userid, $engagement_userid );
 	$engagementship    = new BP_Engagements_Engagementship( $engagementship_id, false, false );
 
 	if ( empty( $engagementship->is_confirmed ) && BP_Engagements_Engagementship::withdraw( $engagementship_id ) ) {
@@ -349,8 +349,8 @@ function engagements_check_user_has_engagements( $user_id ) {
  * @param int $engagement_user_id    ID of the second user.
  * @return int|null ID of the engagementship if found, otherwise null.
  */
-function engagements_get_engagementship_id( $initiator_user_id, $engagement_user_id ) {
-	return BP_Engagements_Engagementship::get_engagementship_id( $initiator_user_id, $engagement_user_id );
+function engagements_get_relationship_id( $initiator_user_id, $engagement_user_id ) {
+	return BP_Engagements_Engagementship::get_relationship_id( $initiator_user_id, $engagement_user_id );
 }
 
 /**
@@ -399,7 +399,7 @@ function engagements_search_engagements( $search_terms, $user_id, $pag_num = 10,
  * @param int $user_id The ID of the user who has received the engagementship requests.
  * @return array|bool An array of user IDs, or false if none are found.
  */
-function engagements_get_engagementship_request_user_ids( $user_id ) {
+function engagements_get_relationship_request_user_ids( $user_id ) {
 	return BP_Engagements_Engagementship::get_engagementship_request_user_ids( $user_id );
 }
 

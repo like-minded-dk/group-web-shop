@@ -203,31 +203,27 @@ class BP_Engagements_Engagementship {
 
 		// Update.
 		if ( ! empty( $this->id ) ) {
-
 			try {
-				break_sql('update table engagement: '. $bp->friends->table_name . ' user: ' . $this->initiator_user_id . ' receiver: ' . $this->engagement_user_id);
-
+				break_sql('update table engagement : '. $bp->engagements->table_name . ' user: ' . $this->initiator_user_id . ' receiver: ' . $this->engagement_user_id);
 				$result = $wpdb->query( $wpdb->prepare( <<<SQL
-					INSERT INTO {$bp->engagements->table_name} 
-						( initiator_user_id,
-						engagement_user_id,
-						is_confirmed,
-						is_limited,
-						date_created ) 
-					VALUES ( %d, %d, %d, %d, %s )
-					SQL,
-					$this->initiator_user_id,
-					$this->engagement_user_id,
-					$this->is_confirmed,
-					$this->is_limited,
-					$this->date_created )
-				);
-				$this->id = $wpdb->insert_id;
+				UPDATE {$bp->engagements->table_name}
+				SET initiator_user_id = %d,
+					engagement_user_id = %d,
+					is_confirmed = %d,
+					is_limited = %d,
+					date_created = %s
+				WHERE id = %d
+				SQL,
+				$this->initiator_user_id,
+				$this->engagement_user_id,
+				$this->is_confirmed,
+				$this->is_limited,
+				$this->date_created,
+				$this->id ) );
 
 			} catch (Exception $e) { $result = false; }
 		// Save.
 		} else {
-
 			try {
 				break_sql('add table engagement: '. $bp->engagements->table_name . ' user: ' . $this->initiator_user_id . ' receiver: ' . $this->engagement_user_id);
 
@@ -345,7 +341,7 @@ class BP_Engagements_Engagementship {
 		// Prime the membership cache.
 		$uncached_engagementship_ids = bp_get_non_cached_ids( $engagementship_ids, 'bp_engagements_engagementships' );
 		if ( ! empty( $uncached_engagementship_ids ) ) {
-			$uncached_engagementships = self::get_engagementships_by_id( $uncached_engagementship_ids );
+			$uncached_engagementships = self::get_relationships_by_id( $uncached_engagementship_ids );
 
 			foreach ( $uncached_engagementships as $uncached_engagementship ) {
 				wp_cache_set( $uncached_engagementship->id, $uncached_engagementship, 'bp_engagements_engagementships' );
@@ -494,15 +490,15 @@ class BP_Engagements_Engagementship {
 
 		$fids = array();
 		foreach ( $engagementships as $engagementship ) {
-			$engagement_id = $engagementship->engagement_user_id;
+			$member_id = $engagementship->engagement_user_id;
 			if ( $engagementship->engagement_user_id === $user_id ) {
-				$engagement_id = $engagementship->initiator_user_id;
+				$member_id = $engagementship->initiator_user_id;
 			}
 
 			if ( ! empty( $assoc_arr ) ) {
-				$fids[] = array( 'user_id' => $engagement_id );
+				$fids[] = array( 'user_id' => $member_id );
 			} else {
-				$fids[] = $engagement_id;
+				$fids[] = $member_id;
 			}
 		}
 
@@ -515,14 +511,14 @@ class BP_Engagements_Engagementship {
 	 * @since 1.0.0
 	 *
 	 * @param int $user_id   The ID of the first user.
-	 * @param int $engagement_id The ID of the second user.
+	 * @param int $member_id The ID of the second user.
 	 * @return int|null The ID of the engagementship object if found, otherwise null.
 	 */
-	public static function get_engagementship_id( $user_id, $engagement_id ) {
+	public static function get_relationship_id( $user_id, $member_id ) {
 		$engagementship_id = null;
 
 		// Can't engagement yourself.
-		if ( $user_id === $engagement_id ) {
+		if ( $user_id === $member_id ) {
 			return $engagementship_id;
 		}
 
@@ -531,14 +527,14 @@ class BP_Engagements_Engagementship {
 		 * initiator or engagement.
 		 */
 		$args = array(
-			'initiator_user_id' => $engagement_id,
-			'engagement_user_id'    => $engagement_id,
+			'initiator_user_id' => $member_id,
+			'engagement_user_id'    => $member_id,
 		);
 		$result = self::get_engagementships( $user_id, $args, 'OR' );
 		$result = array_filter($result, function($v, $k) use ($user_id) {
 			return $v->initiator_user_id == $user_id;
 		}, ARRAY_FILTER_USE_BOTH);
-		 // error_log('classE >>filter-first '. count($result));
+		error_log('classE >>filter-first '. count($result));
 		if ( $result ) {
 			$engagementship_id = current( $result )->id;
 		}
@@ -719,164 +715,15 @@ class BP_Engagements_Engagementship {
 	 *
 	 * @param int              $user_id             The ID of the primary user for whom we want
 	 *                                              to check engagementships statuses.
-	 * @param int|array|string $possible_engagement_ids The IDs of the one or more users
+	 * @param int|array|string $possible_member_ids The IDs of the one or more users
 	 *                                              to check engagementship status with primary user.
 	 */
-	public static function update_bp_engagements_cache( $user_id, $possible_engagement_ids ) {
-		// error_log('classE >'. json_encode('>>>update_bp_engagements_cache'));
-		global $wpdb;
-
-		$bp                  = buddypress();
-		$user_id             = (int) $user_id;
-		$possible_engagement_ids = wp_parse_id_list( $possible_engagement_ids );
-
-		$fetch = array();
-		foreach ( $possible_engagement_ids as $engagement_id ) {
-			// Check for cached items in both engagementship directions.
-			// error_log('classE >>>cache ' . $user_id . ':' . $engagement_id . ' ' . json_encode(bp_core_get_incremented_cache( $user_id . ':' . $engagement_id, 'bp_engagements' )));
-			// error_log('classE >>>cache ' . $engagement_id . ':' . $user_id . ' ' . json_encode(bp_core_get_incremented_cache( $engagement_id . ':' . $user_id, 'bp_engagements' )));
-			if ( false === bp_core_get_incremented_cache( $user_id . ':' . $engagement_id, 'bp_engagements' )
-				|| false === bp_core_get_incremented_cache( $engagement_id . ':' . $user_id, 'bp_engagements' ) ) {
-				$fetch[] = $engagement_id;
-			}
-		}
-		// error_log('classE >$fetch e : '.json_encode($fetch));
-		if ( empty( $fetch ) ) {
-			return;
-		}
-
-		$engagement_ids_sql = implode( ',', array_unique( $fetch ) );
-		$sql = $wpdb->prepare( <<<SQL
-			SELECT initiator_user_id, engagement_user_id, is_confirmed 
-			FROM {$bp->engagements->table_name} 
-			WHERE (initiator_user_id = %d AND engagement_user_id IN ({$engagement_ids_sql}) ) 
-				OR (initiator_user_id IN ({$engagement_ids_sql})
-				AND engagement_user_id = %d )
-		SQL,
-		$user_id, $user_id );
-		$relationships = $wpdb->get_results( $sql );
-
-		// error_log('classE    >>>>start cls e>>> ');
-		// // error_log('classE >>>> 745 $sql'.json_encode($sql));
-		// Use $handled to keep track of all of the $possible_engagement_ids we've matched.
-		$handled = array();
-
-		// count_confirmed;
-		$filteredArray = array_filter($relationships, function ($item) {
-			return $item->is_confirmed === "1";
-		});
-		$confirm_counts = count($filteredArray);
-		foreach ( $relationships as $relationship ) {
-			$initiator_user_id = (int) $relationship->initiator_user_id;
-			$engagement_user_id    = (int) $relationship->engagement_user_id;
-			// error_log('classE    <<<<<');
-
-			if ($confirm_counts >= 2) {
-				// error_log('classE > ');
-				// error_log('classE >>>> title both exist and confirmed ');
-				// error_log('classE >>>>>>>>>> both confirmed ');
-
-				if ($initiator_user_id === $user_id) {
-					// error_log('classE >>>>>>>>>> Only one , I am confirmed ');
-
-					$status_initiator = 'e_c2_exist_both_engagements_v1_ini';
-					$status_engagement = 'e_c2_exist_both_engagements_v2_ini';
-				} else {
-					// error_log('classE >>>>>>>>>> Only one , Another is confirmed ');
-
-					$status_initiator = 'e_c2_exist_both_engagements_v2_rev';
-					$status_engagement = 'e_c2_exist_both_engagements_v1_rev';
-				}
-			} elseif (count($relationships) == 1 && 1 === (int) $relationship->is_confirmed) {
-				// error_log('classE > ');
-				// error_log('classE >>>> title: only one, Has been confirmed');
-
-				if ($initiator_user_id === $user_id) {
-					// error_log('classE >>>>>>>>>> Only one , I am confirmed ');
-
-					$status_initiator = 'e_c1_is_engagement_ini';
-					$status_engagement = 'e_c1_is_reversed_friend_ini';
-				} else {
-					// error_log('classE >>>>>>>>>> Only one , Another is confirmed ');
-
-					$status_initiator = 'e_c1_is_engagement_rev';
-					$status_engagement = 'e_c1_is_reverse_friend_rev';
-				}
-			} elseif (count($relationships) == 1 && 0 === (int) $relationship->is_confirmed) {
-				// error_log('classE > ');
-				// error_log('classE >>>> title: only one, waiting for confirmation');
-
-				if ($initiator_user_id === $user_id) {
-					// error_log('classE >>>>>>>>>> Only one , I am waiting for confirmation');
-
-					$status_initiator = 'e_c1_pending_engagement_ini';
-					$status_engagement = 'e_c1_awaiting_response_ini';
-				} else {
-					// error_log('classE >>>>>>>>>> Only one , Another has not been confirmed');
-
-					$status_initiator = 'e_c1_pending_engagement_rev';
-					$status_engagement = 'e_c1_awaiting_response_rev';
-				}
-			} elseif (count($relationships) >= 2 && $confirm_counts == 1 && 1 === (int) $relationship->is_confirmed) {
-				// error_log('classE >>>> title: Both exist, One has been confirmed');
-
-				if ($initiator_user_id === $user_id) {
-					// error_log('classE >>>>>>>>>> Both exist ,One from me is confirmed ');
-
-					$status_initiator = 'e_c2_fm1_is_engagement_ini';
-					$status_engagement = 'e_c2_fm1_is_reverse_friend_ini';
-				} else {
-					// error_log('classE >>>>>>>>>> Both exist ,One from Another is confirmed ');
-
-					$status_initiator = 'e_c2_fm1_is_engagement_rev';
-					$status_engagement = 'e_c2_fm1_is_reverse_friend_rev';
-				}
-			} elseif (count($relationships) >= 2 && $confirm_counts == 1 && 0 === (int) $relationship->is_confirmed) {
-				// error_log('classE >>>> title: Both exist, One is Waiting for confirmation');
-
-				if ($initiator_user_id === $user_id) {
-					// error_log('classE >>>>>>>>>> Both exist ,One from me is waiting for confirmation');
-
-					$status_initiator = 'e_c2_fm0_pending_engagement_ini';
-					$status_engagement = 'e_c2_fm0_awaiting_response_ini';
-				} else {
-					// error_log('classE >>>>>>>>>> Both exist ,One from Another has not been confirmed');
-
-					$status_initiator = 'e_c2_fm0_pending_engagement_rev';
-					$status_engagement = 'e_c2_fm0_awaiting_response_rev';
-				}
-			} else {
-				// error_log('classE >>>> title: 2 engagements, both not confirmed');
-				// error_log('classE >>>>>>>>>> none confirmed ');
-
-				$status_initiator = 'e_c2_pending_engagement_def';
-				$status_engagement    = 'e_c2_awaiting_response_def';
-			}
-			// error_log('classE >>>>>>>status_initiator '. json_encode($status_initiator));
-			// error_log('classE >>>>>>status_engagement '. json_encode($status_engagement));
-
-			// error_log('classE >>bp_current_component '. bp_current_component());
-			// error_log('classE >>>>$initiator_user_id '. $initiator_user_id);
-			// error_log('classE >>>>>>>>>>>>>>>user_id '. $user_id);
-			// error_log('classE >>>>>>>>engagementship '. json_encode($relationship));
-			// error_log('classE <<<<<<<<< each class -e');
-			// error_log('classE > ');
-			
-			bp_core_set_incremented_cache( $initiator_user_id . ':' . $engagement_user_id, 'bp_engagements', $status_initiator );
-			bp_core_set_incremented_cache( $engagement_user_id . ':' . $initiator_user_id, 'bp_engagements', $status_engagement );
-
-			$handled[] = ( $initiator_user_id === $user_id ) ? $engagement_user_id : $initiator_user_id;
-		}
-
-		// Set all those with no matching entry to "not engagements" status.
-		$not_engagement = array_diff( $fetch, $handled );
-
-		foreach ( $not_engagement as $not_engagement_id ) {
-			bp_core_set_incremented_cache( $user_id . ':' . $not_engagement_id, 'bp_engagements', 'not_engagement' );
-			bp_core_set_incremented_cache( $not_engagement_id . ':' . $user_id, 'bp_engagements', 'not_engagement' );
-		}
+	public static function update_bp_engagements_cache( $user_id, $possible_member_ids ) {
+		error_log(' ');
+		error_log('classE >'. json_encode('>>>update_bp_engagements_cache'));
+		$bp_cache_key = 'bp_engagements';
+		update_lm_relation_cache('engagement', $user_id, $possible_member_ids, $bp_cache_key);
 	}
-
 	/**
 	 * Get the last active date of many users at once.
 	 *
@@ -1194,7 +1041,7 @@ class BP_Engagements_Engagementship {
 	 * @param int|string|array $engagementship_ids Single engagementship ID or comma-separated/array list of engagementship IDs.
 	 * @return array
 	 */
-	public static function get_engagementships_by_id( $engagementship_ids ) {
+	public static function get_relationships_by_id( $engagementship_ids ) {
 		global $wpdb;
 
 		$bp = buddypress();
@@ -1273,11 +1120,11 @@ class BP_Engagements_Engagementship {
 		}
 
 		// Loop through engagement_ids to scrub user caches and update total count metas.
-		foreach ( (array) $engagement_ids as $engagement_id ) {
+		foreach ( (array) $engagement_ids as $member_id ) {
 			// Delete cached engagementships.
-			wp_cache_delete( $engagement_id, 'bp_engagements_engagementships_for_user' );
+			wp_cache_delete( $member_id, 'bp_engagements_engagementships_for_user' );
 
-			self::total_engagement_count( $engagement_id );
+			self::total_engagement_count( $member_id );
 		}
 
 		// Delete cached engagementships.
