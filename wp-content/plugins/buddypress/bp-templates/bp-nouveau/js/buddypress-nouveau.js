@@ -688,25 +688,22 @@ window.bp = window.bp || {};
 			// Unfortunately unlike groups
 			// Friends actions does not match the wpnonce
 			var friends_actions_map = {
-				remove_friends_as_receiver: 'remove_friends_as_receiver',
-				remove_friends    : 'remove_friends',
-				is_friend         : 'remove_friends',
-				not_friend       : 'add_friends',
+				remove_friend_as_receiver: 'remove_friend_as_receiver',
+				remove_friend    : 'remove_friend',
+				add_friend         : 'add_friend',
 				pending_friend    : 'withdraw_friend',
 				accept_friend : 'accept_friend',
 				reject_friend : 'reject_friend'
 			};
 
 			var engagements_actions_map = {
-				remove_engagements_as_receiver: 'remove_engagements_as_receiver',
-				remove_friends    	  : 'remove_engagement',
-				add_engagement        : 'add_engagement',
+				remove_engagement_as_receiver: 'remove_engagement_as_receiver',
+				remove_engagement    : 'remove_engagement',
+				add_engagement         : 'add_engagement',
 				pending_engagement    : 'withdraw_engagement',
 				accept_engagement : 'accept_engagement',
 				reject_engagement : 'reject_engagement'
 			};
-
-			var changed_action = false;
 
 			if ( action.includes('friend') && 'members' === object && undefined !== friends_actions_map[ action ] ) {
 				action = friends_actions_map[ action ];

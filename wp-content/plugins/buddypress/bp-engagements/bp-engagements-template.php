@@ -70,6 +70,7 @@ function bp_engagements_root_slug() {
  * @since 1.2.6
  */
 function bp_member_add_engagement_button() {
+	error_log(json_encode('>>>>>>>>>>> bp_member_add_engagement_button'));
 	bp_add_engagement_button( bp_get_member_user_id() );
 }
 // error_log('add_action bp_directory_members_actions engage -----');
@@ -203,6 +204,7 @@ function bp_is_engagement( $user_id = 0 ) {
  * @param int|bool $engagement_status       See {@link bp_get_add_engagement_button()}.
  */
 function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_status = false ) {
+	error_log(json_encode('>>>>>>>>>>> bp_add_engagement_button'));
 	echo bp_get_add_engagement_button( $potential_engagement_id, $engagement_status );
 }
 
@@ -215,6 +217,7 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 	 * @return array The engagement button arguments.
 	 */
 	function bp_get_add_engagement_button_args( $potential_engagement_id = 0 ) {
+		error_log(json_encode('>>>>>>>> bp_get_add_engagement_button_args'));
 		if ( empty( $potential_engagement_id ) ) {
 			$potential_engagement_id = bp_get_potential_engagement_id( $potential_engagement_id );
 		}
@@ -232,7 +235,6 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 		 *
 		 * @param array $button_args Button arguments for add engagement button.
 		 */
-
 		return (array) apply_filters( 'bp_get_add_engagement_button', $button_args );
 	}
 
@@ -248,6 +250,7 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 	 * @return bool|string HTML for the Add engagement button. False if already engagements.
 	 */
 	function bp_get_add_engagement_button( $potential_engagement_id = 0, $engagement_status = false ) {
+		error_log(json_encode('>>>>>>>>> bp_get_add_engagement_button'));
 		$button_args = bp_get_add_engagement_button_args( $potential_engagement_id );
 
 		if ( ! array_filter( $button_args ) ) {

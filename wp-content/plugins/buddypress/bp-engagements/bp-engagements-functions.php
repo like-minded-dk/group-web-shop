@@ -952,7 +952,7 @@ function bp_engagements_personal_data_exporter( $email_address, $page ) {
 		);
 	}
 
-	$engagementships = BP_Engagements_Engagementship::get_engagementships( $user->ID, array(
+	$engagementships = BP_Engagements_Engagementship::get_relationships( $user->ID, array(
 		'is_confirmed' => true,
 		'page'         => $page,
 		'per_page'     => $number,
@@ -1022,7 +1022,7 @@ function bp_engagements_pending_sent_requests_personal_data_exporter( $email_add
 		);
 	}
 
-	$engagementships = BP_Engagements_Engagementship::get_engagementships( $user->ID, array(
+	$engagementships = BP_Engagements_Engagementship::get_relationships( $user->ID, array(
 		'is_confirmed'      => false,
 		'initiator_user_id' => $user->ID,
 		'page'              => $page,
@@ -1080,7 +1080,7 @@ function bp_engagements_pending_received_requests_personal_data_exporter( $email
 		);
 	}
 
-	$engagementships = BP_Engagements_Engagementship::get_engagementships( $user->ID, array(
+	$engagementships = BP_Engagements_Engagementship::get_relationships( $user->ID, array(
 		'is_confirmed'   => false,
 		'engagement_user_id' => $user->ID,
 		'page'           => $page,

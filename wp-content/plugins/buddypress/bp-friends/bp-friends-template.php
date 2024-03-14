@@ -70,6 +70,7 @@ function bp_friends_root_slug() {
  * @since 1.2.6
  */
 function bp_member_add_friend_button() {
+	error_log(json_encode('>>>>>>>>>>> bp_member_add_friend_button'));
 	bp_add_friend_button( bp_get_member_user_id() );
 }
 add_action( 'bp_directory_members_actions', 'bp_member_add_friend_button' );
@@ -202,6 +203,7 @@ function bp_is_friend( $user_id = 0 ) {
  * @param int|bool $friend_status       See {@link bp_get_add_friend_button()}.
  */
 function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false ) {
+	error_log(json_encode('>>>>>>>>>>> bp_add_friend_button'));
 	echo bp_get_add_friend_button( $potential_friend_id, $friend_status );
 }
 
@@ -214,6 +216,7 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 	 * @return array The friend button arguments.
 	 */
 	function bp_get_add_friend_button_args( $potential_friend_id = 0 ) {
+		error_log(json_encode('>>>>>>>> bp_get_add_friend_button_args'));
 		if ( empty( $potential_friend_id ) ) {
 			$potential_friend_id = bp_get_potential_friend_id( $potential_friend_id );
 		}

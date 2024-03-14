@@ -953,7 +953,7 @@ function bp_friends_personal_data_exporter( $email_address, $page ) {
 		);
 	}
 
-	$friendships = BP_Friends_Friendship::get_friendships( $user->ID, array(
+	$friendships = BP_Friends_Friendship::get_relationships( $user->ID, array(
 		'is_confirmed' => true,
 		'page'         => $page,
 		'per_page'     => $number,
@@ -1022,7 +1022,7 @@ function bp_friends_pending_sent_requests_personal_data_exporter( $email_address
 		);
 	}
 
-	$friendships = BP_Friends_Friendship::get_friendships( $user->ID, array(
+	$friendships = BP_Friends_Friendship::get_relationships( $user->ID, array(
 		'is_confirmed'      => false,
 		'initiator_user_id' => $user->ID,
 		'page'              => $page,
@@ -1080,7 +1080,7 @@ function bp_friends_pending_received_requests_personal_data_exporter( $email_add
 		);
 	}
 
-	$friendships = BP_Friends_Friendship::get_friendships( $user->ID, array(
+	$friendships = BP_Friends_Friendship::get_relationships( $user->ID, array(
 		'is_confirmed'   => false,
 		'friend_user_id' => $user->ID,
 		'page'           => $page,

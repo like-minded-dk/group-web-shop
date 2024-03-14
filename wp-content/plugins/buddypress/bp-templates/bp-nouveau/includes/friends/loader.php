@@ -130,9 +130,11 @@ class BP_Nouveau_Friends {
 	 */
 	public function register_ajax_actions() {
 		$ajax_actions = array(
-			'friends_add_friend',
-			'friends_remove_friend',
 			'friends_remove_friend_as_receiver',
+			'friends_remove_friend',
+			'friends_add_friend',
+			'friends_awaiting_friend',
+			'friends_pending_friend',
 
 			'friends_withdraw_friend',
 			'friends_accept_friend',

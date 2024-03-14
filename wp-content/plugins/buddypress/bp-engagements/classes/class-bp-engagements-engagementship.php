@@ -303,7 +303,7 @@ class BP_Engagements_Engagementship {
 	 *
 	 * @return array $engagementships Array of engagementship objects.
 	 */
-	public static function get_engagementships( $user_id, $args = array(), $operator = 'AND' ) {
+	public static function get_relationships( $user_id, $args = array(), $operator = 'AND' ) {
 		if ( empty( $user_id ) ) {
 			$user_id = bp_loggedin_user_id();
 		}
@@ -447,7 +447,6 @@ class BP_Engagements_Engagementship {
 
 		$bp = buddypress();
 		$engagementship_ids = $wpdb->get_col( $wpdb->prepare( "SELECT id FROM {$bp->engagements->table_name} WHERE (initiator_user_id = %d OR engagement_user_id = %d) ORDER BY date_created DESC", $user_id, $user_id ) );
-		//$engagementship_ids = $wpdb->get_col( $wpdb->prepare( "SELECT id FROM {$bp->engagements->table_name} WHERE (engagement_user_id = %d) ORDER BY date_created DESC", $user_id, $user_id ) );
 
 		return $engagementship_ids;
 	}
@@ -485,7 +484,7 @@ class BP_Engagements_Engagementship {
 			}
 		}
 
-		$engagementships = self::get_engagementships( $user_id, $args );
+		$engagementships = self::get_relationships( $user_id, $args );
 		$user_id     = (int) $user_id;
 
 		$fids = array();
@@ -530,7 +529,7 @@ class BP_Engagements_Engagementship {
 			'initiator_user_id' => $member_id,
 			'engagement_user_id'    => $member_id,
 		);
-		$result = self::get_engagementships( $user_id, $args, 'OR' );
+		$result = self::get_relationships( $user_id, $args, 'OR' );
 		$result = array_filter($result, function($v, $k) use ($user_id) {
 			return $v->initiator_user_id == $user_id;
 		}, ARRAY_FILTER_USE_BOTH);
@@ -588,7 +587,7 @@ class BP_Engagements_Engagementship {
 		 */
 
 		$args        = array( 'is_confirmed' => 1 );
-		$engagementships = self::get_engagementships( $user_id, $args );
+		$engagementships = self::get_relationships( $user_id, $args );
 		$count       = count( $engagementships );
 
 		// Do not update meta if user has never had engagements.
@@ -1088,7 +1087,7 @@ class BP_Engagements_Engagementship {
 		$user_id = (int) $user_id;
 
 		// Get all engagementships, of any status, for the user.
-		$engagementships    = self::get_engagementships( $user_id );
+		$engagementships    = self::get_relationships( $user_id );
 		$engagement_ids     = array();
 		$engagementship_ids = array();
 		foreach ( $engagementships as $engagementship ) {

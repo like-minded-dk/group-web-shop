@@ -252,7 +252,7 @@ class BP_Button {
 		if ( !empty( $r['link_rel']   ) ) $this->link_rel   = ' rel="' .   $r['link_rel']   . '"';
 		if ( !empty( $r['link_class'] ) ) $this->link_class = ' class="' . $r['link_class'] . '"';
 		if ( !empty( $r['link_text']  ) ) $this->link_text  =              $r['link_text'];
-
+		error_log('>>> button Rgs r " '.json_encode($r));
 		// Required button properties.
 		$this->id                = $r['id'];
 		$this->component         = $r['component'];
@@ -364,6 +364,7 @@ class BP_Button {
 		 * @param string    $after    HTML appended after the actual button.
 		 * @param array     $r        Parsed button arguments.
 		 */
+		error_log(json_encode('>>>> run bp_button_' . $this->component . '_' . $this->id));
 		$this->contents = apply_filters( 'bp_button_' . $this->component . '_' . $this->id, $this->contents, $this, $before, $after, $r );
 	}
 

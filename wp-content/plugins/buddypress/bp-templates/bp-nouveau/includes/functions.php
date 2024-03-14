@@ -171,6 +171,7 @@ function bp_nouveau_ajax_querystring( $query_string, $object ) {
  * @return string
  */
 function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $after = '', $r = array() ) {
+	error_log(json_encode('>>>>>bp_nouveau_ajax_button'));
 	if ( empty( $button->component ) ) {
 		return $output;
 	}
@@ -193,18 +194,16 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 		}
 		error_log('parse_class   >  '.json_encode($parse_class));
 		$find_id = array_intersect( $parse_class, array(
-			'add_friends_as_receiver',
-			'remove_friends_as_receiver',
-			'remove_engagements',
-			'is_engagement',
-			'not_engagement',
+			'remove_friend_as_receiver',
+			'remove_engagement',
+			'add_engagement',
+			'awaiting_engagement',
 			'pending_engagement',
-			
-			'add_engagements_as_receiver',
+
 			'remove_engagements_as_receiver',
-			'remove_friends',
-			'is_friend',
-			'not_friend',
+			'remove_friend',
+			'add_friend',
+			'awaiting_friend',
 			'pending_friend',
 			
 			'leave-group',

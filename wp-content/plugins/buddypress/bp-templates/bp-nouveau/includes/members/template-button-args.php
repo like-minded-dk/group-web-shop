@@ -15,18 +15,15 @@ function get_button_args ($pid, $comp) {
 
 	list(
 		$pid,
-		$is_btn_reversed,
-		$is_member,
 		$comp_st,
 		$oppo_st,
 		$relation_btn,
 	) = get_template_vars($pid, $comp);
     error_log('$comp = ' . $comp . ', $oppo = ' . $oppo . ", {$comp}_st = " . $comp_st . ", {$oppo}_st = " . $oppo_st);
 
-    $cond_args = array();
     $button_args = array();
     $status = $comp_st;
-    error_log('1 > '.json_encode((strpos($status, 'empty_status'))));
+
     if (false) {
         return;   
     } elseif (strpos($status, 'empty_status') !== false ) {
@@ -40,7 +37,7 @@ function get_button_args ($pid, $comp) {
     } else {
         ////////////////////// fallback buttons
     	error_log('|>>>>  els only ');
-        $button_args = $relation_btn("not_{$comp}");
+        $button_args = $relation_btn("add_{$comp}");
 	}
 
 	error_log('<<<<<<<<-: '.$mk);
@@ -96,8 +93,6 @@ function get_template_vars($pid, $comp) {
 
 	return [
 		$pid,
-		$is_btn_reversed,
-		$is_member,
 		$comp_st,
 		$oppo_st,
 		$relation_btn,
