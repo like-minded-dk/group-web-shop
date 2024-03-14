@@ -9,7 +9,7 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-require dirname( __FILE__ ) . '/lm-functions.php';
+require dirname( __FILE__ ) . '/lm/lm-functions.php';
 /**
  * This function looks scarier than it actually is. :)
  * Each object loop (activity/members/groups/blogs/forums) contains default

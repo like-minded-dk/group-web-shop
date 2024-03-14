@@ -690,8 +690,8 @@ window.bp = window.bp || {};
 			var friends_actions_map = {
 				remove_friend_as_receiver: 'remove_friend_as_receiver',
 				remove_friend    : 'remove_friend',
-				add_friend         : 'add_friend',
-				pending_friend    : 'withdraw_friend',
+				add_friend       : 'add_friend',
+				pending_friend   : 'withdraw_friend',
 				accept_friend : 'accept_friend',
 				reject_friend : 'reject_friend'
 			};
@@ -699,11 +699,13 @@ window.bp = window.bp || {};
 			var engagements_actions_map = {
 				remove_engagement_as_receiver: 'remove_engagement_as_receiver',
 				remove_engagement    : 'remove_engagement',
-				add_engagement         : 'add_engagement',
-				pending_engagement    : 'withdraw_engagement',
+				add_engagement       : 'add_engagement',
+				pending_engagement   : 'withdraw_engagement',
 				accept_engagement : 'accept_engagement',
 				reject_engagement : 'reject_engagement'
 			};
+
+			console.log(`>>>>todo1 action`, action , object + '_' + action);
 
 			if ( action.includes('friend') && 'members' === object && undefined !== friends_actions_map[ action ] ) {
 				action = friends_actions_map[ action ];
@@ -718,7 +720,7 @@ window.bp = window.bp || {};
 			// Add a pending class to prevent queries while we're processing the action.
 			target.addClass( 'pending loading' );
 
-			console.log(`>>>>todo action`, action , action);
+			console.log(`>>>>todo2 action`, action , object + '_' + action);
 
 			self.ajax( {
 				action   : object + '_' + action,

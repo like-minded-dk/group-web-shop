@@ -229,7 +229,7 @@ function bp_nouveau_members_loop_buttons( $args = array() ) {
 	 * @return array
 	 */
 	function bp_nouveau_get_members_buttons( $args ) {
-		error_log(json_encode('____>>>>>> 1 bp_nouveau_get_members_buttons'));
+		error_log(json_encode('>>>>>> bp_nouveau_get_members_buttons'));
 		$buttons = array();
 		$type = ( ! empty( $args['type'] ) ) ? $args['type'] : '';
 
@@ -292,6 +292,7 @@ function bp_nouveau_members_loop_buttons( $args = array() ) {
 		 * @param string $type    Whether we're displaying a members loop or a user's page
 		 * @param array  $args    Button arguments.
 		 */
+		// note  bp_nouveau_get_members_buttons regester member buttons , there for registed all  other action , when action list include member
 		$buttons_group = apply_filters( 'bp_nouveau_get_members_buttons', $buttons, $user_id, $type, $args );
 		if ( ! $buttons_group ) {
 			return array();
@@ -324,7 +325,7 @@ function bp_nouveau_members_loop_buttons( $args = array() ) {
 		 * @param string $type    Whether we're displaying a members loop or a user's page
 		 */
 		do_action_ref_array( 'bp_nouveau_return_members_buttons', array( &$return, $user_id, $type ) );
-		error_log(json_encode('___________>>>> 2 bp_nouveau_get_members_buttons'));
+		error_log(json_encode('___________>>>> 2 end__ bp_nouveau_get_members_buttons'));
 		return $return;
 	}
 
