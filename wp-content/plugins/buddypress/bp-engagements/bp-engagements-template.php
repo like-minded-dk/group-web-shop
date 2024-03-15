@@ -217,7 +217,6 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 	 * @return array The engagement button arguments.
 	 */
 	function bp_get_add_engagement_button_args( $potential_engagement_id = 0 ) {
-		error_log(json_encode('>>>>>>>> bp_get_add_engagement_button_args'));
 		if ( empty( $potential_engagement_id ) ) {
 			$potential_engagement_id = bp_get_potential_engagement_id( $potential_engagement_id );
 		}
@@ -250,7 +249,6 @@ function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_sta
 	 * @return bool|string HTML for the Add engagement button. False if already engagements.
 	 */
 	function bp_get_add_engagement_button( $potential_engagement_id = 0, $engagement_status = false ) {
-		error_log(json_encode('>>>>>>>>> bp_get_add_engagement_button'));
 		$button_args = bp_get_add_engagement_button_args( $potential_engagement_id );
 
 		if ( ! array_filter( $button_args ) ) {
@@ -388,7 +386,7 @@ function bp_engagement_accept_request_link() {
 
 		$url = wp_nonce_url(
 			bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_get_engagements_slug(), 'requests', array( 'accept', $engagementship_id ) ) ) ),
-			'engagements_accept_engagementship'
+			'engagements_accept_engagement'
 		);
 
 		/**
@@ -430,7 +428,7 @@ function bp_engagement_reject_request_link() {
 
 		$url = wp_nonce_url(
 			bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_get_engagements_slug(), 'requests', array( 'reject', $engagementship_id ) ) ) ),
-			'engagements_reject_engagementship'
+			'engagements_reject_engagement'
 		);
 
 		/**

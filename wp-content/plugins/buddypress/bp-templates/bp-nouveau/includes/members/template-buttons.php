@@ -8,8 +8,8 @@ function add_relation_button($comp, &$buttons, $user_id, $type, $parent_class, $
 		'friend' => array(
 			'component' => 'friends',
 			'request_type' => 'friendship_request',
-			'accept_ship' => 'accept_friendship',
-			'reject_ship' => 'reject_friendship',
+			'accept_ship' => 'accept_friend',
+			'reject_ship' => 'reject_friend',
 			'member_ship' => 'member_friendship',
 			'accept_link' => 'bp_get_friend_accept_request_link',
 			'reject_link' => 'bp_get_friend_reject_request_link',
@@ -18,8 +18,8 @@ function add_relation_button($comp, &$buttons, $user_id, $type, $parent_class, $
 		'engagement' => array(
 			'component' => 'engagements',
 			'request_type' => 'engagementship_request',
-			'accept_ship' => 'accept_engagementship',
-			'reject_ship' => 'reject_engagementship',
+			'accept_ship' => 'accept_engagement',
+			'reject_ship' => 'reject_engagement',
 			'member_ship' => 'member_engagementship',
 			'accept_link' => 'bp_get_engagement_accept_request_link',
 			'reject_link' => 'bp_get_engagement_reject_request_link',

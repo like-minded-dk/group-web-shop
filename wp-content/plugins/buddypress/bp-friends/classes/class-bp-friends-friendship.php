@@ -205,21 +205,23 @@ class BP_Friends_Friendship {
 		if ( ! empty( $this->id ) ) {
 			try {
 				break_sql('update table friend : '. $bp->friends->table_name . ' user: ' . $this->initiator_user_id . ' receiver: ' . $this->friend_user_id);
+
 				$result = $wpdb->query( $wpdb->prepare( <<<SQL
-				UPDATE {$bp->friends->table_name}
-				SET initiator_user_id = %d,
-					friend_user_id = %d,
-					is_confirmed = %d,
-					is_limited = %d,
-					date_created = %s
-				WHERE id = %d
-				SQL,
-				$this->initiator_user_id,
-				$this->friend_user_id,
-				$this->is_confirmed,
-				$this->is_limited,
-				$this->date_created,
-				$this->id ) );
+					UPDATE {$bp->friends->table_name}
+					SET initiator_user_id = %d,
+						friend_user_id = %d,
+						is_confirmed = %d,
+						is_limited = %d,
+						date_created = %s
+					WHERE id = %d
+					SQL,
+					$this->initiator_user_id,
+					$this->friend_user_id,
+					$this->is_confirmed,
+					$this->is_limited,
+					$this->date_created,
+					$this->id )
+				);
 
 			} catch (Exception $e) { $result = false; }
 		// Save.
@@ -395,7 +397,7 @@ class BP_Friends_Friendship {
 
 				if ( ( 'OR' === $operator && $matched > 0 )
 				  || ( 'NOT' === $operator && 0 === $matched ) ) {
-					$friendships[ $friendship->id ] = $friendship;
+					$relationships[ $friendship->id ] = $friendship;
 				}
 
 			} else {
@@ -408,28 +410,28 @@ class BP_Friends_Friendship {
 						continue 2;
 					}
 				}
-				$friendships[ $friendship->id ] = $friendship;
+				$relationships[ $friendship->id ] = $friendship;
 			}
 
 		}
 
 		// Sort the results on a column name.
 		if ( in_array( $r['order_by'], array( 'id', 'initiator_user_id', 'friend_user_id' ) ) ) {
-			$friendships = bp_sort_by_key( $friendships, $r['order_by'], 'num', true );
+			$relationships = bp_sort_by_key( $relationships, $r['order_by'], 'num', true );
 		}
 
 		// Adjust the sort direction of the results.
 		if ( 'ASC' === bp_esc_sql_order( $r['sort_order'] ) ) {
 			// `true` to preserve keys.
-			$friendships = array_reverse( $friendships, true );
+			$relationships = array_reverse( $relationships, true );
 		}
 
 		// Paginate the results.
 		if ( $r['per_page'] && $r['page'] ) {
 			$start       = ( $r['page'] - 1 ) * ( $r['per_page'] );
-			$friendships = array_slice( $friendships, $start, $r['per_page'] );
+			$relationships = array_slice( $relationships, $start, $r['per_page'] );
 		}
-		return $friendships;
+		return $relationships;
 	}
 
 	/**
@@ -512,11 +514,11 @@ class BP_Friends_Friendship {
 	 * @return int|null The ID of the relationship object if found, otherwise null.
 	 */
 	public static function get_relationship_id( $user_id, $member_id ) {
-		$relation_id = null;
+		$friend_id = null;
 
 		// Can't relate yourself.
 		if ( $user_id === $member_id ) {
-			return $relation_id;
+			return $friend_id;
 		}
 
 		/*
@@ -533,9 +535,9 @@ class BP_Friends_Friendship {
 		}, ARRAY_FILTER_USE_BOTH);
 		// error_log('classF >>filter-first '. count($result));
 		if ( $result ) {
-			$relation_id = current( $result )->id;
+			$friend_id = current( $result )->id;
 		}
-		return $relation_id;
+		return $friend_id;
 	}
 
 	/**
@@ -757,7 +759,7 @@ class BP_Friends_Friendship {
 	}
 
 	/**
-	 * Mark a relationship as accepted.
+	 * Mark a friendship as accepted.
 	 *
 	 * @since 1.0.0
 	 *
@@ -766,16 +768,20 @@ class BP_Friends_Friendship {
 	 * @param int $friend_id ID of the friendship to be accepted.
 	 * @return int Number of database rows updated.
 	 */
-	public static function accept( $friendship_id ) {
+	public static function accept( $relation_id ) {
 		global $wpdb;
 
 		$bp = buddypress();
+		try {
+			break_sql('>>>accept $relation_id 868: '.json_encode($relation_id));
 
-		return $wpdb->query( $wpdb->prepare( "UPDATE {$bp->friends->table_name} SET is_confirmed = 1, date_created = %s WHERE id = %d AND friend_user_id = %d", bp_core_current_time(), $friendship_id, bp_loggedin_user_id() ) );
+			return $wpdb->query( $wpdb->prepare( "UPDATE {$bp->friends->table_name} SET is_confirmed = 1, date_created = %s WHERE id = %d AND friend_user_id = %d", bp_core_current_time(), $relation_id, bp_loggedin_user_id() ) );
+
+		} catch (Exception $e) { $result = false; }
 	}
 
 	/**
-	 * Remove a relationship or a relationship request INITIATED BY the logged-in user.
+	 * Remove a friendship or a friendship request INITIATED BY the logged-in user.
 	 *
 	 * @since 1.6.0
 	 *
@@ -790,7 +796,9 @@ class BP_Friends_Friendship {
 		$bp = buddypress();
 		try {
 			break_sql('!withdraw friendship 843 f: '.json_encode($relation_id));
+
 			return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->friends->table_name} WHERE id = %d AND initiator_user_id = %d", $relation_id, bp_loggedin_user_id() ) );
+
 		} catch (Exception $e) { $result = false; }
 	}
 
@@ -1120,7 +1128,7 @@ class BP_Friends_Friendship {
 			self::total_friend_count( $relation_id );
 		}
 
-		// Delete cached relationships.
+		// Delete cached friendships.
 		wp_cache_delete( $user_id, 'bp_friends_friendships_for_user' );
 	}
 }

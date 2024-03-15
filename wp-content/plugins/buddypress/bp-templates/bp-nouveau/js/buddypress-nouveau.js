@@ -692,8 +692,8 @@ window.bp = window.bp || {};
 				remove_friend    : 'remove_friend',
 				add_friend       : 'add_friend',
 				pending_friend   : 'withdraw_friend',
-				accept_friendship : 'accept_friendship',
-				reject_friendship : 'reject_friendship'
+				accept_friend 	 : 'accept_friend',
+				reject_friend 	 : 'reject_friend'
 			};
 
 			var engagements_actions_map = {
@@ -701,8 +701,8 @@ window.bp = window.bp || {};
 				remove_engagement    : 'remove_engagement',
 				add_engagement       : 'add_engagement',
 				pending_engagement   : 'withdraw_engagement',
-				accept_engagementship : 'accept_engagementship',
-				reject_engagementship : 'reject_engagementship'
+				accept_engagement 	 : 'accept_engagement',
+				reject_engagement 	 : 'reject_engagement'
 			};
 
 			console.log(`>>>>todo1 action`, action , object + '_' + action);

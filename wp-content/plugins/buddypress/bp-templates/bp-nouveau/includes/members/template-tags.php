@@ -229,7 +229,6 @@ function bp_nouveau_members_loop_buttons( $args = array() ) {
 	 * @return array
 	 */
 	function bp_nouveau_get_members_buttons( $args ) {
-		error_log(json_encode('>>>>>> bp_nouveau_get_members_buttons'));
 		$buttons = array();
 		$type = ( ! empty( $args['type'] ) ) ? $args['type'] : '';
 

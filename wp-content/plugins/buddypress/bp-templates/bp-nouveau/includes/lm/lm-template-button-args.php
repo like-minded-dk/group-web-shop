@@ -14,30 +14,35 @@ function get_button_args ($pid, $comp) {
 	$mk = $comp[0];
 
 	list(
-		$pid,
-		$comp_st,
-		$oppo_st,
-		$relation_btn,
+        $pid,
+        $sg,
+        $relation_id,
+		$comp_list_sts,
+		$oppo_list_sts,
+        $from_reversed_table,
 	) = get_template_vars($pid, $comp);
-    error_log('$comp = ' . $comp . ', $oppo = ' . $oppo . ", {$comp}_st = " . $comp_st . ", {$oppo}_st = " . $oppo_st);
+    error_log('$comp = ' . $comp . ', $oppo = ' . $oppo . ", {$comp}_st = " . $comp_list_sts . ", {$oppo}_st = " . $oppo_list_sts);
 
     $button_args = array();
-    $status = $comp_st;
 
     if (false) {
         return;   
-    } elseif (strpos($status, 'empty_status') !== false ) {
-        $button_args = simple_cond_btn_args($relation_btn, "add_{$comp}");
-    } elseif (strpos($status, 'confirmed_status') !== false ) {
-        $button_args = simple_cond_btn_args($relation_btn, "remove_{$comp}");
-    } elseif (strpos($status, 'pending_status') !== false ) {
-        $button_args = simple_cond_btn_args($relation_btn, "pending_{$comp}",);
-    } elseif (strpos($status, 'awaiting_status') !== false ) {
-        $button_args = simple_cond_btn_args($relation_btn, "awaiting_{$comp}",);
+    } elseif (strpos($comp_list_sts, 'confirmed_sts') !== false ) {
+        if ($from_reversed_table) {
+            $button_args =  relation_btn_args($comp, "remove_{$comp}", $pid, $sg, $relation_id);
+        } else {
+            $button_args =  relation_btn_args($comp, "remove_{$oppo}", $pid, $sg, $relation_id);
+        }
+    } elseif (strpos($comp_list_sts, 'empty_sts') !== false ) {
+        $button_args =  relation_btn_args($comp, "add_{$comp}", $pid, $sg, $relation_id);
+    } elseif (strpos($comp_list_sts, 'pending_sts') !== false ) {
+        $button_args =  relation_btn_args($comp, "pending_{$comp}", $pid, $sg, $relation_id);
+    } elseif (strpos($comp_list_sts, 'awaiting_sts') !== false ) {
+        $button_args =  relation_btn_args($comp, "awaiting_{$comp}", $pid, $sg, $relation_id);
     } else {
         ////////////////////// fallback buttons
     	error_log('|>>>>  els only ');
-        $button_args = $relation_btn("add_{$comp}");
+        $button_args =  relation_btn_args($comp, "add_{$comp}", $pid, $sg, $relation_id);
 	}
 
 	error_log('<<<<<<<<-: '.$mk);
@@ -57,8 +62,8 @@ function get_template_vars($pid, $comp) {
 	$ini_f_id = get_relation('friend');
 	$rev_f_id = get_relation('friend', false);
 
-	// $f_rel_id = get_friend_id($user_id, $pid);
-	// $e_rel_id = get_engagement_id($user_id, $pid);
+	// $f_relation_id = get_friend_id($user_id, $pid);
+	// $e_relation_id = get_engagement_id($user_id, $pid);
 
 	// $ini_f = (int) is_initiator('friend');
 	// $ini_e = (int) is_initiator('engagement');
@@ -73,23 +78,27 @@ function get_template_vars($pid, $comp) {
 	$ini_id = ($comp == 'friend' ? $ini_f_id  : $ini_e_id) ;
 	$rev_id = ($comp == 'friend' ? $rev_e_id  : $rev_f_id) ;
 
-	$comp_st = ($comp == 'friend' ? $fst  : $est);
-	$oppo_st = ($comp == 'friend' ? $est  : $fst);
+	$comp_list_sts = ($comp == 'friend' ? $fst  : $est);
+	$oppo_list_sts = ($comp == 'friend' ? $est  : $fst);
 
-	$rel_id = ($is_btn_reversed == '1' ? $rev_id  : $ini_id);
-    $relation_btn = function ($status) use ($comp, $pid, $sg, $rel_id) { return relation_btn_args($comp, $status, $pid, $sg, $rel_id); };
+    // $parsed_cls = explode($comp_list_sts, '_');
+    $from_reversed_table = (strpos($comp_list_sts, 'eList') && strpos($comp_list_sts, 'fTable')) ||
+                   (strpos($comp_list_sts, 'fList') && strpos($comp_list_sts, 'eTable'));
+	$relation_id = ($is_btn_reversed == '1' ? $rev_id  : $ini_id);
 
 	return [
 		$pid,
-		$comp_st,
-		$oppo_st,
-		$relation_btn,
+        $sg,
+        $relation_id,
+		$comp_list_sts,
+		$oppo_list_sts,
+        $from_reversed_table,
 	];
 }
 
 
 
-function relation_btn_args($comp, $status, $pid, $sg, $rel_id) {
+function relation_btn_args($comp, $status, $pid, $sg, $relation_id) {
     error_log('||> '.$comp.' btn_args, btn_status: '.$status);
     $is_f = $comp == 'friend' ;
     $oppo = $is_f ? 'engagement' : 'friend';
@@ -114,6 +123,11 @@ function relation_btn_args($comp, $status, $pid, $sg, $rel_id) {
         'ver' => $comp . 's_add_' . $comp,
         'text' => $is_f ? 'Supply-R' : 'Resell-S', 
     );
+    $remove_oppo = array(
+        'act' => 'remove_' . $oppo,
+        'ver' => $oppo . 's_remove_' . $oppo,
+        'text' => $is_f ? 'Stop Resell-R' : 'Stop Supply-S', 
+    );
 
     $remove_oppo = array(
         'act' => 'remove_' . $oppo,
@@ -125,7 +139,7 @@ function relation_btn_args($comp, $status, $pid, $sg, $rel_id) {
         case $pending_comp['act']:
             $button_args = get_button_args_wrapper(
                 $comp, $pid, $sg, 'Err:',
-                $rel_id, '_ba', 'remove',  true, true,
+                $relation_id, '_ba', 'remove',  true, true,
                 $pending_comp['act'],
                 $pending_comp['ver'],
                 $pending_comp['text'],
@@ -136,7 +150,7 @@ function relation_btn_args($comp, $status, $pid, $sg, $rel_id) {
         case $awaiting_comp['act']:
             $button_args = get_button_args_wrapper(
                 $comp, $pid, $sg, 'Err:',
-                $rel_id, '_ba', 'remove',  true, true,
+                $relation_id, '_ba', 'remove',  true, true,
                 $awaiting_comp['act'],
                 $awaiting_comp['ver'],
                 $awaiting_comp['text'],
@@ -147,7 +161,7 @@ function relation_btn_args($comp, $status, $pid, $sg, $rel_id) {
         case $remove_comp['act']:
             $button_args = get_button_args_wrapper(
                 $comp, $pid, $sg, 'Err:',
-                $rel_id, '_ba', 'remove',  true, false,
+                $relation_id, '_ba', 'remove',  true, false,
                 $remove_comp['act'],
                 $remove_comp['ver'],
                 $remove_comp['text'],
@@ -158,7 +172,7 @@ function relation_btn_args($comp, $status, $pid, $sg, $rel_id) {
         case $add_comp['act']:
             $button_args = get_button_args_wrapper(
                 $comp, $pid, $sg, 'Err:',
-                $rel_id, '_ba', 'add',  true, true,
+                $relation_id, '_ba', 'add',  true, true,
                 $add_comp['act'],
                 $add_comp['ver'],
                 $add_comp['text'],
@@ -169,7 +183,7 @@ function relation_btn_args($comp, $status, $pid, $sg, $rel_id) {
         case $remove_oppo['act']:
             $button_args = get_button_args_wrapper(
                 $comp, $pid, $sg, 'Err:',
-                $rel_id, '_ba', 'remove',  true, false,
+                $relation_id, '_ba', 'remove',  true, false,
                 $remove_oppo['act'],
                 $remove_oppo['ver'],
                 $remove_oppo['text'],
@@ -180,7 +194,7 @@ function relation_btn_args($comp, $status, $pid, $sg, $rel_id) {
         default:
             $button_args = get_button_args_wrapper(
                 $comp, $pid, $sg, 'Err:',
-                $rel_id, '_ba', 'add',  true, true,
+                $relation_id, '_ba', 'add',  true, true,
                 $add_comp['act'],
                 $add_comp['ver'],
                 $add_comp['text'],

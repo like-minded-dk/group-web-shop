@@ -46,11 +46,6 @@ function get_button_args_wrapper(
     );
 }
 
-function simple_cond_btn_args($relation_btn, $action) {
-    $args = $relation_btn($action);
-    error_log('|>>>> args_id: '.json_encode($args['id']));
-    return $args;
-}
  
 // function get_db_and_log( $cond_str, $cond_note ) {
 //     $db = $cond_str == '0-1' ? 'Fd' : 'Ed' ;

@@ -88,8 +88,8 @@
 // 			'friends_pending_friend',
 // 			'friends_withdraw_friend',
 // 			'friends_member_friendship',
-// 			'friends_accept_friendship',
-// 			'friends_reject_friendship',
+// 			'friends_accept_friend',
+// 			'friends_reject_friend',
 // 		);
 
 // 		foreach ( $buttons as $button ) {

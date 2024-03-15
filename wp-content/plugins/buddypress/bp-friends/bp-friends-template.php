@@ -386,7 +386,7 @@ function bp_friend_accept_request_link() {
 
 		$url = wp_nonce_url(
 			bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_get_friends_slug(), 'requests', array( 'accept', $friendship_id ) ) ) ),
-			'friends_accept_friendship'
+			'friends_accept_friend'
 		);
 
 		/**
@@ -428,7 +428,7 @@ function bp_friend_reject_request_link() {
 
 		$url = wp_nonce_url(
 			bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_get_friends_slug(), 'requests', array( 'reject', $friendship_id ) ) ) ),
-			'friends_reject_friendship'
+			'friends_reject_friend'
 		);
 
 		/**

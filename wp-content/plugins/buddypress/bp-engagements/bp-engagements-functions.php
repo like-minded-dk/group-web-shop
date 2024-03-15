@@ -158,8 +158,7 @@ function engagements_remove_engagement( $initiator_userid, $engagement_userid ) 
  * @param int $engagementship_id ID of the pending engagementship object.
  * @return bool True on success, false on failure.
  */
-function engagements_accept_engagementship( $engagementship_id ) {
-
+function engagements_accept_engagement( $engagementship_id ) {
 	// Get the engagementship data.
 	$engagementship = new BP_Engagements_Engagementship( $engagementship_id, false, false );
 
@@ -195,7 +194,7 @@ function engagements_accept_engagementship( $engagementship_id ) {
  * @param int $engagementship_id ID of the pending engagementship object.
  * @return bool True on success, false on failure.
  */
-function engagements_reject_engagementship( $engagementship_id ) {
+function engagements_reject_engagement( $engagementship_id ) {
 	$engagementship = new BP_Engagements_Engagementship( $engagementship_id, false, false );
 
 	if ( empty( $engagementship->is_confirmed ) && BP_Engagements_Engagementship::reject( $engagementship_id ) ) {

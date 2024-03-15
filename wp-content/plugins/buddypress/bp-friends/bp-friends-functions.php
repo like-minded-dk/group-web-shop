@@ -158,11 +158,11 @@ function friends_remove_friend( $initiator_userid, $friend_userid ) {
  * @param int $relationship_id ID of the pending friendship object.
  * @return bool True on success, false on failure.
  */
-function friend_accept_friend( $relationship_id ) {
+function friends_accept_friend( $relationship_id ) {
+	error_log(json_encode('>>>>>>>friends_accept_friend'));
 
 	// Get the friendship data.
 	$friendship = new BP_Friends_Friendship( $relationship_id, false, false );
-
 	// Accepting friendship.
 	if ( empty( $friendship->is_confirmed ) && BP_Friends_Friendship::accept( $relationship_id ) ) {
 
@@ -195,7 +195,7 @@ function friend_accept_friend( $relationship_id ) {
  * @param int $relationship_id ID of the pending friendship object.
  * @return bool True on success, false on failure.
  */
-function friend_reject_friend( $relationship_id ) {
+function friends_reject_friend( $relationship_id ) {
 	$friendship = new BP_Friends_Friendship( $relationship_id, false, false );
 
 	if ( empty( $friendship->is_confirmed ) && BP_Friends_Friendship::reject( $relationship_id ) ) {

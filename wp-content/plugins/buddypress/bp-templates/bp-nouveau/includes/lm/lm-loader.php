@@ -86,23 +86,25 @@ class BP_Nouveau_Lm_Relations {
 		// https://github.com/like-minded-dk/group-web-shop/blob/3b2a9013818cbd6c8d8097f447b0e83a3e103b0f/wp-content/plugins/buddypress/bp-templates/bp-nouveau/includes/members/template-tags.php#L296
 
 		$buttons = $this->isf == 'friend' ? array(
-			'engagements_remove_engagement_as_receiver',
+			'engagements_accept_engagement_as_receiver',
+			'engagements_reject_engagement_as_receiver',
 			'engagements_add_engagement',
 			'engagements_remove_engagement',
 			'engagements_pending_engagement',
 			'engagements_withdraw_engagement',
 			'engagements_member_engagementship',
-			'engagements_accept_engagementship',
-			'engagements_reject_engagementship',
+			'engagements_accept_engagement',
+			'engagements_reject_engagement',
 		) : array(
-			'friends_remove_friend_as_receiver',
+			'friends_accept_friend_as_receiver',
+			'friends_accerejectend_as_receiver',
 			'friends_add_friend',
 			'friends_remove_friend',
 			'friends_pending_friend',
 			'friends_withdraw_friend',
 			'friends_member_friendship',
-			'friends_accept_friendship',
-			'friends_reject_friendship',
+			'friends_accept_friend',
+			'friends_reject_friend',
 		);
         
 		foreach ( $buttons as $button ) {
@@ -159,7 +161,8 @@ class BP_Nouveau_Lm_Relations {
 	 */
 	public function register_ajax_actions() {
 		$ajax_actions = $this->isf = 'friend' ? array(
-            'friends_remove_friend_as_receiver',
+            'friends_accept_friend_as_receiver',
+			'friends_accerejectend_as_receiver',
             'friends_remove_friend',
             'friends_add_friend',
             'friends_await_friend',
@@ -168,7 +171,8 @@ class BP_Nouveau_Lm_Relations {
             'friends_accept_friend',
             'friends_reject_friend'
 		) : array (
-            'engagements_remove_engagement_as_receiver',
+            'engagements_accept_engagement_as_receiver',
+			'engagements_reject_engagement_as_receiver',
             'engagements_remove_engagement',
             'engagements_add_engagement',
             'engagements_await_engagement',

@@ -88,8 +88,8 @@
 // 			'engagements_pending_engagement',
 // 			'engagements_withdraw_engagement',
 // 			'engagements_member_engagementship',
-// 			'engagements_accept_engagementship',
-// 			'engagements_reject_engagementship',
+// 			'engagements_accept_engagement',
+// 			'engagements_reject_engagement',
 // 		);
 
 // 		foreach ( $buttons as $button ) {

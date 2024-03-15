@@ -1,12 +1,12 @@
 <?php
 function get_request_btn($comp, $parent_element, $button_element, $parent_class ) {
     if ($comp == 'friend') {
-        $accept_key = 'accept_friendship';
-        $reject_key = 'reject_friendship';
+        $accept_key = 'accept_friend';
+        $reject_key = 'reject_friend';
         $component = 'friends';
     } else {
-        $accept_key = 'accept_engagementship';
-        $reject_key = 'reject_engagementship';
+        $accept_key = 'accept_engagement';
+        $reject_key = 'reject_engagement';
         $component = 'engagements';
     }
     return array (

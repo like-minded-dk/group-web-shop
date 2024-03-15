@@ -235,7 +235,6 @@ class BP_Button {
 	 * @param array|string $args See {@BP_Button}.
 	 */
 	public function __construct( $args = '' ) {
-		error_log(json_encode('>>>>>>>>__construct'));
 		$r = bp_parse_args(
 			$args,
 			get_class_vars( __CLASS__ )
@@ -364,7 +363,6 @@ class BP_Button {
 		 * @param string    $after    HTML appended after the actual button.
 		 * @param array     $r        Parsed button arguments.
 		 */
-		error_log(json_encode('>>>> run bp_button_' . $this->component . '_' . $this->id));
 		$this->contents = apply_filters( 'bp_button_' . $this->component . '_' . $this->id, $this->contents, $this, $before, $after, $r );
 	}
 

@@ -205,21 +205,23 @@ class BP_Engagements_Engagementship {
 		if ( ! empty( $this->id ) ) {
 			try {
 				break_sql('update table engagement : '. $bp->engagements->table_name . ' user: ' . $this->initiator_user_id . ' receiver: ' . $this->engagement_user_id);
+
 				$result = $wpdb->query( $wpdb->prepare( <<<SQL
-				UPDATE {$bp->engagements->table_name}
-				SET initiator_user_id = %d,
-					engagement_user_id = %d,
-					is_confirmed = %d,
-					is_limited = %d,
-					date_created = %s
-				WHERE id = %d
-				SQL,
-				$this->initiator_user_id,
-				$this->engagement_user_id,
-				$this->is_confirmed,
-				$this->is_limited,
-				$this->date_created,
-				$this->id ) );
+					UPDATE {$bp->engagements->table_name}
+					SET initiator_user_id = %d,
+						engagement_user_id = %d,
+						is_confirmed = %d,
+						is_limited = %d,
+						date_created = %s
+					WHERE id = %d
+					SQL,
+					$this->initiator_user_id,
+					$this->engagement_user_id,
+					$this->is_confirmed,
+					$this->is_limited,
+					$this->date_created,
+					$this->id )
+				);
 
 			} catch (Exception $e) { $result = false; }
 		// Save.
@@ -395,7 +397,7 @@ class BP_Engagements_Engagementship {
 
 				if ( ( 'OR' === $operator && $matched > 0 )
 				  || ( 'NOT' === $operator && 0 === $matched ) ) {
-					$engagementships[ $engagementship->id ] = $engagementship;
+					$relationships[ $engagementship->id ] = $engagementship;
 				}
 
 			} else {
@@ -408,28 +410,28 @@ class BP_Engagements_Engagementship {
 						continue 2;
 					}
 				}
-				$engagementships[ $engagementship->id ] = $engagementship;
+				$relationships[ $engagementship->id ] = $engagementship;
 			}
 
 		}
 
 		// Sort the results on a column name.
 		if ( in_array( $r['order_by'], array( 'id', 'initiator_user_id', 'engagement_user_id' ) ) ) {
-			$engagementships = bp_sort_by_key( $engagementships, $r['order_by'], 'num', true );
+			$relationships = bp_sort_by_key( $relationships, $r['order_by'], 'num', true );
 		}
 
 		// Adjust the sort direction of the results.
 		if ( 'ASC' === bp_esc_sql_order( $r['sort_order'] ) ) {
 			// `true` to preserve keys.
-			$engagementships = array_reverse( $engagementships, true );
+			$relationships = array_reverse( $relationships, true );
 		}
 
 		// Paginate the results.
 		if ( $r['per_page'] && $r['page'] ) {
 			$start       = ( $r['page'] - 1 ) * ( $r['per_page'] );
-			$engagementships = array_slice( $engagementships, $start, $r['per_page'] );
+			$relationships = array_slice( $relationships, $start, $r['per_page'] );
 		}
-		return $engagementships;
+		return $relationships;
 	}
 
 	/**
@@ -484,11 +486,11 @@ class BP_Engagements_Engagementship {
 			}
 		}
 
-		$engagementships = self::get_relationships( $user_id, $args );
+		$relationships = self::get_relationships( $user_id, $args );
 		$user_id     = (int) $user_id;
 
 		$fids = array();
-		foreach ( $engagementships as $engagementship ) {
+		foreach ( $relationships as $engagementship ) {
 			$member_id = $engagementship->engagement_user_id;
 			if ( $engagementship->engagement_user_id === $user_id ) {
 				$member_id = $engagementship->initiator_user_id;
@@ -766,12 +768,16 @@ class BP_Engagements_Engagementship {
 	 * @param int $engagementship_id ID of the engagementship to be accepted.
 	 * @return int Number of database rows updated.
 	 */
-	public static function accept( $engagementship_id ) {
+	public static function accept( $relation_id ) {
 		global $wpdb;
 
 		$bp = buddypress();
+		try {
+			break_sql('>>>accept $relation_id 868: '.json_encode($relation_id));
 
-		return $wpdb->query( $wpdb->prepare( "UPDATE {$bp->engagements->table_name} SET is_confirmed = 1, date_created = %s WHERE id = %d AND engagement_user_id = %d", bp_core_current_time(), $engagementship_id, bp_loggedin_user_id() ) );
+			return $wpdb->query( $wpdb->prepare( "UPDATE {$bp->engagements->table_name} SET is_confirmed = 1, date_created = %s WHERE id = %d AND engagement_user_id = %d", bp_core_current_time(), $relation_id, bp_loggedin_user_id() ) );
+
+		} catch (Exception $e) { $result = false; }
 	}
 
 	/**
@@ -790,6 +796,7 @@ class BP_Engagements_Engagementship {
 		$bp = buddypress();
 		try {
 			break_sql('>>>withdraw $relation_id 868: '.json_encode($relation_id));
+
 			return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->engagements->table_name} WHERE id = %d AND initiator_user_id = %d", $relation_id, bp_loggedin_user_id() ) );
 		} catch (Exception $e) { $result = false; }	
 	}

@@ -307,7 +307,7 @@ class BP_Engagements_Component extends BP_Component {
 			$bp = buddypress();
 
 			if ( bp_is_my_profile() ) {
-				$bp->bp_options_title = __( 'Supplyer', 'buddypress' );
+				$bp->bp_options_title = __( 'Supplier', 'buddypress' );
 			} else {
 				$bp->bp_options_avatar = bp_core_fetch_avatar( array(
 					'item_id' => bp_displayed_user_id(),
