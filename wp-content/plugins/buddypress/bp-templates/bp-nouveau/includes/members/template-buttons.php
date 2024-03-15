@@ -1,7 +1,7 @@
 <?php
-require 'template-functions.php';
-require 'template-button-args.php';
-require 'template-request-btn.php';
+require __DIR__ . '/../lm/lm-template-functions.php';
+require __DIR__ . '/../lm/lm-template-button-args.php';
+require __DIR__ . '/../lm/lm-template-request-btn.php';
 
 function add_relation_button($comp, &$buttons, $user_id, $type, $parent_class, $button_element, $parent_element) {
 	$conf = array (

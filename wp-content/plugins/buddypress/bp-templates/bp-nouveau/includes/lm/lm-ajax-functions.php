@@ -20,7 +20,7 @@ function get_actions_array($comp) {
 			),
 		),
 		array(
-			"{$comp}s_withdraw_{$comp}ship" => array(
+			"{$comp}s_withdraw_{$comp}" => array(
 				"function" => "bp_nouveau_ajax_addremove_fn_{$comp}",
 				"nopriv"   => false,
 			),
@@ -360,14 +360,10 @@ function lm_ajax_run_addremove_fn($comp) {
 	$action = $_POST['action'];
 	error_log(json_encode('ajaxfile nonce: ' . $_POST['nonce'] . ' action: ' . $action . ' - _wpnonce: '. $_POST['_wpnonce']));
 	$user_id = bp_loggedin_user_id();
-
-    ajax_check_nonce($comp, $response);
-
-	// Cast fid as an integer.
 	$member_id = (int) $_POST['item_id'];
-
+    ajax_check_nonce($comp, $response);
+	// Cast fid as an integer.
 	ajax_check_user_exist($comp, $member_id);
-
     ajax_switch_each_action($comp, $action, $user_id, $member_id, $response);
 }
 
@@ -386,7 +382,7 @@ function ajax_check_nonce($comp, $error_response) {
 
 	if ( empty( $_POST['nonce'] )
 	|| empty( $_POST['item_id'] )
-	|| ! bp_is_active( "{$comp}" ) ) {
+	|| ! bp_is_active( $comp.'s' ) ) {
 		wp_send_json_error( $error_response );
 	}
 

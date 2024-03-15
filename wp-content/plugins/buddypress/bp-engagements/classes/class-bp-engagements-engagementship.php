@@ -533,7 +533,7 @@ class BP_Engagements_Engagementship {
 		$result = array_filter($result, function($v, $k) use ($user_id) {
 			return $v->initiator_user_id == $user_id;
 		}, ARRAY_FILTER_USE_BOTH);
-		error_log('classE >>filter-first '. count($result));
+		// error_log('classE >>filter-first '. count($result));
 		if ( $result ) {
 			$engagementship_id = current( $result )->id;
 		}
@@ -718,8 +718,8 @@ class BP_Engagements_Engagementship {
 	 *                                              to check engagementship status with primary user.
 	 */
 	public static function update_bp_engagements_cache( $user_id, $possible_member_ids ) {
-		error_log(' ');
-		error_log('classE >'. json_encode('>>>update_bp_engagements_cache'));
+		// error_log(' ');
+		// error_log('classE >'. json_encode('>>>update_bp_engagements_cache'));
 		$bp_cache_key = 'bp_engagements';
 		update_lm_relation_cache('engagement', $user_id, $possible_member_ids, $bp_cache_key);
 	}

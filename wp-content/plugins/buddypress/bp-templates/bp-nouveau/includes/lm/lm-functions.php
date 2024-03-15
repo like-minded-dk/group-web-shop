@@ -25,7 +25,7 @@ function get_button_args_wrapper(
     $chuck_array,
 ) {
     $class = $comp == 'friend' ? 'friendship-button' : 'engagement-button'; 
-    error_log("||> {$error} {$action} {$mk}");
+    // error_log("||> {$error} {$action} {$mk}");
     // error_log('||> user_url:' . bp_loggedin_user_url( bp_members_get_path_chunks( array_merge([$sg], $chuck_array) ) ));
     // error_log('||> verify:' . json_encode($verify));
     $text = __( "{$link_text} {$rel_id}", 'buddypress' );
@@ -44,109 +44,6 @@ function get_button_args_wrapper(
         'button_element'    => 'button',
         'link_class'        => "{$class} {$action} requested",
     );
-}
-
-function relation_btn_args($comp, $status, $pid, $sg, $rel_id) {
-    error_log('||> '.$comp.' btn_args, btn_status: '.$status);
-    $is_f = $comp == 'friend' ;
-    $oppo = $is_f ? 'engagement' : 'friend';
-
-    $pending_comp = array(
-        'act' => 'pending_' . $comp,
-        'ver' => $comp . 's_withdraw_' . $comp,
-        'text' => $is_f ? 'Cancel Supply-R PDF' : 'Cancel Resell-S' ,
-    );
-    $awaiting_comp = array(
-        'act' => 'awaiting_' . $comp,
-        'ver' => '',
-        'text' => $is_f ? 'Approve or Reject Supply-S' : 'Approve or Reject Resell-S', 
-    );
-    $remove_comp = array(
-        'act' => 'remove_' . $comp,
-        'ver' => $comp . 's_remove_' . $comp,
-        'text' => $is_f ? 'Stop Supply-R' : 'Stop Resell-S', 
-    );
-    $add_comp = array(
-        'act' => 'add_' . $comp,
-        'ver' => $comp . 's_add_' . $comp,
-        'text' => $is_f ? 'Supply-R' : 'Resell-S', 
-    );
-
-    $remove_oppo = array(
-        'act' => 'remove_' . $oppo,
-        'ver' => $oppo . 's_remove_' . $oppo,
-        'text' => $is_f ? 'Stop Resell-R' : 'Stop Supply-S', 
-    );
-
-    switch ( $status ) {
-        case $pending_comp['act']:
-            $button_args = get_button_args_wrapper(
-                $comp, $pid, $sg, 'Err:',
-                $rel_id, '_ba', 'remove',  true, true,
-                $pending_comp['act'],
-                $pending_comp['ver'],
-                $pending_comp['text'],
-                ['requests', array( 'cancel', $pid )],
-            );
-            break;
-
-        case $awaiting_comp['act']:
-            $button_args = get_button_args_wrapper(
-                $comp, $pid, $sg, 'Err:',
-                $rel_id, '_ba', 'remove',  true, true,
-                $awaiting_comp['act'],
-                $awaiting_comp['ver'],
-                $awaiting_comp['text'],
-                ['requests'],
-            );
-            break;
-
-        case $remove_comp['act']:
-            $button_args = get_button_args_wrapper(
-                $comp, $pid, $sg, 'Err:',
-                $rel_id, '_ba', 'remove',  true, false,
-                $remove_comp['act'],
-                $remove_comp['ver'],
-                $remove_comp['text'],
-                ['remove-' . $comp, array( $pid )],
-            );
-            break;
-
-        case $add_comp['act']:
-            $button_args = get_button_args_wrapper(
-                $comp, $pid, $sg, 'Err:',
-                $rel_id, '_ba', 'add',  true, true,
-                $add_comp['act'],
-                $add_comp['ver'],
-                $add_comp['text'],
-                ['add-' . $comp, array( $pid )],
-            );
-        break;
-            
-        case $remove_oppo['act']:
-            $button_args = get_button_args_wrapper(
-                $comp, $pid, $sg, 'Err:',
-                $rel_id, '_ba', 'remove',  true, false,
-                $remove_oppo['act'],
-                $remove_oppo['ver'],
-                $remove_oppo['text'],
-                ['remove-' . $comp, array( $pid )],
-            );
-            break;
-        
-        default:
-            $button_args = get_button_args_wrapper(
-                $comp, $pid, $sg, 'Err:',
-                $rel_id, '_ba', 'add',  true, true,
-                $add_comp['act'],
-                $add_comp['ver'],
-                $add_comp['text'],
-                ['add-' . $comp, array( $pid )],
-            );
-            break;
-    }
-
-    return $button_args;
 }
 
 function simple_cond_btn_args($relation_btn, $action) {

@@ -537,7 +537,7 @@ class BP_Friends_Friendship {
 		$result = array_filter($result, function($v, $k) use ($user_id) {
 			return $v->initiator_user_id == $user_id;
 		}, ARRAY_FILTER_USE_BOTH);
-		error_log('classF >>filter-first '. count($result));
+		// error_log('classF >>filter-first '. count($result));
 		if ( $result ) {
 			$friend_id = current( $result )->id;
 		}
@@ -722,8 +722,8 @@ class BP_Friends_Friendship {
 	 *                                              to check friendship status with primary user.
 	 */
 	public static function update_bp_friends_cache( $user_id, $possible_member_ids ) {
-		error_log(' ');
-		error_log('classF >'. json_encode('>>>update_bp_friends_cache'));
+		// error_log(' ');
+		// error_log('classF >'. json_encode('>>>update_bp_friends_cache'));
 		$bp_cache_key = 'bp_friends';
 		update_lm_relation_cache('friend', $user_id, $possible_member_ids, $bp_cache_key);
 	}
