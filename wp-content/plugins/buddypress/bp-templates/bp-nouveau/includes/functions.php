@@ -171,7 +171,6 @@ function bp_nouveau_ajax_querystring( $query_string, $object ) {
  * @return string
  */
 function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $after = '', $r = array() ) {
-	error_log(json_encode('____________bp_nouveau_ajax_button'));
 	if ( empty( $button->component ) ) {
 		return $output;
 	}

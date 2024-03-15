@@ -9,11 +9,8 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-function get_comp() {
-	return strpos($_REQUEST['action'], 'friends_' ) ? 'friend' : 'engagement';
-}
-
-add_ajax_admin_init_action(get_comp());
+add_ajax_admin_init_action('friend');
+add_ajax_admin_init_action('engagement');
 
 /**
  * engagement/un-engagement a user via a POST request.
@@ -22,6 +19,10 @@ add_ajax_admin_init_action(get_comp());
  *
  * @return string HTML
  */
-function bp_nouveau_ajax_addremove_fn() {
-	lm_ajax_run_addremove_fn(get_comp());
+function bp_nouveau_ajax_addremove_fn_friend() {
+	lm_ajax_run_addremove_fn('friend');
+}
+
+function bp_nouveau_ajax_addremove_fn_engagement() {
+	lm_ajax_run_addremove_fn('engagement');
 }

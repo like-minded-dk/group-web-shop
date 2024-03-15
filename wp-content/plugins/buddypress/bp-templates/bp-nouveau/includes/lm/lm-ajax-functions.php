@@ -1,51 +1,45 @@
 <?php
 function get_actions_array($comp) {
-
     return array(
 		array(
-			"{$comp}s_remove_{$comp}s_as_receiver" => array(
-				"function" => "bp_nouveau_ajax_addremove_fn",
+			"{$comp}s_remove_{$comp}_as_receiver" => array(
+				"function" => "bp_nouveau_ajax_addremove_fn_{$comp}",
 				"nopriv"   => false,
 			),
 		),
 		array(
-			"{$comp}s_add_{$comp}s_as_receiver" => array(
-				"function" => "bp_nouveau_ajax_addremove_fn",
+			"{$comp}s_remove_{$comp}" => array(
+				"function" => "bp_nouveau_ajax_addremove_fn_{$comp}",
 				"nopriv"   => false,
 			),
 		),
 		array(
-			"{$comp}s_remove_{$comp}s" => array(
-				"function" => "bp_nouveau_ajax_addremove_fn",
-				"nopriv"   => false,
-			),
-		),
-		array(
-			"{$comp}s_add_{$comp}s" => array(
-				"function" => "bp_nouveau_ajax_addremove_fn",
+			"{$comp}s_add_{$comp}" => array(
+				"function" => "bp_nouveau_ajax_addremove_fn_{$comp}",
 				"nopriv"   => false,
 			),
 		),
 		array(
 			"{$comp}s_withdraw_{$comp}ship" => array(
-				"function" => "bp_nouveau_ajax_addremove_fn",
+				"function" => "bp_nouveau_ajax_addremove_fn_{$comp}",
 				"nopriv"   => false,
 			),
 		),
 		array(
 			"{$comp}s_accept_{$comp}ship" => array(
-				"function" => "bp_nouveau_ajax_addremove_fn",
+				"function" => "bp_nouveau_ajax_addremove_fn_{$comp}",
 				"nopriv"   => false,
 			),
 		),
 		array(
 			"{$comp}s_reject_{$comp}ship" => array(
-				"function" => "bp_nouveau_ajax_addremove_fn",
+				"function" => "bp_nouveau_ajax_addremove_fn_{$comp}",
 				"nopriv"   => false,
 			),
 		),
 	);
 }
+
 
 function add_ajax_admin_init_action($comp) {
     add_action( 'admin_init', function() use ($comp) {
@@ -53,7 +47,6 @@ function add_ajax_admin_init_action($comp) {
     
         foreach ( $ajax_actions as $ajax_action ) {
             $action = key( $ajax_action );
-    
             add_action( 'wp_ajax_' . $action, $ajax_action[ $action ]['function'] );
     
             if ( ! empty( $ajax_action[ $action ]['nopriv'] ) ) {
@@ -356,6 +349,7 @@ function ajax_switch_each_action($comp, $action, $user_id, $member_id, $response
 }
 
 function lm_ajax_run_addremove_fn($comp) {
+	error_log(json_encode('------lm_ajax_run_addremove_fn'));
     $response = array(
 		'feedback' => sprintf(
 			'<div class="bp-feedback error bp-ajax-message"><p>%s</p></div>',
@@ -392,7 +386,7 @@ function ajax_check_nonce($comp, $error_response) {
 
 	if ( empty( $_POST['nonce'] )
 	|| empty( $_POST['item_id'] )
-	|| ! bp_is_active( "{$comp}s" ) ) {
+	|| ! bp_is_active( "{$comp}" ) ) {
 		wp_send_json_error( $error_response );
 	}
 

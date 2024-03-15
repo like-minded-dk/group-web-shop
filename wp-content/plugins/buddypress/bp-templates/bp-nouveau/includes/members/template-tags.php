@@ -325,7 +325,6 @@ function bp_nouveau_members_loop_buttons( $args = array() ) {
 		 * @param string $type    Whether we're displaying a members loop or a user's page
 		 */
 		do_action_ref_array( 'bp_nouveau_return_members_buttons', array( &$return, $user_id, $type ) );
-		error_log(json_encode('___________>>>> 2 end__ bp_nouveau_get_members_buttons'));
 		return $return;
 	}
 
