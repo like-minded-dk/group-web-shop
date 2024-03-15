@@ -367,7 +367,7 @@ function engagements_get_relationship_id( $initiator_user_id, $engagement_user_i
  * @return array
  */
 function engagements_get_engagement_user_ids( $user_id, $engagement_requests_only = false, $assoc_arr = false ) {
-	return BP_Engagements_Engagementship::get_engagement_user_ids( $user_id, $engagement_requests_only, $assoc_arr );
+	return BP_Engagements_Engagementship::get_relation_user_ids( $user_id, $engagement_requests_only, $assoc_arr );
 }
 
 /**

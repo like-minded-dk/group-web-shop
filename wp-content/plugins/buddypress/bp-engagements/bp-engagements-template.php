@@ -511,7 +511,7 @@ function bp_engagement_total_requests_count( $user_id = 0 ) {
 		 * @param int $value   engagementship request count.
 		 * @param int $user_id ID of the queried user.
 		 */
-		return apply_filters( 'bp_engagement_get_total_requests_count', count( BP_Engagements_Engagementship::get_engagement_user_ids( $user_id, true ) ), $user_id );
+		return apply_filters( 'bp_engagement_get_total_requests_count', count( BP_Engagements_Engagementship::get_relation_user_ids( $user_id, true ) ), $user_id );
 	}
 
 /** Stats **********************************************************************/

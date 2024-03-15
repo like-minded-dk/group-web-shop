@@ -368,7 +368,7 @@ function friends_get_relationship_id( $initiator_user_id, $friend_user_id ) {
  * @return array
  */
 function friends_get_friend_user_ids( $user_id, $friend_requests_only = false, $assoc_arr = false ) {
-	return BP_Friends_Friendship::get_friend_user_ids( $user_id, $friend_requests_only, $assoc_arr );
+	return BP_Friends_Friendship::get_relation_user_ids( $user_id, $friend_requests_only, $assoc_arr );
 }
 
 /**

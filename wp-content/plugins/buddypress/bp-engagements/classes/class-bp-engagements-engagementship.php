@@ -1,9 +1,9 @@
 <?php
 /**
- * BuddyPress engagements Classes.
+ * BuddyPress Engagements Classes.
  *
  * @package BuddyPress
- * @subpackage engagementsengagementship
+ * @subpackage Engagementship
  * @since 1.0.0
  */
 
@@ -12,7 +12,7 @@
 defined( 'ABSPATH' ) || exit;
 
 /**
- * BuddyPress engagementship object.
+ * BuddyPress Engagementship object.
  *
  * @since 1.0.0
  */
@@ -225,7 +225,7 @@ class BP_Engagements_Engagementship {
 		// Save.
 		} else {
 			try {
-				break_sql('add table engagement: '. $bp->engagements->table_name . ' user: ' . $this->initiator_user_id . ' receiver: ' . $this->engagement_user_id);
+				break_sql('add table relationship : '. $bp->engagements->table_name . ' user: ' . $this->initiator_user_id . ' receiver: ' . $this->engagement_user_id);
 
 				$result = $wpdb->query( $wpdb->prepare( <<<SQL
 					INSERT INTO {$bp->engagements->table_name} 
@@ -233,7 +233,7 @@ class BP_Engagements_Engagementship {
 						engagement_user_id,
 						is_confirmed,
 						is_limited,
-						date_created ) 
+						date_created )
 					VALUES ( %d, %d, %d, %d, %s )
 					SQL,
 					$this->initiator_user_id,
@@ -248,11 +248,11 @@ class BP_Engagements_Engagementship {
 		}
 
 		/**
-		 * Fires after processing and saving the current engagementship request.
+		 * Fires after processing and saving the current relationship request.
 		 *
 		 * @since 1.0.0
 		 *
-		 * @param BP_Engagements_Engagementship $value Current engagementship object. Passed by reference.
+		 * @param BP_Engagements_Engagementship $value Current relationship object. Passed by reference.
 		 */
 		do_action_ref_array( 'engagements_engagementship_after_save', array( &$this ) );
 
@@ -260,7 +260,7 @@ class BP_Engagements_Engagementship {
 	}
 
 	/**
-	 * Delete the current engagementship from the database.
+	 * Delete the current relationship from the database.
 	 *
 	 * @since 1.0.0
 	 *
@@ -284,35 +284,35 @@ class BP_Engagements_Engagementship {
 	/** Static Methods ********************************************************/
 
 	/**
-	 * Get the engagementships for a given user.
+	 * Get the relationships for a given user.
 	 *
 	 * @since 2.6.0
 	 *
 	 * @param int    $user_id  ID of the user whose engagements are being retrieved.
 	 * @param array  $args     {
 	 *        Optional. Filter parameters.
-	 *        @type int    $id                ID of specific engagementship to retrieve.
-	 *        @type int    $initiator_user_id ID of engagementship initiator.
-	 *        @type int    $engagement_user_id    ID of specific engagementship to retrieve.
-	 *        @type int    $is_confirmed      Whether the engagementship has been accepted.
-	 *        @type int    $is_limited        Whether the engagementship is limited.
+	 *        @type int    $id                ID of specific relationship to retrieve.
+	 *        @type int    $initiator_user_id ID of relationship initiator.
+	 *        @type int    $engagement_user_id    ID of specific relationship to retrieve.
+	 *        @type int    $is_confirmed      Whether the relationship has been accepted.
+	 *        @type int    $is_limited        Whether the relationship is limited.
 	 *        @type string $order_by          Column name to order by.
 	 *        @type string $sort_order        Optional. ASC or DESC. Default: 'DESC'.
 	 * }
 	 * @param string $operator Optional. Operator to use in `wp_list_filter()`.
 	 *
-	 * @return array $engagementships Array of engagementship objects.
+	 * @return array $relationships Array of relationship objects.
 	 */
 	public static function get_relationships( $user_id, $args = array(), $operator = 'AND' ) {
 		if ( empty( $user_id ) ) {
 			$user_id = bp_loggedin_user_id();
 		}
 
-		$engagementships = array();
+		$relationships = array();
 		$operator    = strtoupper( $operator );
 
 		if ( ! in_array( $operator, array( 'AND', 'OR', 'NOT' ), true ) ) {
-			return $engagementships;
+			return $relationships;
 		}
 
 		$r = bp_parse_args(
@@ -331,20 +331,20 @@ class BP_Engagements_Engagementship {
 			'bp_get_user_engagementships'
 		);
 
-		// First, we get all engagementships that involve the user.
-		$engagementship_ids = wp_cache_get( $user_id, 'bp_engagements_engagementships_for_user' );
-		if ( false === $engagementship_ids ) {
-			$engagementship_ids = self::get_engagementship_ids_for_user( $user_id );
-			wp_cache_set( $user_id, $engagementship_ids, 'bp_engagements_engagementships_for_user' );
+		// First, we get all relationships that involve the user.
+		$relationship_ids = wp_cache_get( $user_id, 'bp_engagements_engagementships_for_user' );
+		if ( false === $relationship_ids ) {
+			$relationship_ids = self::get_relationship_ids_for_user( $user_id );
+			wp_cache_set( $user_id, $relationship_ids, 'bp_engagements_engagementships_for_user' );
 		}
 
 		// Prime the membership cache.
-		$uncached_engagementship_ids = bp_get_non_cached_ids( $engagementship_ids, 'bp_engagements_engagementships' );
-		if ( ! empty( $uncached_engagementship_ids ) ) {
-			$uncached_engagementships = self::get_relationships_by_id( $uncached_engagementship_ids );
+		$uncached_relationship_ids = bp_get_non_cached_ids( $relationship_ids, 'bp_engagements_engagementships' );
+		if ( ! empty( $uncached_relationship_ids ) ) {
+			$uncached_relationships = self::get_relationships_by_id( $uncached_relationship_ids );
 
-			foreach ( $uncached_engagementships as $uncached_engagementship ) {
-				wp_cache_set( $uncached_engagementship->id, $uncached_engagementship, 'bp_engagements_engagementships' );
+			foreach ( $uncached_relationships as $uncached_relationship ) {
+				wp_cache_set( $uncached_relationship->id, $uncached_relationship, 'bp_engagements_engagementships' );
 			}
 		}
 
@@ -364,7 +364,7 @@ class BP_Engagements_Engagementship {
 		}
 
 		// Populate engagementship array from cache, and normalize.
-		foreach ( $engagementship_ids as $engagementship_id ) {
+		foreach ( $relationship_ids as $engagementship_id ) {
 			// Create a limited BP_Engagements_Engagementship object (don't fetch the user details).
 			$engagementship = new BP_Engagements_Engagementship( $engagementship_id, false, false );
 
@@ -442,13 +442,13 @@ class BP_Engagements_Engagementship {
 	 * @param int $user_id ID of the user.
 	 * @return array
 	 */
-	public static function get_engagementship_ids_for_user( $user_id ) {
+	public static function get_relationship_ids_for_user( $user_id ) {
 		global $wpdb;
 
 		$bp = buddypress();
-		$engagementship_ids = $wpdb->get_col( $wpdb->prepare( "SELECT id FROM {$bp->engagements->table_name} WHERE (initiator_user_id = %d OR engagement_user_id = %d) ORDER BY date_created DESC", $user_id, $user_id ) );
+		$relationship_ids = $wpdb->get_col( $wpdb->prepare( "SELECT id FROM {$bp->engagements->table_name} WHERE (initiator_user_id = %d OR engagement_user_id = %d) ORDER BY date_created DESC", $user_id, $user_id ) );
 
-		return $engagementship_ids;
+		return $relationship_ids;
 	}
 
 	/**
@@ -464,7 +464,7 @@ class BP_Engagements_Engagementship {
 	 *                                   array of user IDs. Default: false.
 	 * @return array $fids IDs of engagements for provided user.
 	 */
-	public static function get_engagement_user_ids( $user_id, $engagement_requests_only = false, $assoc_arr = false ) {
+	public static function get_relation_user_ids( $user_id, $engagement_requests_only = false, $assoc_arr = false ) {
 		if ( ! empty( $engagement_requests_only ) ) {
 			$args = array(
 				'is_confirmed'   => 0,
@@ -493,36 +493,34 @@ class BP_Engagements_Engagementship {
 			if ( $engagementship->engagement_user_id === $user_id ) {
 				$member_id = $engagementship->initiator_user_id;
 			}
-
 			if ( ! empty( $assoc_arr ) ) {
 				$fids[] = array( 'user_id' => $member_id );
 			} else {
 				$fids[] = $member_id;
 			}
 		}
-
 		return array_map( 'intval', $fids );
 	}
 
 	/**
-	 * Get the ID of the engagementship object, if any, between a pair of users.
+	 * Get the ID of the relationship object, if any, between a pair of users.
 	 *
 	 * @since 1.0.0
 	 *
 	 * @param int $user_id   The ID of the first user.
 	 * @param int $member_id The ID of the second user.
-	 * @return int|null The ID of the engagementship object if found, otherwise null.
+	 * @return int|null The ID of the relationship object if found, otherwise null.
 	 */
 	public static function get_relationship_id( $user_id, $member_id ) {
-		$engagementship_id = null;
+		$relation_id = null;
 
-		// Can't engagement yourself.
+		// Can't relate yourself.
 		if ( $user_id === $member_id ) {
-			return $engagementship_id;
+			return $relation_id;
 		}
 
 		/*
-		 * Find engagementships where the possible_engagement_userid is the
+		 * Find relationship where the possible_engagement_userid is the
 		 * initiator or engagement.
 		 */
 		$args = array(
@@ -535,9 +533,9 @@ class BP_Engagements_Engagementship {
 		}, ARRAY_FILTER_USE_BOTH);
 		// error_log('classE >>filter-first '. count($result));
 		if ( $result ) {
-			$engagementship_id = current( $result )->id;
+			$relation_id = current( $result )->id;
 		}
-		return $engagementship_id;
+		return $relation_id;
 	}
 
 	/**
@@ -553,7 +551,7 @@ class BP_Engagements_Engagementship {
 		$engagement_requests = wp_cache_get( $user_id, 'bp_engagements_requests' );
 
 		if ( false === $engagement_requests ) {
-			$engagement_requests = self::get_engagement_user_ids( $user_id, true );
+			$engagement_requests = self::get_relation_user_ids( $user_id, true );
 
 			wp_cache_set( $user_id, $engagement_requests, 'bp_engagements_requests' );
 		}
@@ -639,7 +637,7 @@ class BP_Engagements_Engagementship {
 			$pag_sql = $wpdb->prepare( " LIMIT %d, %d", intval( ( $page - 1 ) * $limit), intval( $limit ) );
 		}
 
-		$engagement_ids = self::get_engagement_user_ids( $user_id );
+		$engagement_ids = self::get_relation_user_ids( $user_id );
 		if ( ! $engagement_ids ) {
 			return false;
 		}
@@ -759,7 +757,7 @@ class BP_Engagements_Engagementship {
 	}
 
 	/**
-	 * Mark a engagementship as accepted.
+	 * Mark a relationship as accepted.
 	 *
 	 * @since 1.0.0
 	 *
@@ -777,7 +775,7 @@ class BP_Engagements_Engagementship {
 	}
 
 	/**
-	 * Remove a engagementship or a engagementship request INITIATED BY the logged-in user.
+	 * Remove a relationship or a relationship request INITIATED BY the logged-in user.
 	 *
 	 * @since 1.6.0
 	 *
@@ -786,16 +784,13 @@ class BP_Engagements_Engagementship {
 	 * @param int $engagementship_id ID of the engagementship to be withdrawn.
 	 * @return int Number of database rows deleted.
 	 */
-	public static function withdraw( $engagementship_id ) {
+	public static function withdraw( $relation_id ) {
 		global $wpdb;
 
 		$bp = buddypress();
-
 		try {
-			break_sql('>>>withdraw $engagementship_id 868: '.json_encode($engagementship_id));
-
-			return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->engagements->table_name} WHERE id = %d AND initiator_user_id = %d", $engagementship_id, bp_loggedin_user_id() ) );
-
+			break_sql('>>>withdraw $relation_id 868: '.json_encode($relation_id));
+			return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->engagements->table_name} WHERE id = %d AND initiator_user_id = %d", $relation_id, bp_loggedin_user_id() ) );
 		} catch (Exception $e) { $result = false; }	
 	}
 
@@ -809,15 +804,14 @@ class BP_Engagements_Engagementship {
 	 * @param int $engagementship_id ID of the engagementship to be rejected.
 	 * @return int Number of database rows deleted.
 	 */
-	public static function reject( $engagementship_id ) {
+	public static function reject( $relation_id ) {
 		global $wpdb;
 
 		$bp = buddypress();
-		
 		try {
-			break_sql('delete id: '.json_encode($engagementship_id));
+			break_sql('delete id: '.json_encode($relation_id));
 
-			return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->engagements->table_name} WHERE id = %d AND engagement_user_id = %d", $engagementship_id, bp_loggedin_user_id() ) );
+			return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->engagements->table_name} WHERE id = %d AND engagement_user_id = %d", $relation_id, bp_loggedin_user_id() ) );
 
 		} catch (Exception $e) { $result = false; }
 	}
@@ -1004,23 +998,23 @@ class BP_Engagements_Engagementship {
 
 		// Setup some data we'll use below.
 		$is_group_admin  = groups_is_user_admin( $user_id, $group_id );
-		$engagement_ids      = self::get_engagement_user_ids( $user_id );
+		$relation_ids    = self::get_relation_user_ids( $user_id );
 		$invitable_count = 0;
 
-		for ( $i = 0, $count = count( $engagement_ids ); $i < $count; ++$i ) {
+		for ( $i = 0, $count = count( $relation_ids ); $i < $count; ++$i ) {
 
 			// If already a member, they cannot be invited again.
-			if ( groups_is_user_member( (int) $engagement_ids[ $i ], $group_id ) ) {
+			if ( groups_is_user_member( (int) $relation_ids[ $i ], $group_id ) ) {
 				continue;
 			}
 
 			// If user already has invite, they cannot be added.
-			if ( groups_check_user_has_invite( (int) $engagement_ids[ $i ], $group_id ) ) {
+			if ( groups_check_user_has_invite( (int) $relation_ids[ $i ], $group_id ) ) {
 				continue;
 			}
 
 			// If user is not group admin and engagement is banned, they cannot be invited.
-			if ( ( false === $is_group_admin ) && groups_is_user_banned( (int) $engagement_ids[ $i ], $group_id ) ) {
+			if ( ( false === $is_group_admin ) && groups_is_user_banned( (int) $relation_ids[ $i ], $group_id ) ) {
 				continue;
 			}
 
@@ -1037,16 +1031,16 @@ class BP_Engagements_Engagementship {
 	 *
 	 * @global wpdb $wpdb WordPress database object.
 	 *
-	 * @param int|string|array $engagementship_ids Single engagementship ID or comma-separated/array list of engagementship IDs.
+	 * @param int|string|array $relationship_ids Single engagementship ID or comma-separated/array list of engagementship IDs.
 	 * @return array
 	 */
-	public static function get_relationships_by_id( $engagementship_ids ) {
+	public static function get_relationships_by_id( $relationship_ids ) {
 		global $wpdb;
 
 		$bp = buddypress();
 
-		$engagementship_ids = implode( ',', wp_parse_id_list( $engagementship_ids ) );
-		return $wpdb->get_results( "SELECT * FROM {$bp->engagements->table_name} WHERE id IN ({$engagementship_ids})" );
+		$relationship_ids = implode( ',', wp_parse_id_list( $relationship_ids ) );
+		return $wpdb->get_results( "SELECT * FROM {$bp->engagements->table_name} WHERE id IN ({$relationship_ids})" );
 	}
 
 	/**
@@ -1089,9 +1083,9 @@ class BP_Engagements_Engagementship {
 		// Get all engagementships, of any status, for the user.
 		$engagementships    = self::get_relationships( $user_id );
 		$engagement_ids     = array();
-		$engagementship_ids = array();
+		$relationship_ids = array();
 		foreach ( $engagementships as $engagementship ) {
-			$engagementship_ids[] = $engagementship->id;
+			$relationship_ids[] = $engagementship->id;
 			if ( $engagementship->is_confirmed ) {
 				if ( $engagementship->engagement_user_id === $user_id ) {
 					$engagement_ids[] = $engagementship->initiator_user_id;
@@ -1102,9 +1096,9 @@ class BP_Engagements_Engagementship {
 		}
 
 		// Delete the engagementships from the database.
-		if ( $engagementship_ids ) {
-			$engagementship_ids_sql = implode( ',', wp_parse_id_list( $engagementship_ids ) );
-			$wpdb->query( "DELETE FROM {$bp->engagements->table_name} WHERE id IN ({$engagementship_ids_sql})" );
+		if ( $relationship_ids ) {
+			$relationship_ids_sql = implode( ',', wp_parse_id_list( $relationship_ids ) );
+			$wpdb->query( "DELETE FROM {$bp->engagements->table_name} WHERE id IN ({$relationship_ids_sql})" );
 		}
 
 		// Delete engagement request notifications for members who have a
@@ -1114,19 +1108,19 @@ class BP_Engagements_Engagementship {
 		}
 
 		// Clean up the engagementships cache.
-		foreach ( $engagementship_ids as $engagementship_id ) {
+		foreach ( $relationship_ids as $engagementship_id ) {
 			wp_cache_delete( $engagementship_id, 'bp_engagements_engagementships' );
 		}
 
 		// Loop through engagement_ids to scrub user caches and update total count metas.
-		foreach ( (array) $engagement_ids as $member_id ) {
+		foreach ( (array) $engagement_ids as $relation_id ) {
 			// Delete cached engagementships.
-			wp_cache_delete( $member_id, 'bp_engagements_engagementships_for_user' );
+			wp_cache_delete( $relation_id, 'bp_engagements_engagementships_for_user' );
 
-			self::total_engagement_count( $member_id );
+			self::total_engagement_count( $relation_id );
 		}
 
-		// Delete cached engagementships.
+		// Delete cached relationships.
 		wp_cache_delete( $user_id, 'bp_engagements_engagementships_for_user' );
 	}
 }

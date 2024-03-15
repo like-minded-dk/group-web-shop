@@ -719,7 +719,6 @@ window.bp = window.bp || {};
 
 			// Add a pending class to prevent queries while we're processing the action.
 			target.addClass( 'pending loading' );
-
 			console.log(`>>>>todo2 action`, action , object + '_' + action);
 
 			self.ajax( {
