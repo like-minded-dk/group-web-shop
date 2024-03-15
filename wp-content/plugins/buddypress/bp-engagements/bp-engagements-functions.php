@@ -387,7 +387,7 @@ function engagements_get_engagement_user_ids( $user_id, $engagement_requests_onl
  * }. Returns false on failure.
  */
 function engagements_search_engagements( $search_terms, $user_id, $pag_num = 10, $pag_page = 1 ) {
-	return BP_Engagements_Engagementship::search_engagements( $search_terms, $user_id, $pag_num, $pag_page );
+	return BP_Engagements_Engagementship::search_relations( $search_terms, $user_id, $pag_num, $pag_page );
 }
 
 /**

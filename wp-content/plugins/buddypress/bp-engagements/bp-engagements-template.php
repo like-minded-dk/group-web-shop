@@ -204,7 +204,6 @@ function bp_is_engagement( $user_id = 0 ) {
  * @param int|bool $engagement_status       See {@link bp_get_add_engagement_button()}.
  */
 function bp_add_engagement_button( $potential_engagement_id = 0, $engagement_status = false ) {
-	error_log(json_encode('>>>>>>>>>>> bp_add_engagement_button'));
 	echo bp_get_add_engagement_button( $potential_engagement_id, $engagement_status );
 }
 

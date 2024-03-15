@@ -389,7 +389,7 @@ function friends_get_friend_user_ids( $user_id, $friend_requests_only = false, $
  * }. Returns false on failure.
  */
 function friends_search_friends( $search_terms, $user_id, $pag_num = 10, $pag_page = 1 ) {
-	return BP_Friends_Friendship::search_friends( $search_terms, $user_id, $pag_num, $pag_page );
+	return BP_Friends_Friendship::search_relations( $search_terms, $user_id, $pag_num, $pag_page );
 }
 
 /**

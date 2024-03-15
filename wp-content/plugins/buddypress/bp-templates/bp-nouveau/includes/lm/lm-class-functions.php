@@ -53,6 +53,13 @@ function update_lm_relation_cache($comp, $user_id, $possible_member_ids, $bp_cac
 	$handled = array();
 	$listName = $comp[0].'List';
 
+
+	error_log(json_encode('-------->>> bp_cache_key:'. $bp_cache_key));
+	// error_log('count rel: '.json_encode(count($relationships)));
+	// error_log(json_encode($relationship));
+	error_log(json_encode('-->>> comp_receiver_name: '. $comp_receiver_name . '  oppo_receiver_name: '. $oppo_receiver_name ));
+	error_log(json_encode('---------->>> comp_table: '. $comp_table . '  oppo_table: '. $oppo_table));
+	
 	foreach ( $relationships as $relationship ) {
 		$initiator_user_id = (int) $relationship->initiator_user_id;
 		error_log(json_encode($relationship));
@@ -82,11 +89,7 @@ function update_lm_relation_cache($comp, $user_id, $possible_member_ids, $bp_cac
 			$status_receiver = "empty_sts_receiver_{$suffix}";
 		}
 		
-		error_log(json_encode('<<<<< bp_cache_key:'. $bp_cache_key));
-		// error_log('count rel: '.json_encode(count($relationships)));
-		// error_log(json_encode($relationship));
-		error_log(json_encode('-->>> comp_receiver_name: '. $comp_receiver_name . '  oppo_receiver_name: '. $oppo_receiver_name ));
-		error_log(json_encode('---------->>> comp_table: '. $comp_table . '  oppo_table: '. $oppo_table));
+		
 		error_log(json_encode('-------------->>> rel_id: '. $relationship->id . ' user_id: '. $user_id . ' '. $initiator_user_id . '->'. $receiver_user_id. ' comp: '. $comp ));
 		error_log('--status_initiator-> ' . $status_initiator . ' --status_receiver-> ' . $status_receiver );
 		bp_core_set_incremented_cache( $initiator_user_id . ':' . $receiver_user_id, $bp_cache_key, $status_initiator );
@@ -97,7 +100,8 @@ function update_lm_relation_cache($comp, $user_id, $possible_member_ids, $bp_cac
 
 	// Set all those with no matching entry to "not engagements" status.
 	$not_engagement = array_diff( $fetch, $handled );
-
+	error_log('>>>fetched'.json_encode($fetch));
+	error_log('>>>handled'.json_encode($handled));
 	$empty_sts = "empty_sts_none_{$listName}";
 	foreach ( $not_engagement as $not_engagement_id ) {
 		error_log(json_encode(11111));
