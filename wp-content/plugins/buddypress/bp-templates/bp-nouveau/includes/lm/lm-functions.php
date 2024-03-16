@@ -1,4 +1,5 @@
 <?php
+require dirname( __FILE__ ) . '/lm-class-relations.php';
 require dirname( __FILE__ ) . '/lm-ajax-functions.php';
 require dirname( __FILE__ ) . '/lm-class-functions.php';
 require dirname( __FILE__ ) . '/lm-loader.php';

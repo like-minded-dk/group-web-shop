@@ -399,7 +399,7 @@ function engagements_search_engagements( $search_terms, $user_id, $pag_num = 10,
  * @return array|bool An array of user IDs, or false if none are found.
  */
 function engagements_get_relationship_request_user_ids( $user_id ) {
-	return BP_Engagements_Engagementship::get_engagementship_request_user_ids( $user_id );
+	return BP_Engagements_Engagementship::get_relationship_request_user_ids( $user_id );
 }
 
 /**
@@ -1021,7 +1021,7 @@ function bp_engagements_pending_sent_requests_personal_data_exporter( $email_add
 		);
 	}
 
-	$engagementships = BP_Engagements_Engagementship::get_relationships( $user->ID, array(
+	$engagementships = BP_Engagements_Engagementship::get_relationships('engagement', $user->ID, array(
 		'is_confirmed'      => false,
 		'initiator_user_id' => $user->ID,
 		'page'              => $page,
