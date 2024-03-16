@@ -37,7 +37,7 @@ function bp_friends_filter_user_query_populate_extras( $user_query, $user_ids_sq
 	$maybe_friend_ids = wp_parse_id_list( $user_ids_sql );
 
 	// Bulk prepare the friendship cache.
-	BP_Friends_Friendship::update_bp_friends_cache( $user_id, $maybe_friend_ids );
+	BP_Friends_Friendship::update_bp_relations_cache( $user_id, $maybe_friend_ids );
 
 	foreach ( $maybe_friend_ids as $friend_id ) {
 		$status = BP_Friends_Friendship::check_is_relation( $user_id, $friend_id );

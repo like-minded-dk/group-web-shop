@@ -18,47 +18,21 @@ defined( 'ABSPATH' ) || exit;
  */
 #[AllowDynamicProperties]
 class BP_Relations_Relationship {
-	public static $comp;
-	public static $component;
-	public static $bp_cachekey_relation;
-	public static $reverse_receiver_id;
-
-	public static $filter_initiator_bs;
-	public static $filter_receiver_bs;
-	public static $filter_confirmed_bs;
-	public static $filter_limited_bs;
-	public static $filter_dated_bs;
-	public static $action_bs;
-	public static $action_as;
-
-	public static $receiver_id;
-	public static $bp_cachekey;
-	public static $bp_cachekey_user;
-	public static $bp_cachekey_request;
-	public static $relationship_accepted;
-	public static $component_request;
-
+	private static $comp;
+	private static $component;
+	private static $receiver_id;
+	private static $reverse_receiver_id;
+	private static $bp_cachekey_relation;
+	
+	private static $bp_cachekey;
+	private static $bp_cachekey_user;
 
 	public static $var_list = array(
 		'comp',
 		'component',
-		'bp_cachekey_relation',
-		'reverse_receiver_id',
-
-		'filter_initiator_bs',
-		'filter_receiver_bs',
-		'filter_confirmed_bs',
-		'filter_limited_bs',
-		'filter_dated_bs',
-		'action_bs',
-		'action_as',
-
 		'receiver_id',
-		'bp_cachekey',
-		'bp_cachekey_user',
-		'bp_cachekey_request',
-		'relationship_accepted',
-		'component_request',
+		'reverse_receiver_id',
+		'bp_cachekey_relation',
 	);
 
 	/**
@@ -148,11 +122,8 @@ class BP_Relations_Relationship {
 	 * @param bool     $populate_relation_details Optional. True if relation details should be queried.
 	 */
 	public function __construct($comp, $id = null, $is_request = false, $populate_relation_details = true ) {
-		$className = 'BP_Engagements_Engagementship';
-
         foreach (static::$var_list as $key) {
-			error_log('===test=== key: '. $key . ' BEEV: '.BP_Engagements_Engagementship::$$key);
-			// Ensure property exists and is accessible
+			$className = $comp == 'friend' ? 'BP_Friends_Friendship' : 'BP_Engagements_Engagementship';
 			$key_ins = $key . '_ins';
 			$this->$key_ins = $className::${$key};
 		}
@@ -191,10 +162,9 @@ class BP_Relations_Relationship {
 
 		$bp = buddypress();
 		$receiver_id = $this->receiver_id_ins;
+
 		// Check cache for relationship data.
 		$relationship = wp_cache_get( $this->id, $this->bp_cachekey_relation_ins );
-		$ccc = $this->comp_ins == 'friend' ? BP_Engagements_Engagementship::$comp : BP_Friends_Friendship::$comp;
-		error_log(json_encode('========test===== ' . $ccc .'  ' .$this->comp_ins));
 		// Cache missed, so query the DB.
 		if ( false === $relationship ) {
 			$relationship = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$bp->{$this->component_ins}->table_name} WHERE id = %d", $this->id ) );
@@ -237,11 +207,33 @@ class BP_Relations_Relationship {
 
 		$bp = buddypress();
 
-		$this->initiator_user_id = apply_filters( $this->filter_initiator_bs, $this->initiator_user_id, $this->id );
-		$this->receiver_id_ins       = apply_filters( $this->filter_receiver_bs, $this->receiver_id_ins, $this->id );
-		$this->is_confirmed      = apply_filters( $this->filter_confirmed_bs, $this->is_confirmed, $this->id );
-		$this->is_limited        = apply_filters( $this->filter_limited_bs, $this->is_limited, $this->id );
-		$this->date_created      = apply_filters( $this->filter_dated_bs, $this->date_created, $this->id );
+		$config_values = array(
+			'engagement' => array(
+				'filter_initiator_bs' => 'engagements_relationship_initiator_user_id_before_save',
+				'filter_receiver_bs' => 'engagements_relationship_engagement_user_id_before_save',
+				'filter_confirmed_bs' => 'engagements_relationship_is_confirmed_before_save',
+				'filter_limited_bs' => 'engagements_relationship_is_limited_before_save',
+				'filter_dated_bs' => 'engagements_relationship_date_created_before_save',
+				'action_bs' => 'engagements_relationship_before_save',
+				'action_as' => 'engagements_relationship_after_save',
+			), 
+			'friend' => array(
+				'filter_initiator_bs' => 'friends_relationship_initiator_user_id_before_save',
+				'filter_receiver_bs' => 'friends_relationship_friend_user_id_before_save',
+				'filter_confirmed_bs' => 'friends_relationship_is_confirmed_before_save',
+				'filter_limited_bs' => 'friends_relationship_is_limited_before_save',
+				'filter_dated_bs' => 'friends_relationship_date_created_before_save',
+				'action_bs' => 'friends_relationship_before_save',
+				'action_as' => 'friends_relationship_after_save',
+			),
+		);
+		$cf = $config_values[$this->comp];
+
+		$this->initiator_user_id = apply_filters( $cf['filter_initiator_bs'], $this->initiator_user_id, $this->id );
+		$this->receiver_id_ins   = apply_filters( $cf['filter_receiver_bs'], $this->receiver_id_ins, $this->id );
+		$this->is_confirmed      = apply_filters( $cf['filter_confirmed_bs'], $this->is_confirmed, $this->id );
+		$this->is_limited        = apply_filters( $cf['filter_limited_bs'], $this->is_limited, $this->id );
+		$this->date_created      = apply_filters( $cf['filter_dated_bs'], $this->date_created, $this->id );
 
 		/**
 		 * Fires before processing and saving the current relationship request.
@@ -250,7 +242,7 @@ class BP_Relations_Relationship {
 		 *
 		 * @param BP_Relations_Relationship $value Current relationship object. Passed by reference.
 		 */
-		do_action_ref_array( self::$action_bs, array( &$this ) );
+		do_action_ref_array( $cf['action_bs'], array( &$this ) );
 
 		// Update.
 		if ( ! empty( $this->id ) ) {
@@ -278,7 +270,7 @@ class BP_Relations_Relationship {
 		// Save.
 		} else {
 			try {
-				break_sql("add to table {$this->comp} : $bp->{$this->component_ins}->table_name} user: {$this->initiator_user_id} receiver: {$this->receiver_id_ins}");
+				break_sql("Add to table {$this->comp} : $bp->{$this->component_ins}->table_name} user: {$this->initiator_user_id} receiver: {$this->receiver_id_ins}");
 
 				$result = $wpdb->query( $wpdb->prepare( <<<SQL
 					INSERT INTO {$bp->{$this->component_ins}->table_name} 
@@ -307,7 +299,7 @@ class BP_Relations_Relationship {
 		 *
 		 * @param BP_Relations_Relationship $value Current relationship object. Passed by reference.
 		 */
-		do_action_ref_array( self::$action_as, array( &$this ) );
+		do_action_ref_array( $cf['action_as'], array( &$this ) );
 
 		return $result;
 	}
@@ -357,6 +349,12 @@ class BP_Relations_Relationship {
 	 * @return array $relationships Array of relationship objects.
 	 */
 	public static function get_relationships( $user_id, $args = array(), $operator = 'AND' ) {
+		// if (self::get_comp() == 'friend') {
+		// 	$bp_cachekey_user = 'bp_friends_relationships_for_user';
+		// } else {
+		// 	$bp_cachekey_user = 'bp_engagements_relationships_for_user';
+		// }
+
 		if ( empty( $user_id ) ) {
 			$user_id = bp_loggedin_user_id();
 		}
@@ -525,7 +523,8 @@ class BP_Relations_Relationship {
 	 */
 	public static function get_relation_user_ids( $user_id, $relation_requests_only = false, $assoc_arr = false ) {
 		$receiver_id = static::$receiver_id;
-		// $reverse_receiver_id = static::$reverse_receiver_id;
+
+		error_log(json_encode('==========='.$receiver_id));
 		if ( ! empty( $relation_requests_only ) ) {
 			$args = array(
 				'is_confirmed'   => 0,
@@ -610,12 +609,17 @@ class BP_Relations_Relationship {
 	 * @return array|bool An array of user IDs or false if none are found.
 	 */
 	public static function get_relationship_request_user_ids( $user_id ) {
-		$relation_requests = wp_cache_get( $user_id, static::$bp_cachekey_request );
+		if (self::get_comp() == 'friend') {
+			$bp_cachekey_request = 'bp_engagements_requests';
+		} else {
+			$bp_cachekey_request = 'bp_friends_requests';
+		}
+		$relation_requests = wp_cache_get( $user_id, $bp_cachekey_request );
 
 		if ( false === $relation_requests ) {
 			$relation_requests = static::get_relation_user_ids( $user_id, true );
 
-			wp_cache_set( $user_id, $relation_requests, static::$bp_cachekey_request );
+			wp_cache_set( $user_id, $relation_requests, $bp_cachekey_request );
 		}
 
 		// Integer casting.
@@ -1156,13 +1160,19 @@ class BP_Relations_Relationship {
 	 */
 	public static function delete_all_for_user( $user_id ) {
 		global $wpdb;
-
-		$bp      = buddypress();
+		if (self::get_comp() == 'friend') {
+			$component_request = 'friend_request';
+			$relationship_accepted = $relationship_accepted = 'friend_accepted';
+			// $bp_cachekey_user = 'bp_friends_relationships_for_user';
+		} else {
+			$component_request = 'engagement_request';
+			$relationship_accepted = $relationship_accepted = 'engagement_accepted';
+			// $bp_cachekey_user = 'bp_engagements_relationships_for_user';
+		}
+ 		$bp      = buddypress();
 		$receiver_id = static::$receiver_id;
         $component = static::$component;
-        $component_request = static::$component_request;
-        $relationship_accepted = static::$relationship_accepted;
-        $bp_cachekey_user = static::$bp_cachekey_user;
+        
         $bp_cachekey_relation = static::$bp_cachekey_relation;
 
 		$user_id = (int) $user_id;
@@ -1206,12 +1216,24 @@ class BP_Relations_Relationship {
 		// Loop through relation_ids to scrub user caches and update total count metas.
 		foreach ( (array) $relation_ids as $relation_id ) {
 			// Delete cached relationships.
-			wp_cache_delete( $relation_id, $bp_cachekey_user );
+			wp_cache_delete( $relation_id, static::$bp_cachekey_user );
 
 			static::total_relation_count( $relation_id );
 		}
 
 		// Delete cached relationships.
-		wp_cache_delete( $user_id, $bp_cachekey_user );
+		wp_cache_delete( $user_id, static::$bp_cachekey_user );
 	}
+
+	public static function get_comp() {
+		if (false) {
+			return;
+		} elseif (get_called_class() == 'BP_Engagements_Engagementship') {
+			return 'engagement';
+		} elseif (get_called_class() == 'BP_Friends_Friendship') {
+			return 'friend';
+		} else {
+			return 'relation';
+		};
+    }
 }

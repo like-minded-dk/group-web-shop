@@ -37,7 +37,7 @@ function bp_engagements_filter_user_query_populate_extras( $user_query, $user_id
 	$maybe_engagement_ids = wp_parse_id_list( $user_ids_sql );
 
 	// Bulk prepare the engagementship cache.
-	BP_Engagements_Engagementship::update_bp_engagements_cache( $user_id, $maybe_engagement_ids );
+	BP_Engagements_Engagementship::update_bp_relations_cache( $user_id, $maybe_engagement_ids );
 
 	foreach ( $maybe_engagement_ids as $engagement_id ) {
 		$status = BP_Engagements_Engagementship::check_is_relation( $user_id, $engagement_id );
