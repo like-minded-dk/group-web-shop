@@ -18,23 +18,52 @@ defined( 'ABSPATH' ) || exit;
  */
 #[AllowDynamicProperties]
 class BP_Relations_Relationship {
-    public static $receiver_id = 'relation_user_id';
-    public static $bp_cachekey = 'bp_relations';
-    public static $bp_cachekey_relation = 'bp_relations_relationships';
-    public static $bp_cachekey_user = 'bp_relations_relationships_for_user';
-    public static $bp_cachekey_request = 'bp_relations_requests';
-    public static $component = 'relations';
-    public static $component_request = 'relation_request';
-    public static $relationship_accepted = 'relation_accepted';
-    public static $filter_initiator_bs = 'relations_relationship_initiator_user_id_before_save';
-    public static $filter_receiver_bs = 'relations_relationship_relation_user_id_before_save';
-    public static $filter_confirmed_bs = 'relations_relationship_is_confirmed_before_save';
-    public static $filter_limited_bs = 'relations_relationship_is_limited_before_save';
-    public static $filter_dated_bs = 'relations_relationship_date_created_before_save';
-    public static $action_bs = 'relations_relationship_before_save';
-    public static $action_as = 'relations_relationship_after_save';
-    
-    public static $reverse_receiver_id = 'oppo_user_id';
+	/**
+	 * Date the relationship was created.
+	 *
+	 * @since 1.0.0
+	 * @var string
+	 */
+	public $comp;
+
+    private static $conf = array(
+        'friend' => array(
+            'receiver_id' => 'friend_user_id',
+            'bp_cachekey' => 'bp_friends',
+            'bp_cachekey_relation' => 'bp_friends_relationships',
+            'bp_cachekey_user' => 'bp_friends_relationships_for_user',
+            'bp_cachekey_request' => 'bp_friends_requests',
+            'component' => 'friends',
+            'component_request' => 'friend_request',
+            'relationship_accepted' => 'friend_accepted',
+            'filter_initiator_bs' => 'friends_relationship_initiator_user_id_before_save',
+            'filter_receiver_bs' => 'friends_relationship_friend_user_id_before_save',
+            'filter_confirmed_bs' => 'friends_relationship_is_confirmed_before_save',
+            'filter_limited_bs' => 'friends_relationship_is_limited_before_save',
+            'filter_dated_bs' => 'friends_relationship_date_created_before_save',
+            'action_bs' => 'friends_relationship_before_save',
+            'action_as' => 'friends_relationship_after_save',
+            'reverse_receiver_id' => 'engagement_user_id',
+        ),
+        'engagement' => array(
+            'receiver_id' => 'engagement_user_id',
+            'bp_cachekey' => 'bp_engagements',
+            'bp_cachekey_relation' => 'bp_engagements_relationships',
+            'bp_cachekey_user' => 'bp_engagements_relationships_for_user',
+            'bp_cachekey_request' => 'bp_engagements_requests',
+            'component' => 'engagements',
+            'component_request' => 'engagement_request',
+            'relationship_accepted' => 'engagement_accepted',
+            'filter_initiator_bs' => 'engagements_relationship_initiator_user_id_before_save',
+            'filter_receiver_bs' => 'engagements_relationship_engagement_user_id_before_save',
+            'filter_confirmed_bs' => 'engagements_relationship_is_confirmed_before_save',
+            'filter_limited_bs' => 'engagements_relationship_is_limited_before_save',
+            'filter_dated_bs' => 'engagements_relationship_date_created_before_save',
+            'action_bs' => 'engagements_relationship_before_save',
+            'action_as' => 'engagements_relationship_after_save',
+            'reverse_receiver_id' => 'friend_user_id',
+        ),
+    );
 	/**
 	 * ID of the relationship.
 	 *
@@ -121,24 +150,10 @@ class BP_Relations_Relationship {
 	 * @param bool     $is_request              Deprecated.
 	 * @param bool     $populate_relation_details Optional. True if relation details should be queried.
 	 */
-	public function __construct($comp, $id = null, $is_request = false, $populate_relation_details = true ) {
-		// $this->comp = $comp;
-		// $this->reverse_receiver_id = 'friend_user_id';
-		// $this->receiver_id = 'engagement_user_id';
-		// $this->bp_cachekey = 'bp_engagements';
-		// $this->bp_cachekey_relation = 'bp_engagements_relationships';
-		// $this->bp_cachekey_user = 'bp_engagements_relationships_for_user';
-		// $this->bp_cachekey_request = 'bp_engagements_requests';
-		// $this->component = 'engagements';
-		// $this->component_request = 'engagement_request';
-		// // $this->relationship_accepted = 'engagement_accepted';
-		// $this->filter_initiator_bs = 'engagements_relationship_initiator_user_id_before_save';
-		// $this->filter_receiver_bs = 'engagements_relationship_engagement_user_id_before_save';
-		// $this->filter_confirmed_bs = 'engagements_relationship_is_confirmed_before_save';
-		// $this->filter_limited_bs = 'engagements_relationship_is_limited_before_save';
-		// $this->filter_dated_bs = 'engagements_relationship_date_created_before_save';
-		// $this->action_bs = 'engagements_relationship_before_save';
-		// $this->action_as = 'engagements_relationship_after_save';
+	public function __construct($comp, $id = null, $is_request = false, $populate_relation_details = true ) {        
+        foreach (BP_Relations_Relationship::$conf[$comp] as $key => $value) {
+            $this->$key = $value;
+        }
 
 		if ( false !== $is_request ) {
 			_deprecated_argument(
@@ -338,7 +353,8 @@ class BP_Relations_Relationship {
 	 *
 	 * @return array $relationships Array of relationship objects.
 	 */
-	public static function get_relationships( $user_id, $args = array(), $operator = 'AND' ) {
+	public static function get_relationships( $comp, $user_id, $args = array(), $operator = 'AND' ) {
+		$cf = self::$conf[$comp];
 		if ( empty( $user_id ) ) {
 			$user_id = bp_loggedin_user_id();
 		}
@@ -355,7 +371,7 @@ class BP_Relations_Relationship {
 			array(
 				'id'                => null,
 				'initiator_user_id' => null,
-				self::$receiver_id  => null,
+				$cf['receiver_id']  => null,
 				'is_confirmed'      => null,
 				'is_limited'        => null,
 				'order_by'          => 'date_created',
@@ -367,27 +383,27 @@ class BP_Relations_Relationship {
 		);
 
 		// First, we get all relationships that involve the user.
-		$relationship_ids = wp_cache_get( $user_id, self::$bp_cachekey_user );
+		$relationship_ids = wp_cache_get( $user_id, $cf['bp_cachekey_user'] );
 		if ( false === $relationship_ids ) {
-			$relationship_ids = self::get_relationship_ids_for_user( $user_id );
-			wp_cache_set( $user_id, $relationship_ids, self::$bp_cachekey_user );
+			$relationship_ids = BP_Relations_Relationship::get_relationship_ids_for_user( $comp, $user_id );
+			wp_cache_set( $user_id, $relationship_ids, $cf['bp_cachekey_user'] );
 		}
 
 		// Prime the membership cache.
-		$uncached_relationship_ids = bp_get_non_cached_ids( $relationship_ids, self::$bp_cachekey_relation );
+		$uncached_relationship_ids = bp_get_non_cached_ids( $relationship_ids, $cf['bp_cachekey_relation'] );
 		if ( ! empty( $uncached_relationship_ids ) ) {
-			$uncached_relationships = self::get_relationships_by_id( $uncached_relationship_ids );
+			$uncached_relationships = BP_Relations_Relationship::get_relationships_by_id( $comp, $uncached_relationship_ids );
 
 			foreach ( $uncached_relationships as $uncached_relationship ) {
-				wp_cache_set( $uncached_relationship->id, $uncached_relationship, self::$bp_cachekey_relation );
+				wp_cache_set( $uncached_relationship->id, $uncached_relationship, $cf['bp_cachekey_relation'] );
 			}
 		}
 
-		$int_keys  = array( 'id', 'initiator_user_id', self::$receiver_id );
+		$int_keys  = array( 'id', 'initiator_user_id', 'receiver_id' );
 		$bool_keys = array( 'is_confirmed', 'is_limited' );
 
 		// Assemble filter array.
-		$filters = wp_array_slice_assoc( $r, array( 'id', 'initiator_user_id', self::$receiver_id, 'is_confirmed', 'is_limited' ) );
+		$filters = wp_array_slice_assoc( $r, array( 'id', 'initiator_user_id', $cf['receiver_id'], 'is_confirmed', 'is_limited' ) );
 		foreach ( $filters as $filter_name => $filter_value ) {
 			if ( is_null( $filter_value ) ) {
 				unset( $filters[ $filter_name ] );
@@ -401,7 +417,7 @@ class BP_Relations_Relationship {
 		// Populate relationship array from cache, and normalize.
 		foreach ( $relationship_ids as $relationship_id ) {
 			// Create a limited BP_Relations_Relationship object (don't fetch the user details).
-			$relationship = new BP_Relations_Relationship(self::$comp, $relationship_id, false, false );
+			$relationship = new BP_Relations_Relationship($comp, $relationship_id, false, false );
 
 			// Sanity check.
 			if ( ! isset( $relationship->id ) ) {
@@ -449,7 +465,7 @@ class BP_Relations_Relationship {
 		}
 
 		// Sort the results on a column name.
-		if ( in_array( $r['order_by'], array( 'id', 'initiator_user_id', self::$receiver_id ) ) ) {
+		if ( in_array( $r['order_by'], array( 'id', 'initiator_user_id', $cf['receiver_id'] ) ) ) {
 			$relationships = bp_sort_by_key( $relationships, $r['order_by'], 'num', true );
 		}
 
@@ -477,13 +493,14 @@ class BP_Relations_Relationship {
 	 * @param int $user_id ID of the user.
 	 * @return array
 	 */
-	public static function get_relationship_ids_for_user( $user_id ) {
+	public static function get_relationship_ids_for_user( $comp, $user_id ) {
+        $cf = self::$conf[$comp];
 		global $wpdb;
-        error_log('----------------'.json_encode(self::$component));
-        $receiver_id = self::$receiver_id;
+        error_log('----------------'.json_encode($cf['component']));
+        $receiver_id = $cf['receiver_id'];
 		$bp = buddypress();
 		$relationship_ids = $wpdb->get_col( $wpdb->prepare( <<<SQL
-			SELECT id FROM {$bp->{self::$component}->table_name}
+			SELECT id FROM {$bp->{$cf['component']}->table_name}
 			WHERE (initiator_user_id = %d OR {$receiver_id} = %d)
 			ORDER BY date_created DESC
 		SQL, $user_id, $user_id ) );
@@ -504,20 +521,21 @@ class BP_Relations_Relationship {
 	 *                                   array of user IDs. Default: false.
 	 * @return array $fids IDs of relations for provided user.
 	 */
-	public static function get_relation_user_ids( $user_id, $relation_requests_only = false, $assoc_arr = false ) {
-		$receiver_id = self::$receiver_id;
-		$reverse_receiver_id = self::$reverse_receiver_id;
+	public static function get_relation_user_ids( $comp, $user_id, $relation_requests_only = false, $assoc_arr = false ) {
+        $cf = self::$conf[$comp];
+		$receiver_id = $cf['receiver_id'];
+		$reverse_receiver_id = $cf['reverse_receiver_id'];
 		if ( ! empty( $relation_requests_only ) ) {
 			$args = array(
 				'is_confirmed'   => 0,
 				$receiver_id => $user_id,
 			);
 		} else {
-			if (bp_current_component() == self::$component) {
+			if (bp_current_component() == $cf['component']) {
 				$args = array(
 					'initiator_user_id' => $user_id,
 				);
-			} elseif (bp_current_component() == self::$component) {
+			} elseif (bp_current_component() == $cf['component']) {
 				$args = array(
 					$receiver_id => $user_id,
 				);
@@ -526,13 +544,13 @@ class BP_Relations_Relationship {
 			}
 		}
 
-		$relationships = self::get_relationships( $user_id, $args );
+		$relationships = BP_Relations_Relationship::get_relationships( $comp, $user_id, $args );
 		$user_id     = (int) $user_id;
 
 		$fids = array();
 		foreach ( $relationships as $relationship ) {
-			$member_id = $relationship->$reverse_receiver_id;
-			if ( $relationship->$reverse_receiver_id === $user_id ) {
+			$member_id = $relationship->reverse_receiver_id;
+			if ( $relationship->reverse_receiver_id === $user_id ) {
 				$member_id = $relationship->initiator_user_id;
 			}
 			if ( ! empty( $assoc_arr ) ) {
@@ -553,9 +571,10 @@ class BP_Relations_Relationship {
 	 * @param int $member_id The ID of the second user.
 	 * @return int|null The ID of the relationship object if found, otherwise null.
 	 */
-	public static function get_relationship_id( $user_id, $member_id ) {
+	public static function get_relationship_id( $comp, $user_id, $member_id ) {
+        $cf = self::$conf[$comp];
 		$relation_id = null;
-		$receiver_id = self::$receiver_id;
+		$receiver_id = $cf['receiver_id'];
 		// Can't relate yourself.
 		if ( $user_id === $member_id ) {
 			return $relation_id;
@@ -569,7 +588,7 @@ class BP_Relations_Relationship {
 			'initiator_user_id' => $member_id,
 			$receiver_id        => $member_id,
 		);
-		$result = self::get_relationships( $user_id, $args, 'OR' );
+		$result = BP_Relations_Relationship::get_relationships( $comp, $user_id, $args, 'OR' );
 		$result = array_filter($result, function($v, $k) use ($user_id) {
 			return $v->initiator_user_id == $user_id;
 		}, ARRAY_FILTER_USE_BOTH);
@@ -589,13 +608,14 @@ class BP_Relations_Relationship {
 	 *                     relationship requests.
 	 * @return array|bool An array of user IDs or false if none are found.
 	 */
-	public static function get_relationship_request_user_ids( $user_id ) {
-		$relation_requests = wp_cache_get( $user_id, self::$bp_cachekey_request );
+	public static function get_relationship_request_user_ids( $comp, $user_id ) {
+        $cf = self::$conf[$comp];
+		$relation_requests = wp_cache_get( $user_id, $cf['bp_cachekey_request'] );
 
 		if ( false === $relation_requests ) {
-			$relation_requests = self::get_relation_user_ids( $user_id, true );
+			$relation_requests = BP_Relations_Relationship::get_relation_user_ids( $comp, $user_id, true );
 
-			wp_cache_set( $user_id, $relation_requests, self::$bp_cachekey_request );
+			wp_cache_set( $user_id, $relation_requests, $cf['bp_cachekey_request'] );
 		}
 
 		// Integer casting.
@@ -615,7 +635,7 @@ class BP_Relations_Relationship {
 	 *                     logged-in user.
 	 * @return int relation count for the user.
 	 */
-	public static function total_relation_count( $user_id = 0 ) {
+	public static function total_relation_count( $comp, $user_id = 0 ) {
 
 		if ( empty( $user_id ) ) {
 			$user_id = ( bp_displayed_user_id() ) ? bp_displayed_user_id() : bp_loggedin_user_id();
@@ -627,7 +647,7 @@ class BP_Relations_Relationship {
 		 */
 
 		$args        = array( 'is_confirmed' => 1 );
-		$relationships = self::get_relationships( $user_id, $args );
+		$relationships = BP_Relations_Relationship::get_relationships( $comp, $user_id, $args );
 		$count       = count( $relationships );
 
 		// Do not update meta if user has never had relations.
@@ -661,9 +681,9 @@ class BP_Relations_Relationship {
 	 *                          pagination) who match the search.
 	 * }. Returns false on failure.
 	 */
-	public static function search_relations( $filter, $user_id, $limit = null, $page = null ) {
+	public static function search_relations( $comp, $filter, $user_id, $limit = null, $page = null ) {
+        $cf = self::$conf[$comp];
 		global $wpdb;
-
 		$bp = buddypress();
 
 		if ( empty( $user_id ) ) {
@@ -679,7 +699,7 @@ class BP_Relations_Relationship {
 			$pag_sql = $wpdb->prepare( " LIMIT %d, %d", intval( ( $page - 1 ) * $limit), intval( $limit ) );
 		}
 
-		$relations_ids = self::get_relation_user_ids( $user_id );
+		$relations_ids = BP_Relations_Relationship::get_relation_user_ids( $comp, $user_id );
 		if ( ! $relations_ids ) {
 			return false;
 		}
@@ -708,7 +728,7 @@ class BP_Relations_Relationship {
 		}
 
 		return array(
-			self::$component => array_map( 'intval', $filtered_relations_ids ),
+			$cf['component'] => array_map( 'intval', $filtered_relations_ids ),
 			'total'   => (int) $total_relations_ids,
 		);
 	}
@@ -730,7 +750,8 @@ class BP_Relations_Relationship {
 	 * @return string|false $value The relationship status, from among 'not_relation',
 	 *                             'is_relation', 'pending_relation', and 'awaiting_response'.
 	 */
-	public static function check_is_relation( $initiator_userid, $possible_relation_userid ) {
+	public static function check_is_relation( $comp, $initiator_userid, $possible_relation_userid ) {
+        $cf = self::$conf[$comp];
 		if ( empty( $initiator_userid ) || empty( $possible_relation_userid ) ) {
 			return false;
 		}
@@ -740,9 +761,9 @@ class BP_Relations_Relationship {
 			return 'not_relation';
 		}
 
-		self::update_bp_relations_cache( $initiator_userid, $possible_relation_userid );
+		self::update_bp_relations_cache( $comp, $initiator_userid, $possible_relation_userid );
 
-		return bp_core_get_incremented_cache( $initiator_userid . ':' . $possible_relation_userid, self::$bp_cachekey );
+		return bp_core_get_incremented_cache( $initiator_userid . ':' . $possible_relation_userid, $cf['bp_cachekey'] );
 	}
 
 	/**
@@ -757,11 +778,12 @@ class BP_Relations_Relationship {
 	 * @param int|array|string $possible_member_ids The IDs of the one or more users
 	 *                                              to check relationship status with primary user.
 	 */
-	public static function update_bp_relations_cache( $user_id, $possible_member_ids ) {
+	public static function update_bp_relations_cache( $comp, $user_id, $possible_member_ids ) {
+        $cf = self::$conf[$comp];
 		error_log(' ');
 		error_log('class >'. json_encode('>>>update_bp_relations_cache'));
-		$bp_cache_key = self::$bp_cachekey;
-		update_lm_relation_cache(self::$comp, $user_id, $possible_member_ids, $bp_cache_key);
+		$bp_cache_key = $cf['bp_cachekey'];
+		update_lm_relation_cache($cf['comp'], $user_id, $possible_member_ids, $bp_cache_key);
 	}
 	/**
 	 * Get the last active date of many users at once.
@@ -808,15 +830,17 @@ class BP_Relations_Relationship {
 	 * @param int $relationship_id ID of the relationship to be accepted.
 	 * @return int Number of database rows updated.
 	 */
-	public static function accept( $relation_id ) {
+	public static function accept( $comp, $relation_id ) {
+        $cf = self::$conf[$comp];
 		global $wpdb;
-        $receiver_id = self::$receiver_id;
+
+        $receiver_id = $cf['receiver_id'];
 		$bp = buddypress();
 		try {
 			break_sql('>>>accept $relation_id 868: '.json_encode($relation_id));
 
 			return $wpdb->query( $wpdb->prepare( <<<SQL
-				UPDATE {$bp->{self::$component}->table_name}
+				UPDATE {$bp->{$cf['component']}->table_name}
 				SET is_confirmed = 1, date_created = %s 
 				WHERE id = %d AND {$receiver_id} = %d
 			SQL, bp_core_current_time(), $relation_id, bp_loggedin_user_id() ) );
@@ -834,14 +858,14 @@ class BP_Relations_Relationship {
 	 * @param int $relationship_id ID of the relationship to be withdrawn.
 	 * @return int Number of database rows deleted.
 	 */
-	public static function withdraw( $relation_id ) {
+	public static function withdraw( $comp, $relation_id ) {
+        $cf = self::$conf[$comp];
 		global $wpdb;
-
 		$bp = buddypress();
 		try {
 			break_sql('>>>withdraw $relation_id 868: '.json_encode($relation_id));
 
-			return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->{self::$component}->table_name} WHERE id = %d AND initiator_user_id = %d", $relation_id, bp_loggedin_user_id() ) );
+			return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->{$cf['component']}->table_name} WHERE id = %d AND initiator_user_id = %d", $relation_id, bp_loggedin_user_id() ) );
 
 		} catch (Exception $e) { $result = false; }
 	}
@@ -856,15 +880,17 @@ class BP_Relations_Relationship {
 	 * @param int $relationship_id ID of the relationship to be rejected.
 	 * @return int Number of database rows deleted.
 	 */
-	public static function reject( $relation_id ) {
+	public static function reject( $comp, $relation_id ) {
+        $cf = self::$conf[$comp];
 		global $wpdb;
-        $receiver_id = self::$receiver_id;
+
+        $receiver_id = $cf['receiver_id'];
 		$bp = buddypress();
 		try {
 			break_sql('>>reject $relation_id 820 delete id: '.json_encode($relation_id));
 
 			return $wpdb->query( $wpdb->prepare( <<<SQL
-				DELETE FROM {$bp->{self::$component}->table_name}
+				DELETE FROM {$bp->{$cf['component']}->table_name}
 				WHERE id = %d AND {$receiver_id} = %d
 			SQL, $relation_id, bp_loggedin_user_id() ) );
 
@@ -887,9 +913,9 @@ class BP_Relations_Relationship {
 	 *                          false (no pagination - return all results).
 	 * @return array $filtered_ids IDs of users who match the query.
 	 */
-	public static function search_users( $filter, $user_id, $limit = null, $page = null ) {
+	public static function search_users( $comp, $filter, $user_id, $limit = null, $page = null ) {
+        $cf = self::$conf[$comp];
 		global $wpdb;
-
 		// Only search for matching strings at the beginning of the
 		// name (@todo - figure out why this restriction).
 		$search_terms_like = bp_esc_like( $filter ) . '%';
@@ -1000,15 +1026,17 @@ class BP_Relations_Relationship {
 	 * @return array|false An array of random relation user IDs on success;
 	 *                     false if none are found.
 	 */
-	public static function get_random_relations( $user_id, $total_relations = 5 ) {
+	public static function get_random_relations( $comp, $user_id, $total_relations = 5 ) {
+        $cf = self::$conf[$comp];
 		global $wpdb;
-		$receiver_id = self::$receiver_id;
+
+		$receiver_id = $cf['receiver_id'];
 
 		$bp      = buddypress();
 		$fids    = array();
 		$sql     = $wpdb->prepare( <<<SQL
 			SELECT {$receiver_id}, initiator_user_id
-			FROM {$bp->{self::$component}->table_name} 
+			FROM {$bp->{$cf['component']}->table_name} 
 			WHERE (relation_user_id = %d || initiator_user_id = %d) && is_confirmed = 1 
 			ORDER BY rand() LIMIT %d
 		SQL, $user_id, $user_id, $total_relations );
@@ -1051,7 +1079,7 @@ class BP_Relations_Relationship {
 	 * @param int $group_id ID of the group relations are being invited to.
 	 * @return bool|int False if group component is not active, and relation count.
 	 */
-	public static function get_invitable_relation_count( $user_id, $group_id ) {
+	public static function get_invitable_relation_count( $comp, $user_id, $group_id ) {
 
 		if ( ! bp_is_active( 'group' ) ) {
 			return false;
@@ -1059,7 +1087,7 @@ class BP_Relations_Relationship {
 
 		// Setup some data we'll use below.
 		$is_group_admin  = groups_is_user_admin( $user_id, $group_id );
-		$relation_ids    = self::get_relation_user_ids( $user_id );
+		$relation_ids    = BP_Relations_Relationship::get_relation_user_ids( $comp, $user_id );
 		$invitable_count = 0;
 
 		for ( $i = 0, $count = count( $relation_ids ); $i < $count; ++$i ) {
@@ -1095,13 +1123,13 @@ class BP_Relations_Relationship {
 	 * @param int|string|array $relationship_ids Single relationship ID or comma-separated/array list of relationship IDs.
 	 * @return array
 	 */
-	public static function get_relationships_by_id( $relationship_ids ) {
+	public static function get_relationships_by_id( $comp, $relationship_ids ) {
+        $cf = self::$conf[$comp];
 		global $wpdb;
-
 		$bp = buddypress();
 
 		$relationship_ids = implode( ',', wp_parse_id_list( $relationship_ids ) );
-		return $wpdb->get_results( "SELECT * FROM {$bp->{self::$component}->table_name} WHERE id IN ({$relationship_ids})" );
+		return $wpdb->get_results( "SELECT * FROM {$bp->{$cf['component']}->table_name} WHERE id IN ({$relationship_ids})" );
 	}
 
 	/**
@@ -1112,9 +1140,10 @@ class BP_Relations_Relationship {
 	 * @param int $relationship_id ID of the relationship.
 	 * @return null|stdClass
 	 */
-	public static function get_user_ids_for_relationship( $relationship_id ) {
-		$relationship = new BP_Relations_Relationship(self::$comp, $relationship_id, false, false );
-		$receiver_id = self::$receiver_id;
+	public static function get_user_ids_for_relationship( $comp, $relationship_id ) {
+        $cf = self::$conf[$comp];
+		$relationship = new BP_Relations_Relationship($cf['comp'], $relationship_id, false, false );
+		$receiver_id = self::$conf['receiver_id'];
 		if ( empty( $relationship->id ) ) {
 			return null;
 		}
@@ -1135,19 +1164,22 @@ class BP_Relations_Relationship {
 	 *
 	 * @param int $user_id ID of the user being expunged.
 	 */
-	public static function delete_all_for_user( $user_id ) {
+	public static function delete_all_for_user( $comp, $user_id ) {
+        $cf = self::$conf[$comp];
 		global $wpdb;
 
 		$bp      = buddypress();
-		$receiver_id = self::$receiver_id;
-        $component = self::$component;
-        $component_request = self::$component_request;
-        $relationship_accepted = self::$relationship_accepted;
+		$receiver_id = $cf['receiver_id'];
+        $component = $cf['component'];
+        $component_request = $cf['component_request'];
+        $relationship_accepted = $cf['relationship_accepted'];
+        $bp_cachekey_user = $cf['bp_cachekey_user'];
+        $bp_cachekey_relation = $cf['bp_cachekey_relation'];
 
 		$user_id = (int) $user_id;
 
 		// Get all relationships, of any status, for the user.
-		$relationships    = self::get_relationships( $user_id );
+		$relationships    = BP_Relations_Relationship::get_relationships( $comp, $user_id );
 		$relation_ids     = array();
 		$relationship_ids = array();
 		foreach ( $relationships as $relationship ) {
@@ -1172,25 +1204,25 @@ class BP_Relations_Relationship {
 		if ( bp_is_active( 'notifications' ) ) {
 			$wpdb->query( $wpdb->prepare( <<<SQL
 				DELETE FROM {$bp->notifications->table_name}
-				WHERE component_name = {self::$component} AND ( component_action = {self::$component_request}
-				OR component_action = {self::$relationship_accepted} ) AND item_id = %d
+				WHERE component_name = {$component} AND ( component_action = {$component_request}
+				OR component_action = {$relationship_accepted} ) AND item_id = %d
 			SQL, $user_id ) );
 		}
 
 		// Clean up the relationships cache.
 		foreach ( $relationship_ids as $relationship_id ) {
-			wp_cache_delete( $relationship_id, self::$bp_cachekey_relation );
+			wp_cache_delete( $relationship_id, $bp_cachekey_relation );
 		}
 
 		// Loop through relation_ids to scrub user caches and update total count metas.
 		foreach ( (array) $relation_ids as $relation_id ) {
 			// Delete cached relationships.
-			wp_cache_delete( $relation_id, self::$bp_cachekey_user );
+			wp_cache_delete( $relation_id, $bp_cachekey_user );
 
-			self::total_relation_count( $relation_id );
+			self::total_relation_count( $comp, $relation_id );
 		}
 
 		// Delete cached relationships.
-		wp_cache_delete( $user_id, self::$bp_cachekey_user );
+		wp_cache_delete( $user_id, $bp_cachekey_user );
 	}
 }
