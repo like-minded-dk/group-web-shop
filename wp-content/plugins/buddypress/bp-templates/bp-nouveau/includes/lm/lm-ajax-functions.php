@@ -250,8 +250,8 @@ function ajax_switch_each_action($comp, $action, $user_id, $item_id, $response) 
 
 	// Request already pending.
 	} else {
-		$check_is_engagement = BP_engagements_engagementship::check_is_relation( $user_id, $item_id );
-		$check_is_friend     = BP_Friends_Friendship::check_is_relation( $user_id, $item_id );
+		$check_is_engagement = BP_engagements_engagementship::check_is_relation( 'engagement', $user_id, $item_id );
+		$check_is_friend     = BP_Friends_Friendship::check_is_relation( 'friend', $user_id, $item_id );
 		
 		error_log(' >>>>>> ajaxfile>comp and action: ' . $comp . ' - action: ' . $action );
 		error_log(' >>>ajaxfile> relation_sts!: ' . $relation_sts);

@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 #[AllowDynamicProperties]
 class BP_Engagements_Engagementship extends BP_Relations_Relationship {
 	public $comp;
-	public $engagement_user_id;
+	public $engagement_user_id = 'engagement_user_id';
 
 	public function __construct() {
 		$this->comp = 'engagement';

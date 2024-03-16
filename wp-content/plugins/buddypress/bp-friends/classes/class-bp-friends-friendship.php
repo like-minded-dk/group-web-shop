@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
 #[AllowDynamicProperties]
 class BP_Friends_Friendship extends BP_Relations_Relationship {
 	public $comp;
-	public $friend_user_id;
+	public $friend_user_id = 'friend_user_id';
 
 	public function __construct() {
 		$this->comp = 'friend';

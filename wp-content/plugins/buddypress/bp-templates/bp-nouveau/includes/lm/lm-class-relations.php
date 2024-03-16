@@ -496,7 +496,7 @@ class BP_Relations_Relationship {
 	public static function get_relationship_ids_for_user( $comp, $user_id ) {
         $cf = self::$conf[$comp];
 		global $wpdb;
-        error_log('----------------'.json_encode($cf['component']));
+
         $receiver_id = $cf['receiver_id'];
 		$bp = buddypress();
 		$relationship_ids = $wpdb->get_col( $wpdb->prepare( <<<SQL
@@ -524,7 +524,7 @@ class BP_Relations_Relationship {
 	public static function get_relation_user_ids( $comp, $user_id, $relation_requests_only = false, $assoc_arr = false ) {
         $cf = self::$conf[$comp];
 		$receiver_id = $cf['receiver_id'];
-		$reverse_receiver_id = $cf['reverse_receiver_id'];
+		// $reverse_receiver_id = $cf['reverse_receiver_id'];
 		if ( ! empty( $relation_requests_only ) ) {
 			$args = array(
 				'is_confirmed'   => 0,
@@ -545,21 +545,22 @@ class BP_Relations_Relationship {
 		}
 
 		$relationships = self::get_relationships( $comp, $user_id, $args );
+		error_log('---$relationships: '.json_encode($relationships));
 		$user_id     = (int) $user_id;
 
-		$fids = array();
+		$member_ids = array();
 		foreach ( $relationships as $relationship ) {
 			$member_id = $relationship->reverse_receiver_id;
 			if ( $relationship->reverse_receiver_id === $user_id ) {
 				$member_id = $relationship->initiator_user_id;
 			}
 			if ( ! empty( $assoc_arr ) ) {
-				$fids[] = array( 'user_id' => $member_id );
+				$member_ids[] = array( 'user_id' => $member_id );
 			} else {
-				$fids[] = $member_id;
+				$member_ids[] = $member_id;
 			}
 		}
-		return array_map( 'intval', $fids );
+		return array_map( 'intval', $member_ids );
 	}
 
 	/**
