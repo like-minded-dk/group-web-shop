@@ -99,7 +99,7 @@ class BP_REST_Engagement_Endpoint extends WP_REST_Controller {
 		$args = array(
 			'id'                => $request->get_param( 'id' ),
 			'initiator_user_id' => $request->get_param( 'initiator_id' ),
-			'engagement_user_id'    => $request->get_param( 'engagement_id' ),
+			'receiver_user_id'    => $request->get_param( 'engagement_id' ),
 			'is_confirmed'      => $request->get_param( 'is_confirmed' ),
 			'order_by'          => $request->get_param( 'order_by' ),
 			'sort_order'        => strtoupper( $request->get_param( 'order' ) ),
@@ -551,7 +551,7 @@ class BP_REST_Engagement_Endpoint extends WP_REST_Controller {
 
 		// Remove a engagementship.
 		if ( true === $request->get_param( 'force' ) ) {
-			$deleted = engagements_remove_engagement( $engagementship->initiator_user_id, $engagementship->engagement_user_id );
+			$deleted = engagements_remove_engagement( $engagementship->initiator_user_id, $engagementship->receiver_user_id );
 		} else {
 
 			/**
@@ -561,7 +561,7 @@ class BP_REST_Engagement_Endpoint extends WP_REST_Controller {
 			 * This is the user who requested the engagementship, and is doing the withdrawing.
 			 */
 			if ( bp_loggedin_user_id() === $engagementship->initiator_user_id ) {
-				$deleted = engagements_withdraw_engagementship( $engagementship->initiator_user_id, $engagementship->engagement_user_id );
+				$deleted = engagements_withdraw_engagementship( $engagementship->initiator_user_id, $engagementship->receiver_user_id );
 			} else {
 				/**
 				 * Otherwise, this change is being initiated by the user, engagement,
@@ -639,7 +639,7 @@ class BP_REST_Engagement_Endpoint extends WP_REST_Controller {
 		$data = array(
 			'id'               => (int) $engagementship->id,
 			'initiator_id'     => (int) $engagementship->initiator_user_id,
-			'engagement_id'        => (int) $engagementship->engagement_user_id,
+			'engagement_id'        => (int) $engagementship->receiver_user_id,
 			'is_confirmed'     => (bool) $engagementship->is_confirmed,
 			'date_created'     => bp_rest_prepare_date_response( $engagementship->date_created, get_date_from_gmt( $engagementship->date_created ) ),
 			'date_created_gmt' => bp_rest_prepare_date_response( $engagementship->date_created ),
@@ -689,7 +689,7 @@ class BP_REST_Engagement_Endpoint extends WP_REST_Controller {
 				'embeddable' => true,
 			),
 			'engagement'     => array(
-				'href'       => bp_rest_get_object_url( $engagementship->engagement_user_id, 'members' ),
+				'href'       => bp_rest_get_object_url( $engagementship->receiver_user_id, 'members' ),
 				'embeddable' => true,
 			),
 		);
@@ -927,7 +927,7 @@ class BP_REST_Engagement_Endpoint extends WP_REST_Controller {
 			'description'       => __( 'Column name to order the results by.', 'buddypress' ),
 			'default'           => 'date_created',
 			'type'              => 'string',
-			'enum'              => array( 'date_created', 'initiator_user_id', 'engagement_user_id', 'id' ),
+			'enum'              => array( 'date_created', 'initiator_user_id', 'receiver_user_id', 'id' ),
 			'sanitize_callback' => 'sanitize_key',
 			'validate_callback' => 'rest_validate_request_arg',
 		);

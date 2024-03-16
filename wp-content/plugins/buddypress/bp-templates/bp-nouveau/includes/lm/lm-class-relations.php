@@ -174,7 +174,7 @@ class BP_Relations_Relationship {
 		}
 
 		$this->initiator_user_id = (int) $relationship->initiator_user_id;
-		$this->receiver_user_id      = (int) $relationship->receiver_user_id;
+		$this->receiver_user_id  = (int) $relationship->receiver_user_id;
 		$this->is_confirmed      = (int) $relationship->is_confirmed;
 		$this->is_limited        = (int) $relationship->is_limited;
 		$this->date_created      = $relationship->date_created;
@@ -773,8 +773,8 @@ class BP_Relations_Relationship {
 	 */
 	public static function update_bp_relations_cache( $user_id, $possible_member_ids ) {
 		error_log(' ');
-		error_log('class >'. json_encode('>>>update_bp_relations_cache'));
 		$bp_cache_key = static::$bp_cachekey;
+		error_log('class >'. json_encode('>>>update_bp_relations_cache'));
 		update_lm_relation_cache(static::$comp, $user_id, $possible_member_ids, $bp_cache_key);
 	}
 	/**

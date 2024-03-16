@@ -161,11 +161,11 @@ add_action( 'engagements_screen_my_engagements', 'bp_engagements_mark_engagement
  *
  * @param int $engagementship_id     The unique ID of the engagementship.
  * @param int $initiator_user_id The engagementship initiator user ID.
- * @param int $engagement_user_id    The engagementship request receiver user ID.
+ * @param int $receriver_user_id    The engagementship request receiver user ID.
  */
-function bp_engagements_engagementship_requested_notification( $engagementship_id, $initiator_user_id, $engagement_user_id ) {
+function bp_engagements_engagementship_requested_notification( $engagementship_id, $initiator_user_id, $receriver_user_id ) {
 	bp_notifications_add_notification( array(
-		'user_id'           => $engagement_user_id,
+		'user_id'           => $receriver_user_id,
 		'item_id'           => $initiator_user_id,
 		'secondary_item_id' => $engagementship_id,
 		'component_name'    => buddypress()->engagements->id,
@@ -185,7 +185,7 @@ add_action( 'engagements_engagementship_requested', 'bp_engagements_engagementsh
  * @param BP_Engagements_Engagementship $engagementship    The engagementship object.
  */
 function bp_engagements_mark_engagementship_rejected_notifications_by_item_id( $engagementship_id, $engagementship ) {
-	bp_notifications_mark_notifications_by_item_id( $engagementship->engagement_user_id, $engagementship->initiator_user_id, buddypress()->engagements->id, 'engagementship_request' );
+	bp_notifications_mark_notifications_by_item_id( $engagementship->receriver_user_id, $engagementship->initiator_user_id, buddypress()->engagements->id, 'engagementship_request' );
 }
 add_action( 'engagements_engagementship_rejected', 'bp_engagements_mark_engagementship_rejected_notifications_by_item_id', 10, 2 );
 
@@ -196,16 +196,16 @@ add_action( 'engagements_engagementship_rejected', 'bp_engagements_mark_engageme
  *
  * @param int $engagementship_id     The unique ID of the engagementship.
  * @param int $initiator_user_id The engagementship initiator user ID.
- * @param int $engagement_user_id    The engagementship request receiver user ID.
+ * @param int $receriver_user_id    The engagementship request receiver user ID.
  */
-function bp_engagements_add_engagementship_accepted_notification( $engagementship_id, $initiator_user_id, $engagement_user_id ) {
+function bp_engagements_add_engagementship_accepted_notification( $engagementship_id, $initiator_user_id, $receriver_user_id ) {
 	// Remove the engagement request notice.
-	bp_notifications_mark_notifications_by_item_id( $engagement_user_id, $initiator_user_id, buddypress()->engagements->id, 'engagementship_request' );
+	bp_notifications_mark_notifications_by_item_id( $receriver_user_id, $initiator_user_id, buddypress()->engagements->id, 'engagementship_request' );
 
 	// Add a engagement accepted notice for the initiating user.
 	bp_notifications_add_notification(  array(
 		'user_id'           => $initiator_user_id,
-		'item_id'           => $engagement_user_id,
+		'item_id'           => $receriver_user_id,
 		'secondary_item_id' => $engagementship_id,
 		'component_name'    => buddypress()->engagements->id,
 		'component_action'  => 'engagementship_accepted',
@@ -224,7 +224,7 @@ add_action( 'engagements_engagementship_accepted', 'bp_engagements_add_engagemen
  * @param BP_Engagements_Engagementship $engagementship    The engagementship object.
  */
 function bp_engagements_mark_engagementship_withdrawn_notifications_by_item_id( $engagementship_id, $engagementship ) {
-	bp_notifications_delete_notifications_by_item_id( $engagementship->engagement_user_id, $engagementship->initiator_user_id, buddypress()->engagements->id, 'engagementship_request' );
+	bp_notifications_delete_notifications_by_item_id( $engagementship->receriver_user_id, $engagementship->initiator_user_id, buddypress()->engagements->id, 'engagementship_request' );
 }
 add_action( 'engagements_engagementship_withdrawn', 'bp_engagements_mark_engagementship_withdrawn_notifications_by_item_id', 10, 2 );
 

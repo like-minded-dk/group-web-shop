@@ -8,14 +8,10 @@ function update_lm_relation_cache($comp, $user_id, $possible_member_ids, $bp_cac
 	if ($comp === 'friend') {
 		$comp_table = $bp->friends->table_name;
 		$oppo_table = $bp->engagements->table_name;
-		$comp_receiver_name = 'receiver_user_id';
-		$oppo_receiver_name = 'receiver_user_id';
 		$oppo = 'engagement';
 	} else {
 		$comp_table = $bp->engagements->table_name;
 		$oppo_table = $bp->friends->table_name;
-		$comp_receiver_name = 'receiver_user_id';
-		$oppo_receiver_name = 'receiver_user_id';
 		$oppo = 'friend';
 	}
 
@@ -34,18 +30,18 @@ function update_lm_relation_cache($comp, $user_id, $possible_member_ids, $bp_cac
 	$member_ids_for_sql = implode( ',', array_unique( $fetch ) );
 	// true means from component table
 	$sql = $wpdb->prepare( <<<SQL
-		SELECT id, initiator_user_id, {$comp_receiver_name}, is_confirmed, true as is_comp_table
+		SELECT id, initiator_user_id, receiver_user_id, is_confirmed, true as is_comp_table
 		FROM {$comp_table} 
-		WHERE (initiator_user_id = %d AND {$comp_receiver_name} IN ({$member_ids_for_sql}) ) 
+		WHERE (initiator_user_id = %d AND receiver_user_id IN ({$member_ids_for_sql}) ) 
 	SQL,
 	$user_id);
 	$comp_relationships = $wpdb->get_results( $sql );
 
 	// false means from opposit table
 	$sql = $wpdb->prepare( <<<SQL
-		SELECT id, initiator_user_id, {$oppo_receiver_name}, is_confirmed , false as is_comp_table
+		SELECT id, initiator_user_id, receiver_user_id, is_confirmed , false as is_comp_table
 		FROM {$oppo_table} 
-		WHERE ({$oppo_receiver_name} = %d AND initiator_user_id IN ({$member_ids_for_sql}) ) 
+		WHERE (receiver_user_id = %d AND initiator_user_id IN ({$member_ids_for_sql}) ) 
 	SQL,
 	$user_id);
 	$oppo_relationships = $wpdb->get_results( $sql );
@@ -57,21 +53,20 @@ function update_lm_relation_cache($comp, $user_id, $possible_member_ids, $bp_cac
 	error_log(json_encode('-------->>> bp_cache_key:'. $bp_cache_key));
 	// error_log('count rel: '.json_encode(count($relationships)));
 	// error_log(json_encode($relationship));
-	error_log(json_encode('-->>> comp_receiver_name: '. $comp_receiver_name . '  oppo_receiver_name: '. $oppo_receiver_name ));
 	error_log(json_encode('---------->>> comp_table: '. $comp_table . '  oppo_table: '. $oppo_table));
 	
 	foreach ( $relationships as $relationship ) {
 		$initiator_user_id = (int) $relationship->initiator_user_id;
+		$receiver_user_id = (int) $relationship->receiver_user_id;
+
 		error_log(json_encode($relationship));
 		if ( $relationship->is_comp_table ) {	
 			$tableLetter = $comp[0];
 			error_log(json_encode('---> has Ini record'));
-			$receiver_user_id = (int) $relationship->$comp_receiver_name;
 			$confirm_test = $initiator_user_id === $user_id;
 		} else {
 			$tableLetter = $oppo[0];
 			error_log(json_encode('---> has Reverse record'));
-			$receiver_user_id = (int) $relationship->$oppo_receiver_name;
 			$confirm_test = $receiver_user_id === $user_id;
 		}
 
@@ -100,8 +95,8 @@ function update_lm_relation_cache($comp, $user_id, $possible_member_ids, $bp_cac
 
 	// Set all those with no matching entry to "not engagements" status.
 	$not_engagement = array_diff( $fetch, $handled );
-	error_log('>>>fetched'.json_encode($fetch));
-	error_log('>>>handled'.json_encode($handled));
+	// error_log('>>>fetched'.json_encode($fetch));
+	// error_log('>>>handled'.json_encode($handled));
 	$empty_sts = "empty_sts_none_{$listName}";
 	foreach ( $not_engagement as $not_engagement_id ) {
 		error_log(json_encode(11111));
