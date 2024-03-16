@@ -30,7 +30,7 @@ class BP_Engagements_Engagementship extends BP_Relations_Relationship {
 	// not used yet
 	// private static $receiver_user_id = 'receiver_user_id';
 
-	public function __construct() {
-		parent::__construct('engagement');
+	public function __construct($id = null, $is_request = false, $populate_relation_details = true ) {
+		parent::__construct('engagement', $id, $is_request, $populate_relation_details);
 	}
 }

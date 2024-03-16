@@ -10,6 +10,33 @@ function break_sql($error = '') {
     throw new ErrorException($error);
 }
 
+function is_from_reverse($sts) {
+    return (strpos($sts, 'eList') && strpos($sts, 'fTable')) || (strpos($sts, 'fList') && strpos($sts, 'eTable'));
+}
+
+function get_ajax_action_list($comp){
+    $verbs = ['accept','reject','remove','add','pending','withdraw', 'member'];
+    $actions = [];
+    foreach (['', '_reversed'] as $suffix){
+        foreach ($verbs as $verb){
+            $actions[] = "{$comp}s_{$verb}_{$comp}{$suffix}";
+        }
+    }
+
+    return $actions;
+
+    // "{$comp}s_member_{$comp}ship",
+    // "{$comp}s_accept_{$comp}_reversed",
+    // "{$comp}s_reject_{$comp}_reversed",
+    // "{$comp}s_remove_{$comp}_reversed",
+    // "{$comp}s_accept_{$comp}",
+    // "{$comp}s_reject_{$comp}",
+    // "{$comp}s_remove_{$comp}",
+    // "{$comp}s_add_{$comp}",
+    // "{$comp}s_pending_{$comp}",
+    // "{$comp}s_withdraw_{$comp}",
+}
+
 function get_button_args_wrapper(
     $comp,
     $pid,

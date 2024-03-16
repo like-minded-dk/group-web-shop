@@ -82,32 +82,13 @@ class BP_Nouveau_Lm_Relations {
 	 * @since 3.0.0
 	 */
 	protected function setup_filters() {
-		// related to template-tags.php:296 
-		// https://github.com/like-minded-dk/group-web-shop/blob/3b2a9013818cbd6c8d8097f447b0e83a3e103b0f/wp-content/plugins/buddypress/bp-templates/bp-nouveau/includes/members/template-tags.php#L296
-
-		$buttons = $this->isf == 'friend' ? array(
-			'engagements_accept_engagement_as_receiver',
-			'engagements_reject_engagement_as_receiver',
-			'engagements_add_engagement',
-			'engagements_remove_engagement',
-			'engagements_pending_engagement',
-			'engagements_withdraw_engagement',
-			'engagements_member_engagementship',
-			'engagements_accept_engagement',
-			'engagements_reject_engagement',
-		) : array(
-			'friends_accept_friend_as_receiver',
-			'friends_accerejectend_as_receiver',
-			'friends_add_friend',
-			'friends_remove_friend',
-			'friends_pending_friend',
-			'friends_withdraw_friend',
-			'friends_member_friendship',
-			'friends_accept_friend',
-			'friends_reject_friend',
-		);
-        
+		// related to wp-content/plugins/buddypress/bp-core/classes/class-bp-button.php:366
+		// related wp-content/plugins/buddypress/bp-templates/bp-nouveau/includes/functions.php
+		// https://github.com/like-minded-dk/group-web-shop/blob/8860e5e3d5bde465e3a0e742902b0c7750b69d77/wp-content/plugins/buddypress/bp-templates/bp-nouveau/includes/functions.php#L190-L191
+		// https://github.com/like-minded-dk/group-web-shop/blob/8860e5e3d5bde465e3a0e742902b0c7750b69d77/wp-content/plugins/buddypress/bp-core/classes/class-bp-button.php#L366-L367
+		$buttons = get_ajax_action_list($this->comp);
 		foreach ( $buttons as $button ) {
+			// error_log(('[add_filter] bp_button_' . $button));
 			add_filter( 'bp_button_' . $button, 'bp_nouveau_ajax_button', 10, 5 );
 		}
 
@@ -160,29 +141,10 @@ class BP_Nouveau_Lm_Relations {
 	 * @since 12.0.0
 	 */
 	public function register_ajax_actions() {
-		$ajax_actions = $this->isf = 'friend' ? array(
-            'friends_accept_friend_as_receiver',
-			'friends_accerejectend_as_receiver',
-            'friends_remove_friend',
-            'friends_add_friend',
-            'friends_await_friend',
-            'friends_pending_friend',
-            'friends_withdraw_friend',
-            'friends_accept_friend',
-            'friends_reject_friend'
-		) : array (
-            'engagements_accept_engagement_as_receiver',
-			'engagements_reject_engagement_as_receiver',
-            'engagements_remove_engagement',
-            'engagements_add_engagement',
-            'engagements_await_engagement',
-            'engagements_pending_engagement',
-            'engagements_withdraw_engagement',
-            'engagements_accept_engagement',
-            'engagements_reject_engagement'
-       );
+		$ajax_actions = get_ajax_action_list($this->comp);
 
 		foreach ( $ajax_actions as $ajax_action ) {
+			// error_log(('[regester_action] bp_button_' . $ajax_action));
 			bp_ajax_register_action( $ajax_action );
 		}
 	}

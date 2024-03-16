@@ -174,36 +174,40 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 	if ( empty( $button->component ) ) {
 		return $output;
 	}
-
+	error_log(('[button-id]: '.$button->id));
 	// Custom data attribute.
 	$r['button_attr']['data-bp-btn-action'] = $button->id;
 
 	$reset_ids = 'engagements' == $button->component ? array(
-		'member_engagementship' => true,
+		'member_engagement' => true,
 		'group_membership'  => true,
 	) : array(
-		'member_friendship' => true,
+		'member_friend' => true,
 		'group_membership'  => true,
 	);
 	
+	//  test member_component exist
+	error_log('[$reset_ids]: '. json_encode($reset_ids));
 	if ( ! empty( $reset_ids[ $button->id ] ) )  {
 		$parse_class = array_map( 'sanitize_html_class', explode( ' ', $r['button_attr']['class'] ) );
 		if ( false === $parse_class ) {
 			return $output;
 		}
-		error_log('parse_class   >  '.json_encode($parse_class));
+		error_log('[parse_class] '.json_encode($parse_class));
 		$find_id = array_intersect( $parse_class, array(
-			'remove_friend_as_receiver',
+			'remove_engagement_reversed',
+			'add_engagement',
 			'remove_engagement',
 			'add_engagement',
-			'awaiting_engagement',
 			'pending_engagement',
+			'awaiting_engagement',
 
-			'remove_engagements_as_receiver',
+			'remove_friend_reversed',
+			'add_friend',
 			'remove_friend',
 			'add_friend',
-			'awaiting_friend',
 			'pending_friend',
+			'awaiting_friend',
 			
 			'leave-group',
 			'join-group',
@@ -212,6 +216,7 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 			'request-membership',
 		) );
 
+		error_log('[find_id] '. json_encode($find_id));
 		// @todo output html
 		//error_log('-------output html------------'.json_encode($output));
 		if ( 1 !== count( $find_id ) ) {
@@ -223,7 +228,8 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 		} elseif ( 'group_membership' === $button->id ) {
 			$data_attribute = str_replace( '-', '_', $data_attribute );
 		}
-
+		error_log('[button_attr] '. ($data_attribute));
+		error_log(' -- ');
 		$r['button_attr']['data-bp-btn-action'] = $data_attribute;
 	}
 
@@ -585,7 +591,6 @@ function bp_nouveau_get_component_filters( $context = '', $component = '' ) {
 	}
 
 	if ( 'members' === $component ) {
-		error_log(json_encode('-----------debug--'));
 		$filters = bp_nouveau_get_members_filters( $context );
 	} elseif ( 'activity' === $component ) {
 		$filters = bp_nouveau_get_activity_filters();

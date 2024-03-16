@@ -10,7 +10,7 @@ function add_relation_button($comp, &$buttons, $user_id, $type, $parent_class, $
 			'request_type' => 'friendship_request',
 			'accept_ship' => 'accept_friend',
 			'reject_ship' => 'reject_friend',
-			'member_ship' => 'member_friendship',
+			'member_ship' => 'member_friend',
 			'accept_link' => 'bp_get_friend_accept_request_link',
 			'reject_link' => 'bp_get_friend_reject_request_link',
 			'add_btn_args' => 'bp_get_add_friend_button_args'
@@ -20,7 +20,7 @@ function add_relation_button($comp, &$buttons, $user_id, $type, $parent_class, $
 			'request_type' => 'engagementship_request',
 			'accept_ship' => 'accept_engagement',
 			'reject_ship' => 'reject_engagement',
-			'member_ship' => 'member_engagementship',
+			'member_ship' => 'member_engagement',
 			'accept_link' => 'bp_get_engagement_accept_request_link',
 			'reject_link' => 'bp_get_engagement_reject_request_link',
 			'add_btn_args' => 'bp_get_add_engagement_button_args'

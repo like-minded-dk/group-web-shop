@@ -99,10 +99,9 @@ function engagements_add_engagement( $initiator_userid, $receiver_userid, $force
  * @return bool True on success, false on failure.
  */
 function engagements_remove_engagement( $initiator_userid, $receiver_userid ) {
-
-	$engagementship_id = BP_Engagements_Engagementship::get_relationship_id(  $initiator_userid, $receiver_userid );
-	$engagementship    = new BP_Engagements_Engagementship( $engagementship_id );
-
+	$relationship_id = BP_Engagements_Engagementship::get_relationship_id(  $initiator_userid, $receiver_userid );
+	$relationship    = new BP_Engagements_Engagementship( $relationship_id );
+	// error_log('[delete relationship]' . json_encode($relationship));
 	/**
 	 * Fires before the deletion of a engagementship activity item
 	 * for the user who canceled the engagementship.
@@ -113,7 +112,7 @@ function engagements_remove_engagement( $initiator_userid, $receiver_userid ) {
 	 * @param int $initiator_userid ID of the engagementship initiator.
 	 * @param int $receiver_userid    ID of the engagement user.
 	 */
-	do_action( 'engagements_before_engagementship_delete', $engagementship_id, $initiator_userid, $receiver_userid );
+	do_action( 'engagements_before_engagementship_delete', $relationship_id, $initiator_userid, $receiver_userid );
 
 	/**
 	 * Fires before the engagementship connection is removed.
@@ -127,9 +126,9 @@ function engagements_remove_engagement( $initiator_userid, $receiver_userid ) {
 	 * @param int $initiator_userid ID of the engagementship initiator.
 	 * @param int $receiver_userid    ID of the engagement user.
 	 */
-	do_action( 'engagements_engagementship_deleted', $engagementship_id, $initiator_userid, $receiver_userid );
+	do_action( 'engagements_engagementship_deleted', $relationship_id, $initiator_userid, $receiver_userid );
 
-	if ( $engagementship->delete() ) {
+	if ( $relationship->delete() ) {
 		engagements_update_engagement_totals( $initiator_userid, $receiver_userid, 'remove' );
 
 		/**
@@ -225,7 +224,7 @@ function engagements_reject_engagement( $engagementship_id ) {
  * @param int $receiver_userid    ID of the requested engagement.
  * @return bool True on success, false on failure.
  */
-function engagements_withdraw_engagementship( $initiator_userid, $receiver_userid ) {
+function engagements_withdraw_engagement( $initiator_userid, $receiver_userid ) {
 	$engagementship_id = BP_Engagements_Engagementship::get_relationship_id(  $initiator_userid, $receiver_userid );
 	$engagementship    = new BP_Engagements_Engagementship( $engagementship_id, false, false );
 

@@ -242,7 +242,7 @@ class BP_Relations_Relationship {
 		// Update.
 		if ( ! empty( $this->id ) ) {
 			try {
-				break_sql("update table {$this->comp} : $bp->{$this->component_ins}->table_name} user: {$this->initiator_user_id} receiver: {$this->receiver_user_id}");
+				break_sql('[action] update [table] '. $this->component_ins . ' [initiator_user_id] '. $this->initiator_user_id . ' [receiver_user_id] '. $this->receiver_user_id);
 
 				$result = $wpdb->query( $wpdb->prepare( <<<SQL
 					UPDATE {$bp->{$this->component_ins}->table_name}
@@ -265,7 +265,7 @@ class BP_Relations_Relationship {
 		// Save.
 		} else {
 			try {
-				break_sql("Add to table {$this->comp} : $bp->{$this->component_ins}->table_name} user: {$this->initiator_user_id} receiver: {$this->receiver_user_id}");
+				break_sql('[action] save [table] '. $this->component_ins . ' [initiator_user_id] '. $this->initiator_user_id . ' [receiver_user_id] '. $this->receiver_user_id);
 
 				$result = $wpdb->query( $wpdb->prepare( <<<SQL
 					INSERT INTO {$bp->{$this->component_ins}->table_name} 
@@ -312,9 +312,9 @@ class BP_Relations_Relationship {
 		global $wpdb;
 
 		$bp = buddypress();
-
+		// error_log('[delete method]' . json_encode($this));
 		try {
-			break_sql('delete relation id: '.json_encode($this->id));
+			break_sql('[action] delete [table] '. $this->component_ins . ' [relation_id] '. $this->id);
 
 			return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->{$this->component_ins}->table_name} WHERE id = %d", $this->id ) );
 
@@ -537,7 +537,6 @@ class BP_Relations_Relationship {
 		}
 
 		$relationships = static::get_relationships( $user_id, $args );
-		error_log('---$relationships: '.json_encode($relationships));
 		$user_id     = (int) $user_id;
 
 		$member_ids = array();
@@ -827,7 +826,7 @@ class BP_Relations_Relationship {
 
 		$bp = buddypress();
 		try {
-			break_sql('>>>accept $relation_id 868: '.json_encode($relation_id));
+			break_sql('[action] accept [component] '. static::$component . ' [relation_id] '.json_encode($relation_id));
 
 			return $wpdb->query( $wpdb->prepare( <<<SQL
 				UPDATE {$bp->{static::$component}->table_name}
@@ -852,7 +851,7 @@ class BP_Relations_Relationship {
 		global $wpdb;
 		$bp = buddypress();
 		try {
-			break_sql('>>>withdraw $relation_id 868: '.json_encode($relation_id));
+			break_sql('[action] withdraw [component] '. static::$component . ' [relation_id] '.json_encode($relation_id));
 
 			return $wpdb->query( $wpdb->prepare( "DELETE FROM {$bp->{static::$component}->table_name} WHERE id = %d AND initiator_user_id = %d", $relation_id, bp_loggedin_user_id() ) );
 
@@ -874,7 +873,7 @@ class BP_Relations_Relationship {
 
 		$bp = buddypress();
 		try {
-			break_sql('>>reject $relation_id 820 delete id: '.json_encode($relation_id));
+			break_sql('[action] reject [component] '. static::$component . ' [relation_id] '.json_encode($relation_id));
 
 			return $wpdb->query( $wpdb->prepare( <<<SQL
 				DELETE FROM {$bp->{static::$component}->table_name}

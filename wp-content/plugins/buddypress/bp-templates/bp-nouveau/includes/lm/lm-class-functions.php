@@ -99,7 +99,6 @@ function update_lm_relation_cache($comp, $user_id, $possible_member_ids, $bp_cac
 	// error_log('>>>handled'.json_encode($handled));
 	$empty_sts = "empty_sts_none_{$listName}";
 	foreach ( $not_engagement as $not_engagement_id ) {
-		error_log(json_encode(11111));
 		bp_core_set_incremented_cache( $user_id . ':' . $not_engagement_id, $bp_cache_key, $empty_sts );
 		bp_core_set_incremented_cache( $not_engagement_id . ':' . $user_id, $bp_cache_key, $empty_sts );
 	}

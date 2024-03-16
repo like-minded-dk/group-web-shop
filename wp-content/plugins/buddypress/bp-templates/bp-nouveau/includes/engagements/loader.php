@@ -82,7 +82,7 @@
 // 		// related to template-tags.php:296 
 // 		// https://github.com/like-minded-dk/group-web-shop/blob/3b2a9013818cbd6c8d8097f447b0e83a3e103b0f/wp-content/plugins/buddypress/bp-templates/bp-nouveau/includes/members/template-tags.php#L296
 // 		$buttons = array(
-// 			'engagements_remove_engagement_as_receiver',
+// 			'engagements_remove_engagement_reversed',
 // 			'engagements_add_engagement',
 // 			'engagements_remove_engagement',
 // 			'engagements_pending_engagement',
@@ -132,7 +132,7 @@
 // 	 */
 // 	public function register_ajax_actions() {
 // 		$ajax_actions = array(
-// 			'engagements_remove_engagement_as_receiver',
+// 			'engagements_remove_engagement_reversed',
 // 			'engagements_remove_engagement',
 // 			'engagements_add_engagement',
 // 			'engagements_await_engagement',

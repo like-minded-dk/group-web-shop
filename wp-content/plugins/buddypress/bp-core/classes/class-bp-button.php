@@ -257,7 +257,6 @@ class BP_Button {
 		$this->component         = $r['component'];
 		$this->must_be_logged_in = (bool) $r['must_be_logged_in'];
 		$this->block_self        = (bool) $r['block_self'];
-
 		// $id and $component are required and component must be active.
 		if ( empty( $r['id'] ) || empty( $r['component'] ) || ! bp_is_active( $this->component ) ) {
 			return false;
@@ -363,6 +362,7 @@ class BP_Button {
 		 * @param string    $after    HTML appended after the actual button.
 		 * @param array     $r        Parsed button arguments.
 		 */
+		error_log('[apply_filters] bp_button_' . $this->component . '_' . $this->id);
 		$this->contents = apply_filters( 'bp_button_' . $this->component . '_' . $this->id, $this->contents, $this, $before, $after, $r );
 	}
 

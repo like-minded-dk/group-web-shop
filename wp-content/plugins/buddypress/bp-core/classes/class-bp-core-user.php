@@ -214,7 +214,10 @@ class BP_Core_User {
 	public function populate_extras() {
 
 		if ( bp_is_active( 'friends' ) ) {
-			$this->total_friends = BP_Friends_Friendship::total_friend_count( $this->id );
+			$this->total_friends = BP_Friends_Friendship::total_relation_count( $this->id );
+		}
+		if ( bp_is_active( 'engagements' ) ) {
+			$this->total_friends = BP_Engagements_Engagementship::total_relation_count( $this->id );
 		}
 
 		if ( bp_is_active( 'groups' ) ) {

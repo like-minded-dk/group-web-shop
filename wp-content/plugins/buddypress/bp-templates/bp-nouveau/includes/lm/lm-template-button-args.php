@@ -29,9 +29,9 @@ function get_button_args ($pid, $comp) {
         return;   
     } elseif (strpos($comp_list_sts, 'confirmed_sts') !== false ) {
         if ($from_reversed_table) {
-            $button_args =  relation_btn_args($comp, "remove_{$comp}", $pid, $sg, $relation_id);
+            $button_args =  relation_btn_args($comp, "remove_{$comp}_reversed", $pid, $sg, $relation_id);
         } else {
-            $button_args =  relation_btn_args($comp, "remove_{$oppo}", $pid, $sg, $relation_id);
+            $button_args =  relation_btn_args($comp, "remove_{$comp}", $pid, $sg, $relation_id);
         }
     } elseif (strpos($comp_list_sts, 'empty_sts') !== false ) {
         $button_args =  relation_btn_args($comp, "add_{$comp}", $pid, $sg, $relation_id);
@@ -82,9 +82,8 @@ function get_template_vars($pid, $comp) {
 	$oppo_list_sts = ($comp == 'friend' ? $est  : $fst);
 
     // $parsed_cls = explode($comp_list_sts, '_');
-    $from_reversed_table = (strpos($comp_list_sts, 'eList') && strpos($comp_list_sts, 'fTable')) ||
-                   (strpos($comp_list_sts, 'fList') && strpos($comp_list_sts, 'eTable'));
-	$relation_id = ($is_btn_reversed == '1' ? $rev_id  : $ini_id);
+    $from_reversed_table = is_from_reverse($comp_list_sts);
+	$relation_id = ($from_reversed_table ? $rev_id  : $ini_id);
 
 	return [
 		$pid,
@@ -106,7 +105,7 @@ function relation_btn_args($comp, $status, $pid, $sg, $relation_id) {
     $pending_comp = array(
         'act' => 'pending_' . $comp,
         'ver' => $comp . 's_withdraw_' . $comp,
-        'text' => $is_f ? 'Cancel Supply-R PDF' : 'Cancel Resell-S' ,
+        'text' => $is_f ? 'Cancel Supply-R' : 'Cancel Resell-S' ,
     );
     $awaiting_comp = array(
         'act' => 'awaiting_' . $comp,
@@ -118,21 +117,15 @@ function relation_btn_args($comp, $status, $pid, $sg, $relation_id) {
         'ver' => $comp . 's_remove_' . $comp,
         'text' => $is_f ? 'Stop Supply-R' : 'Stop Resell-S', 
     );
+    $remove_oppo = array(
+        'act' => 'remove_' . $comp . '_reversed',
+        'ver' => $oppo . 's_remove_' . $oppo,
+        'text' => $is_f ? 'Stop Supply-R' : 'Stop Resell-S', 
+    );
     $add_comp = array(
         'act' => 'add_' . $comp,
         'ver' => $comp . 's_add_' . $comp,
         'text' => $is_f ? 'Supply-R' : 'Resell-S', 
-    );
-    $remove_oppo = array(
-        'act' => 'remove_' . $oppo,
-        'ver' => $oppo . 's_remove_' . $oppo,
-        'text' => $is_f ? 'Stop Resell-R' : 'Stop Supply-S', 
-    );
-
-    $remove_oppo = array(
-        'act' => 'remove_' . $oppo,
-        'ver' => $oppo . 's_remove_' . $oppo,
-        'text' => $is_f ? 'Stop Resell-R' : 'Stop Supply-S', 
     );
 
     switch ( $status ) {

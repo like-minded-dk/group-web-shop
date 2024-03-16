@@ -82,7 +82,7 @@
 // 		// related to template-tags.php:296 
 // 		// https://github.com/like-minded-dk/group-web-shop/blob/3b2a9013818cbd6c8d8097f447b0e83a3e103b0f/wp-content/plugins/buddypress/bp-templates/bp-nouveau/includes/members/template-tags.php#L296
 // 		$buttons = array(
-// 			'friends_remove_friend_as_receiver',
+// 			'friends_remove_friend_reversed',
 // 			'friends_add_friend',
 // 			'friends_remove_friend',
 // 			'friends_pending_friend',
@@ -132,7 +132,7 @@
 // 	 */
 // 	public function register_ajax_actions() {
 // 		$ajax_actions = array(
-// 			'friends_remove_friend_as_receiver',
+// 			'friends_remove_friend_reversed',
 // 			'friends_remove_friend',
 // 			'friends_add_friend',
 // 			'friends_awaiting_friend',
