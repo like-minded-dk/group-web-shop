@@ -401,7 +401,7 @@ function friends_search_friends( $search_terms, $user_id, $pag_num = 10, $pag_pa
  * @return array|bool An array of user IDs, or false if none are found.
  */
 function friends_get_relationship_request_user_ids( $user_id ) {
-	return BP_Friends_Friendship::get_relationship_request_user_ids( 'friend', $user_id );
+	return BP_Friends_Friendship::get_relationship_request_user_ids( $user_id );
 }
 
 /**
