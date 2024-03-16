@@ -2,12 +2,12 @@
 /*
     ETB 17->9-0 + ETB 9->17-conf_1 | FTB 17->9-0 + FTB 9->17-conf_1
     means Engagement Table in wordpress,  wp_bp_engagement table,  
-    Has initiator 17 , engagement_user_id 9, confirmed is 1 
-    And enagement table has initiator 9 , engagement_user_id 17, confirmed is 1
+    Has initiator 17 , receiver_user_id 9, confirmed is 1 
+    And enagement table has initiator 9 , receiver_user_id 17, confirmed is 1
     or reversed condition:
     Friend Table in wordpress,  wp_bp_friend table,  
-    Has initiator 17 , friend_user_id 9, confirmed is 1 
-    And friend table has initiator 9 , friend_user_id 17, confirmed is 1
+    Has initiator 17 , receiver_user_id 9, confirmed is 1 
+    And friend table has initiator 9 , receiver_user_id 17, confirmed is 1
 */
 function get_button_args ($pid, $comp) {
 	$oppo = $comp == 'friend' ? 'engagement' : 'friend'; 

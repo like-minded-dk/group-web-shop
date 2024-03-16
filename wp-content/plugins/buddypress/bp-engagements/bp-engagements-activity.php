@@ -263,7 +263,7 @@ function bp_engagements_filter_activity_scope( $retval = array(), $filter = arra
 	}
 
 	// Determine engagements of user.
-	$engagements = engagements_get_engagement_user_ids( $user_id );
+	$engagements = engagements_get_receiver_user_ids( $user_id );
 	if ( empty( $engagements ) ) {
 		$engagements = array( 0 );
 	}
@@ -378,9 +378,9 @@ add_filter( 'bp_activity_set_just-me_scope_args', 'bp_engagements_filter_activit
  *
  * @param int $engagementship_id     ID of the engagementship.
  * @param int $initiator_user_id ID of engagementship initiator.
- * @param int $engagement_user_id    ID of user whose engagementship is requested.
+ * @param int $receiver_user_id    ID of user whose engagementship is requested.
  */
-function bp_engagements_engagementship_accepted_activity( $engagementship_id, $initiator_user_id, $engagement_user_id ) {
+function bp_engagements_engagementship_accepted_activity( $engagementship_id, $initiator_user_id, $receiver_user_id ) {
 	if ( ! bp_is_active( 'activity' ) ) {
 		return;
 	}
@@ -390,7 +390,7 @@ function bp_engagements_engagementship_accepted_activity( $engagementship_id, $i
 		'user_id'           => $initiator_user_id,
 		'type'              => 'engagementship_created',
 		'item_id'           => $engagementship_id,
-		'secondary_item_id' => $engagement_user_id,
+		'secondary_item_id' => $receiver_user_id,
 	) );
 }
 add_action( 'engagements_engagementship_accepted', 'bp_engagements_engagementship_accepted_activity', 10, 3 );

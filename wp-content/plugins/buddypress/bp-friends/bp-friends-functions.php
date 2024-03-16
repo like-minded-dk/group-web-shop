@@ -45,7 +45,7 @@ function friends_add_friend( $initiator_userid, $friend_userid, $force_accept = 
 	// Setup the friendship data.
 	$friendship = new BP_Friends_Friendship;
 	$friendship->initiator_user_id = (int) $initiator_userid;
-	$friendship->friend_user_id    = (int) $friend_userid;
+	$friendship->receiver_user_id    = (int) $friend_userid;
 	$friendship->is_confirmed      = 0;
 	$friendship->is_limited        = 0;
 	$friendship->date_created      = bp_core_current_time();
@@ -66,7 +66,7 @@ function friends_add_friend( $initiator_userid, $friend_userid, $force_accept = 
 	// Update friend totals.
 	} else {
 		$action = 'accepted';
-		friends_update_friend_totals( $friendship->initiator_user_id, $friendship->friend_user_id, 'add' );
+		friends_update_friend_totals( $friendship->initiator_user_id, $friendship->receiver_user_id, 'add' );
 	}
 
 	/**
@@ -79,10 +79,10 @@ function friends_add_friend( $initiator_userid, $friend_userid, $force_accept = 
 	 *
 	 * @param int                   $id                ID of the pending friendship connection.
 	 * @param int                   $initiator_user_id ID of the friendship initiator.
-	 * @param int                   $friend_user_id    ID of the friend user.
+	 * @param int                   $receiver_user_id    ID of the friend user.
 	 * @param BP_Friends_Friendship $friendship        The friendship object.
 	 */
-	do_action( 'friends_friendship_' . $action, $friendship->id, $friendship->initiator_user_id, $friendship->friend_user_id, $friendship );
+	do_action( 'friends_friendship_' . $action, $friendship->id, $friendship->initiator_user_id, $friendship->receiver_user_id, $friendship );
 
 	return true;
 }
@@ -167,7 +167,7 @@ function friends_accept_friend( $relationship_id ) {
 	if ( empty( $friendship->is_confirmed ) && BP_Friends_Friendship::accept( 'friend', $relationship_id ) ) {
 
 		// Bump the friendship counts.
-		friends_update_friend_totals( $friendship->initiator_user_id, $friendship->friend_user_id );
+		friends_update_friend_totals( $friendship->initiator_user_id, $friendship->receiver_user_id );
 
 		/**
 		 * Fires after a friendship is accepted.
@@ -176,10 +176,10 @@ function friends_accept_friend( $relationship_id ) {
 		 *
 		 * @param int                   $id                ID of the pending friendship object.
 		 * @param int                   $initiator_user_id ID of the friendship initiator.
-		 * @param int                   $friend_user_id    ID of the user requested friendship with.
+		 * @param int                   $receiver_user_id    ID of the user requested friendship with.
 		 * @param BP_Friends_Friendship $friendship        The friendship object.
 		 */
-		do_action( 'friends_friendship_accepted', $friendship->id, $friendship->initiator_user_id, $friendship->friend_user_id, $friendship );
+		do_action( 'friends_friendship_accepted', $friendship->id, $friendship->initiator_user_id, $friendship->receiver_user_id, $friendship );
 
 		return true;
 	}
@@ -347,11 +347,11 @@ function friends_check_user_has_friends( $user_id ) {
  * @since 1.2.0
  *
  * @param int $initiator_user_id ID of the first user.
- * @param int $friend_user_id    ID of the second user.
+ * @param int $receiver_user_id    ID of the second user.
  * @return int|null ID of the friendship if found, otherwise null.
  */
-function friends_get_relationship_id( $initiator_user_id, $friend_user_id ) {
-	return BP_Friends_Friendship::get_relationship_id( 'friend', $initiator_user_id, $friend_user_id );
+function friends_get_relationship_id( $initiator_user_id, $receiver_user_id ) {
+	return BP_Friends_Friendship::get_relationship_id( 'friend', $initiator_user_id, $receiver_user_id );
 }
 
 /**
@@ -367,7 +367,7 @@ function friends_get_relationship_id( $initiator_user_id, $friend_user_id ) {
  *                                   array of user IDs. Default: false.
  * @return array
  */
-function friends_get_friend_user_ids( $user_id, $friend_requests_only = false, $assoc_arr = false ) {
+function friends_get_receiver_user_ids( $user_id, $friend_requests_only = false, $assoc_arr = false ) {
 	return BP_Friends_Friendship::get_relation_user_ids( 'friend', $user_id, $friend_requests_only, $assoc_arr );
 }
 
@@ -596,21 +596,21 @@ function friends_get_friends_invite_list( $user_id = 0, $group_id = 0 ) {
 			bp_the_member();
 
 			// Get the user ID of the friend.
-			$friend_user_id = bp_get_member_user_id();
+			$receiver_user_id = bp_get_member_user_id();
 
 			// Skip friend if already in the group.
-			if ( groups_is_user_member( $friend_user_id, $group_id ) ) {
+			if ( groups_is_user_member( $receiver_user_id, $group_id ) ) {
 				continue;
 			}
 
 			// Skip friend if not group admin and user banned from group.
-			if ( ( false === $user_is_admin ) && groups_is_user_banned( $friend_user_id, $group_id ) ) {
+			if ( ( false === $user_is_admin ) && groups_is_user_banned( $receiver_user_id, $group_id ) ) {
 				continue;
 			}
 
 			// Friend is safe, so add it to the array of possible friends.
 			$friends[] = array(
-				'id'        => $friend_user_id,
+				'id'        => $receiver_user_id,
 				'full_name' => bp_get_member_name(),
 			);
 
@@ -720,18 +720,18 @@ function friends_is_friend_confirmed( $relationship_id ) {
  * @since 1.0.0
  *
  * @param int    $initiator_user_id ID of the first user.
- * @param int    $friend_user_id    ID of the second user.
+ * @param int    $receiver_user_id    ID of the second user.
  * @param string $status            Optional. The friendship event that's been triggered.
  *                                  'add' will ++ each user's friend counts, while any other string
  *                                  will --.
  */
-function friends_update_friend_totals( $initiator_user_id, $friend_user_id, $status = 'add' ) {
+function friends_update_friend_totals( $initiator_user_id, $receiver_user_id, $status = 'add' ) {
 	if ( 'add' === $status ) {
 		bp_update_user_meta( $initiator_user_id, 'total_friend_count', (int) bp_get_user_meta( $initiator_user_id, 'total_friend_count', true ) + 1 );
-		bp_update_user_meta( $friend_user_id, 'total_friend_count', (int) bp_get_user_meta( $friend_user_id, 'total_friend_count', true ) + 1 );
+		bp_update_user_meta( $receiver_user_id, 'total_friend_count', (int) bp_get_user_meta( $receiver_user_id, 'total_friend_count', true ) + 1 );
 	} else {
 		bp_update_user_meta( $initiator_user_id, 'total_friend_count', (int) bp_get_user_meta( $initiator_user_id, 'total_friend_count', true ) - 1 );
-		bp_update_user_meta( $friend_user_id, 'total_friend_count', (int) bp_get_user_meta( $friend_user_id, 'total_friend_count', true ) - 1 );
+		bp_update_user_meta( $receiver_user_id, 'total_friend_count', (int) bp_get_user_meta( $receiver_user_id, 'total_friend_count', true ) - 1 );
 	}
 }
 
@@ -961,7 +961,7 @@ function bp_friends_personal_data_exporter( $email_address, $page ) {
 
 	foreach ( $friendships as $friendship ) {
 		if ( (int) $user->ID === (int) $friendship->initiator_user_id ) {
-			$member_id         = $friendship->friend_user_id;
+			$member_id         = $friendship->receiver_user_id;
 			$user_is_initiator = true;
 		} else {
 			$member_id         = $friendship->initiator_user_id;
@@ -1033,7 +1033,7 @@ function bp_friends_pending_sent_requests_personal_data_exporter( $email_address
 		$item_data = array(
 			array(
 				'name'  => __( 'Recipient', 'buddypress' ),
-				'value' => bp_core_get_userlink( $friendship->friend_user_id ),
+				'value' => bp_core_get_userlink( $friendship->receiver_user_id ),
 			),
 			array(
 				'name'  => __( 'Date Sent', 'buddypress' ),
@@ -1044,7 +1044,7 @@ function bp_friends_pending_sent_requests_personal_data_exporter( $email_address
 		$data_to_export[] = array(
 			'group_id'    => 'bp_friends_pending_sent_requests',
 			'group_label' => __( 'Pending Friend Requests (Sent)', 'buddypress' ),
-			'item_id'     => "bp-friends-pending-sent-request-{$friendship->friend_user_id}",
+			'item_id'     => "bp-friends-pending-sent-request-{$friendship->receiver_user_id}",
 			'data'        => $item_data,
 		);
 	}
@@ -1082,7 +1082,7 @@ function bp_friends_pending_received_requests_personal_data_exporter( $email_add
 
 	$friendships = BP_Friends_Friendship::get_relationships( 'engagement', $user->ID, array(
 		'is_confirmed'   => false,
-		'friend_user_id' => $user->ID,
+		'receiver_user_id' => $user->ID,
 		'page'           => $page,
 		'per_page'       => $number,
 	) );

@@ -8,14 +8,14 @@ function update_lm_relation_cache($comp, $user_id, $possible_member_ids, $bp_cac
 	if ($comp === 'friend') {
 		$comp_table = $bp->friends->table_name;
 		$oppo_table = $bp->engagements->table_name;
-		$comp_receiver_name = 'friend_user_id';
-		$oppo_receiver_name = 'engagement_user_id';
+		$comp_receiver_name = 'receiver_user_id';
+		$oppo_receiver_name = 'receiver_user_id';
 		$oppo = 'engagement';
 	} else {
 		$comp_table = $bp->engagements->table_name;
 		$oppo_table = $bp->friends->table_name;
-		$comp_receiver_name = 'engagement_user_id';
-		$oppo_receiver_name = 'friend_user_id';
+		$comp_receiver_name = 'receiver_user_id';
+		$oppo_receiver_name = 'receiver_user_id';
 		$oppo = 'friend';
 	}
 

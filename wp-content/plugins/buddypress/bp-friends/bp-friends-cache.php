@@ -29,7 +29,7 @@ function friends_clear_friend_object_cache( $friendship_id ) {
 	}
 
 	wp_cache_delete( 'friends_friend_ids_' . $friendship->initiator_user_id, 'bp' );
-	wp_cache_delete( 'friends_friend_ids_' . $friendship->friend_user_id, 'bp' );
+	wp_cache_delete( 'friends_friend_ids_' . $friendship->receiver_user_id, 'bp' );
 }
 
 // List actions to clear object caches on.
@@ -43,12 +43,12 @@ add_action( 'friends_friendship_deleted', 'friends_clear_friend_object_cache' );
  *
  * @param int $friendship_id     ID of the friendship that has changed.
  * @param int $initiator_user_id ID of the first user.
- * @param int $friend_user_id    ID of the second user.
+ * @param int $receiver_user_id    ID of the second user.
  */
-function bp_friends_clear_bp_friends_friendships_cache( $friendship_id, $initiator_user_id, $friend_user_id ) {
+function bp_friends_clear_bp_friends_friendships_cache( $friendship_id, $initiator_user_id, $receiver_user_id ) {
 	// Clear friendship ID cache for each user.
 	wp_cache_delete( $initiator_user_id, 'bp_friends_friendships_for_user' );
-	wp_cache_delete( $friend_user_id, 'bp_friends_friendships_for_user' );
+	wp_cache_delete( $receiver_user_id, 'bp_friends_friendships_for_user' );
 
 	// Clear the friendship object cache.
 	wp_cache_delete( $friendship_id, 'bp_friends_friendships' );
@@ -56,7 +56,7 @@ function bp_friends_clear_bp_friends_friendships_cache( $friendship_id, $initiat
 	// Clear incremented cache.
 	$friendship = new stdClass;
 	$friendship->initiator_user_id = $initiator_user_id;
-	$friendship->friend_user_id    = $friend_user_id;
+	$friendship->receiver_user_id    = $receiver_user_id;
 	bp_friends_delete_cached_friendships_on_friendship_save( $friendship );
 }
 add_action( 'friends_friendship_requested', 'bp_friends_clear_bp_friends_friendships_cache', 10, 3 );
@@ -74,7 +74,7 @@ add_action( 'friends_friendship_deleted', 'bp_friends_clear_bp_friends_friendshi
 function bp_friends_clear_bp_friends_friendships_cache_remove( $friendship_id, $friendship ) {
 	// Clear friendship ID cache for each user.
 	wp_cache_delete( $friendship->initiator_user_id, 'bp_friends_friendships_for_user' );
-	wp_cache_delete( $friendship->friend_user_id, 'bp_friends_friendships_for_user' );
+	wp_cache_delete( $friendship->receiver_user_id, 'bp_friends_friendships_for_user' );
 
 	// Clear the friendship object cache.
 	wp_cache_delete( $friendship_id, 'bp_friends_friendships' );
@@ -90,10 +90,10 @@ add_action( 'friends_friendship_rejected', 'bp_friends_clear_bp_friends_friendsh
  *
  * @since 2.0.0
  *
- * @param int $friend_user_id The user ID not initiating the friendship.
+ * @param int $receiver_user_id The user ID not initiating the friendship.
  */
-function bp_friends_clear_request_cache( $friend_user_id ) {
-	wp_cache_delete( $friend_user_id, 'bp_friends_requests' );
+function bp_friends_clear_request_cache( $receiver_user_id ) {
+	wp_cache_delete( $receiver_user_id, 'bp_friends_requests' );
 }
 
 /**
@@ -105,10 +105,10 @@ function bp_friends_clear_request_cache( $friend_user_id ) {
  *
  * @param int $friendship_id     The friendship ID.
  * @param int $initiator_user_id The user ID initiating the friendship.
- * @param int $friend_user_id    The user ID not initiating the friendship.
+ * @param int $receiver_user_id    The user ID not initiating the friendship.
  */
-function bp_friends_clear_request_cache_on_save( $friendship_id, $initiator_user_id, $friend_user_id ) {
-	bp_friends_clear_request_cache( $friend_user_id );
+function bp_friends_clear_request_cache_on_save( $friendship_id, $initiator_user_id, $receiver_user_id ) {
+	bp_friends_clear_request_cache( $receiver_user_id );
 }
 add_action( 'friends_friendship_requested', 'bp_friends_clear_request_cache_on_save', 10, 3 );
 add_action( 'friends_friendship_accepted', 'bp_friends_clear_request_cache_on_save', 10, 3 );
@@ -124,7 +124,7 @@ add_action( 'friends_friendship_accepted', 'bp_friends_clear_request_cache_on_sa
  * @param BP_Friends_Friendship $friendship    The friendship object.
  */
 function bp_friends_clear_request_cache_on_remove( $friendship_id, $friendship ) {
-	bp_friends_clear_request_cache( $friendship->friend_user_id );
+	bp_friends_clear_request_cache( $friendship->receiver_user_id );
 }
 add_action( 'friends_friendship_withdrawn', 'bp_friends_clear_request_cache_on_remove', 10, 2 );
 add_action( 'friends_friendship_rejected', 'bp_friends_clear_request_cache_on_remove', 10, 2 );
@@ -137,8 +137,8 @@ add_action( 'friends_friendship_rejected', 'bp_friends_clear_request_cache_on_re
  * @param BP_Friends_Friendship $friendship The friendship object.
  */
 function bp_friends_delete_cached_friendships_on_friendship_save( $friendship ) {
-	bp_core_delete_incremented_cache( $friendship->friend_user_id . ':' . $friendship->initiator_user_id, 'bp_friends' );
-	bp_core_delete_incremented_cache( $friendship->initiator_user_id . ':' . $friendship->friend_user_id, 'bp_friends' );
+	bp_core_delete_incremented_cache( $friendship->receiver_user_id . ':' . $friendship->initiator_user_id, 'bp_friends' );
+	bp_core_delete_incremented_cache( $friendship->initiator_user_id . ':' . $friendship->receiver_user_id, 'bp_friends' );
 }
 add_action( 'friends_friendship_after_save', 'bp_friends_delete_cached_friendships_on_friendship_save' );
 

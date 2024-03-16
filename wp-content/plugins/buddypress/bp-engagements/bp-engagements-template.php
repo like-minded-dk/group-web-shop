@@ -273,13 +273,13 @@ function bp_get_engagement_ids( $user_id = 0 ) {
 		$user_id = ( bp_displayed_user_id() ) ? bp_displayed_user_id() : bp_loggedin_user_id();
 	}
 
-	$engagement_ids = engagements_get_engagement_user_ids( $user_id );
+	$engagement_ids = engagements_get_receiver_user_ids( $user_id );
 
 	if ( empty( $engagement_ids ) ) {
 		return false;
 	}
 
-	return implode( ',', engagements_get_engagement_user_ids( $user_id ) );
+	return implode( ',', engagements_get_receiver_user_ids( $user_id ) );
 }
 
 /**

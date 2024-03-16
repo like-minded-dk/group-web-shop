@@ -45,7 +45,7 @@ function engagements_add_engagement( $initiator_userid, $engagement_userid, $for
 	// Setup the engagementship data.
 	$engagementship = new BP_Engagements_Engagementship;
 	$engagementship->initiator_user_id = (int) $initiator_userid;
-	$engagementship->engagement_user_id    = (int) $engagement_userid;
+	$engagementship->receiver_user_id    = (int) $engagement_userid;
 	$engagementship->is_confirmed      = 0;
 	$engagementship->is_limited        = 0;
 	$engagementship->date_created      = bp_core_current_time();
@@ -66,7 +66,7 @@ function engagements_add_engagement( $initiator_userid, $engagement_userid, $for
 	// Update engagement totals.
 	} else {
 		$action = 'accepted';
-		engagements_update_engagement_totals( $engagementship->initiator_user_id, $engagementship->engagement_user_id, 'add' );
+		engagements_update_engagement_totals( $engagementship->initiator_user_id, $engagementship->receiver_user_id, 'add' );
 	}
 
 	/**
@@ -79,10 +79,10 @@ function engagements_add_engagement( $initiator_userid, $engagement_userid, $for
 	 *
 	 * @param int                   $id                ID of the pending engagementship connection.
 	 * @param int                   $initiator_user_id ID of the engagementship initiator.
-	 * @param int                   $engagement_user_id    ID of the engagement user.
+	 * @param int                   $receiver_user_id    ID of the engagement user.
 	 * @param BP_Engagements_Engagementship $engagementship        The engagementship object.
 	 */
-	do_action( 'engagements_engagementship_' . $action, $engagementship->id, $engagementship->initiator_user_id, $engagementship->engagement_user_id, $engagementship );
+	do_action( 'engagements_engagementship_' . $action, $engagementship->id, $engagementship->initiator_user_id, $engagementship->receiver_user_id, $engagementship );
 
 	return true;
 }
@@ -166,7 +166,7 @@ function engagements_accept_engagement( $engagementship_id ) {
 	if ( empty( $engagementship->is_confirmed ) && BP_Engagements_Engagementship::accept(  $engagementship_id ) ) {
 
 		// Bump the engagementship counts.
-		engagements_update_engagement_totals( $engagementship->initiator_user_id, $engagementship->engagement_user_id );
+		engagements_update_engagement_totals( $engagementship->initiator_user_id, $engagementship->receiver_user_id );
 
 		/**
 		 * Fires after a engagementship is accepted.
@@ -175,10 +175,10 @@ function engagements_accept_engagement( $engagementship_id ) {
 		 *
 		 * @param int                   $id                ID of the pending engagementship object.
 		 * @param int                   $initiator_user_id ID of the engagementship initiator.
-		 * @param int                   $engagement_user_id    ID of the user requested engagementship with.
+		 * @param int                   $receiver_user_id    ID of the user requested engagementship with.
 		 * @param BP_Engagements_Engagementship $engagementship        The engagementship object.
 		 */
-		do_action( 'engagements_engagementship_accepted', $engagementship->id, $engagementship->initiator_user_id, $engagementship->engagement_user_id, $engagementship );
+		do_action( 'engagements_engagementship_accepted', $engagementship->id, $engagementship->initiator_user_id, $engagementship->receiver_user_id, $engagementship );
 
 		return true;
 	}
@@ -345,11 +345,11 @@ function engagements_check_user_has_engagements( $user_id ) {
  * @since 1.2.0
  *
  * @param int $initiator_user_id ID of the first user.
- * @param int $engagement_user_id    ID of the second user.
+ * @param int $receiver_user_id    ID of the second user.
  * @return int|null ID of the engagementship if found, otherwise null.
  */
-function engagements_get_relationship_id( $initiator_user_id, $engagement_user_id ) {
-	return BP_Engagements_Engagementship::get_relationship_id(  $initiator_user_id, $engagement_user_id );
+function engagements_get_relationship_id( $initiator_user_id, $receiver_user_id ) {
+	return BP_Engagements_Engagementship::get_relationship_id(  $initiator_user_id, $receiver_user_id );
 }
 
 /**
@@ -365,7 +365,7 @@ function engagements_get_relationship_id( $initiator_user_id, $engagement_user_i
  *                                   array of user IDs. Default: false.
  * @return array
  */
-function engagements_get_engagement_user_ids( $user_id, $engagement_requests_only = false, $assoc_arr = false ) {
+function engagements_get_receiver_user_ids( $user_id, $engagement_requests_only = false, $assoc_arr = false ) {
 	return BP_Engagements_Engagementship::get_relation_user_ids(  $user_id, $engagement_requests_only, $assoc_arr );
 }
 
@@ -594,21 +594,21 @@ function engagements_get_engagements_invite_list( $user_id = 0, $group_id = 0 ) 
 			bp_the_member();
 
 			// Get the user ID of the engagement.
-			$engagement_user_id = bp_get_member_user_id();
+			$receiver_user_id = bp_get_member_user_id();
 
 			// Skip engagement if already in the group.
-			if ( groups_is_user_member( $engagement_user_id, $group_id ) ) {
+			if ( groups_is_user_member( $receiver_user_id, $group_id ) ) {
 				continue;
 			}
 
 			// Skip engagement if not group admin and user banned from group.
-			if ( ( false === $user_is_admin ) && groups_is_user_banned( $engagement_user_id, $group_id ) ) {
+			if ( ( false === $user_is_admin ) && groups_is_user_banned( $receiver_user_id, $group_id ) ) {
 				continue;
 			}
 
 			// engagement is safe, so add it to the array of possible engagements.
 			$engagements[] = array(
-				'id'        => $engagement_user_id,
+				'id'        => $receiver_user_id,
 				'full_name' => bp_get_member_name(),
 			);
 
@@ -718,18 +718,18 @@ function engagements_is_engagementship_confirmed( $engagementship_id ) {
  * @since 1.0.0
  *
  * @param int    $initiator_user_id ID of the first user.
- * @param int    $engagement_user_id    ID of the second user.
+ * @param int    $receiver_user_id    ID of the second user.
  * @param string $status            Optional. The engagementship event that's been triggered.
  *                                  'add' will ++ each user's engagement counts, while any other string
  *                                  will --.
  */
-function engagements_update_engagement_totals( $initiator_user_id, $engagement_user_id, $status = 'add' ) {
+function engagements_update_engagement_totals( $initiator_user_id, $receiver_user_id, $status = 'add' ) {
 	if ( 'add' === $status ) {
 		bp_update_user_meta( $initiator_user_id, 'total_engagement_count', (int) bp_get_user_meta( $initiator_user_id, 'total_engagement_count', true ) + 1 );
-		bp_update_user_meta( $engagement_user_id, 'total_engagement_count', (int) bp_get_user_meta( $engagement_user_id, 'total_engagement_count', true ) + 1 );
+		bp_update_user_meta( $receiver_user_id, 'total_engagement_count', (int) bp_get_user_meta( $receiver_user_id, 'total_engagement_count', true ) + 1 );
 	} else {
 		bp_update_user_meta( $initiator_user_id, 'total_engagement_count', (int) bp_get_user_meta( $initiator_user_id, 'total_engagement_count', true ) - 1 );
-		bp_update_user_meta( $engagement_user_id, 'total_engagement_count', (int) bp_get_user_meta( $engagement_user_id, 'total_engagement_count', true ) - 1 );
+		bp_update_user_meta( $receiver_user_id, 'total_engagement_count', (int) bp_get_user_meta( $receiver_user_id, 'total_engagement_count', true ) - 1 );
 	}
 }
 
@@ -960,7 +960,7 @@ function bp_engagements_personal_data_exporter( $email_address, $page ) {
 
 	foreach ( $engagementships as $engagementship ) {
 		if ( (int) $user->ID === (int) $engagementship->initiator_user_id ) {
-			$engagement_id         = $engagementship->engagement_user_id;
+			$engagement_id         = $engagementship->receiver_user_id;
 			$user_is_initiator = true;
 		} else {
 			$engagement_id         = $engagementship->initiator_user_id;
@@ -1032,7 +1032,7 @@ function bp_engagements_pending_sent_requests_personal_data_exporter( $email_add
 		$item_data = array(
 			array(
 				'name'  => __( 'Recipient', 'buddypress' ),
-				'value' => bp_core_get_userlink( $engagementship->engagement_user_id ),
+				'value' => bp_core_get_userlink( $engagementship->receiver_user_id ),
 			),
 			array(
 				'name'  => __( 'Date Sent', 'buddypress' ),
@@ -1043,7 +1043,7 @@ function bp_engagements_pending_sent_requests_personal_data_exporter( $email_add
 		$data_to_export[] = array(
 			'group_id'    => 'bp_engagements_pending_sent_requests',
 			'group_label' => __( 'Pending engagement Requests (Sent)', 'buddypress' ),
-			'item_id'     => "bp-engagements-pending-sent-request-{$engagementship->engagement_user_id}",
+			'item_id'     => "bp-engagements-pending-sent-request-{$engagementship->receiver_user_id}",
 			'data'        => $item_data,
 		);
 	}
@@ -1081,7 +1081,7 @@ function bp_engagements_pending_received_requests_personal_data_exporter( $email
 
 	$engagementships = BP_Engagements_Engagementship::get_relationships(  $user->ID, array(
 		'is_confirmed'   => false,
-		'engagement_user_id' => $user->ID,
+		'receiver_user_id' => $user->ID,
 		'page'           => $page,
 		'per_page'       => $number,
 	) );

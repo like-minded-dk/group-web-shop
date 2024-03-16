@@ -272,13 +272,13 @@ function bp_get_friend_ids( $user_id = 0 ) {
 		$user_id = ( bp_displayed_user_id() ) ? bp_displayed_user_id() : bp_loggedin_user_id();
 	}
 
-	$friend_ids = friends_get_friend_user_ids( $user_id );
+	$friend_ids = friends_get_receiver_user_ids( $user_id );
 
 	if ( empty( $friend_ids ) ) {
 		return false;
 	}
 
-	return implode( ',', friends_get_friend_user_ids( $user_id ) );
+	return implode( ',', friends_get_receiver_user_ids( $user_id ) );
 }
 
 /**

@@ -106,22 +106,22 @@ function is_initiator($component = '') {
 	
 	$state = 0;
 	if ($component== 'friend') {
-		$relations1 = $wpdb->get_results( "SELECT * FROM wp_bp_friends WHERE friend_user_id = {$member_id} AND initiator_user_id = {$user_id}", OBJECT );
+		$relations1 = $wpdb->get_results( "SELECT * FROM wp_bp_friends WHERE receiver_user_id = {$member_id} AND initiator_user_id = {$user_id}", OBJECT );
 		if (!empty($relations1)) {
 			$state += 1;
 		} 
-		$relations2 = $wpdb->get_results( "SELECT * FROM wp_bp_friends WHERE friend_user_id = {$user_id} AND initiator_user_id = {$member_id}", OBJECT );
+		$relations2 = $wpdb->get_results( "SELECT * FROM wp_bp_friends WHERE receiver_user_id = {$user_id} AND initiator_user_id = {$member_id}", OBJECT );
 		if (!empty($relations2)) {
 			$state += 3;
 		}
 	}
 
 	if ($component== 'engagement') {
-		$relations1 = $wpdb->get_results( "SELECT * FROM wp_bp_engagements WHERE engagement_user_id = {$member_id} AND initiator_user_id = {$user_id}", OBJECT );
+		$relations1 = $wpdb->get_results( "SELECT * FROM wp_bp_engagements WHERE receiver_user_id = {$member_id} AND initiator_user_id = {$user_id}", OBJECT );
 		if (!empty($relations1)) {
 			$state += 1;
 		} 
-		$relations2 = $wpdb->get_results( "SELECT * FROM wp_bp_engagements WHERE engagement_user_id = {$user_id} AND initiator_user_id = {$member_id}", OBJECT );
+		$relations2 = $wpdb->get_results( "SELECT * FROM wp_bp_engagements WHERE receiver_user_id = {$user_id} AND initiator_user_id = {$member_id}", OBJECT );
 		if (!empty($relations2)) {
 			$state += 3;
 		}
@@ -139,8 +139,8 @@ function print_initiator($component = '') {
 	global $wpdb;
 
 	$results='';
-		$relations1 = $wpdb->get_results( "SELECT * FROM wp_bp_friends WHERE friend_user_id = {$member_id} AND initiator_user_id = {$user_id}", OBJECT );
-		$relations2 = $wpdb->get_results( "SELECT * FROM wp_bp_friends WHERE friend_user_id = {$user_id} AND initiator_user_id = {$member_id}", OBJECT );
+		$relations1 = $wpdb->get_results( "SELECT * FROM wp_bp_friends WHERE receiver_user_id = {$member_id} AND initiator_user_id = {$user_id}", OBJECT );
+		$relations2 = $wpdb->get_results( "SELECT * FROM wp_bp_friends WHERE receiver_user_id = {$user_id} AND initiator_user_id = {$member_id}", OBJECT );
 		$relations = array_merge($relations1, $relations2);
 		foreach ($relations as $relation) {
 			$results .= '<br> '.$relation->id;
@@ -151,8 +151,8 @@ function print_initiator($component = '') {
 			}
 		}
 	
-		$relations1 = $wpdb->get_results( "SELECT * FROM wp_bp_engagements WHERE engagement_user_id = {$member_id} AND initiator_user_id = {$user_id}", OBJECT );
-		$relations2 = $wpdb->get_results( "SELECT * FROM wp_bp_engagements WHERE engagement_user_id = {$user_id} AND initiator_user_id = {$member_id}", OBJECT );
+		$relations1 = $wpdb->get_results( "SELECT * FROM wp_bp_engagements WHERE receiver_user_id = {$member_id} AND initiator_user_id = {$user_id}", OBJECT );
+		$relations2 = $wpdb->get_results( "SELECT * FROM wp_bp_engagements WHERE receiver_user_id = {$user_id} AND initiator_user_id = {$member_id}", OBJECT );
 		$relations = array_merge($relations1, $relations2);
 		foreach ($relations as $relation) {
 			$results .= '<br> '.$relation->id;

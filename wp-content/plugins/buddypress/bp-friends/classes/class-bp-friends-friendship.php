@@ -21,8 +21,6 @@ class BP_Friends_Friendship extends BP_Relations_Relationship {
 	// both static and instanc used
 	public static $comp = 'friend';
 	public static $component = 'friends';
-	public static $receiver_id = 'friend_user_id';
-	public static $reverse_receiver_id = 'engagement_user_id';
 	public static $bp_cachekey_relation = 'bp_friends_relationships';
 
 	// only used in static method
@@ -30,7 +28,7 @@ class BP_Friends_Friendship extends BP_Relations_Relationship {
 	public static $bp_cachekey_user = 'bp_friends_relationships_for_user';
 
 	// not used yet
-	// private static $friend_user_id = 'friend_user_id';
+	// private static $receiver_user_id = 'receiver_user_id';
 
 	public function __construct() {
 		parent::__construct('friend');

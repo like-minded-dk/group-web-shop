@@ -406,8 +406,8 @@ class BP_User_Query {
 		$is_engagment = bp_is_active( 'engagements' ) && bp_is_current_component('engagements');
 		$is_friend = bp_is_active( 'friends' ) && bp_is_current_component('friends');
 
-		$friend_ids = friends_get_friend_user_ids( $user_id );
-		$engagement_ids = engagements_get_engagement_user_ids( $user_id );
+		$friend_ids = friends_get_receiver_user_ids( $user_id );
+		$engagement_ids = engagements_get_receiver_user_ids( $user_id );
 		error_log('================= '.json_encode($engagement_ids));
 		if ( ! empty( $user_id ) && ($is_engagment || $is_friend) ) {
 			// todo lm  merge friend and engagement
@@ -424,7 +424,7 @@ class BP_User_Query {
 		}
 
 		// if ( ! empty( $user_id ) && bp_is_active( 'engagements' ) && bp_is_current_component('engagements') ) {
-		// 	$engagement_ids = engagements_get_engagement_user_ids( $user_id );
+		// 	$engagement_ids = engagements_get_receiver_user_ids( $user_id );
 		// 	$engagement_ids = implode( ',', wp_parse_id_list( $engagement_ids ) );
 		// 	if ( ! empty( $engagement_ids ) ) {
 		// 		$sql['where'][] = "u.{$this->uid_name} IN ({$engagement_ids})";
