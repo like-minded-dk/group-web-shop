@@ -151,7 +151,7 @@ class BP_Relations_Relationship {
 	 * @param bool     $populate_relation_details Optional. True if relation details should be queried.
 	 */
 	public function __construct($comp, $id = null, $is_request = false, $populate_relation_details = true ) {        
-        foreach (BP_Relations_Relationship::$conf[$comp] as $key => $value) {
+        foreach (self::$conf[$comp] as $key => $value) {
             $this->$key = $value;
         }
 
@@ -385,14 +385,14 @@ class BP_Relations_Relationship {
 		// First, we get all relationships that involve the user.
 		$relationship_ids = wp_cache_get( $user_id, $cf['bp_cachekey_user'] );
 		if ( false === $relationship_ids ) {
-			$relationship_ids = BP_Relations_Relationship::get_relationship_ids_for_user( $comp, $user_id );
+			$relationship_ids = self::get_relationship_ids_for_user( $comp, $user_id );
 			wp_cache_set( $user_id, $relationship_ids, $cf['bp_cachekey_user'] );
 		}
 
 		// Prime the membership cache.
 		$uncached_relationship_ids = bp_get_non_cached_ids( $relationship_ids, $cf['bp_cachekey_relation'] );
 		if ( ! empty( $uncached_relationship_ids ) ) {
-			$uncached_relationships = BP_Relations_Relationship::get_relationships_by_id( $comp, $uncached_relationship_ids );
+			$uncached_relationships = self::get_relationships_by_id( $comp, $uncached_relationship_ids );
 
 			foreach ( $uncached_relationships as $uncached_relationship ) {
 				wp_cache_set( $uncached_relationship->id, $uncached_relationship, $cf['bp_cachekey_relation'] );
@@ -544,7 +544,7 @@ class BP_Relations_Relationship {
 			}
 		}
 
-		$relationships = BP_Relations_Relationship::get_relationships( $comp, $user_id, $args );
+		$relationships = self::get_relationships( $comp, $user_id, $args );
 		$user_id     = (int) $user_id;
 
 		$fids = array();
@@ -588,7 +588,7 @@ class BP_Relations_Relationship {
 			'initiator_user_id' => $member_id,
 			$receiver_id        => $member_id,
 		);
-		$result = BP_Relations_Relationship::get_relationships( $comp, $user_id, $args, 'OR' );
+		$result = self::get_relationships( $comp, $user_id, $args, 'OR' );
 		$result = array_filter($result, function($v, $k) use ($user_id) {
 			return $v->initiator_user_id == $user_id;
 		}, ARRAY_FILTER_USE_BOTH);
@@ -613,7 +613,7 @@ class BP_Relations_Relationship {
 		$relation_requests = wp_cache_get( $user_id, $cf['bp_cachekey_request'] );
 
 		if ( false === $relation_requests ) {
-			$relation_requests = BP_Relations_Relationship::get_relation_user_ids( $comp, $user_id, true );
+			$relation_requests = self::get_relation_user_ids( $comp, $user_id, true );
 
 			wp_cache_set( $user_id, $relation_requests, $cf['bp_cachekey_request'] );
 		}
@@ -647,7 +647,7 @@ class BP_Relations_Relationship {
 		 */
 
 		$args        = array( 'is_confirmed' => 1 );
-		$relationships = BP_Relations_Relationship::get_relationships( $comp, $user_id, $args );
+		$relationships = self::get_relationships( $comp, $user_id, $args );
 		$count       = count( $relationships );
 
 		// Do not update meta if user has never had relations.
@@ -699,7 +699,7 @@ class BP_Relations_Relationship {
 			$pag_sql = $wpdb->prepare( " LIMIT %d, %d", intval( ( $page - 1 ) * $limit), intval( $limit ) );
 		}
 
-		$relations_ids = BP_Relations_Relationship::get_relation_user_ids( $comp, $user_id );
+		$relations_ids = self::get_relation_user_ids( $comp, $user_id );
 		if ( ! $relations_ids ) {
 			return false;
 		}
@@ -1087,7 +1087,7 @@ class BP_Relations_Relationship {
 
 		// Setup some data we'll use below.
 		$is_group_admin  = groups_is_user_admin( $user_id, $group_id );
-		$relation_ids    = BP_Relations_Relationship::get_relation_user_ids( $comp, $user_id );
+		$relation_ids    = self::get_relation_user_ids( $comp, $user_id );
 		$invitable_count = 0;
 
 		for ( $i = 0, $count = count( $relation_ids ); $i < $count; ++$i ) {
@@ -1179,7 +1179,7 @@ class BP_Relations_Relationship {
 		$user_id = (int) $user_id;
 
 		// Get all relationships, of any status, for the user.
-		$relationships    = BP_Relations_Relationship::get_relationships( $comp, $user_id );
+		$relationships    = self::get_relationships( $comp, $user_id );
 		$relation_ids     = array();
 		$relationship_ids = array();
 		foreach ( $relationships as $relationship ) {
