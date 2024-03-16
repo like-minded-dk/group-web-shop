@@ -100,7 +100,7 @@ function engagements_add_engagement( $initiator_userid, $engagement_userid, $for
  */
 function engagements_remove_engagement( $initiator_userid, $engagement_userid ) {
 
-	$engagementship_id = BP_Engagements_Engagementship::get_relationship_id( 'engagement', $initiator_userid, $engagement_userid );
+	$engagementship_id = BP_Engagements_Engagementship::get_relationship_id(  $initiator_userid, $engagement_userid );
 	$engagementship    = new BP_Engagements_Engagementship( $engagementship_id );
 
 	/**
@@ -163,7 +163,7 @@ function engagements_accept_engagement( $engagementship_id ) {
 	$engagementship = new BP_Engagements_Engagementship( $engagementship_id, false, false );
 
 	// Accepting engagementship.
-	if ( empty( $engagementship->is_confirmed ) && BP_Engagements_Engagementship::accept( 'engagement', $engagementship_id ) ) {
+	if ( empty( $engagementship->is_confirmed ) && BP_Engagements_Engagementship::accept(  $engagementship_id ) ) {
 
 		// Bump the engagementship counts.
 		engagements_update_engagement_totals( $engagementship->initiator_user_id, $engagementship->engagement_user_id );
@@ -197,7 +197,7 @@ function engagements_accept_engagement( $engagementship_id ) {
 function engagements_reject_engagement( $engagementship_id ) {
 	$engagementship = new BP_Engagements_Engagementship( $engagementship_id, false, false );
 
-	if ( empty( $engagementship->is_confirmed ) && BP_Engagements_Engagementship::reject( 'engagement', $engagementship_id ) ) {
+	if ( empty( $engagementship->is_confirmed ) && BP_Engagements_Engagementship::reject(  $engagementship_id ) ) {
 
 		/**
 		 * Fires after a engagementship request is rejected.
@@ -226,10 +226,10 @@ function engagements_reject_engagement( $engagementship_id ) {
  * @return bool True on success, false on failure.
  */
 function engagements_withdraw_engagementship( $initiator_userid, $engagement_userid ) {
-	$engagementship_id = BP_Engagements_Engagementship::get_relationship_id( 'engagement', $initiator_userid, $engagement_userid );
+	$engagementship_id = BP_Engagements_Engagementship::get_relationship_id(  $initiator_userid, $engagement_userid );
 	$engagementship    = new BP_Engagements_Engagementship( $engagementship_id, false, false );
 
-	if ( empty( $engagementship->is_confirmed ) && BP_Engagements_Engagementship::withdraw( 'engagement', $engagementship_id ) ) {
+	if ( empty( $engagementship->is_confirmed ) && BP_Engagements_Engagementship::withdraw(  $engagementship_id ) ) {
 
 		// @deprecated Since 1.9
 		do_action_ref_array( 'engagements_engagementship_whithdrawn', array( $engagementship_id, &$engagementship ) );
@@ -260,7 +260,7 @@ function engagements_withdraw_engagementship( $initiator_userid, $engagement_use
  * @return bool Returns true if the two users are engagements, otherwise false.
  */
 function engagements_check_engagementship( $user_id, $possible_engagement_id ) {
-	return ( 'is_engagement' === BP_Engagements_Engagementship::check_is_relation( 'engagement', $user_id, $possible_engagement_id ) );
+	return ( 'is_engagement' === BP_Engagements_Engagementship::check_is_relation(  $user_id, $possible_engagement_id ) );
 }
 
 /**
@@ -287,7 +287,7 @@ function engagements_check_engagementship_status( $user_id, $possible_engagement
 		}
 	}
 
-	return BP_Engagements_Engagementship::check_is_relation( 'engagement', $user_id, $possible_engagement_id );
+	return BP_Engagements_Engagementship::check_is_relation(  $user_id, $possible_engagement_id );
 }
 
 /**
@@ -349,7 +349,7 @@ function engagements_check_user_has_engagements( $user_id ) {
  * @return int|null ID of the engagementship if found, otherwise null.
  */
 function engagements_get_relationship_id( $initiator_user_id, $engagement_user_id ) {
-	return BP_Engagements_Engagementship::get_relationship_id( 'engagement', $initiator_user_id, $engagement_user_id );
+	return BP_Engagements_Engagementship::get_relationship_id(  $initiator_user_id, $engagement_user_id );
 }
 
 /**
@@ -366,7 +366,7 @@ function engagements_get_relationship_id( $initiator_user_id, $engagement_user_i
  * @return array
  */
 function engagements_get_engagement_user_ids( $user_id, $engagement_requests_only = false, $assoc_arr = false ) {
-	return BP_Engagements_Engagementship::get_relation_user_ids( 'engagement', $user_id, $engagement_requests_only, $assoc_arr );
+	return BP_Engagements_Engagementship::get_relation_user_ids(  $user_id, $engagement_requests_only, $assoc_arr );
 }
 
 /**
@@ -399,7 +399,7 @@ function engagements_search_engagements( $search_terms, $user_id, $pag_num = 10,
  * @return array|bool An array of user IDs, or false if none are found.
  */
 function engagements_get_relationship_request_user_ids( $user_id ) {
-	return BP_Engagements_Engagementship::get_relationship_request_user_ids( 'engagement', $user_id );
+	return BP_Engagements_Engagementship::get_relationship_request_user_ids(  $user_id );
 }
 
 /**
@@ -648,7 +648,7 @@ function engagements_get_engagements_invite_list( $user_id = 0, $group_id = 0 ) 
  * @return int Eligible engagement count.
  */
 function engagements_count_invitable_engagements( $user_id, $group_id ) {
-	return BP_Engagements_Engagementship::get_invitable_relation_count( 'engagement', $user_id, $group_id );
+	return BP_Engagements_Engagementship::get_invitable_relation_count(  $user_id, $group_id );
 }
 
 /**
@@ -661,7 +661,7 @@ function engagements_count_invitable_engagements( $user_id, $group_id ) {
  * @return int engagement count for the user.
  */
 function engagements_get_engagement_count_for_user( $user_id ) {
-	return BP_Engagements_Engagementship::total_relation_count( 'engagement', $user_id );
+	return BP_Engagements_Engagementship::total_relation_count(  $user_id );
 }
 
 /**
@@ -757,7 +757,7 @@ function engagements_remove_data( $user_id ) {
 	 */
 	do_action( 'engagements_before_remove_data', $user_id );
 
-	BP_Engagements_Engagementship::delete_all_for_user( 'engagement', $user_id );
+	BP_Engagements_Engagementship::delete_all_for_user(  $user_id );
 
 	// Remove usermeta.
 	bp_delete_user_meta( $user_id, 'total_engagement_count' );
@@ -951,7 +951,7 @@ function bp_engagements_personal_data_exporter( $email_address, $page ) {
 		);
 	}
 
-	$engagementships = BP_Engagements_Engagementship::get_relationships( 'engagement', $user->ID, array(
+	$engagementships = BP_Engagements_Engagementship::get_relationships(  $user->ID, array(
 		'is_confirmed' => true,
 		'page'         => $page,
 		'per_page'     => $number,
@@ -1021,7 +1021,7 @@ function bp_engagements_pending_sent_requests_personal_data_exporter( $email_add
 		);
 	}
 
-	$engagementships = BP_Engagements_Engagementship::get_relationships( 'engagement', $user->ID, array(
+	$engagementships = BP_Engagements_Engagementship::get_relationships(  $user->ID, array(
 		'is_confirmed'      => false,
 		'initiator_user_id' => $user->ID,
 		'page'              => $page,
@@ -1079,7 +1079,7 @@ function bp_engagements_pending_received_requests_personal_data_exporter( $email
 		);
 	}
 
-	$engagementships = BP_Engagements_Engagementship::get_relationships( 'engagement', $user->ID, array(
+	$engagementships = BP_Engagements_Engagementship::get_relationships(  $user->ID, array(
 		'is_confirmed'   => false,
 		'engagement_user_id' => $user->ID,
 		'page'           => $page,
