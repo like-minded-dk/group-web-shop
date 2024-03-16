@@ -54,6 +54,7 @@ class BP_Nouveau_Members {
 	 * @since 3.0.0
 	 */
 	protected function setup_actions() {
+		error_log(json_encode('-----------debug--222'));
 		$ajax_actions = array(
 			array(
 				'members_filter' => array(

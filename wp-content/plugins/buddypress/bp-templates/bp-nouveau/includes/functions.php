@@ -585,6 +585,7 @@ function bp_nouveau_get_component_filters( $context = '', $component = '' ) {
 	}
 
 	if ( 'members' === $component ) {
+		error_log(json_encode('-----------debug--'));
 		$filters = bp_nouveau_get_members_filters( $context );
 	} elseif ( 'activity' === $component ) {
 		$filters = bp_nouveau_get_activity_filters();

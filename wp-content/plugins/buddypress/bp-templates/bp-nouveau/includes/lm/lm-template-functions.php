@@ -28,20 +28,21 @@ function get_relation($table, $initiator = 1) {
 		[$user_id , $member_id] = [$member_id , $user_id];
 	}
 	global $wpdb;
-	$result = $wpdb->get_results( "SELECT * FROM wp_bp_{$table}s WHERE initiator_user_id = {$user_id} AND {$table}_user_id = {$member_id} ",ARRAY_N );
+	$result = $wpdb->get_results( "SELECT * FROM wp_bp_{$table}s WHERE initiator_user_id = {$user_id} AND receiver_user_id = {$member_id} ",ARRAY_N );
 	// return 1st id from database, otherwise return null
 	return $result[0][0] ?? 0;
 }
 
-function is_oppsit_relation($table) {
-	$oppsite = $table == 'friend' ? 'engagement' : 'friend';
+function is_oppsit_relation($comp) {
+	$comp_table = $comp == 'friend' ? 'wp_bp_friends' : 'wp_bp_engagements';
+	$oppo_table = $comp == 'friend' ? 'wp_bp_engagements' : 'wp_bp_friends';
 	$user_id = bp_loggedin_user_id();
 	$member_id = bp_get_member_user_id();
 
 	global $wpdb;
-	$initial_comp_relation = $wpdb->get_results( "SELECT * FROM wp_bp_{$table}s WHERE initiator_user_id = {$user_id} AND {$table}_user_id = {$member_id}", OBJECT );
-	$reverse_oppo_relation = $wpdb->get_results( "SELECT * FROM wp_bp_{$oppsite}s WHERE initiator_user_id = {$member_id} AND {$oppsite}_user_id = {$user_id}", OBJECT );
-    $reverse_comp_relation = $wpdb->get_results( "SELECT * FROM wp_bp_{$table}s WHERE initiator_user_id = {$member_id} AND {$table}_user_id = {$user_id}", OBJECT );
+	$initial_comp_relation = $wpdb->get_results( "SELECT * FROM {$comp_table} WHERE initiator_user_id = {$user_id} AND receiver_user_id = {$member_id}", OBJECT );
+	$reverse_oppo_relation = $wpdb->get_results( "SELECT * FROM {$oppo_table} WHERE initiator_user_id = {$member_id} AND receiver_user_id = {$user_id}", OBJECT );
+    $reverse_comp_relation = $wpdb->get_results( "SELECT * FROM {$comp_table} WHERE initiator_user_id = {$member_id} AND receiver_user_id = {$user_id}", OBJECT );
 
 	if (count($initial_comp_relation)) {
 		return 0;
