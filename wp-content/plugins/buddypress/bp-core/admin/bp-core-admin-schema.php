@@ -179,12 +179,50 @@ function bp_core_install_friends() {
 	$sql[] = "CREATE TABLE {$bp_prefix}bp_friends (
 				id bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
 				initiator_user_id bigint(20) NOT NULL,
-				friend_user_id bigint(20) NOT NULL,
+				receiver_user_id bigint(20) NOT NULL,
 				is_confirmed bool DEFAULT 0,
 				is_limited bool DEFAULT 0,
 				date_created datetime NOT NULL,
 				KEY initiator_user_id (initiator_user_id),
-				KEY friend_user_id (friend_user_id)
+				KEY receiver_user_id (receiver_user_id)
+			) {$charset_collate};";
+
+	dbDelta( $sql );
+}
+
+function bp_core_install_engagements() {
+	$sql             = array();
+	$charset_collate = $GLOBALS['wpdb']->get_charset_collate();
+	$bp_prefix       = bp_core_get_table_prefix();
+
+	$sql[] = "CREATE TABLE {$bp_prefix}bp_engagements (
+				id bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+				initiator_user_id bigint(20) NOT NULL,
+				receiver_user_id bigint(20) NOT NULL,
+				is_confirmed bool DEFAULT 0,
+				is_limited bool DEFAULT 0,
+				date_created datetime NOT NULL,
+				KEY initiator_user_id (initiator_user_id),
+				KEY receiver_user_id (receiver_user_id)
+			) {$charset_collate};";
+
+	dbDelta( $sql );
+}
+
+function bp_core_install_relations() {
+	$sql             = array();
+	$charset_collate = $GLOBALS['wpdb']->get_charset_collate();
+	$bp_prefix       = bp_core_get_table_prefix();
+
+	$sql[] = "CREATE TABLE {$bp_prefix}bp_relations (
+				id bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+				initiator_user_id bigint(20) NOT NULL,
+				receiver_user_id bigint(20) NOT NULL,
+				is_confirmed bool DEFAULT 0,
+				is_limited bool DEFAULT 0,
+				date_created datetime NOT NULL,
+				KEY initiator_user_id (initiator_user_id),
+				KEY receiver_user_id (receiver_user_id)
 			) {$charset_collate};";
 
 	dbDelta( $sql );

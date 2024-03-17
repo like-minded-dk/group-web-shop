@@ -303,7 +303,7 @@ function bp_admin_repair_friend_count() {
 		$offset = 0;
 		while ( $offset < $total_users ) {
 			// Only bother updating counts for users who actually have friendships.
-			$friendships = $wpdb->get_results( $wpdb->prepare( "SELECT initiator_user_id, friend_user_id FROM {$bp->friends->table_name} WHERE is_confirmed = 1 AND ( ( initiator_user_id > %d AND initiator_user_id <= %d ) OR ( friend_user_id > %d AND friend_user_id <= %d ) )", $offset, $offset + $per_query, $offset, $offset + $per_query ) );
+			$friendships = $wpdb->get_results( $wpdb->prepare( "SELECT initiator_user_id, receiver_user_id FROM {$bp->friends->table_name} WHERE is_confirmed = 1 AND ( ( initiator_user_id > %d AND initiator_user_id <= %d ) OR ( receiver_user_id > %d AND receiver_user_id <= %d ) )", $offset, $offset + $per_query, $offset, $offset + $per_query ) );
 
 			// The previous query will turn up duplicates, so we
 			// filter them here.
@@ -313,9 +313,9 @@ function bp_admin_repair_friend_count() {
 					$updated[ $friendship->initiator_user_id ] = 1;
 				}
 
-				if ( ! isset( $updated[ $friendship->friend_user_id ] ) ) {
-					BP_Friends_Friendship::total_relation_count( $friendship->friend_user_id );
-					$updated[ $friendship->friend_user_id ] = 1;
+				if ( ! isset( $updated[ $friendship->receiver_user_id ] ) ) {
+					BP_Friends_Friendship::total_relation_count( $friendship->receiver_user_id );
+					$updated[ $friendship->receiver_user_id ] = 1;
 				}
 			}
 
