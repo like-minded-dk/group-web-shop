@@ -117,6 +117,9 @@ class BP_Friends_Component extends BP_Component {
 		}
 
 		// @deprecated.
+		// if ( !defined( 'BP_FRIENDS_SLUG' ) ) {
+		// 	define( 'BP_FRIENDS_SLUG', false );
+		// }
 		if ( defined( 'BP_FRIENDS_SLUG' ) ) {
 			_doing_it_wrong( 'BP_FRIENDS_SLUG', esc_html__( 'Slug constants are deprecated.', 'buddypress' ), 'BuddyPress 12.0.0' );
 			$default_slug = BP_FRIENDS_SLUG;

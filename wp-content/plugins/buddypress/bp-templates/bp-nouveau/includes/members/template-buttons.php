@@ -1,83 +1,25 @@
 <?php
 require __DIR__ . '/../lm/lm-template-functions.php';
 require __DIR__ . '/../lm/lm-template-button-args.php';
+require __DIR__ . '/../lm/lm-template-member-btn.php';
 require __DIR__ . '/../lm/lm-template-request-btn.php';
 
 function add_relation_button($comp, &$btns, $user_id, $type, $parent_class, $button_element, $parent_element) {
 	$isf = $comp == 'friend';
 	$component = $isf ? 'friends'            : 'engagements';
 	$request_type      = $isf ? 'friendship_request' : 'engagementship_request';
+	$css_args = [ $parent_class, $button_element, $parent_element];
 	if (  bp_is_active( $component ) ) {
 		// It's the member's friendship requests screen
 		if ( $request_type === $type ) {
-			$btns = add_request_button($isf, $btns, $component, $parent_class, $button_element, $parent_element);
-		// It's any other members screen
+			// It's any other members screen
+			add_request_button($isf, $btns, $comp, $user_id, $css_args);
 		} else {
-			$btns = add_member_button($isf, $btns, $user_id, $parent_class, $button_element, $parent_element);
+			add_member_button($isf, $btns, $comp, $user_id, $css_args);
 		}
 	}
 	return $btns;
 }
-
-function add_request_button($isf, &$btns, $component, $parent_class, $button_element, $parent_element) {
-	$accept_key = $isf ? 'accept_friend' : 'accept_engagement';
-	$reject_key = $isf ? 'reject_friend' : 'reject_engagement';
-	$accept_link_fn = $isf ? 'bp_get_friend_accept_request_link' : 'bp_get_engagement_accept_request_link';
-	$reject_link_fn = $isf ? 'bp_get_friend_reject_request_link' : 'bp_get_engagement_reject_request_link';
-	$btns = get_request_btn($component, $parent_class, $button_element, $parent_element);
-
-	// If button element set add nonce link to data attr
-	if ( 'button' === $button_element ) {
-		$btns[$accept_key]['button_attr']['data-bp-nonce'] = $accept_link_fn();
-		$btns[$reject_key]['button_attr']['data-bp-nonce'] = $reject_link_fn();
-	} else {
-		$btns[$accept_key]['button_attr']['href'] = $accept_link_fn();
-		$btns[$reject_key]['button_attr']['href'] = $reject_link_fn();
-	}
-	return $btns;
-}
-
-function add_member_button($isf, &$btns, $user_id, $parent_class, $button_element, $parent_element) {
-	$btn_key         = $isf ? 'member_friend' : 'member_engagement';
-	$get_btn_args_fn = $isf ? 'bp_get_add_friend_button_args' : 'bp_get_add_engagement_button_args';
-	$btn_args = $get_btn_args_fn( $user_id );
-	if ( array_filter( $btn_args ) ) {
-		$btns[$btn_key] = array(
-			'id'                => $btn_key,
-			'position'          => 5,
-			'component'         => $btn_args['component'],
-			'must_be_logged_in' => $btn_args['must_be_logged_in'],
-			'block_self'        => $btn_args['block_self'],
-			'parent_element'    => $parent_element,
-			'link_text'         => $btn_args['link_text'],
-			'link_title'        => $btn_args['link_title'],
-			'parent_attr'       => array(
-				'id'    => $btn_args['wrapper_id'],
-				'class' => $parent_class . ' ' . $btn_args['wrapper_class'],
-			),
-			'button_element'    => $button_element,
-			'button_attr'       => array(
-				'id'    => $btn_args['link_id'],
-				'class' => $btn_args['link_class'],
-				'rel'   => $btn_args['link_rel'],
-				'title' => '',
-			),
-		);
-
-		// If button element set add nonce link to data attr
-		if ( 'button' === $button_element && 
-			 'awaiting_engagement' !== $btn_args['id'] &&
-			 'awaiting_friend' !== $btn_args['id']
-		) {
-			$btns[$btn_key]['button_attr']['data-bp-nonce'] = $btn_args['link_href'];
-		} else {
-			$btns[$btn_key]['button_element'] = 'a';
-			$btns[$btn_key]['button_attr']['href'] = $btn_args['link_href'];
-		}
-	}
-	return $btns;
-};
-
 
 function add_profile_button(&$buttons, $type, $parent_class, $parent_element) {
 	// Only add The public and private messages when not in a loop
