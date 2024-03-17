@@ -661,9 +661,15 @@ window.bp = window.bp || {};
 		 * @return {[type]}       [description]
 		 */
 		buttonAction: function( event ) {
-			var self = event.data, target = $( event.currentTarget ), action = target.data( 'bp-btn-action' ), nonceUrl = target.data( 'bp-nonce' ),
-				item = target.closest( '[data-bp-item-id]' ), item_id = item.data( 'bp-item-id' ), item_inner = target.closest('.list-wrap'),
-				object = item.data( 'bp-item-component' ), nonce = '';
+			var self = event.data,
+				target = $( event.currentTarget ),
+				action = target.data( 'bp-btn-action' ),
+				nonceUrl = target.data( 'bp-nonce' ),
+				item = target.closest( '[data-bp-item-id]' ),
+				item_id = item.data( 'bp-item-id' ),
+				item_inner = target.closest('.list-wrap'),
+				object = item.data( 'bp-item-component' ),
+				nonce = '';
 
 			// Simply let the event fire if we don't have needed values.
 			if ( ! action || ! item_id || ! object ) {
@@ -723,7 +729,10 @@ window.bp = window.bp || {};
 
 			// Add a pending class to prevent queries while we're processing the action.
 			target.addClass( 'pending loading' );
-			console.log(`>>>>todo2 action`, action , object + '_' + action);
+			if (action.includes('accept') || action.includes('reject') ) {
+				item_id =  target[0]?.dataset?.lmItemId;
+			}
+			console.log(`>>>>todo2 action`, action , object + '_' + action + ' item_id ' + item_id);
 
 			self.ajax( {
 				action   : object + '_' + action,

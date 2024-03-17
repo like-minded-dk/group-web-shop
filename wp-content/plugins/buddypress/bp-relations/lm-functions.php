@@ -1,9 +1,4 @@
 <?php
-require dirname( __FILE__ ) . '/lm-class-relations.php';
-require dirname( __FILE__ ) . '/lm-ajax-functions.php';
-require dirname( __FILE__ ) . '/lm-class-functions.php';
-require dirname( __FILE__ ) . '/lm-loader.php';
-
 function break_sql($error = '') {
     // @todo lm shortcut delete
     error_log($error ?? 'break call');

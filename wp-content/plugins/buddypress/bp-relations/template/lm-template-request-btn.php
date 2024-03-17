@@ -29,19 +29,23 @@ function add_request_button($isf, &$btns, $comp, $user_id, $css_args) {
 
 	$btn_args = $cf['get_btn_args_fn']( $user_id );
 	error_log('[btn_args] '.json_encode($btn_args));
+    $accept_link = $cf['accept_link_fn']();
+    $reject_link = $cf['reject_link_fn']();
 	// If button element set add nonce link to data attr
 	if ( 'button' === $button_element ) {
-		$btns[$cf['accept_key']]['button_attr']['data-bp-nonce'] = $cf['accept_link_fn']();
-		$btns[$cf['reject_key']]['button_attr']['data-bp-nonce'] = $cf['reject_link_fn']();
+		$btns[$cf['accept_key']]['button_attr']['data-bp-nonce'] = $accept_link;
+		$btns[$cf['reject_key']]['button_attr']['data-bp-nonce'] = $reject_link;
+		$btns[$cf['accept_key']]['button_attr']['data-lm-item-id'] = get_item_id($accept_link);
+		$btns[$cf['reject_key']]['button_attr']['data-lm-item-id'] = get_item_id($reject_link);
 	} else {
-		$btns[$cf['accept_key']]['button_attr']['href'] = $cf['accept_link_fn']();
-		$btns[$cf['reject_key']]['button_attr']['href'] = $cf['reject_link_fn']();
+		$btns[$cf['accept_key']]['button_attr']['href'] = $accept_link;
+		$btns[$cf['reject_key']]['button_attr']['href'] = $reject_link;
 	}
 }
 
 function get_request_btn_args($cf, &$btns, $css_args) {
     [ $parent_class, $button_element, $parent_element] = $css_args;
-    $btn_suffix = $cf['isf'] ? 'to supply' : 'to resell';
+    $btn_suffix = $cf['isf'] ? 'to resell' : 'to supply';
     $btns[$cf['accept_key']] = array(
         'id'                => $cf['accept_key'],
         'position'          => 5,
@@ -76,4 +80,17 @@ function get_request_btn_args($cf, &$btns, $css_args) {
             'rel'             => '',
         )
     );
+}
+
+function get_item_id($url) {
+    $parts = parse_url($url);
+    $path_parts = explode('/', $parts['path']);
+    error_log('[path_parts]'. json_encode($path_parts));
+    foreach(['accept', 'reject'] as $item) {
+        $idx = array_search($item, $path_parts);
+        if ($idx) {
+            return $path_parts[$idx+1];
+        }
+    }
+    return $path_parts[6];
 }

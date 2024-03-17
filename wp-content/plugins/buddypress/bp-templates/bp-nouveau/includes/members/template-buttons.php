@@ -1,9 +1,4 @@
 <?php
-require __DIR__ . '/../lm/lm-template-functions.php';
-require __DIR__ . '/../lm/lm-template-button-args.php';
-require __DIR__ . '/../lm/lm-template-member-btn.php';
-require __DIR__ . '/../lm/lm-template-request-btn.php';
-
 function add_relation_button($comp, &$btns, $user_id, $type, $parent_class, $button_element, $parent_element) {
 	$isf = $comp == 'friend';
 	$component = $isf ? 'friends'            : 'engagements';
