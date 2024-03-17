@@ -67,3 +67,63 @@ function get_button_args_wrapper(
         'link_class'        => "{$class} {$action} requested",
     );
 }
+
+
+function get_awaiting_url($action, $comp){
+
+    // $cf = array(
+    //     'friend' => array(
+    //         "accept" => array(
+    //             "sg_fn" => 'bp_get_engagements_slug';
+    //             "bp_filter" => 'bp_get_engagement_reject_request_link';
+    //             "get_relation_fn" => 'engagements_get_relationship_id';
+    //             "cache_prefix" => 'friendship_id_';
+    //             "_wpnonce" => 'friends_reject_friend';
+    //         ),
+    //         "reject" => array(),
+    //     ),
+    //     'engagement' => array(),
+    //         "accept" => array(),
+    //         "reject" => array(),
+    // );
+    
+
+    $action = "reject";
+    $oppo = $comp == 'friend' ? 'engagement' : 'friend';
+    $sg_fn = "bp_get_{$comp}s_slug";
+    $bp_filter = "bp_get_{$comp}_{$action}_request_link";
+    $cache_prefix = "{$oppo}ship_id_";
+    $get_relation_fn = "{$comp}s_get_relationship_id";
+    $_wpnonce = "{$oppo}s_{$action}_{$oppo}";
+
+    error_log('--------------');
+    error_log('action '.json_encode($action));
+    error_log('sg_fn '.json_encode($sg_fn));
+    error_log('bp_filter '.json_encode($bp_filter));
+    error_log('cache_prefix '.json_encode($cache_prefix));
+    error_log('_wpnonce '.json_encode($_wpnonce));
+    error_log('get_relation_fn '.json_encode($get_relation_fn));
+    global $members_template;
+    if ( ! $relationship_id = wp_cache_get( $cache_prefix . $members_template->member->id . '_' . bp_loggedin_user_id(), 'bp' ) ) {
+        $relationship_id     = $get_relation_fn( $members_template->member->id, bp_loggedin_user_id() );
+        wp_cache_set( $cache_prefix . $members_template->member->id . '_' . bp_loggedin_user_id(), $relationship_id, 'bp' );
+    }
+    error_log(11);
+    error_log($relationship_id);
+    $url = wp_nonce_url(
+        bp_loggedin_user_url( bp_members_get_path_chunks( array( $sg_fn(), 'requests', array( $action, $relationship_id ) ) ) ),
+        $_wpnonce
+    );
+    
+    error_log('relationship_id '.json_encode($relationship_id));
+    /**
+     * Filters the URL for accepting the current relationship request in the loop.
+     *
+     * @since 1.0.0
+     * @since 2.6.0 Added the `$relationship_id` parameter.
+     *
+     * @param string $url           Accept-relationship URL.
+     * @param int    $relationship_id ID of the relationship.
+     */
+    return apply_filters( $bp_filter, $url, $relationship_id );
+}
