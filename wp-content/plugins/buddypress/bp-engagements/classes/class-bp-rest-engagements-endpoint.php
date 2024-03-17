@@ -137,7 +137,7 @@ class BP_REST_Engagement_Endpoint extends WP_REST_Controller {
 		}
 
 		// Actually, query it.
-		$engagementships = BP_Engagements_Engagementship::get_engagementships( $user->ID, $args );
+		$engagementships = BP_Engagements_Engagementship::get_relationships( $user->ID, $args );
 
 		$retval = array();
 		foreach ( (array) $engagementships as $engagementship ) {
@@ -219,7 +219,7 @@ class BP_REST_Engagement_Endpoint extends WP_REST_Controller {
 
 		// Get engagementship.
 		$engagementship = $this->get_engagementship_object(
-			BP_Engagements_Engagementship::get_engagementship_id( bp_loggedin_user_id(), $user->ID )
+			BP_Engagements_Engagementship::get_relationship_id( bp_loggedin_user_id(), $user->ID )
 		);
 
 		if ( ! $engagementship || empty( $engagementship->id ) ) {
@@ -358,7 +358,7 @@ class BP_REST_Engagement_Endpoint extends WP_REST_Controller {
 
 		// Get engagementship.
 		$engagementship = $this->get_engagementship_object(
-			BP_Engagements_Engagementship::get_engagementship_id( $initiator_id->ID, $engagement_id->ID )
+			BP_Engagements_Engagementship::get_relationship_id( $initiator_id->ID, $engagement_id->ID )
 		);
 
 		if ( ! $engagementship || empty( $engagementship->id ) ) {
@@ -439,7 +439,7 @@ class BP_REST_Engagement_Endpoint extends WP_REST_Controller {
 
 		// Get engagementship.
 		$engagementship = $this->get_engagementship_object(
-			BP_Engagements_Engagementship::get_engagementship_id( bp_loggedin_user_id(), $user->ID )
+			BP_Engagements_Engagementship::get_relationship_id( bp_loggedin_user_id(), $user->ID )
 		);
 
 		if ( ! $engagementship || empty( $engagementship->id ) ) {
@@ -453,7 +453,7 @@ class BP_REST_Engagement_Endpoint extends WP_REST_Controller {
 		}
 
 		// Accept engagementship.
-		if ( false === engagements_accept_engagementship( $engagementship->id ) ) {
+		if ( false === engagements_accept_engagement( $engagementship->id ) ) {
 			return new WP_Error(
 				'bp_rest_engagements_cannot_update_item',
 				__( 'Could not accept engagementship.', 'buddypress' ),
@@ -534,7 +534,7 @@ class BP_REST_Engagement_Endpoint extends WP_REST_Controller {
 
 		// Get engagementship.
 		$engagementship = $this->get_engagementship_object(
-			BP_Engagements_Engagementship::get_engagementship_id( bp_loggedin_user_id(), $user->ID )
+			BP_Engagements_Engagementship::get_relationship_id( bp_loggedin_user_id(), $user->ID )
 		);
 
 		if ( ! $engagementship || empty( $engagementship->id ) ) {
@@ -561,13 +561,13 @@ class BP_REST_Engagement_Endpoint extends WP_REST_Controller {
 			 * This is the user who requested the engagementship, and is doing the withdrawing.
 			 */
 			if ( bp_loggedin_user_id() === $engagementship->initiator_user_id ) {
-				$deleted = engagements_withdraw_engagementship( $engagementship->initiator_user_id, $engagementship->receiver_user_id );
+				$deleted = engagements_withdraw_engagement( $engagementship->initiator_user_id, $engagementship->receiver_user_id );
 			} else {
 				/**
 				 * Otherwise, this change is being initiated by the user, engagement,
 				 * who received the engagementship reject.
 				 */
-				$deleted = engagements_reject_engagementship( $engagementship->id );
+				$deleted = engagements_reject_engagement( $engagementship->id );
 			}
 		}
 

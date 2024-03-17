@@ -376,14 +376,14 @@ function bp_friend_accept_request_link() {
 	 */
 	function bp_get_friend_accept_request_link() {
 		global $members_template;
-
-		if ( ! $friendship_id = wp_cache_get( 'friendship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), 'bp' ) ) {
-			$friendship_id = friends_get_relationship_id( $members_template->member->id, bp_loggedin_user_id() );
-			wp_cache_set( 'friendship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), $friendship_id, 'bp' );
+		if ( ! $relationship_id = wp_cache_get( 'friendship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), 'bp' ) ) {
+			$engagementship_id = engagements_get_relationship_id( $members_template->member->id, bp_loggedin_user_id() );
+			$friendship_id     = friends_get_relationship_id( $members_template->member->id, bp_loggedin_user_id() );
+			$relationship_id   = $engagementship_id ?? $friendship_id ;
+			wp_cache_set( 'friendship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), $relationship_id, 'bp' );
 		}
-
 		$url = wp_nonce_url(
-			bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_get_friends_slug(), 'requests', array( 'accept', $friendship_id ) ) ) ),
+			bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_get_friends_slug(), 'requests', array( 'accept', $relationship_id ) ) ) ),
 			'friends_accept_friend'
 		);
 
@@ -396,7 +396,7 @@ function bp_friend_accept_request_link() {
 		 * @param string $url           Accept-friendship URL.
 		 * @param int    $friendship_id ID of the friendship.
 		 */
-		return apply_filters( 'bp_get_friend_accept_request_link', $url, $friendship_id );
+		return apply_filters( 'bp_get_friend_accept_request_link', $url, $relationship_id );
 	}
 
 /**
@@ -419,13 +419,15 @@ function bp_friend_reject_request_link() {
 	function bp_get_friend_reject_request_link() {
 		global $members_template;
 
-		if ( ! $friendship_id = wp_cache_get( 'friendship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), 'bp' ) ) {
-			$friendship_id = friends_get_relationship_id( $members_template->member->id, bp_loggedin_user_id() );
-			wp_cache_set( 'friendship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), $friendship_id, 'bp' );
+		if ( ! $relationship_id = wp_cache_get( 'friendship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), 'bp' ) ) {
+			$engagementship_id = engagements_get_relationship_id( $members_template->member->id, bp_loggedin_user_id() );
+			$friendship_id     = friends_get_relationship_id( $members_template->member->id, bp_loggedin_user_id() );
+			$relationship_id   = $engagementship_id ?? $friendship_id ;
+			wp_cache_set( 'friendship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), $relationship_id, 'bp' );
 		}
 
 		$url = wp_nonce_url(
-			bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_get_friends_slug(), 'requests', array( 'reject', $friendship_id ) ) ) ),
+			bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_get_friends_slug(), 'requests', array( 'reject', $relationship_id ) ) ) ),
 			'friends_reject_friend'
 		);
 
@@ -438,7 +440,7 @@ function bp_friend_reject_request_link() {
 		 * @param string $url           Reject-friendship URL.
 		 * @param int    $friendship_id ID of the friendship.
 		 */
-		return apply_filters( 'bp_get_friend_reject_request_link', $url, $friendship_id );
+		return apply_filters( 'bp_get_friend_reject_request_link', $url, $relationship_id );
 	}
 
 /**

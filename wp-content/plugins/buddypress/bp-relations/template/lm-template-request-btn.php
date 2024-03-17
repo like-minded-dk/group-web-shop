@@ -1,6 +1,7 @@
 <?php
 function add_request_button($isf, &$btns, $comp, $user_id, $css_args) {
 	[ $parent_class, $button_element, $parent_element] = $css_args;
+    error_log(json_encode('----------------'.$comp));
 	$conf = array(
         // todo lm change accept action id
         'friend' => array(
@@ -45,7 +46,7 @@ function add_request_button($isf, &$btns, $comp, $user_id, $css_args) {
 
 function get_request_btn_args($cf, &$btns, $css_args) {
     [ $parent_class, $button_element, $parent_element] = $css_args;
-    $btn_suffix = $cf['isf'] ? 'to resell' : 'to supply';
+    $btn_suffix = $cf['isf'] ? 'to supply' : 'to resell';
     $btns[$cf['accept_key']] = array(
         'id'                => $cf['accept_key'],
         'position'          => 5,

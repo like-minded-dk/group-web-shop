@@ -224,7 +224,7 @@ add_action( 'engagements_engagementship_accepted', 'bp_engagements_add_engagemen
  * @param BP_Engagements_Engagementship $engagementship    The engagementship object.
  */
 function bp_engagements_mark_engagementship_withdrawn_notifications_by_item_id( $engagementship_id, $relationship ) {
-	bp_notifications_delete_notifications_by_item_id( $relationship->receriver_user_id, $relationship->initiator_user_id, buddypress()->engagements->id, 'engagementship_request' );
+	bp_notifications_delete_notifications_by_item_id( $relationship->receiver_user_id, $relationship->initiator_user_id, buddypress()->engagements->id, 'engagementship_request' );
 }
 add_action( 'engagements_engagementship_withdrawn', 'bp_engagements_mark_engagementship_withdrawn_notifications_by_item_id', 10, 2 );
 

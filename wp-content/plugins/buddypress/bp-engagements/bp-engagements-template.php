@@ -377,14 +377,17 @@ function bp_engagement_accept_request_link() {
 	 */
 	function bp_get_engagement_accept_request_link() {
 		global $members_template;
-
-		if ( ! $engagementship_id = wp_cache_get( 'engagementship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), 'bp' ) ) {
+		error_log(json_encode('[e-template1] [relationship_id1]'));
+		if ( ! $relationship_id = wp_cache_get( 'engagementship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), 'bp' ) ) {
 			$engagementship_id = engagements_get_relationship_id( $members_template->member->id, bp_loggedin_user_id() );
-			wp_cache_set( 'engagementship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), $engagementship_id, 'bp' );
+			$friendship_id     = friends_get_relationship_id( $members_template->member->id, bp_loggedin_user_id() );
+			$relationship_id   = $engagementship_id ?? $friendship_id ;
+			error_log(json_encode('[e-template1] [relationship_id1]'. $relationship_id));
+			wp_cache_set( 'engagementship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), $relationship_id, 'bp' );
 		}
-
+		error_log(json_encode('[e-template] [relationship_id2]'. $relationship_id));
 		$url = wp_nonce_url(
-			bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_get_engagements_slug(), 'requests', array( 'accept', $engagementship_id ) ) ) ),
+			bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_get_engagements_slug(), 'requests', array( 'accept', $relationship_id ) ) ) ),
 			'engagements_accept_engagement'
 		);
 
@@ -397,7 +400,7 @@ function bp_engagement_accept_request_link() {
 		 * @param string $url           Accept-engagementship URL.
 		 * @param int    $engagementship_id ID of the engagementship.
 		 */
-		return apply_filters( 'bp_get_engagement_accept_request_link', $url, $engagementship_id );
+		return apply_filters( 'bp_get_engagement_accept_request_link', $url, $relationship_id );
 	}
 
 /**
@@ -420,13 +423,15 @@ function bp_engagement_reject_request_link() {
 	function bp_get_engagement_reject_request_link() {
 		global $members_template;
 
-		if ( ! $engagementship_id = wp_cache_get( 'engagementship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), 'bp' ) ) {
+		if ( ! $relationship_id = wp_cache_get( 'engagementship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), 'bp' ) ) {
 			$engagementship_id = engagements_get_relationship_id( $members_template->member->id, bp_loggedin_user_id() );
-			wp_cache_set( 'engagementship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), $engagementship_id, 'bp' );
+			$friendship_id     = friends_get_relationship_id( $members_template->member->id, bp_loggedin_user_id() );
+			$relationship_id   = $engagementship_id ?? $friendship_id ;
+			wp_cache_set( 'engagementship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), $relationship_id, 'bp' );
 		}
 
 		$url = wp_nonce_url(
-			bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_get_engagements_slug(), 'requests', array( 'reject', $engagementship_id ) ) ) ),
+			bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_get_engagements_slug(), 'requests', array( 'reject', $relationship_id ) ) ) ),
 			'engagements_reject_engagement'
 		);
 
@@ -439,7 +444,7 @@ function bp_engagement_reject_request_link() {
 		 * @param string $url           Reject-engagementship URL.
 		 * @param int    $engagementship_id ID of the engagementship.
 		 */
-		return apply_filters( 'bp_get_engagement_reject_request_link', $url, $engagementship_id );
+		return apply_filters( 'bp_get_engagement_reject_request_link', $url, $relationship_id );
 	}
 
 /**

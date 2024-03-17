@@ -240,15 +240,16 @@ class BP_Relations_Component extends BP_Component {
 			// Add $this->comps to the main navigation.
 			$count                  = (int) $count_fn();
 			$class                  = ( 0 === $count ) ? 'no-count' : 'count';
-			$this->main_nav['name'] = sprintf(
-				/* translators: %s: engagement count for the current user */
-				__( "{$this->fe_name} %s", 'buddypress' ),
-				sprintf(
-					'<span class="%s">%s</span>',
-					esc_attr( $class ),
-					esc_html( $count )
-				)
-			);
+			$this->main_nav['name'] = sprintf(__( "{$this->fe_name}", 'buddypress' ));
+			// $this->main_nav['name'] = sprintf(
+			// 	/* translators: %s: engagement count for the current user */
+			// 	__( "{$this->fe_name} %s", 'buddypress' ),
+			// 	sprintf(
+			// 		'<span class="%s">%s</span>',
+			// 		esc_attr( $class ),
+			// 		esc_html( $count )
+			// 	)
+			// );
 		}
 
 		parent::setup_nav( $main_nav, $sub_nav );
@@ -278,11 +279,13 @@ class BP_Relations_Component extends BP_Component {
 			$count = count( $get_relation_user_ids( bp_loggedin_user_id() ) );
 
 			if ( ! empty( $count ) ) {
+				// $title = sprintf(
+				// 	/* translators: %s: Pending relation request count for the current user */
+				// 	_x( "{$this->Comps} %s", "My Account {$this->comps} menu", 'buddypress' ),
+				// 	'<span class="count">' . bp_core_number_format( $count ) . '</span>'
+				// );
 				$title = sprintf(
-					/* translators: %s: Pending relation request count for the current user */
-					_x( "{$this->Comps} %s", "My Account {$this->comps} menu", 'buddypress' ),
-					'<span class="count">' . bp_core_number_format( $count ) . '</span>'
-				);
+					_x( $this->Comps, "My Account {$this->comps} menu", 'buddypress' ));
 				$pending = sprintf(
 					/* translators: %s: Pending relation request count for the current user */
 					_x( 'Pending Requests %s', "My Account {$this->comps} menu sub nav", 'buddypress' ),

@@ -225,6 +225,7 @@ function engagements_reject_engagement( $engagementship_id ) {
  * @return bool True on success, false on failure.
  */
 function engagements_withdraw_engagement( $initiator_userid, $receiver_userid ) {
+	error_log(json_encode(1111));
 	$engagementship_id = BP_Engagements_Engagementship::get_relationship_id(  $initiator_userid, $receiver_userid );
 	$engagementship    = new BP_Engagements_Engagementship( $engagementship_id, false, false );
 

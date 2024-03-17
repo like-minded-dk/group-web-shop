@@ -3,6 +3,8 @@ function add_member_button($isf, &$btns, $comp, $user_id, $css_args) {
 	[ $parent_class, $button_element, $parent_element] = $css_args;
 	$btn_key         = $isf ? 'member_friend' : 'member_engagement';
 	$get_btn_args_fn = $isf ? 'bp_get_add_friend_button_args' : 'bp_get_add_engagement_button_args';
+	$accept_key = $isf ? 'accept_key' : 'accept_friend';
+	$reject_key = $isf ? 'reject_key' : 'reject_friend';
 	$btn_args = $get_btn_args_fn( $user_id );
 	if ( array_filter( $btn_args ) ) {
 		// If button element set add nonce link to data attr
@@ -10,6 +12,8 @@ function add_member_button($isf, &$btns, $comp, $user_id, $css_args) {
 			 'awaiting_friend' == $btn_args['id'] ) {
 			// todo lm remove button
 			add_request_button($isf, $btns, $comp, $user_id, $css_args);
+			// get_member_btn_args($btns, $accept_key, $btn_args, $css_args);
+			// get_member_btn_args($btns, $reject_key, $btn_args, $css_args);
 			// $btns[$btn_key]['button_attr']['class'] = $btns[$btn_key]['button_attr']['class'] . ' hidden';
 		} else {
 			get_member_btn_args($btns, $btn_key, $btn_args, $css_args);
