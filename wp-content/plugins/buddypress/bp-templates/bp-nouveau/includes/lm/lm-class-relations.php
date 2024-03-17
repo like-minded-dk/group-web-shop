@@ -222,7 +222,7 @@ class BP_Relations_Relationship {
 				'action_as' => 'friends_relationship_after_save',
 			),
 		);
-		$cf = $config_values[$this->comp];
+		$cf = $config_values[$this->comp_ins];
 
 		$this->initiator_user_id = apply_filters( $cf['filter_initiator_bs'], $this->initiator_user_id, $this->id );
 		$this->receiver_user_id   = apply_filters( $cf['filter_receiver_bs'], $this->receiver_user_id, $this->id );
@@ -826,7 +826,7 @@ class BP_Relations_Relationship {
 
 		$bp = buddypress();
 		try {
-			break_sql('[action] accept [component] '. static::$component . ' [relation_id] '.json_encode($relation_id));
+			break_sql('[action] accept [table] '. static::$component . ' [relation_id] '.json_encode($relation_id));
 
 			return $wpdb->query( $wpdb->prepare( <<<SQL
 				UPDATE {$bp->{static::$component}->table_name}
@@ -873,7 +873,7 @@ class BP_Relations_Relationship {
 
 		$bp = buddypress();
 		try {
-			break_sql('[action] reject [component] '. static::$component . ' [relation_id] '.json_encode($relation_id));
+			break_sql('[action] reject [table] '. static::$component . ' [relation_id] '.json_encode($relation_id));
 
 			return $wpdb->query( $wpdb->prepare( <<<SQL
 				DELETE FROM {$bp->{static::$component}->table_name}

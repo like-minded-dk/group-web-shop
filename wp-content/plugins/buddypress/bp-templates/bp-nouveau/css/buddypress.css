@@ -4233,16 +4233,16 @@ body.no-js .buddypress #messages-bulk-management #select-all-messages {
 .buddypress .buddypress-wrap .comment-reply-link,
 .buddypress .buddypress-wrap a.bp-title-button,
 .buddypress .buddypress-wrap .activity-read-more a {
-	background: #fff;
+	background: #eeebe1;
 	/* Old browsers */
 	border-color: #ccc;
 	border-style: solid;
 	border-width: 1px;
-	border-radius: 0;
-	color: #555;
+	border-radius: 20px;
+	color: #634a4a;
 	cursor: pointer;
 	font-family: inherit;
-	font-size: inherit;
+	font-size: large;
 	font-weight: 400;
 	outline: none;
 	padding: 0.3em 0.5em;

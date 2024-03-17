@@ -21,7 +21,9 @@
 				<div class="item-avatar">
 					<a href="<?php bp_member_link(); ?>"><?php bp_member_avatar( array( 'type' => 'full' ) ); ?></a>
 				</div>
-
+				<?php 
+				echo print_initiator('');
+					?>
 				<div class="item">
 					<div class="item-title"><a href="<?php bp_member_link(); ?>"><?php bp_member_name(); ?></a></div>
 					<div class="item-meta"><span class="activity"><?php bp_member_last_active(); ?></span></div>

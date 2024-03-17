@@ -131,6 +131,8 @@ function is_initiator($component = '') {
 }
 
 function print_initiator($component = '') {
+	// todo lm debug
+	// return;
 	$user_id = bp_loggedin_user_id();
 	$user_name = bp_get_user_firstname();
 	$member_id = bp_get_member_user_id();
@@ -140,28 +142,30 @@ function print_initiator($component = '') {
 	global $wpdb;
 
 	$results='';
-		$relations1 = $wpdb->get_results( "SELECT * FROM wp_bp_friends WHERE receiver_user_id = {$member_id} AND initiator_user_id = {$user_id}", OBJECT );
-		$relations2 = $wpdb->get_results( "SELECT * FROM wp_bp_friends WHERE receiver_user_id = {$user_id} AND initiator_user_id = {$member_id}", OBJECT );
-		$relations = array_merge($relations1, $relations2);
-		foreach ($relations as $relation) {
-			$results .= '<br> '.$relation->id;
-			if($relation->initiator_user_id === (string) $user_id) {
-				$results .= "<br> (resell) {$user_name} has frie initiator. ";
-			} else {
-				$results .= "<br> (resell) {$user_name} has frie receiver. ";
-			}
-		}
-	
 		$relations1 = $wpdb->get_results( "SELECT * FROM wp_bp_engagements WHERE receiver_user_id = {$member_id} AND initiator_user_id = {$user_id}", OBJECT );
 		$relations2 = $wpdb->get_results( "SELECT * FROM wp_bp_engagements WHERE receiver_user_id = {$user_id} AND initiator_user_id = {$member_id}", OBJECT );
 		$relations = array_merge($relations1, $relations2);
 		foreach ($relations as $relation) {
 			$results .= '<br> '.$relation->id;
 			if($relation->initiator_user_id === (string) $user_id) {
-				$results .= "<br> (supply) {$user_name} has enga initiator. ";
+				$results .= "<br>{$user_name} in enga initiator. cofm:{$relation->is_confirmed}";
 			 }else {
-				$results .= "<br> (supply) {$user_name} has enga receiver. ";
+				$results .= "<br>{$user_name} in enga receiver. cofm:{$relation->is_confirmed}";
 			}
 		}
+
+		$relations1 = $wpdb->get_results( "SELECT * FROM wp_bp_friends WHERE receiver_user_id = {$member_id} AND initiator_user_id = {$user_id}", OBJECT );
+		$relations2 = $wpdb->get_results( "SELECT * FROM wp_bp_friends WHERE receiver_user_id = {$user_id} AND initiator_user_id = {$member_id}", OBJECT );
+		$relations = array_merge($relations1, $relations2);
+		foreach ($relations as $relation) {
+			$results .= '<br> '.$relation->id;
+			if($relation->initiator_user_id === (string) $user_id) {
+				$results .= "<br>{$user_name} in frie initiator. cofm:{$relation->is_confirmed}";
+			} else {
+				$results .= "<br>{$user_name} in frie receiver. cofm:{$relation->is_confirmed}";
+			}
+		}
+	
+		
 	return $results;
 }

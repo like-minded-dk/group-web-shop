@@ -30,7 +30,7 @@ function add_ajax_admin_init_action($comp) {
 
 function ajax_add_relation($comp, $user_id, $item_id, $response, $error = '', $note='') {
     error_log('>>ajax_add_relation ' . $error . ' : ' . $user_id . ' - ' . $item_id);
-    $call_fn = $comp == 'friend' ? 'friends_add_friend' : 'engagements_add_engagement_reversed';
+    $call_fn = $comp == 'friend' ? 'friends_add_friend' : 'engagements_add_engagement';
     $back_btn_fn = $comp == 'friend' ? 'bp_get_add_friend_button' : 'bp_get_add_engagement_button';
     
     if ( ! $call_fn( $user_id, $item_id,  $error = '', $note='' ) ) {
