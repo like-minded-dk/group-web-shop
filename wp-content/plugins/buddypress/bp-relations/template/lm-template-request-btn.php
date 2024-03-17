@@ -27,8 +27,8 @@ function add_request_button($isf, &$btns, $comp, $user_id, $css_args) {
 	$cf = $conf[$comp];
 	get_request_btn_args($cf, $btns, $css_args);
 
-	$btn_args = $cf['get_btn_args_fn']( $user_id );
-	error_log('[btn_args] '.json_encode($btn_args));
+	// $btn_args = $cf['get_btn_args_fn']( $user_id );
+	// error_log('[btn_args] '.json_encode($btn_args));
     $accept_link = $cf['accept_link_fn']();
     $reject_link = $cf['reject_link_fn']();
 	// If button element set add nonce link to data attr
@@ -45,9 +45,16 @@ function add_request_button($isf, &$btns, $comp, $user_id, $css_args) {
 
 function get_request_btn_args($cf, &$btns, $css_args) {
     [ $parent_class, $button_element, $parent_element] = $css_args;
+
+    // global $members_template;
+    // $pid = $members_template->member->id;
+    // $is_reverse = detect_reverse($cf['comp'], $pid);
+    // $id_suffix = $is_reverse ? '_reversed' : '';
+    $id_suffix = '';
+
     $btn_suffix = $cf['isf'] ? 'to supply' : 'to resell';
     $btns[$cf['accept_key']] = array(
-        'id'                => $cf['accept_key'],
+        'id'                => $cf["accept_key"].$id_suffix,
         'position'          => 5,
         'component'         => $cf['component'],
         'must_be_logged_in' => true,
@@ -64,7 +71,7 @@ function get_request_btn_args($cf, &$btns, $css_args) {
         ),
     );
     $btns[$cf['reject_key']] = array(
-        'id'                => $cf['reject_key'],
+        'id'                => $cf['reject_key'].$id_suffix,
         'position'          => 5,
         'component'         => $cf['component'],
         'must_be_logged_in' => true,

@@ -142,6 +142,7 @@ function get_current_user_offers() {
 
 function get_leader_offers() {
     global $wpdb;
+    // todo lm sql
     $current_user_id = get_current_user_id(); // Replace 123 with the actual ID of the current author/user
     $query = $wpdb->prepare(<<<SQL
         SELECT p.* FROM wp_posts AS p
@@ -155,7 +156,7 @@ function get_leader_offers() {
             WHERE initiator_user_id = %d AND is_confirmed = 1
         ) AS r ON p.post_author = r.user_id
         WHERE p.post_type = 'product'
-        AND p.post_status IN ('draft', 'publish')
+        AND p.post_status IN ('publish')
         ORDER BY p.post_date DESC
     SQL, $current_user_id, $current_user_id);
 

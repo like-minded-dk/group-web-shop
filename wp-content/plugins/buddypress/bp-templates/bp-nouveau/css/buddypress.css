@@ -983,6 +983,8 @@ body.buddypress article.page > .entry-header:not(.alignwide):not(.alignfull) .en
 		width: auto;
 	}
 	.bp-list li .action {
+		display: flex;
+		flex-direction: column;
 		clear: left;
 		padding: 0;
 		text-align: left;
@@ -4769,7 +4771,7 @@ body.no-js .buddypress #messages-bulk-management #select-all-messages {
 .buddypress-wrap .accept,
 .buddypress-wrap .reject {
 	float: left;
-	margin-left: 10px;
+	/* margin-left: 10px; */
 }
 
 .buddypress-wrap .members-list.grid .bp-ajax-message {

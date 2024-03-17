@@ -105,27 +105,27 @@ function relation_btn_args($comp, $status, $pid, $sg, $relation_id) {
     $pending_comp = array(
         'act' => 'pending_' . $comp,
         'ver' => $comp . 's_withdraw_' . $comp,
-        'text' => $is_f ? 'Cancel Supply-R' : 'Cancel Resell-S' ,
+        'text' => $is_f ? 'Cancel supply' : 'Cancel resell' ,
     );
     $awaiting_comp = array(
         'act' => 'awaiting_' . $comp,
         'ver' => '',
-        'text' => $is_f ? 'Approve or Reject Supply-S' : 'Approve or Reject Resell-S', 
+        'text' => $is_f ? 'Approve or Reject Supply' : 'Approve or Reject Resell', 
     );
     $remove_comp = array(
         'act' => 'remove_' . $comp,
         'ver' => $comp . 's_remove_' . $comp,
-        'text' => $is_f ? 'Stop Supply-R' : 'Stop Resell-S', 
+        'text' => $is_f ? 'Stop supplying' : 'Stop reselling', 
     );
     $remove_oppo = array(
         'act' => 'remove_' . $comp . '_reversed',
         'ver' => $oppo . 's_remove_' . $oppo,
-        'text' => $is_f ? 'Stop Supply-R' : 'Stop Resell-S', 
+        'text' => $is_f ? 'Stop supplying' : 'Stop reselling', 
     );
     $add_comp = array(
         'act' => 'add_' . $comp,
         'ver' => $comp . 's_add_' . $comp,
-        'text' => $is_f ? 'Supply-R' : 'Resell-S', 
+        'text' => $is_f ? 'Supply to' : 'Resell to', 
     );
 
     switch ( $status ) {

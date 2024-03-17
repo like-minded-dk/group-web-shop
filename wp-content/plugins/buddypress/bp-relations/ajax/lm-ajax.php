@@ -219,6 +219,8 @@ class LM_Ajax_Function {
 			$reject_action = 'friends_reject_friend';
 			$accpt_action_reversed = 'friends_accept_friend_reversed';
 			$reject_action_reversed = 'friends_reject_friend_reversed';
+			$accpt_action_reversed_oppo = 'engagements_accept_engagement_reversed';
+			$reject_action_reversed_oppo = 'engagements_reject_engagement_reversed';
 	
 			$add_action = 'friends_add_friend';
 			$withdraw_action = 'friends_withdraw_friend';
@@ -232,6 +234,8 @@ class LM_Ajax_Function {
 			$reject_action = 'engagements_reject_engagement';
 			$accpt_action_reversed = 'engagements_accept_engagement_reversed';
 			$reject_action_reversed = 'engagements_reject_engagement_reversed';
+			$accpt_action_reversed_oppo = 'friends_accept_friend_reversed';
+			$reject_action_reversed_oppo = 'friends_reject_friend_reversed';
 			
 			$add_action = 'engagements_add_engagement';
 			$withdraw_action = 'engagements_withdraw_engagement';
@@ -261,19 +265,27 @@ class LM_Ajax_Function {
 		////////// Awaiting Request
 		// Trying to accept awaiting relationship.
 		} elseif ( $accpt_action === $action ) {
-			self::accept_relation($comp, $item_id, $response, $comp . ' [action] accept: ' . $comp . ' ' . $user_id . ' - ' . $item_id);
+			self::accept_relation($oppo, $item_id, $response, $comp . ' [action] accept: ' . $comp . ' ' . $user_id . ' - ' . $item_id);
 		
-		// Trying to accept awaiting relationship - reverse.
-		} elseif ( $accpt_action === $accpt_action_reversed ) {
-			self::accept_relation($oppo, $item_id, $response, $comp . ' [action] accept_reverse: ' . $oppo . ' ' . $user_id . ' - ' . $item_id);
+		// // Trying to accept awaiting relationship - reverse.
+		// } elseif ( $accpt_action === $accpt_action_reversed ) {
+		// 	self::accept_relation($comp, $item_id, $response, $comp . ' [action] accept_reverse: ' . $oppo . ' ' . $user_id . ' - ' . $item_id);
+		
+		// // Trying to accept awaiting relationship - reverse - oppo.
+		// } elseif ( $accpt_action === $accpt_action_reversed_oppo ) {
+		// 	self::accept_relation($oppo, $item_id, $response, $comp . ' [action] accept_reverse oppo: ' . $oppo . ' ' . $user_id . ' - ' . $item_id);
 			
 		// Trying to reject awaiting relationship.
 		} elseif ( $reject_action === $action ) {
-			self::reject_relation($comp, $item_id, $response, $comp . ' [action] reject: ' . $comp . ' ' . $user_id . ' - ' . $item_id);
+			self::reject_relation($oppo, $item_id, $response, $comp . ' [action] reject: ' . $comp . ' ' . $user_id . ' - ' . $item_id);
 	
-		// Trying to reject awaiting relationship - reverse.
-		} elseif ( $reject_action === $reject_action_reversed ) {
-			self::reject_relation($oppo, $item_id, $response, $comp . ' [action] reject reverse: ' . $oppo . ' ' . $user_id . ' - ' . $item_id);	
+		// // Trying to reject awaiting relationship - reverse.
+		// } elseif ( $reject_action === $reject_action_reversed ) {
+		// 	self::reject_relation($comp, $item_id, $response, $comp . ' [action] reject reverse: ' . $oppo . ' ' . $user_id . ' - ' . $item_id);	
+		
+		// 	// Trying to reject awaiting relationship - reverse - oppo.
+		// } elseif ( $reject_action === $reject_action_reversed_oppo ) {
+		// 	self::reject_relation($oppo, $item_id, $response, $comp . ' [action] reject reverse oppo: ' . $oppo . ' ' . $user_id . ' - ' . $item_id);	
 		
 	
 		// Request already pending.

@@ -55,6 +55,9 @@ bp_nouveau_before_loop(); ?>
 							array(
 								'container'      => 'ul',
 								'button_element' => 'button',
+								'parent_attr'    => array (
+									'class'    =>  'newwww'
+								)
 							)
 						);
 						?>

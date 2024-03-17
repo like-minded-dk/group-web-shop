@@ -9,6 +9,15 @@ function is_from_reverse($sts) {
     return (strpos($sts, 'eList') && strpos($sts, 'fTable')) || (strpos($sts, 'fList') && strpos($sts, 'eTable'));
 }
 
+function detect_reverse($comp, $pid) {
+    $fst = bp_is_friend( $pid );
+	$est = bp_is_engagement( $pid );
+
+	$sts = ($comp == 'friend' ? $fst  : $est);
+
+    return is_from_reverse($sts);
+}
+
 function get_ajax_action_list($comp){
     $verbs = ['accept','reject','remove','add','pending','withdraw', 'member'];
     $actions = [];
@@ -50,7 +59,8 @@ function get_button_args_wrapper(
     // error_log("||> {$error} {$action} {$mk}");
     // error_log('||> user_url:' . bp_loggedin_user_url( bp_members_get_path_chunks( array_merge([$sg], $chuck_array) ) ));
     // error_log('||> verify:' . json_encode($verify));
-    $text = __( "{$link_text} {$rel_id}", 'buddypress' );
+    // $text = __( "{$link_text} {$rel_id}", 'buddypress' );
+    $text = __( "{$link_text}", 'buddypress' );
     return array(
         'id'                => $action,
         'component'         => $comp == 'friend' ? 'friends' : 'engagements',
