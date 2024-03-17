@@ -2734,6 +2734,14 @@ function bp_core_get_components( $type = 'all' ) {
 			'title'       => __( 'Friend Connections', 'buddypress' ),
 			'description' => __( 'Let your users make connections so they can track the activity of others and focus on the people they care about the most.', 'buddypress' )
 		),
+		'engagements'  => array(
+			'title'       => __( 'Egngement Connections - LM', 'buddypress' ),
+			'description' => __( 'Let your users make connections so they can track the activity of others and focus on the people they care about the most.', 'buddypress' )
+		),
+		'relations'  => array(
+			'title'       => __( 'Relation Connections - LM', 'buddypress' ),
+			'description' => __( 'Let your users make connections so they can track the activity of others and focus on the people they care about the most.', 'buddypress' )
+		),
 		'messages' => array(
 			'title'       => __( 'Private Messaging', 'buddypress' ),
 			'description' => __( 'Allow your users to talk to each other directly and in private. Not just limited to one-on-one discussions, messages can be sent between any number of members.', 'buddypress' )

@@ -9,6 +9,7 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
+require dirname( __FILE__ ) . '/class/lm-class-component.php';
 require dirname( __FILE__ ) . '/class/lm-class-relations.php';
 require dirname( __FILE__ ) . '/class/lm-class-functions.php';
 require dirname( __FILE__ ) . '/lm-functions.php';
