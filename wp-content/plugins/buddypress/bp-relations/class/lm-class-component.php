@@ -28,13 +28,15 @@ class BP_Relations_Component extends BP_Component {
 	public function __construct($comp) {
 		$this->isf = $comp == 'friend';
 		$this->bpComps = $this->isf ? 'bp-friends' : 'bp-engagements';
-		$this->bpCompsMeta = $this->isf ? 'bp_friends_meta' : 'bp_engagements_meta';
+		$this->bpTable = $this->isf ? 'bp_friends' : 'bp_engagements';
+		$this->bpTableMeta = $this->isf ? 'bp_friends_meta' : 'bp_engagements_meta';
 		$this->bpPaths = $this->isf ? 'bp/friends' : 'bp/engagements';
 		$this->fe_name = $this->isf ? 'Resellers' : 'Suppliers';
-		$this->comp = $this->isf ? 'friend' : 'engagement';
+		// $this->comp = $this->isf ? 'friend' : 'engagement';
 		$this->comps = $this->isf ? 'friends' : 'engagements';
 		$this->Comps = $this->isf ? 'Friends' : 'Engagements';
 		$this->myComps = $this->isf ? 'my-friends' : 'my-engagements';
+		$this->sg_fn = $this->isf ? 'bp_get_friends_slug' : 'bp_get_engagements_slug';
 
 		parent::start(
 			$this->comps,
@@ -88,13 +90,14 @@ class BP_Relations_Component extends BP_Component {
 		if ( defined( 'BP_TESTS_DIR' ) ) {
 			return;
 		}
+
 		$addComp = $this->isf ? 'add-friend' : 'add-engagement';
 		$removeComp = $this->isf ? 'remove-friend' : 'remove-engagement';
-		$addCompFile = $this->isf ? "bp-friends/actions/add-friend.php" : "bp-engagements/actions/add-engagements.php";
-		$removeCompFile = $this->isf ? "bp-friends/actions/remove-friend.php" : "bp-engagements/actions/remove-engagements.php";
-		$myCompFile = $this->isf ? "bp-friends/screens/requests.php" : "bp-engagements/screens/requests.php";
+		$addCompFile = $this->isf ? "bp-friends/actions/add-friend.php" : "bp-engagements/actions/add-engagement.php";
+		$removeCompFile = $this->isf ? "bp-friends/actions/remove-friend.php" : "bp-engagements/actions/remove-engagement.php";
+		$myCompFile = $this->isf ? "bp-friends/screens/my-friends.php" : "bp-engagements/screens/my-engagements.php";
 		$requestsFile = $this->isf ? "bp-friends/screens/requests.php" : "bp-engagements/screens/requests.php";
-		$is_user_request = $this->isf ? 'bp_is_user_engagement_requests' : 'bp_is_user_engagement_requests';
+		$is_user_request = $this->isf ? 'bp_is_user_friend_requests' : 'bp_is_user_engagement_requests';
 
 		// relationss.
 		// Authenticated actions.
@@ -144,8 +147,8 @@ class BP_Relations_Component extends BP_Component {
 
 		// Global tables for the {$this->comps} component.
 		$global_tables = array(
-			'table_name'      => $bp->table_prefix . $this->comps,
-			'table_name_meta' => $bp->table_prefix . $this->bpCompsMeta,
+			'table_name'      => $bp->table_prefix . $this->bpTable,
+			'table_name_meta' => $bp->table_prefix . $this->bpTableMeta,
 		);
 
 		$notification_fn = $this->isf ? "friends_format_notifications" : "engagements_format_notifications" ;
@@ -175,17 +178,17 @@ class BP_Relations_Component extends BP_Component {
 	 *
 	 * @see `BP_Component::register_nav()` for a description of arguments.
 	 *
-	 * @param array $main_nav Optional. See `BP_Component::register_nav()` for
+	 * @param array $rg_nav Optional. See `BP_Component::register_nav()` for
 	 *                        description.
 	 * @param array $sub_nav  Optional. See `BP_Component::register_nav()` for
 	 *                        description.
 	 */
 	public function register_nav( $main_nav = array(), $sub_nav = array() ) {
-		$slug   = bp_get_engagements_slug();
 		$screen_my = $this->isf ? 'friends_screen_my_friends' : 'engagements_screen_my_engagements';
 		$my_id = $this->isf ? 'friends-my-friends' : 'engagements-my-engagements';
 		$screen_requests = $this->isf ? 'friends_screen_requests' : 'engagements_screen_requests';
-
+		$sg_fn = $this->sg_fn;
+		$slug   = $sg_fn();
 		$main_nav = array(
 			'name'                => __( $this->Comps, 'buddypress' ),
 			'slug'                => $slug,
@@ -236,11 +239,11 @@ class BP_Relations_Component extends BP_Component {
 		if ( bp_is_user() && isset( $this->main_nav['name'] ) ) {
 			// Add $this->comps to the main navigation.
 			$count                  = (int) $count_fn();
-			$class                  = ( 0 === $count ) ? 'no-count' : 'count';
+			$class                  = ( 0 === $count ) ? '0' : 'count';
 			$this->main_nav['name'] = sprintf(
 				/* translators: %s: {$this->comp} count for the current user */
 				sprintf(
-					'<span class="%s">%s</span>',
+					__( "{$this->fe_name} %s", 'buddypress' ),
 					esc_attr( $class ),
 					esc_html( $count )
 				)
@@ -264,10 +267,9 @@ class BP_Relations_Component extends BP_Component {
 
 		// Menus for logged in user.
 		if ( is_user_logged_in() ) {
-			$sg_fn = $this->isf ? 'bp_get_friends_slug' : 'bp_get_engagements_slug';
 			$get_relation_user_ids = $this->isf ? 'friends_get_relationship_request_user_ids' : 'engagements_get_relationship_request_user_ids';
-			$relationships = $this->isf ? 'friendships' : 'friendships';
-
+			$relationships = $this->isf ? 'friendships' : 'engagementships';
+			$sg_fn = $this->sg_fn;
 			// Setup the logged in user variables.
 			$relations_slug = $sg_fn();
 
@@ -277,7 +279,7 @@ class BP_Relations_Component extends BP_Component {
 			if ( ! empty( $count ) ) {
 				$title = sprintf(
 					/* translators: %s: Pending relation request count for the current user */
-					_x( "$this->Comps %s", "My Account {$this->comps} menu", 'buddypress' ),
+					_x( "{$this->Comps} %s", "My Account {$this->comps} menu", 'buddypress' ),
 					'<span class="count">' . bp_core_number_format( $count ) . '</span>'
 				);
 				$pending = sprintf(

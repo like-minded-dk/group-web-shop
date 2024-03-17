@@ -150,6 +150,22 @@ class BuddyPress {
 	 * @var BP_Friends_Component
 	 */
 	public $friends;
+	
+	/**
+	 * Engagements component.
+	 *
+	 * @since 1.6.0
+	 * @var BP_Engagements_Component
+	 */
+	public $engagements;
+	
+	/**
+	 * Relations component.
+	 *
+	 * @since 1.6.0
+	 * @var BP_Relations_Component
+	 */
+	public $relations;
 
 	/**
 	 * Groups component.
