@@ -1,7 +1,6 @@
 <?php
 function add_request_button($isf, &$btns, $comp, $user_id, $css_args) {
 	[ $parent_class, $button_element, $parent_element] = $css_args;
-    error_log(json_encode('----------------'.$comp));
 	$conf = array(
         // todo lm change accept action id
         'friend' => array(

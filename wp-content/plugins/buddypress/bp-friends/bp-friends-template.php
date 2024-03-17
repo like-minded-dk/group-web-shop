@@ -375,28 +375,7 @@ function bp_friend_accept_request_link() {
 	 * @return string accept-friendship URL.
 	 */
 	function bp_get_friend_accept_request_link() {
-		global $members_template;
-		if ( ! $relationship_id = wp_cache_get( 'friendship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), 'bp' ) ) {
-			$engagementship_id = engagements_get_relationship_id( $members_template->member->id, bp_loggedin_user_id() );
-			$friendship_id     = friends_get_relationship_id( $members_template->member->id, bp_loggedin_user_id() );
-			$relationship_id   = $engagementship_id ?? $friendship_id ;
-			wp_cache_set( 'friendship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), $relationship_id, 'bp' );
-		}
-		$url = wp_nonce_url(
-			bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_get_friends_slug(), 'requests', array( 'accept', $relationship_id ) ) ) ),
-			'friends_accept_friend'
-		);
-
-		/**
-		 * Filters the URL for accepting the current friendship request in the loop.
-		 *
-		 * @since 1.0.0
-		 * @since 2.6.0 Added the `$friendship_id` parameter.
-		 *
-		 * @param string $url           Accept-friendship URL.
-		 * @param int    $friendship_id ID of the friendship.
-		 */
-		return apply_filters( 'bp_get_friend_accept_request_link', $url, $relationship_id );
+		return get_awaiting_url('accept', 'friend');
 	}
 
 /**
@@ -417,30 +396,7 @@ function bp_friend_reject_request_link() {
 	 * @return string reject-friendship URL.
 	 */
 	function bp_get_friend_reject_request_link() {
-		global $members_template;
-
-		if ( ! $relationship_id = wp_cache_get( 'friendship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), 'bp' ) ) {
-			$engagementship_id = engagements_get_relationship_id( $members_template->member->id, bp_loggedin_user_id() );
-			$friendship_id     = friends_get_relationship_id( $members_template->member->id, bp_loggedin_user_id() );
-			$relationship_id   = $engagementship_id ?? $friendship_id ;
-			wp_cache_set( 'friendship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), $relationship_id, 'bp' );
-		}
-
-		$url = wp_nonce_url(
-			bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_get_friends_slug(), 'requests', array( 'reject', $relationship_id ) ) ) ),
-			'friends_reject_friend'
-		);
-
-		/**
-		 * Filters the URL for rejecting the current friendship request in the loop.
-		 *
-		 * @since 1.0.0
-		 * @since 2.6.0 Added the `$friendship_id` parameter.
-		 *
-		 * @param string $url           Reject-friendship URL.
-		 * @param int    $friendship_id ID of the friendship.
-		 */
-		return apply_filters( 'bp_get_friend_reject_request_link', $url, $relationship_id );
+		return get_awaiting_url('reject', 'friend');
 	}
 
 /**

@@ -185,7 +185,7 @@ add_action( 'engagements_engagementship_requested', 'bp_engagements_engagementsh
  * @param BP_Engagements_Engagementship $engagementship    The engagementship object.
  */
 function bp_engagements_mark_engagementship_rejected_notifications_by_item_id( $engagementship_id, $engagementship ) {
-	bp_notifications_mark_notifications_by_item_id( $engagementship->receriver_user_id, $engagementship->initiator_user_id, buddypress()->engagements->id, 'engagementship_request' );
+	bp_notifications_mark_notifications_by_item_id( $engagementship->receiver_user_id, $engagementship->initiator_user_id, buddypress()->engagements->id, 'engagementship_request' );
 }
 add_action( 'engagements_engagementship_rejected', 'bp_engagements_mark_engagementship_rejected_notifications_by_item_id', 10, 2 );
 
