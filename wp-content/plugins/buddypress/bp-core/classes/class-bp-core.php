@@ -94,9 +94,9 @@ class BP_Core extends BP_Component {
 		$bp->optional_components = apply_filters( 'bp_optional_components', array( 
 			'activity',
 			'blogs',
+			'relations',
 			'friends',
 			'engagements',
-			'relations',
 			'groups',
 			'messages',
 			'notifications',

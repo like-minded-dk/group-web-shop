@@ -9,7 +9,7 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-require WP_PLUGIN_DIR . '/buddypress/bp-relations/lm-loader.php';
+// require WP_PLUGIN_DIR . '/buddypress/bp-relations/lm-loader.php';
 /**
  * This function looks scarier than it actually is. :)
  * Each object loop (activity/members/groups/blogs/forums) contains default

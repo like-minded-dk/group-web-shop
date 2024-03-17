@@ -191,14 +191,14 @@ class BP_Relations_Component extends BP_Component {
 			'slug'                => $slug,
 			'position'            => 60,
 			'screen_function'     => $screen_my,
-			'default_subnav_slug' => $this->myComp,
+			'default_subnav_slug' => $this->myComps,
 			'item_css_id'         => $this->id,
 		);
 
 		// Add the subnav items to the {$this->comps} nav item.
 		$sub_nav[] = array(
 			'name'            => _x( $this->fe_name, "{$this->comps} screen sub nav", 'buddypress' ),
-			'slug'            => $this->myComp,
+			'slug'            => $this->myComps,
 			'parent_slug'     => $slug,
 			'screen_function' => $screen_my,
 			'position'        => 10,
@@ -303,7 +303,7 @@ class BP_Relations_Component extends BP_Component {
 				'parent'   => 'my-account-' . $this->id,
 				'id'       => 'my-account-' . $this->id . "-{$relationships}",
 				'title'    => _x( $relationships, "My Account {$this->comps} menu sub nav", 'buddypress' ),
-				'href'     => bp_loggedin_user_url( bp_members_get_path_chunks( array( $relations_slug, $this->myComp ) ) ),
+				'href'     => bp_loggedin_user_url( bp_members_get_path_chunks( array( $relations_slug, $this->myComps ) ) ),
 				'position' => 10,
 			);
 
