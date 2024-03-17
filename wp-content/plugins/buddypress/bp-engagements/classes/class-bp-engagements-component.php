@@ -183,15 +183,15 @@ class BP_Engagements_Component extends BP_Component {
 			'item_css_id'     => 'engagements-my-engagements',
 		);
 
-		$sub_nav[] = array(
-			'name'                     => _x( 'Requests', 'engagements screen sub nav', 'buddypress' ),
-			'slug'                     => 'requests',
-			'parent_slug'              => $slug,
-			'screen_function'          => 'engagements_screen_requests',
-			'position'                 => 20,
-			'user_has_access'          => false,
-			'user_has_access_callback' => 'bp_core_can_edit_settings',
-		);
+		// $sub_nav[] = array(
+		// 	'name'                     => _x( 'Requests', 'engagements screen sub nav', 'buddypress' ),
+		// 	'slug'                     => 'requests',
+		// 	'parent_slug'              => $slug,
+		// 	'screen_function'          => 'engagements_screen_requests',
+		// 	'position'                 => 20,
+		// 	'user_has_access'          => false,
+		// 	'user_has_access_callback' => 'bp_core_can_edit_settings',
+		// );
 
 		parent::register_nav( $main_nav, $sub_nav );
 	}

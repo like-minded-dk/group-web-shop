@@ -132,7 +132,7 @@ function is_initiator($component = '') {
 
 function print_initiator($component = '') {
 	// todo lm debug
-	// return;
+	return;
 	$user_id = bp_loggedin_user_id();
 	$user_name = bp_get_user_firstname();
 	$member_id = bp_get_member_user_id();

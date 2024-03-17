@@ -804,7 +804,7 @@ function bp_post_request() {
 }
 
 /**
- * The main action used for handling theme-side GET requests.
+ * The main action used for handling theme-side GET .
  *
  * @since 1.9.0
  */
