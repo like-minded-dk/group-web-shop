@@ -4252,6 +4252,15 @@ body.no-js .buddypress #messages-bulk-management #select-all-messages {
 	line-height: 1;
 }
 
+.buddypress .buddypress-wrap button.accept {
+	background: rgb(193, 235, 199);
+}
+
+.buddypress .buddypress-wrap button.reject {
+	background: rgb(235, 217, 193);
+}
+
+
 .buddypress .buddypress-wrap button.dashicons,
 .buddypress .buddypress-wrap a.button.dashicons {
 	font-family: dashicons;

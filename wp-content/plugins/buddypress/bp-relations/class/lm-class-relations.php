@@ -575,7 +575,7 @@ class BP_Relations_Relationship {
 		 * initiator or relation.
 		 */
 		$args = array(
-			'initiator_user_id' => $member_id,
+			'initiator_user_id' => $user_id,
 			'receiver_user_id'  => $member_id,
 		);
 		$result = static::get_relationships( $user_id, $args, 'OR' );
