@@ -247,7 +247,7 @@ class BP_Relations_Relationship {
 				$result = $wpdb->query( $wpdb->prepare( <<<SQL
 					UPDATE {$bp->{$this->component_ins}->table_name}
 					SET initiator_user_id = %d,
-						{$this->receiver_user_id} = %d,
+						receiver_user_id = %d,
 						is_confirmed = %d,
 						is_limited = %d,
 						date_created = %s
@@ -267,21 +267,23 @@ class BP_Relations_Relationship {
 			try {
 				break_sql('[action] save [table] '. $this->component_ins . ' [initiator_user_id] '. $this->initiator_user_id . ' [receiver_user_id] '. $this->receiver_user_id);
 
-				$result = $wpdb->query( $wpdb->prepare( <<<SQL
+				$result = $wpdb->query( $wpdb->prepare(<<<SQL
 					INSERT INTO {$bp->{$this->component_ins}->table_name} 
-						( initiator_user_id,
-						{$this->receiver_user_id},
+						(
+						initiator_user_id,
+						receiver_user_id,
 						is_confirmed,
 						is_limited,
-						date_created )
+						date_created
+						)
 					VALUES ( %d, %d, %d, %d, %s )
 					SQL,
 					$this->initiator_user_id,
 					$this->receiver_user_id,
 					$this->is_confirmed,
 					$this->is_limited,
-					$this->date_created )
-				);
+					$this->date_created
+				));
 				$this->id = $wpdb->insert_id;
 
 			} catch (Exception $e) { $result = false; }
@@ -527,12 +529,10 @@ class BP_Relations_Relationship {
 				$args = array(
 					'initiator_user_id' => $user_id,
 				);
-			} elseif (bp_current_component() == static::$component) {
+			} else {
 				$args = array(
 					'receiver_user_id' => $user_id,
 				);
-			} else {
-				$args = array();
 			}
 		}
 

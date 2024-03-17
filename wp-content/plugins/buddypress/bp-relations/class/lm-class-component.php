@@ -239,11 +239,12 @@ class BP_Relations_Component extends BP_Component {
 		if ( bp_is_user() && isset( $this->main_nav['name'] ) ) {
 			// Add $this->comps to the main navigation.
 			$count                  = (int) $count_fn();
-			$class                  = ( 0 === $count ) ? '0' : 'count';
+			$class                  = ( 0 === $count ) ? 'no-count' : 'count';
 			$this->main_nav['name'] = sprintf(
-				/* translators: %s: {$this->comp} count for the current user */
+				/* translators: %s: engagement count for the current user */
+				__( "{$this->fe_name} %s", 'buddypress' ),
 				sprintf(
-					__( "{$this->fe_name} %s", 'buddypress' ),
+					'<span class="%s">%s</span>',
 					esc_attr( $class ),
 					esc_html( $count )
 				)

@@ -2,7 +2,7 @@
 function break_sql($error = '') {
     // @todo lm shortcut delete
     error_log($error ?? 'break call');
-    throw new ErrorException($error);
+    // throw new ErrorException($error);
 }
 
 function is_from_reverse($sts) {
