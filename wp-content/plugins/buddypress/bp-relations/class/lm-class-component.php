@@ -184,9 +184,9 @@ class BP_Relations_Component extends BP_Component {
 	 *                        description.
 	 */
 	public function register_nav( $main_nav = array(), $sub_nav = array() ) {
+		// $screen_requests = $this->isf ? 'friends_screen_requests' : 'engagements_screen_requests';
 		$screen_my = $this->isf ? 'friends_screen_my_friends' : 'engagements_screen_my_engagements';
 		$my_id = $this->isf ? 'friends-my-friends' : 'engagements-my-engagements';
-		$screen_requests = $this->isf ? 'friends_screen_requests' : 'engagements_screen_requests';
 		$sg_fn = $this->sg_fn;
 		$slug   = $sg_fn();
 		$main_nav = array(
