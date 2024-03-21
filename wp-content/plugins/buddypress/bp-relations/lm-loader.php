@@ -9,14 +9,14 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-require dirname( __FILE__ ) . '/class/lm-class-component.php';
-require dirname( __FILE__ ) . '/class/lm-class-relations.php';
-require dirname( __FILE__ ) . '/class/lm-class-functions.php';
+require dirname( __FILE__ ) . '/lm-class/lm-class-component.php';
+require dirname( __FILE__ ) . '/lm-class/lm-class-relations.php';
+require dirname( __FILE__ ) . '/lm-class/lm-class-functions.php';
 require dirname( __FILE__ ) . '/lm-functions.php';
-require dirname( __FILE__ ) . '/template/lm-template-functions.php';
-require dirname( __FILE__ ) . '/template/lm-template-button-args.php';
-require dirname( __FILE__ ) . '/template/lm-template-member-btn.php';
-require dirname( __FILE__ ) . '/template/lm-template-request-btn.php';
+require dirname( __FILE__ ) . '/lm-template/lm-template-functions.php';
+require dirname( __FILE__ ) . '/lm-template/lm-template-button-args.php';
+require dirname( __FILE__ ) . '/lm-template/lm-template-member-btn.php';
+require dirname( __FILE__ ) . '/lm-template/lm-template-request-btn.php';
 
 /**
  * Engagements Loader class
@@ -63,7 +63,7 @@ class BP_Nouveau_Lm_Relations {
 			// error_log('>>> enagement includes');  e.g search 'friends_' in $_REQUEST['action']
 			add_action( 'admin_init', function() {
 				if ( defined( 'DOING_AJAX' ) && true === DOING_AJAX && 0 === strpos( $_REQUEST['action'], $this->comp . 's_' ) ) {
-					require 'ajax/lm-ajax.php';
+					require 'lm-ajax/lm-ajax.php';
 				}
 			} );
 		}

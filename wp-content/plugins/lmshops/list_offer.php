@@ -46,8 +46,8 @@ function render_output($products) {
                 <a class='product-permalink' href='$permalink'>
                     <img class='product-image' src='$image_url'/>
                     <p class='product-title'>$title</p>
-                    <p class='product-status'>$status</p>
-                    <p class='product-sale-price'>Sales price: $sale_price $currency</p>
+                    <!-- <p class='product-status'>$status</p> -->
+                    <!-- <p class='product-sale-price'>Sales price: $sale_price $currency</p> -->
                     <p class='product-regular-price'>Regular price $regular_price $currency</p>
                     <p class='product-description'>$description</p>
                 </a>
