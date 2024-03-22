@@ -227,16 +227,6 @@ class BP_Relations_Component extends BP_Component {
 		// 	'user_has_access_callback' => 'bp_core_can_edit_settings',
 		// );
 
-		$main_nav_test = array(
-			'name'                => __( 'aaa', 'buddypress' ),
-			'slug'                => 'aaa',
-			'position'            => 60,
-			'screen_function'     => $screen_my,
-			'default_subnav_slug' => $this->myComps,
-			'item_css_id'         => $this->id,
-		);
-
-		parent::register_nav( $main_nav_test,  $sub_nav );
 		parent::register_nav( $main_nav,  $sub_nav );
 	}
 

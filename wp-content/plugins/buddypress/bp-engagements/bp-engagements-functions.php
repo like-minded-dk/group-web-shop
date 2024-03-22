@@ -800,7 +800,6 @@ add_action( 'delete_user', 'bp_engagements_remove_data_on_delete_user' );
  * @see bp_activity_mentions_script()
  */
 function bp_engagements_prime_mentions_results() {
-
 	// Stop here if user is not logged in.
 	if ( ! is_user_logged_in() ) {
 		return;

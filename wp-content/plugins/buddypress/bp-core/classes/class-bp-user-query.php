@@ -402,9 +402,11 @@ class BP_User_Query {
 
 		// 'user_id' - When a user id is passed, limit to the friends of the user
 		// @todo remove need for bp_is_active() check.
-
-		$is_engagment = bp_is_active( 'engagements' ) && bp_is_current_component('engagements');
-		$is_friend = bp_is_active( 'friends' ) && bp_is_current_component('friends');
+		// $is_engagment = bp_is_active( 'engagements' ) && bp_is_current_component('engagements');
+		// $is_friend = bp_is_active( 'friends' ) && bp_is_current_component('friends');
+		$scope = isset($_POST['scope']) ? $_POST['scope'] : '';
+		$is_engagment = bp_is_current_component('engagements') || $scope == 'my-engagements';
+		$is_friend = bp_is_current_component('friends') || $scope == 'my-friends';
 
 		$friend_ids = friends_get_receiver_user_ids( $user_id );
 		$engagement_ids = engagements_get_receiver_user_ids( $user_id );

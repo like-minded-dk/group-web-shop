@@ -60,7 +60,6 @@ function bp_members_has_directory() {
  * @return array
  */
 function bp_core_get_users( $args = '' ) {
-
 	// Parse the user query arguments.
 	$r = bp_parse_args(
 		$args,
@@ -116,7 +115,6 @@ function bp_core_get_users( $args = '' ) {
 
 	// Default behavior as of BuddyPress 1.7.0.
 	} else {
-
 		// Get users like we were asked to do...
 		$users = new BP_User_Query( $r );
 

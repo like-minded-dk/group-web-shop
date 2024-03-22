@@ -375,6 +375,12 @@ body.buddypress article.page > .entry-header:not(.alignwide):not(.alignfull) .en
 	}
 }
 
+#members-all .count,
+li#members-friends .count,
+li#members-engagements .count {
+	display: none;
+}
+
 .buddypress-wrap .bp-subnavs li.selected a,
 .buddypress-wrap .bp-subnavs li.current a {
 	background: #fff;
