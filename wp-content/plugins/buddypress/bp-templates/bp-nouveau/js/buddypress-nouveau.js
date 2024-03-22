@@ -754,11 +754,11 @@ window.bp = window.bp || {};
 					}
 
 					// User's groups invitations screen & User's friend screens.
-					if ( undefined !== response.data.is_user && response.data.is_user ) {
-						target.parent().html( response.data.feedback );
-						item.fadeOut( 1500 );
-						return;
-					}
+					// if ( undefined !== response.data.is_user && response.data.is_user ) {
+					// 	target.parent().html( response.data.feedback );
+					// 	item.fadeOut( 1500 );
+					// 	return;
+					// }
 
 					// Update count.
 					if ( $( self.objectNavParent + ' [data-bp-scope="personal"]' ).length ) {

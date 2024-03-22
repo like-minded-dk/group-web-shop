@@ -764,6 +764,7 @@ class BuddyPress {
 			'BP_Optouts_List_Table'                      => 'core',
 
 			'BP_REST_Friends_Endpoint'                   => 'friends',
+			'BP_REST_Engagements_Endpoint'               => 'engagements',
 
 			'BP_Group_Extension'                         => 'groups',
 			'BP_Group_Member_Query'                      => 'groups',

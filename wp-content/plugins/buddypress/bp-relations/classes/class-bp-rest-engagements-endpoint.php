@@ -1,6 +1,6 @@
 <?php
 /**
- * BP REST: BP_REST_Engagement_Endpoint class
+ * BP REST: BP_REST_Engagements_Endpoint class
  *
  * @package BuddyPress
  * @since 6.0.0
@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @since 6.0.0
  */
-class BP_REST_Engagement_Endpoint extends WP_REST_Controller {
+class BP_REST_Engagements_Endpoint extends WP_REST_Controller {
 
 	/**
 	 * Constructor.

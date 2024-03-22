@@ -127,11 +127,11 @@ function bp_admin_repair_list() {
 			'bp_admin_repair_friend_count',
 		);
 	}
-	$repair_list[] = array(
-		'bp-user-engagements',
-		__( 'Repair total engagements count for each member.', 'buddypress' ),
-		'bp_admin_repair_engagement_count',
-	);
+	// $repair_list[] = array(
+	// 	'bp-user-engagements',
+	// 	__( 'Repair total engagements count for each member.', 'buddypress' ),
+	// 	'bp_admin_repair_engagement_count',
+	// );
 
 	// Groups:
 	// - user group count.

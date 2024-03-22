@@ -209,16 +209,35 @@ class BP_Relations_Component extends BP_Component {
 		);
 
 		// $sub_nav[] = array(
+		// 	'name'            => _x( $this->fe_name, "{$this->comps} screen sub nav", 'buddypress' ),
+		// 	'slug'            => $this->myComps,
+		// 	'parent_slug'     => $slug,
+		// 	'screen_function' => $screen_my,
+		// 	'position'        => 20,
+		// );
+
+
+		// $sub_nav[] = array(
 		// 	'name'                     => _x( 'Requests', "{$this->comps} screen sub nav", 'buddypress' ),
 		// 	'slug'                     => 'requests',
 		// 	'parent_slug'              => $slug,
-		// 	'screen_function'          => $screen_requests,
+		// 	'screen_function'          => $screen_my,
 		// 	'position'                 => 20,
 		// 	'user_has_access'          => false,
 		// 	'user_has_access_callback' => 'bp_core_can_edit_settings',
 		// );
 
-		parent::register_nav( $main_nav, $sub_nav );
+		$main_nav_test = array(
+			'name'                => __( 'aaa', 'buddypress' ),
+			'slug'                => 'aaa',
+			'position'            => 60,
+			'screen_function'     => $screen_my,
+			'default_subnav_slug' => $this->myComps,
+			'item_css_id'         => $this->id,
+		);
+
+		parent::register_nav( $main_nav_test,  $sub_nav );
+		parent::register_nav( $main_nav,  $sub_nav );
 	}
 
 	/**
@@ -387,7 +406,7 @@ class BP_Relations_Component extends BP_Component {
 	 *                           description.
 	 */
 	public function rest_api_init( $controllers = array() ) {
-		$endpoint = $this->isf ? 'BP_REST_Friend_Endpoint' : 'BP_REST_Engagement_Endpoint';
+		$endpoint = $this->isf ? 'BP_REST_Friends_Endpoint' : 'BP_REST_Engagements_Endpoint';
 		parent::rest_api_init( array( $endpoint ) );
 	}
 

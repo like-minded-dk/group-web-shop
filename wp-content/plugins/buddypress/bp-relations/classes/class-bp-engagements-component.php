@@ -351,7 +351,7 @@ class BP_Engagements_Component extends BP_Relations_Component {
 // 	 *                           description.
 // 	 */
 // 	public function rest_api_init( $controllers = array() ) {
-// 		parent::rest_api_init( array( 'BP_REST_Engagement_Endpoint' ) );
+// 		parent::rest_api_init( array( 'BP_REST_Engagements_Endpoint' ) );
 // 	}
 
 // 	/**

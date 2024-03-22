@@ -4,6 +4,24 @@
     display: none;
 }
 
+.products-lm ul li {
+    background-color: #f8f2e9;
+    border-radius: 1em;
+    padding: 16px;
+
+    text-align: center;
+    margin: 0 !important;
+    width: 100% !important;
+}
+
+
+.products-lm .product-image {
+    width: 150px;
+    height: 150px;
+    margin: 16px;
+    border-radius: 2em;
+}
+
 
 .product-images-container {
     display: flex !important;
@@ -28,15 +46,6 @@
     gap: 1.25em;
 }
 
-.products-lm ul li {
-    border: 1px solid black;
-    border-radius: 1em;
-    padding: 16px;
-
-    text-align: center;
-    margin: 0 !important;
-    width: 100% !important;
-}
 
 .edit-offer-form .product-image {
     width: 24%;
