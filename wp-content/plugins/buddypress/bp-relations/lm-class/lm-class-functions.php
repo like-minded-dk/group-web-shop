@@ -85,13 +85,8 @@ function update_lm_relation_cache($comp, $user_id, $possible_member_ids, $bp_cac
 		}
 		
 		
-<<<<<<< HEAD
-		error_log(json_encode('-------------->>> rel_id: '. $relationship->id . ' user_id: '. $user_id . ' '. $initiator_user_id . '->'. $receiver_user_id. ' comp: '. $comp ));
-		error_log('--status_initiator-> ' . $status_initiator . ' --status_receiver-> ' . $status_receiver );
-=======
 		// error_log(json_encode('-------------->>> rel_id: '. $relationship->id . ' user_id: '. $user_id . ' '. $initiator_user_id . '->'. $receiver_user_id. ' comp: '. $comp ));
 		// error_log('--status_initiator-> ' . $status_initiator . ' --status_receiver-> ' . $status_receiver );
->>>>>>> 9311e19 (add engagement)
 		bp_core_set_incremented_cache( $initiator_user_id . ':' . $receiver_user_id, $bp_cache_key, $status_initiator );
 		bp_core_set_incremented_cache( $receiver_user_id . ':' . $initiator_user_id, $bp_cache_key, $status_receiver );
 

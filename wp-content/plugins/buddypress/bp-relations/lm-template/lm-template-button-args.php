@@ -21,11 +21,7 @@ function get_button_args ($pid, $comp) {
 		$oppo_list_sts,
         $from_reversed_table,
 	) = get_template_vars($pid, $comp);
-<<<<<<< HEAD
-    error_log('$comp = ' . $comp . ', $oppo = ' . $oppo . ", {$comp}_st = " . $comp_list_sts . ", {$oppo}_st = " . $oppo_list_sts);
-=======
     error_log('[get_button_args] $comp = ' . $comp . ', $oppo = ' . $oppo . ", {$comp}_st = " . $comp_list_sts . ", {$oppo}_st = " . $oppo_list_sts);
->>>>>>> 9311e19 (add engagement)
 
     $button_args = array();
 
@@ -102,11 +98,7 @@ function get_template_vars($pid, $comp) {
 
 
 function relation_btn_args($comp, $status, $pid, $sg, $relation_id) {
-<<<<<<< HEAD
-    error_log('||> '.$comp.' btn_args, btn_status: '.$status);
-=======
     // error_log('[relation_btn_args] [comp] '.$comp.' btn_args, btn_status: '.$status);
->>>>>>> 9311e19 (add engagement)
     $is_f = $comp == 'friend' ;
     $oppo = $is_f ? 'engagement' : 'friend';
 
