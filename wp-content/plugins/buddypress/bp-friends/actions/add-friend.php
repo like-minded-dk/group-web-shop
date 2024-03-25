@@ -13,6 +13,7 @@
  * @since 1.0.1
  */
 function friends_action_add_friend() {
+	error_log(json_encode('>>>>>>>friends_action_add_friend'));
 	if ( ! bp_is_friends_component() || ! bp_is_current_action( 'add-friend' ) ) {
 		return false;
 	}
@@ -26,11 +27,11 @@ function friends_action_add_friend() {
 		return false;
 	}
 
-	$friendship_status = BP_Friends_Friendship::check_is_friend( bp_loggedin_user_id(), $potential_friend_id );
+	$friendship_status = BP_Friends_Friendship::check_is_relation( bp_loggedin_user_id(), $potential_friend_id );
 
-	if ( 'not_friends' === $friendship_status ) {
+	if ( 'not_friend' === $friendship_status ) {
 
-		if ( ! check_admin_referer( 'friends_add_friend' ) ) {
+		if ( ! check_admin_referer( 'friends_add_friends' ) ) {
 			return false;
 		}
 
@@ -38,6 +39,16 @@ function friends_action_add_friend() {
 			bp_core_add_message( __( 'Friendship could not be requested.', 'buddypress' ), 'error' );
 		} else {
 			bp_core_add_message( __( 'Friendship requested', 'buddypress' ) );
+		}
+	} elseif ( 'add_engagements_from_receiver' === $friendship_status ) {
+		if ( ! check_admin_referer( 'friends_add_engagements' ) ) {
+			return false;
+		}
+		// todo friends_add_engagements
+		if ( ! friends_add_friend( bp_loggedin_user_id(), $potential_friend_id ) ) {
+			bp_core_add_message( __( '(friends) engagementsship could not be requested.', 'buddypress' ), 'error' );
+		} else {
+			bp_core_add_message( __( '(friends) engagementsship requested', 'buddypress' ) );
 		}
 	} elseif ( 'is_friend' === $friendship_status ) {
 		bp_core_add_message( __( 'You are already friends with this user', 'buddypress' ), 'error' );

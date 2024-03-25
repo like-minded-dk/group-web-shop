@@ -17,6 +17,10 @@ defined( 'ABSPATH' ) || exit;
  * @return string Template loop for the specified object
  */
 function bp_nouveau_ajax_object_template_loader() {
+
+
+
+	
 	if ( ! bp_is_post_request() ) {
 		wp_send_json_error();
 	}
@@ -34,7 +38,6 @@ function bp_nouveau_ajax_object_template_loader() {
 	);
 
 	$object = sanitize_title( $post_vars['object'] );
-
 	// Bail if object is not an active component to prevent arbitrary file inclusion.
 	if ( ! bp_is_active( $object ) ) {
 		wp_send_json_error();
@@ -44,7 +47,6 @@ function bp_nouveau_ajax_object_template_loader() {
 	if ( ! $post_vars['nonce'] || ! wp_verify_nonce( $post_vars['nonce'], 'bp_nouveau_' . $object ) ) {
 		wp_send_json_error();
 	}
-
 	$result = array();
 
 	if ( 'activity' === $object ) {
@@ -52,7 +54,6 @@ function bp_nouveau_ajax_object_template_loader() {
 		if ( $post_vars['scope'] ) {
 			$scope = sanitize_text_field( $post_vars['scope'] );
 		}
-
 		// We need to calculate and return the feed URL for each scope.
 		switch ( $scope ) {
 			case 'friends':
@@ -114,7 +115,6 @@ function bp_nouveau_ajax_object_template_loader() {
 	if ( $post_vars['template'] ) {
 		$template = wp_unslash( $post_vars['template'] );
 	}
-
 	switch ( $template ) {
 		case 'group_members' :
 		case 'groups/single/members' :
@@ -154,7 +154,6 @@ function bp_nouveau_ajax_object_template_loader() {
 	 * @param string Template file path.
 	 */
 	$template_path = apply_filters( 'bp_nouveau_object_template_path', $template_path );
-
 	load_template( $template_path );
 	$result['contents'] = ob_get_contents();
 	ob_end_clean();

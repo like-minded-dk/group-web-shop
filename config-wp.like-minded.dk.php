@@ -3,7 +3,11 @@ define('DB_NAME', 'wordpress');
 define('DB_USER', 'admin');
 define('DB_PASSWORD', 'Likeminded1234!');
 define('DB_HOST', 'database-1.czcuksu4kqoi.eu-north-1.rds.amazonaws.com');
-define('WP_CONTENT_DIR', '/usr/share/wordpress/wp-content');
+if (PHP_OS == 'Darwin') {
+    define('WP_CONTENT_DIR', '/Users/zhengdai/git/group-web-shop/wp-content');
+} else {
+    define('WP_CONTENT_DIR', '/usr/share/wordpress/wp-content');
+}
 define( 'WP_AUTO_UPDATE_CORE', true );
 
 define('WP_CACHE_KEY_SALT', 'wp.like-minded.dk');

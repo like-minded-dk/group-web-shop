@@ -661,9 +661,15 @@ window.bp = window.bp || {};
 		 * @return {[type]}       [description]
 		 */
 		buttonAction: function( event ) {
-			var self = event.data, target = $( event.currentTarget ), action = target.data( 'bp-btn-action' ), nonceUrl = target.data( 'bp-nonce' ),
-				item = target.closest( '[data-bp-item-id]' ), item_id = item.data( 'bp-item-id' ), item_inner = target.closest('.list-wrap'),
-				object = item.data( 'bp-item-component' ), nonce = '';
+			var self = event.data,
+				target = $( event.currentTarget ),
+				action = target.data( 'bp-btn-action' ),
+				nonceUrl = target.data( 'bp-nonce' ),
+				item = target.closest( '[data-bp-item-id]' ),
+				item_id = item.data( 'bp-item-id' ),
+				item_inner = target.closest('.list-wrap'),
+				object = item.data( 'bp-item-component' ),
+				nonce = '';
 
 			// Simply let the event fire if we don't have needed values.
 			if ( ! action || ! item_id || ! object ) {
@@ -688,20 +694,28 @@ window.bp = window.bp || {};
 			// Unfortunately unlike groups
 			// Friends actions does not match the wpnonce
 			var friends_actions_map = {
-				is_friend         : 'remove_friend',
-				not_friends       : 'add_friend',
-				pending_friend           : 'withdraw_friendship',
-				accept_friendship : 'accept_friendship',
-				reject_friendship : 'reject_friendship'
+				add_friend       			: 'add_friend',
+				pending_friend   			: 'withdraw_friend',
+				accept_friend 	 			: 'accept_friend',
+				reject_friend 	 			: 'reject_friend',
+				remove_friend    			: 'remove_friend',
+				accept_friend_reversed 		: 'accept_friend_reversed',
+				reject_friend_reversed  	: 'reject_friend_reversed',
+				remove_friend_reversed  	: 'remove_friend_reversed',
 			};
 
 			var engagements_actions_map = {
-				is_engagement         : 'remove_engagement',
-				not_engagements       : 'add_engagement',
-				pending_engagement               : 'withdraw_engagementship',
-				accept_engagementship : 'accept_engagementship',
-				reject_engagementship : 'reject_engagementship'
+				remove_engagement    		: 'remove_engagement',
+				add_engagement       		: 'add_engagement',
+				pending_engagement   		: 'withdraw_engagement',
+				accept_engagement 	 		: 'accept_engagement',
+				reject_engagement 	 		: 'reject_engagement',
+				accept_engagement_reversed 	: 'accept_engagement_reversed',
+				reject_engagement_reversed  : 'reject_engagement_reversed',
+				remove_engagement_reversed  : 'remove_engagement_reversed',
 			};
+
+			console.log(`>>>>todo1 action`, action , object + '_' + action);
 
 			if ( action.includes('friend') && 'members' === object && undefined !== friends_actions_map[ action ] ) {
 				action = friends_actions_map[ action ];
@@ -715,6 +729,10 @@ window.bp = window.bp || {};
 
 			// Add a pending class to prevent queries while we're processing the action.
 			target.addClass( 'pending loading' );
+			if (action.includes('accept') || action.includes('reject') ) {
+				item_id =  target[0]?.dataset?.lmItemId;
+			}
+			console.log(`>>>>todo2 action`, action , object + '_' + action + ' item_id ' + item_id);
 
 			self.ajax( {
 				action   : object + '_' + action,
@@ -736,17 +754,17 @@ window.bp = window.bp || {};
 					}
 
 					// User's groups invitations screen & User's friend screens.
-					if ( undefined !== response.data.is_user && response.data.is_user ) {
-						target.parent().html( response.data.feedback );
-						item.fadeOut( 1500 );
-						return;
-					}
+					// if ( undefined !== response.data.is_user && response.data.is_user ) {
+					// 	target.parent().html( response.data.feedback );
+					// 	item.fadeOut( 1500 );
+					// 	return;
+					// }
 
 					// Update count.
 					if ( $( self.objectNavParent + ' [data-bp-scope="personal"]' ).length ) {
 						var personal_count = Number( $( self.objectNavParent + ' [data-bp-scope="personal"] span' ).html() ) || 0;
 
-						if ( -1 !== $.inArray( action, ['leave_group', 'remove_friend'] ) ) {
+						if ( -1 !== $.inArray( action, ['leave_group', 'remove_friends'] ) ) {
 							personal_count -= 1;
 						} else if ( -1 !== $.inArray( action, ['join_group'] ) ) {
 							personal_count += 1;

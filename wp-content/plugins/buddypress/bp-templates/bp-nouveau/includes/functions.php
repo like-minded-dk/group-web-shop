@@ -9,6 +9,7 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
+// require WP_PLUGIN_DIR . '/buddypress/bp-relations/lm-loader.php';
 /**
  * This function looks scarier than it actually is. :)
  * Each object loop (activity/members/groups/blogs/forums) contains default
@@ -173,31 +174,41 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 	if ( empty( $button->component ) ) {
 		return $output;
 	}
-
+	error_log(('[button-id]: '.$button->id));
 	// Custom data attribute.
 	$r['button_attr']['data-bp-btn-action'] = $button->id;
 
 	$reset_ids = 'engagements' == $button->component ? array(
-		'member_engagementship' => true,
+		'member_engagement' => true,
 		'group_membership'  => true,
 	) : array(
-		'member_friendship' => true,
+		'member_friend' => true,
 		'group_membership'  => true,
 	);
-
+	
+	//  test member_component exist
+	error_log('[$reset_ids]: '. json_encode($reset_ids));
 	if ( ! empty( $reset_ids[ $button->id ] ) )  {
 		$parse_class = array_map( 'sanitize_html_class', explode( ' ', $r['button_attr']['class'] ) );
 		if ( false === $parse_class ) {
 			return $output;
 		}
-
+		error_log('[parse_class] '.json_encode($parse_class));
 		$find_id = array_intersect( $parse_class, array(
+			'remove_engagement_reversed',
+			'add_engagement',
+			'remove_engagement',
+			'add_engagement',
 			'pending_engagement',
-			'is_engagement',
-			'not_engagements',
+			'awaiting_engagement',
+
+			'remove_friend_reversed',
+			'add_friend',
+			'remove_friend',
+			'add_friend',
 			'pending_friend',
-			'is_friend',
-			'not_friends',
+			'awaiting_friend',
+			
 			'leave-group',
 			'join-group',
 			'accept-invite',
@@ -205,17 +216,20 @@ function bp_nouveau_ajax_button( $output = '', $button = null, $before = '', $af
 			'request-membership',
 		) );
 
+		error_log('[find_id] '. json_encode($find_id));
+		// @todo output html
+		//error_log('-------output html------------'.json_encode($output));
 		if ( 1 !== count( $find_id ) ) {
 			return $output;
 		}
-
 		$data_attribute = reset( $find_id );
 		if ( 'pending_friend' === $data_attribute ) {
 			//$data_attribute = str_replace( '_friend', '', $data_attribute );
 		} elseif ( 'group_membership' === $button->id ) {
 			$data_attribute = str_replace( '-', '_', $data_attribute );
 		}
-
+		error_log('[button_attr] '. ($data_attribute));
+		error_log(' -- ');
 		$r['button_attr']['data-bp-btn-action'] = $data_attribute;
 	}
 

@@ -8,6 +8,7 @@
 /* Look up a host-specific config file in
  * /usr/share/wordpress/config-<host>.php or /usr/share/wordpress/config-<domain>.php
  */
+define('FS_METHOD', 'direct');
 
 if (!defined('WP_CLI')) {
     define('WP_CLI', false);
@@ -16,7 +17,11 @@ if (defined('WP_CLI') && WP_CLI && !isset($_SERVER['HTTP_HOST'])) {
     $_SERVER['HTTP_HOST'] = 'wp.like-minded.dk'; // Replace 'default.domain.com' with your site's domain name or a default value.
 }
 
-define('CONFIG_PATH', '/usr/share/wordpress/');
+if (PHP_OS == 'Darwin') {
+    define('CONFIG_PATH', '/Users/zhengdai/git/group-web-shop/');
+} else {
+    define('CONFIG_PATH', '/usr/share/wordpress/');    
+}
 $debian_server = preg_replace('/:.*/', "", $_SERVER['HTTP_HOST']);
 $debian_server = preg_replace("/[^a-zA-Z0-9.\-]/", "", $debian_server);
 $debian_file = CONFIG_PATH . 'config-'.strtolower($debian_server).'.php';
@@ -70,6 +75,9 @@ define( 'SCRIPT_DEBUG', true );
 define( 'WP_DEBUG_LOG', true );
 define( 'WP_DISABLE_FATAL_ERROR_HANDLER', true );
 define( 'WP_DEBUG', true );
+define('WP_HTTP_BLOCK_EXTERNAL', false);
+ini_set('log_errors', 'On');
+ini_set('error_log', WP_CONTENT_DIR . 'debug.log');
 }
 
 if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https')

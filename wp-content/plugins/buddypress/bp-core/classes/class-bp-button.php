@@ -235,7 +235,6 @@ class BP_Button {
 	 * @param array|string $args See {@BP_Button}.
 	 */
 	public function __construct( $args = '' ) {
-
 		$r = bp_parse_args(
 			$args,
 			get_class_vars( __CLASS__ )
@@ -252,13 +251,12 @@ class BP_Button {
 		if ( !empty( $r['link_rel']   ) ) $this->link_rel   = ' rel="' .   $r['link_rel']   . '"';
 		if ( !empty( $r['link_class'] ) ) $this->link_class = ' class="' . $r['link_class'] . '"';
 		if ( !empty( $r['link_text']  ) ) $this->link_text  =              $r['link_text'];
-
+		// error_log('>>> button Rgs r " '.json_encode($r));
 		// Required button properties.
 		$this->id                = $r['id'];
 		$this->component         = $r['component'];
 		$this->must_be_logged_in = (bool) $r['must_be_logged_in'];
 		$this->block_self        = (bool) $r['block_self'];
-
 		// $id and $component are required and component must be active.
 		if ( empty( $r['id'] ) || empty( $r['component'] ) || ! bp_is_active( $this->component ) ) {
 			return false;
@@ -364,6 +362,7 @@ class BP_Button {
 		 * @param string    $after    HTML appended after the actual button.
 		 * @param array     $r        Parsed button arguments.
 		 */
+		error_log('[apply_filters] bp_button_' . $this->component . '_' . $this->id);
 		$this->contents = apply_filters( 'bp_button_' . $this->component . '_' . $this->id, $this->contents, $this, $before, $after, $r );
 	}
 

@@ -216,7 +216,7 @@ function bp_nouveau_template_message() {
 		if ( ! empty( $bp_nouveau->user_feedback['message'] ) ) {
 			$user_feedback = $bp_nouveau->user_feedback['message'];
 
-			// @TODO: why is this treated differently?
+			// @TODO why is this treated differently?
 			foreach ( array( 'wp_kses_data', 'wp_unslash', 'wptexturize', 'convert_smilies', 'convert_chars' ) as $filter ) {
 				$user_feedback = call_user_func( $filter, $user_feedback );
 			}

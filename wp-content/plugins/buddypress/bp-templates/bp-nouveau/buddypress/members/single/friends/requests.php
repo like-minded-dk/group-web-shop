@@ -6,13 +6,14 @@
  * @version 5.0.0
  */
 ?>
+<!-- shows content of : -->
+<!-- wp-content/plugins/buddypress/bp-templates/bp-nouveau/buddypress/members/single/engagements/requests.php -->
+<h2 class="screen-heading engagementship-requests-screen"><?php esc_html_e( 'Supplier Relation Requests', 'buddypress' ); ?></h2>
 
-<h2 class="screen-heading friendship-requests-screen"><?php esc_html_e( 'Friendship Requests', 'buddypress' ); ?></h2>
+<?php bp_nouveau_member_hook( 'before', 'engagement_requests_content' ); ?>
 
-<?php bp_nouveau_member_hook( 'before', 'friend_requests_content' ); ?>
-
-<div data-bp-list="friendship_requests">
-	<?php bp_get_template_part( 'members/single/friends/requests-loop' ); ?>
+<div data-bp-list="engagementship_requests">
+	<?php bp_get_template_part( 'members/single/engagements/requests-loop' ); ?>
 </div>
 
-<?php bp_nouveau_member_hook( 'after', 'friend_requests_content' );
+<?php bp_nouveau_member_hook( 'after', 'engagement_requests_content' );

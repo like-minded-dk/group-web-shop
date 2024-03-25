@@ -550,7 +550,7 @@ function bp_resell_add_activity_tab() {
 
 <?php
 }
-add_action( 'bp_before_activity_type_tab_engagements', 'bp_resell_add_activity_tab' );
+add_action( 'bp_before_activity_type_tab_friends', 'bp_resell_add_activity_tab' );
 
 /**
  * Add a "Reselling (X)" tab to the members directory.
@@ -642,7 +642,7 @@ function bp_resell_users_filter_activity_scope( $retval = array(), $filter = arr
 			: bp_loggedin_user_id();
 	}
 
-	// Determine engagements of user.
+	// Determine friends of user.
 	$reselling_ids = bp_resell_get_reselling( array(
 		'user_id' => $user_id,
 	) );
@@ -798,7 +798,7 @@ add_filter( 'bp_nouveau_pagination_params', 'bp_resell_set_pagination_for_nouvea
  * If we're on a user's reselling or resellers page, set the member filter
  * so users are sorted by newest resells instead of last active.
  *
- * If we're on a user's engagements page or the members directory, reset the
+ * If we're on a user's friends page or the members directory, reset the
  * members filter to last active.
  *
  * Only applicable for BuddyPress 1.7+.
@@ -821,9 +821,9 @@ function bp_resell_set_members_scope_default() {
 		// reset the dropdown menu to 'Newest Resells'.
 		@setcookie( 'bp-members-filter', 'newest-resells', 0, '/' );
 
-	// reset members filter on the user engagements and members directory page
+	// reset members filter on the user friends and members directory page
 	// this is done b/c the 'newest-resells' filter does not apply on these pages.
-	} elseif ( bp_is_user_engagements() || ( ! bp_is_user() && bp_is_members_component() ) ) {
+	} elseif ( bp_is_user_friends() || ( ! bp_is_user() && bp_is_members_component() ) ) {
 		// set the members filter to 'newest' by faking an ajax request (loophole!).
 		$_POST['cookie'] = 'bp-members-filter%3Dactive';
 
@@ -954,7 +954,7 @@ add_action( 'bp_after_activity_loop', 'bp_resell_after_activity_loop' );
 /** SUGGESTIONS *********************************************************/
 
 /**
- * Override BP's engagement suggestions with resellers.
+ * Override BP's friend suggestions with resellers.
  *
  * This takes effect for private messages currently. Available in BP 2.1+.
  *
@@ -965,13 +965,13 @@ add_action( 'bp_after_activity_loop', 'bp_resell_after_activity_loop' );
 function bp_resell_user_suggestions_args( $retval ) {
 	$bp = $GLOBALS['bp'];
 
-	// if only engagements, override with resellers instead.
-	if ( true === (bool) $retval['only_engagements'] ) {
+	// if only friends, override with resellers instead.
+	if ( true === (bool) $retval['only_friends'] ) {
 		// set marker.
-		$bp->resell->only_engagements_override = 1;
+		$bp->resell->only_friends_override = 1;
 
-		// we set 'only_engagements' to 0 to bypass engagements component check.
-		$retval['only_engagements'] = 0;
+		// we set 'only_friends' to 0 to bypass friends component check.
+		$retval['only_friends'] = 0;
 
 		// add our user query filter.
 		add_filter( 'bp_members_suggestions_query_args', 'bp_resell_user_resell_suggestions' );
@@ -994,8 +994,8 @@ add_filter( 'bp_members_suggestions_args', 'bp_resell_user_suggestions_args' );
 function bp_resell_user_resell_suggestions( $user_query ) {
 	$bp = $GLOBALS['bp'];
 
-	if ( isset( $bp->resell->only_engagements_override ) ) {
-		unset( $bp->resell->only_engagements_override );
+	if ( isset( $bp->resell->only_friends_override ) ) {
+		unset( $bp->resell->only_friends_override );
 
 		// limit suggestions to resellers.
 		$user_query['include'] = bp_resell_get_resellers( array(
@@ -1012,13 +1012,13 @@ function bp_resell_user_resell_suggestions( $user_query ) {
 }
 
 /**
- * Remove at-mention primed results for the engagements component.
+ * Remove at-mention primed results for the friends component.
  *
  * We'll use a list of members the logged-in user is reselling instead.
  *
  * @see bp_resell_prime_mentions_results()
  */
-remove_action( 'bp_activity_mentions_prime_results', 'bp_engagements_prime_mentions_results' );
+remove_action( 'bp_activity_mentions_prime_results', 'bp_friends_prime_mentions_results' );
 
 /**
  * Set up a list of members the current user is reselling for at-mention use.
@@ -1068,7 +1068,7 @@ function bp_resell_prime_mentions_results() {
 	}
 
 	wp_localize_script( 'bp-mentions', 'BP_Suggestions', array(
-		'engagements' => $results,
+		'friends' => $results,
 	) );
 }
 add_action( 'bp_activity_mentions_prime_results', 'bp_resell_prime_mentions_results' );

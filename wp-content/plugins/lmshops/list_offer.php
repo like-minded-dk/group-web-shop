@@ -46,8 +46,8 @@ function render_output($products) {
                 <a class='product-permalink' href='$permalink'>
                     <img class='product-image' src='$image_url'/>
                     <p class='product-title'>$title</p>
-                    <p class='product-status'>$status</p>
-                    <p class='product-sale-price'>Sales price: $sale_price $currency</p>
+                    <!-- <p class='product-status'>$status</p> -->
+                    <!-- <p class='product-sale-price'>Sales price: $sale_price $currency</p> -->
                     <p class='product-regular-price'>Regular price $regular_price $currency</p>
                     <p class='product-description'>$description</p>
                 </a>
@@ -142,15 +142,23 @@ function get_current_user_offers() {
 
 function get_leader_offers() {
     global $wpdb;
+    // todo lm sql
     $current_user_id = get_current_user_id(); // Replace 123 with the actual ID of the current author/user
-    $query = $wpdb->prepare("
-        SELECT wp_posts.* FROM wp_posts
-        JOIN wp_bp_follow ON wp_posts.post_author = wp_bp_follow.leader_id
-        WHERE wp_posts.post_type = 'product'
-        AND wp_bp_follow.follower_id = %d
-        AND wp_posts.post_status IN ('draft', 'publish')
-        ORDER BY wp_posts.post_date DESC
-    ", $current_user_id);
+    $query = $wpdb->prepare(<<<SQL
+        SELECT p.* FROM wp_posts AS p
+        JOIN (
+            SELECT initiator_user_id AS user_id from wp_bp_friends
+            WHERE receiver_user_id = %d AND is_confirmed = 1
+
+            UNION ALL 
+
+            SELECT receiver_user_id AS user_id from wp_bp_engagements 
+            WHERE initiator_user_id = %d AND is_confirmed = 1
+        ) AS r ON p.post_author = r.user_id
+        WHERE p.post_type = 'product'
+        AND p.post_status IN ('publish')
+        ORDER BY p.post_date DESC
+    SQL, $current_user_id, $current_user_id);
 
     $product_ids = $wpdb->get_col($query); // Use get_col() to fetch only the IDs column
 

@@ -150,6 +150,22 @@ class BuddyPress {
 	 * @var BP_Friends_Component
 	 */
 	public $friends;
+	
+	/**
+	 * Engagements component.
+	 *
+	 * @since 1.6.0
+	 * @var BP_Engagements_Component
+	 */
+	public $engagements;
+	
+	/**
+	 * Relations component.
+	 *
+	 * @since 1.6.0
+	 * @var BP_Relations_Component
+	 */
+	public $relations;
 
 	/**
 	 * Groups component.
@@ -688,6 +704,7 @@ class BuddyPress {
 			'blogs',
 			'core',
 			'friends',
+			'engagements',
 			'groups',
 			'members',
 			'messages',
@@ -747,6 +764,7 @@ class BuddyPress {
 			'BP_Optouts_List_Table'                      => 'core',
 
 			'BP_REST_Friends_Endpoint'                   => 'friends',
+			'BP_REST_Engagements_Endpoint'               => 'engagements',
 
 			'BP_Group_Extension'                         => 'groups',
 			'BP_Group_Member_Query'                      => 'groups',

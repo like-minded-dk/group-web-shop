@@ -263,7 +263,7 @@ function bp_friends_filter_activity_scope( $retval = array(), $filter = array() 
 	}
 
 	// Determine friends of user.
-	$friends = friends_get_friend_user_ids( $user_id );
+	$friends = friends_get_receiver_user_ids( $user_id );
 	if ( empty( $friends ) ) {
 		$friends = array( 0 );
 	}
@@ -378,9 +378,9 @@ add_filter( 'bp_activity_set_just-me_scope_args', 'bp_friends_filter_activity_ju
  *
  * @param int $friendship_id     ID of the friendship.
  * @param int $initiator_user_id ID of friendship initiator.
- * @param int $friend_user_id    ID of user whose friendship is requested.
+ * @param int $receiver_user_id    ID of user whose friendship is requested.
  */
-function bp_friends_friendship_accepted_activity( $friendship_id, $initiator_user_id, $friend_user_id ) {
+function bp_friends_friendship_accepted_activity( $friendship_id, $initiator_user_id, $receiver_user_id ) {
 	if ( ! bp_is_active( 'activity' ) ) {
 		return;
 	}
@@ -390,7 +390,7 @@ function bp_friends_friendship_accepted_activity( $friendship_id, $initiator_use
 		'user_id'           => $initiator_user_id,
 		'type'              => 'friendship_created',
 		'item_id'           => $friendship_id,
-		'secondary_item_id' => $friend_user_id,
+		'secondary_item_id' => $receiver_user_id,
 	) );
 }
 add_action( 'friends_friendship_accepted', 'bp_friends_friendship_accepted_activity', 10, 3 );

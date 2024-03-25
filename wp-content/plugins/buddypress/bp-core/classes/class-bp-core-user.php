@@ -214,7 +214,10 @@ class BP_Core_User {
 	public function populate_extras() {
 
 		if ( bp_is_active( 'friends' ) ) {
-			$this->total_friends = BP_Friends_Friendship::total_friend_count( $this->id );
+			$this->total_friends = BP_Friends_Friendship::total_relation_count( $this->id );
+		}
+		if ( bp_is_active( 'engagements' ) ) {
+			$this->total_friends = BP_Engagements_Engagementship::total_relation_count( $this->id );
 		}
 
 		if ( bp_is_active( 'groups' ) ) {
@@ -351,7 +354,7 @@ class BP_Core_User {
 				$include = implode( ',',  wp_parse_id_list( $include ) );
 				$sql['where_users'] = "AND u.ID IN ({$include})";
 			} elseif ( !empty( $user_id ) && bp_is_active( 'friends' ) ) {
-				$friend_ids = friends_get_friend_user_ids( $user_id );
+				$friend_ids = friends_get_receiver_user_ids( $user_id );
 
 				if ( !empty( $friend_ids ) ) {
 					$friend_ids = implode( ',', wp_parse_id_list( $friend_ids ) );
@@ -749,11 +752,22 @@ class BP_Core_User {
 
 		// Fetch whether or not the user is a friend.
 		if ( bp_is_active( 'friends' ) ) {
-			$friend_status = $wpdb->get_results( $wpdb->prepare( "SELECT initiator_user_id, friend_user_id, is_confirmed FROM {$bp->friends->table_name} WHERE (initiator_user_id = %d AND friend_user_id IN ( {$user_ids} ) ) OR (initiator_user_id IN ( {$user_ids} ) AND friend_user_id = %d )", bp_loggedin_user_id(), bp_loggedin_user_id() ) );
+			$friend_status = $wpdb->get_results( $wpdb->prepare( "SELECT initiator_user_id, receiver_user_id, is_confirmed FROM {$bp->friends->table_name} WHERE (initiator_user_id = %d AND receiver_user_id IN ( {$user_ids} ) ) OR (initiator_user_id IN ( {$user_ids} ) AND receiver_user_id = %d )", bp_loggedin_user_id(), bp_loggedin_user_id() ) );
 			for ( $i = 0, $count = count( $paged_users ); $i < $count; ++$i ) {
 				foreach ( (array) $friend_status as $status ) {
-					if ( $status->initiator_user_id == $paged_users[$i]->id || $status->friend_user_id == $paged_users[$i]->id )
+					if ( $status->initiator_user_id == $paged_users[$i]->id || $status->receiver_user_id == $paged_users[$i]->id )
 						$paged_users[$i]->is_friend = $status->is_confirmed;
+				}
+			}
+		}
+
+		// Fetch whether or not the user is a engagement.
+		if ( bp_is_active( 'engagements' ) ) {
+			$engagement_status = $wpdb->get_results( $wpdb->prepare( "SELECT initiator_user_id, receiver_user_id, is_confirmed FROM {$bp->engagements->table_name} WHERE (initiator_user_id = %d AND receiver_user_id IN ( {$user_ids} ) ) OR (initiator_user_id IN ( {$user_ids} ) AND receiver_user_id = %d )", bp_loggedin_user_id(), bp_loggedin_user_id() ) );
+			for ( $i = 0, $count = count( $paged_users ); $i < $count; ++$i ) {
+				foreach ( (array) $engagement_status as $status ) {
+					if ( $status->initiator_user_id == $paged_users[$i]->id || $status->receiver_user_id == $paged_users[$i]->id )
+						$paged_users[$i]->is_engagement = $status->is_confirmed;
 				}
 			}
 		}

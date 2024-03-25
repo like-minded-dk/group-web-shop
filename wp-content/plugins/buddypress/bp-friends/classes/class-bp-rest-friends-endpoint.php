@@ -99,7 +99,7 @@ class BP_REST_Friends_Endpoint extends WP_REST_Controller {
 		$args = array(
 			'id'                => $request->get_param( 'id' ),
 			'initiator_user_id' => $request->get_param( 'initiator_id' ),
-			'friend_user_id'    => $request->get_param( 'friend_id' ),
+			'receiver_user_id'    => $request->get_param( 'friend_id' ),
 			'is_confirmed'      => $request->get_param( 'is_confirmed' ),
 			'order_by'          => $request->get_param( 'order_by' ),
 			'sort_order'        => strtoupper( $request->get_param( 'order' ) ),
@@ -137,7 +137,7 @@ class BP_REST_Friends_Endpoint extends WP_REST_Controller {
 		}
 
 		// Actually, query it.
-		$friendships = BP_Friends_Friendship::get_friendships( $user->ID, $args );
+		$friendships = BP_Friends_Friendship::get_relationships( $user->ID, $args );
 
 		$retval = array();
 		foreach ( (array) $friendships as $friendship ) {
@@ -218,8 +218,8 @@ class BP_REST_Friends_Endpoint extends WP_REST_Controller {
 		}
 
 		// Get friendship.
-		$friendship = $this->get_friendship_object(
-			BP_Friends_Friendship::get_friendship_id( bp_loggedin_user_id(), $user->ID )
+		$friendship = $this->get_relationship_object(
+			BP_Friends_Friendship::get_relationship_id( bp_loggedin_user_id(), $user->ID )
 		);
 
 		if ( ! $friendship || empty( $friendship->id ) ) {
@@ -357,8 +357,8 @@ class BP_REST_Friends_Endpoint extends WP_REST_Controller {
 		}
 
 		// Get friendship.
-		$friendship = $this->get_friendship_object(
-			BP_Friends_Friendship::get_friendship_id( $initiator_id->ID, $friend_id->ID )
+		$friendship = $this->get_relationship_object(
+			BP_Friends_Friendship::get_relationship_id( $initiator_id->ID, $friend_id->ID )
 		);
 
 		if ( ! $friendship || empty( $friendship->id ) ) {
@@ -438,8 +438,8 @@ class BP_REST_Friends_Endpoint extends WP_REST_Controller {
 		}
 
 		// Get friendship.
-		$friendship = $this->get_friendship_object(
-			BP_Friends_Friendship::get_friendship_id( bp_loggedin_user_id(), $user->ID )
+		$friendship = $this->get_relationship_object(
+			BP_Friends_Friendship::get_relationship_id( bp_loggedin_user_id(), $user->ID )
 		);
 
 		if ( ! $friendship || empty( $friendship->id ) ) {
@@ -453,7 +453,7 @@ class BP_REST_Friends_Endpoint extends WP_REST_Controller {
 		}
 
 		// Accept friendship.
-		if ( false === friends_accept_friendship( $friendship->id ) ) {
+		if ( false === friends_accept_friend( $friendship->id ) ) {
 			return new WP_Error(
 				'bp_rest_friends_cannot_update_item',
 				__( 'Could not accept friendship.', 'buddypress' ),
@@ -464,7 +464,7 @@ class BP_REST_Friends_Endpoint extends WP_REST_Controller {
 		}
 
 		// Getting new, updated, friendship object.
-		$friendship = $this->get_friendship_object( $friendship->id );
+		$friendship = $this->get_relationship_object( $friendship->id );
 
 		$retval = array(
 			$this->prepare_response_for_collection(
@@ -533,8 +533,8 @@ class BP_REST_Friends_Endpoint extends WP_REST_Controller {
 		}
 
 		// Get friendship.
-		$friendship = $this->get_friendship_object(
-			BP_Friends_Friendship::get_friendship_id( bp_loggedin_user_id(), $user->ID )
+		$friendship = $this->get_relationship_object(
+			BP_Friends_Friendship::get_relationship_id( bp_loggedin_user_id(), $user->ID )
 		);
 
 		if ( ! $friendship || empty( $friendship->id ) ) {
@@ -551,7 +551,7 @@ class BP_REST_Friends_Endpoint extends WP_REST_Controller {
 
 		// Remove a friendship.
 		if ( true === $request->get_param( 'force' ) ) {
-			$deleted = friends_remove_friend( $friendship->initiator_user_id, $friendship->friend_user_id );
+			$deleted = friends_remove_friend( $friendship->initiator_user_id, $friendship->receiver_user_id );
 		} else {
 
 			/**
@@ -561,13 +561,13 @@ class BP_REST_Friends_Endpoint extends WP_REST_Controller {
 			 * This is the user who requested the friendship, and is doing the withdrawing.
 			 */
 			if ( bp_loggedin_user_id() === $friendship->initiator_user_id ) {
-				$deleted = friends_withdraw_friendship( $friendship->initiator_user_id, $friendship->friend_user_id );
+				$deleted = friends_withdraw_friend( $friendship->initiator_user_id, $friendship->receiver_user_id );
 			} else {
 				/**
 				 * Otherwise, this change is being initiated by the user, friend,
 				 * who received the friendship reject.
 				 */
-				$deleted = friends_reject_friendship( $friendship->id );
+				$deleted = friends_reject_friend( $friendship->id );
 			}
 		}
 
@@ -639,7 +639,7 @@ class BP_REST_Friends_Endpoint extends WP_REST_Controller {
 		$data = array(
 			'id'               => (int) $friendship->id,
 			'initiator_id'     => (int) $friendship->initiator_user_id,
-			'friend_id'        => (int) $friendship->friend_user_id,
+			'friend_id'        => (int) $friendship->receiver_user_id,
 			'is_confirmed'     => (bool) $friendship->is_confirmed,
 			'date_created'     => bp_rest_prepare_date_response( $friendship->date_created, get_date_from_gmt( $friendship->date_created ) ),
 			'date_created_gmt' => bp_rest_prepare_date_response( $friendship->date_created ),
@@ -689,7 +689,7 @@ class BP_REST_Friends_Endpoint extends WP_REST_Controller {
 				'embeddable' => true,
 			),
 			'friend'     => array(
-				'href'       => bp_rest_get_object_url( $friendship->friend_user_id, 'members' ),
+				'href'       => bp_rest_get_object_url( $friendship->receiver_user_id, 'members' ),
 				'embeddable' => true,
 			),
 		);
@@ -713,7 +713,7 @@ class BP_REST_Friends_Endpoint extends WP_REST_Controller {
 	 * @param int $friendship_id Friendship ID.
 	 * @return BP_Friends_Friendship
 	 */
-	public function get_friendship_object( $friendship_id ) {
+	public function get_relationship_object( $friendship_id ) {
 		return new BP_Friends_Friendship( (int) $friendship_id );
 	}
 
@@ -927,7 +927,7 @@ class BP_REST_Friends_Endpoint extends WP_REST_Controller {
 			'description'       => __( 'Column name to order the results by.', 'buddypress' ),
 			'default'           => 'date_created',
 			'type'              => 'string',
-			'enum'              => array( 'date_created', 'initiator_user_id', 'friend_user_id', 'id' ),
+			'enum'              => array( 'date_created', 'initiator_user_id', 'receiver_user_id', 'id' ),
 			'sanitize_callback' => 'sanitize_key',
 			'validate_callback' => 'rest_validate_request_arg',
 		);

@@ -425,6 +425,7 @@ function bp_has_members( $args = '' ) {
 			'xprofile_query'      => false,
 			'date_query'          => false,    // Filter members by last activity.
 			'populate_extras'     => true,     // Fetch usermeta? Friend count, last active etc.
+			// 'reversed'			  => false,    // Fetch reversed table , add friend or enagement
 		),
 		'has_members'
 	);

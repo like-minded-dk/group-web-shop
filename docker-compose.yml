@@ -1,0 +1,42 @@
+version: '3.1'
+
+services:
+  wordpress:
+    image: wordpress:latest
+    volumes:
+      - ./:/var/www/html
+      - ./:/usr/share/wordpress
+      # - ./config-wp.like-minded.dk.php:/usr/share/wordpress/config-wp.like-minded.dk.php:ro
+    environment:
+      WORDPRESS_DB_HOST: 127.0.0.1
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: 12345678
+      WORDPRESS_DB_NAME: wordpress
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./certs:/etc/ssl/certs:ro
+    depends_on:
+      - wordpress
+
+  ftp:
+    image: fauria/vsftpd
+    ports:
+      - "21:21"
+      - "21100-21110:21100-21110"
+    environment:
+      FTP_USER: user # FTP 用户名
+      FTP_PASS: pass # FTP 密码
+      PASV_ADDRESS: 127.0.0.1 # 被动模式地址，需要根据您的实际情况进行配置
+      PASV_MIN_PORT: 21100
+      PASV_MAX_PORT: 21110
+    volumes:
+      - ./:/home/vsftpd/user # 将 WordPress 数据卷挂载到 FTP 用户的家目录
+    depends_on:
+      - wordpress
+

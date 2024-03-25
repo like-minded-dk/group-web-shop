@@ -9,7 +9,7 @@ Stable tag: 1.2.2
 
 Resell members on your BuddyPress site with this nifty plugin.
 
-The plugin works similar to the engagements component, however the connection does not need to be accepted by the person being reselled.  Just like Twitter!
+The plugin works similar to the friends component, however the connection does not need to be accepted by the person being reselled.  Just like Twitter!
 
 This plugin adds:
 

@@ -687,7 +687,6 @@ function bp_reset_query( $bp_request = '', WP_Query $query = null ) {
 		add_action( 'parse_query', 'bp_parse_ajax_referer_query', 2 );
 
 		// Parse the matched query.
-		error_log('>>>>parse query '. $matched_query);
 		$query->parse_query( $matched_query );
 
 		// Use to requery in case of root profiles.

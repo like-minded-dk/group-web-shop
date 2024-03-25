@@ -18,6 +18,6 @@ defined( 'ABSPATH' ) || exit;
  * @since 1.6.0
  */
 function bp_setup_friends() {
-	buddypress()->friends = new BP_Friends_Component();
+	buddypress()->friends = new BP_Friends_Component('friend');
 }
 add_action( 'bp_setup_components', 'bp_setup_friends', 6 );

@@ -709,7 +709,10 @@ function bp_button( $args = '' ) {
 	 */
 	function bp_get_button( $args = '' ) {
 		$button = new BP_Button( $args );
-
+		// @todo lm log button
+		// error_log(json_encode($args));
+		// error_log(' ');
+		// error_log(json_encode($button));
 		/**
 		 * Filters the requested button output.
 		 *
@@ -2014,9 +2017,7 @@ function bp_is_active( $component = '', $feature = '' ) {
 					return apply_filters_deprecated( 'bp_is_profile_cover_image_active', array( $retval ), '6.0.0', 'bp_is_members_cover_image_active' );
 				}
 			}
-
 			$component_features = isset( buddypress()->{$component}->features ) ? buddypress()->{$component}->features : array();
-
 			if ( empty( $component_features ) || false === in_array( $feature, $component_features, true ) ) {
 				$retval = false;
 			}
@@ -2043,6 +2044,7 @@ function bp_is_active( $component = '', $feature = '' ) {
 	 * @param bool   $retval    Whether or not a given component has been activated by the admin.
 	 * @param string $component Current component being checked.
 	 */
+	// error_log(json_encode("[retval active apply_filters] bp_is_{$component}_{$feature}_active retaval end - " . apply_filters( 'bp_is_active', $retval, $component)));
 	return apply_filters( 'bp_is_active', $retval, $component );
 }
 

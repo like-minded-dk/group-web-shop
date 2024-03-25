@@ -35,6 +35,9 @@ bp_nouveau_before_loop(); ?>
 							<a href="<?php bp_member_permalink(); ?>"><?php bp_member_name(); ?></a>
 						</h2>
 
+							<?php 
+							echo print_initiator('');
+							 ?>
 						<?php if ( bp_nouveau_member_has_meta() ) : ?>
 							<p class="item-meta last-activity">
 								<?php bp_nouveau_member_meta(); ?>

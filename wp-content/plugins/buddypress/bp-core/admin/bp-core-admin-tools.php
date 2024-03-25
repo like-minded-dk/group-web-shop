@@ -127,11 +127,11 @@ function bp_admin_repair_list() {
 			'bp_admin_repair_friend_count',
 		);
 	}
-	$repair_list[] = array(
-		'bp-user-engagements',
-		__( 'Repair total engagements count for each member.', 'buddypress' ),
-		'bp_admin_repair_engagement_count',
-	);
+	// $repair_list[] = array(
+	// 	'bp-user-engagements',
+	// 	__( 'Repair total engagements count for each member.', 'buddypress' ),
+	// 	'bp_admin_repair_engagement_count',
+	// );
 
 	// Groups:
 	// - user group count.
@@ -287,7 +287,7 @@ function bp_admin_repair_friend_count() {
 	$statement = __( 'Counting the number of friends for each user&hellip; %s', 'buddypress' );
 	$result    = __( 'Failed!', 'buddypress' );
 
-	$sql_delete = "DELETE FROM {$wpdb->usermeta} WHERE meta_key IN ( 'total_friend_count' );";
+	$sql_delete = "DELETE FROM {$wpdb->usermeta} WHERE meta_key IN ( 'total_relation_count' );";
 	if ( is_wp_error( $wpdb->query( $sql_delete ) ) ) {
 		return array( 1, sprintf( $statement, $result ) );
 	}
@@ -303,19 +303,19 @@ function bp_admin_repair_friend_count() {
 		$offset = 0;
 		while ( $offset < $total_users ) {
 			// Only bother updating counts for users who actually have friendships.
-			$friendships = $wpdb->get_results( $wpdb->prepare( "SELECT initiator_user_id, friend_user_id FROM {$bp->friends->table_name} WHERE is_confirmed = 1 AND ( ( initiator_user_id > %d AND initiator_user_id <= %d ) OR ( friend_user_id > %d AND friend_user_id <= %d ) )", $offset, $offset + $per_query, $offset, $offset + $per_query ) );
+			$friendships = $wpdb->get_results( $wpdb->prepare( "SELECT initiator_user_id, receiver_user_id FROM {$bp->friends->table_name} WHERE is_confirmed = 1 AND ( ( initiator_user_id > %d AND initiator_user_id <= %d ) OR ( receiver_user_id > %d AND receiver_user_id <= %d ) )", $offset, $offset + $per_query, $offset, $offset + $per_query ) );
 
 			// The previous query will turn up duplicates, so we
 			// filter them here.
 			foreach ( $friendships as $friendship ) {
 				if ( ! isset( $updated[ $friendship->initiator_user_id ] ) ) {
-					BP_Friends_Friendship::total_friend_count( $friendship->initiator_user_id );
+					BP_Friends_Friendship::total_relation_count( $friendship->initiator_user_id );
 					$updated[ $friendship->initiator_user_id ] = 1;
 				}
 
-				if ( ! isset( $updated[ $friendship->friend_user_id ] ) ) {
-					BP_Friends_Friendship::total_friend_count( $friendship->friend_user_id );
-					$updated[ $friendship->friend_user_id ] = 1;
+				if ( ! isset( $updated[ $friendship->receiver_user_id ] ) ) {
+					BP_Friends_Friendship::total_relation_count( $friendship->receiver_user_id );
+					$updated[ $friendship->receiver_user_id ] = 1;
 				}
 			}
 
@@ -339,7 +339,7 @@ function bp_admin_repair_engagement_count() {
 	$statement = __( 'Counting the number of engagements for each user&hellip; %s', 'buddypress' );
 	$result    = __( 'Failed!', 'buddypress' );
 
-	$sql_delete = "DELETE FROM {$wpdb->usermeta} WHERE meta_key IN ( 'total_engagement_count' );";
+	$sql_delete = "DELETE FROM {$wpdb->usermeta} WHERE meta_key IN ( 'total_relation_count' );";
 	if ( is_wp_error( $wpdb->query( $sql_delete ) ) ) {
 		return array( 1, sprintf( $statement, $result ) );
 	}
@@ -355,19 +355,19 @@ function bp_admin_repair_engagement_count() {
 		$offset = 0;
 		while ( $offset < $total_users ) {
 			// Only bother updating counts for users who actually have engagementships.
-			$engagementships = $wpdb->get_results( $wpdb->prepare( "SELECT initiator_user_id, engagement_user_id FROM {$bp->engagements->table_name} WHERE is_confirmed = 1 AND ( ( initiator_user_id > %d AND initiator_user_id <= %d ) OR ( engagement_user_id > %d AND engagement_user_id <= %d ) )", $offset, $offset + $per_query, $offset, $offset + $per_query ) );
+			$engagementships = $wpdb->get_results( $wpdb->prepare( "SELECT initiator_user_id, receiver_user_id FROM {$bp->engagements->table_name} WHERE is_confirmed = 1 AND ( ( initiator_user_id > %d AND initiator_user_id <= %d ) OR ( receiver_user_id > %d AND receiver_user_id <= %d ) )", $offset, $offset + $per_query, $offset, $offset + $per_query ) );
 
 			// The previous query will turn up duplicates, so we
 			// filter them here.
 			foreach ( $engagementships as $engagementship ) {
 				if ( ! isset( $updated[ $engagementship->initiator_user_id ] ) ) {
-					BP_Engagements_Engagementship::total_engagement_count( $engagementship->initiator_user_id );
+					BP_Engagements_Engagementship::total_relation_count( $engagementship->initiator_user_id );
 					$updated[ $engagementship->initiator_user_id ] = 1;
 				}
 
-				if ( ! isset( $updated[ $engagementship->engagement_user_id ] ) ) {
-					BP_Engagements_Engagementship::total_engagement_count( $engagementship->engagement_user_id );
-					$updated[ $engagementship->engagement_user_id ] = 1;
+				if ( ! isset( $updated[ $engagementship->receiver_user_id ] ) ) {
+					BP_Engagements_Engagementship::total_relation_count( $engagementship->receiver_user_id );
+					$updated[ $engagementship->receiver_user_id ] = 1;
 				}
 			}
 

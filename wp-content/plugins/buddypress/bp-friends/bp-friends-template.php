@@ -70,6 +70,7 @@ function bp_friends_root_slug() {
  * @since 1.2.6
  */
 function bp_member_add_friend_button() {
+	error_log(json_encode('>>>>>>>>>>> bp_member_add_friend_button'));
 	bp_add_friend_button( bp_get_member_user_id() );
 }
 add_action( 'bp_directory_members_actions', 'bp_member_add_friend_button' );
@@ -158,13 +159,13 @@ function bp_potential_friend_id( $user_id = 0 ) {
 /**
  * Check whether a given user is a friend of the logged-in user.
  *
- * Returns - 'is_friend', 'not_friends', 'pending_friend'.
+ * Returns - 'is_friend', 'not_friend', 'pending_friend'.
  *
  * @since 1.2.6
  *
  * @param int $user_id ID of the potential friend. Default: the value of
  *                     {@link bp_get_potential_friend_id()}.
- * @return bool|string 'is_friend', 'not_friends', or 'pending_friend'.
+ * @return bool|string 'is_friend', 'not_friend', or 'pending_friend'.
  */
 function bp_is_friend( $user_id = 0 ) {
 
@@ -185,7 +186,7 @@ function bp_is_friend( $user_id = 0 ) {
 	 *
 	 * @since 1.2.10
 	 *
-	 * @param string $value   String status of friendship. Possible values are 'is_friend', 'not_friends', 'pending_friend'.
+	 * @param string $value   String status of friendship. Possible values are 'is_friend', 'not_friend', 'pending_friend'.
 	 * @param int    $user_id ID of the potential friend.
 	 */
 	return apply_filters( 'bp_is_friend', friends_check_friendship_status( bp_loggedin_user_id(), $user_id ), $user_id );
@@ -214,97 +215,15 @@ function bp_add_friend_button( $potential_friend_id = 0, $friend_status = false 
 	 * @return array The friend button arguments.
 	 */
 	function bp_get_add_friend_button_args( $potential_friend_id = 0 ) {
-		$button_args = array();
-
 		if ( empty( $potential_friend_id ) ) {
 			$potential_friend_id = bp_get_potential_friend_id( $potential_friend_id );
 		}
 
-		$friendship_status = bp_is_friend( $potential_friend_id );
-		$friends_slug      = bp_get_friends_slug();
-
-		if ( empty( $friendship_status ) ) {
-			return $button_args;
+		if ( empty( bp_is_friend( $potential_friend_id ) ) ) {
+			return array();
 		}
 
-		switch ( $friendship_status ) {
-			case 'pending_friend':
-				$button_args = array(
-					'id'                => 'pending_friend',
-					'component'         => 'friends',
-					'must_be_logged_in' => true,
-					'block_self'        => true,
-					'wrapper_class'     => 'friendship-button pending_friend',
-					'wrapper_id'        => 'friendship-button-' . $potential_friend_id,
-					'link_href'         => wp_nonce_url(
-						bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'requests', array( 'cancel', $potential_friend_id ) ) ) ),
-						'friends_withdraw_friendship'
-					),
-					'link_text'         => __( 'Cancel Friendship Request', 'buddypress' ),
-					'link_title'        => __( 'Cancel Friendship Requested', 'buddypress' ),
-					'link_id'           => 'friend-' . $potential_friend_id,
-					'link_rel'          => 'remove',
-					'link_class'        => 'friendship-button pending_friend requested',
-				);
-				break;
-
-			case 'awaiting_response':
-				$button_args = array(
-					'id'                => 'awaiting_response',
-					'component'         => 'friends',
-					'must_be_logged_in' => true,
-					'block_self'        => true,
-					'wrapper_class'     => 'friendship-button awaiting_response_friend',
-					'wrapper_id'        => 'friendship-button-' . $potential_friend_id,
-					'link_href'         => bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'requests' ) ) ),
-					'link_text'         => __( 'Friendship Requested', 'buddypress' ),
-					'link_title'        => __( 'Friendship Requested', 'buddypress' ),
-					'link_id'           => 'friend-' . $potential_friend_id,
-					'link_rel'          => 'remove',
-					'link_class'        => 'friendship-button awaiting_response_friend requested',
-				);
-				break;
-
-			case 'is_friend':
-				$button_args = array(
-					'id'                => 'is_friend',
-					'component'         => 'friends',
-					'must_be_logged_in' => true,
-					'block_self'        => false,
-					'wrapper_class'     => 'friendship-button is_friend',
-					'wrapper_id'        => 'friendship-button-' . $potential_friend_id,
-					'link_href'         => wp_nonce_url(
-						bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'remove-friend', array( $potential_friend_id ) ) ) ),
-						'friends_remove_friend'
-					),
-					'link_text'         => __( 'Cancel Friendship', 'buddypress' ),
-					'link_title'        => __( 'Cancel Friendship', 'buddypress' ),
-					'link_id'           => 'friend-' . $potential_friend_id,
-					'link_rel'          => 'remove',
-					'link_class'        => 'friendship-button is_friend remove',
-				);
-				break;
-
-			default:
-				$button_args = array(
-					'id'                => 'not_friends',
-					'component'         => 'friends',
-					'must_be_logged_in' => true,
-					'block_self'        => true,
-					'wrapper_class'     => 'friendship-button not_friends',
-					'wrapper_id'        => 'friendship-button-' . $potential_friend_id,
-					'link_href'         => wp_nonce_url(
-						bp_loggedin_user_url( bp_members_get_path_chunks( array( $friends_slug, 'add-friend', array( $potential_friend_id ) ) ) ),
-						'friends_add_friend'
-					),
-					'link_text'         => __( 'Add Friend', 'buddypress' ),
-					'link_title'        => __( 'Add Friend', 'buddypress' ),
-					'link_id'           => 'friend-' . $potential_friend_id,
-					'link_rel'          => 'add',
-					'link_class'        => 'friendship-button not_friends add',
-				);
-				break;
-		}
+		$button_args = get_button_args($potential_friend_id, 'friend');
 
 		/**
 		 * Filters the HTML for the add friend button.
@@ -353,13 +272,13 @@ function bp_get_friend_ids( $user_id = 0 ) {
 		$user_id = ( bp_displayed_user_id() ) ? bp_displayed_user_id() : bp_loggedin_user_id();
 	}
 
-	$friend_ids = friends_get_friend_user_ids( $user_id );
+	$friend_ids = friends_get_receiver_user_ids( $user_id );
 
 	if ( empty( $friend_ids ) ) {
 		return false;
 	}
 
-	return implode( ',', friends_get_friend_user_ids( $user_id ) );
+	return implode( ',', friends_get_receiver_user_ids( $user_id ) );
 }
 
 /**
@@ -383,7 +302,7 @@ function bp_get_friendship_requests( $user_id = 0 ) {
 		return 0;
 	}
 
-	$requests = friends_get_friendship_request_user_ids( $user_id );
+	$requests = friends_get_relationship_request_user_ids( $user_id );
 
 	if ( ! empty( $requests ) ) {
 		$requests = implode( ',', (array) $requests );
@@ -424,7 +343,7 @@ function bp_friend_friendship_id() {
 		global $members_template;
 
 		if ( ! $friendship_id = wp_cache_get( 'friendship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), 'bp' ) ) {
-			$friendship_id = friends_get_friendship_id( $members_template->member->id, bp_loggedin_user_id() );
+			$friendship_id = friends_get_relationship_id( $members_template->member->id, bp_loggedin_user_id() );
 			wp_cache_set( 'friendship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), $friendship_id, 'bp' );
 		}
 
@@ -456,28 +375,7 @@ function bp_friend_accept_request_link() {
 	 * @return string accept-friendship URL.
 	 */
 	function bp_get_friend_accept_request_link() {
-		global $members_template;
-
-		if ( ! $friendship_id = wp_cache_get( 'friendship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), 'bp' ) ) {
-			$friendship_id = friends_get_friendship_id( $members_template->member->id, bp_loggedin_user_id() );
-			wp_cache_set( 'friendship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), $friendship_id, 'bp' );
-		}
-
-		$url = wp_nonce_url(
-			bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_get_friends_slug(), 'requests', array( 'accept', $friendship_id ) ) ) ),
-			'friends_accept_friendship'
-		);
-
-		/**
-		 * Filters the URL for accepting the current friendship request in the loop.
-		 *
-		 * @since 1.0.0
-		 * @since 2.6.0 Added the `$friendship_id` parameter.
-		 *
-		 * @param string $url           Accept-friendship URL.
-		 * @param int    $friendship_id ID of the friendship.
-		 */
-		return apply_filters( 'bp_get_friend_accept_request_link', $url, $friendship_id );
+		return get_awaiting_url('accept', 'friend');
 	}
 
 /**
@@ -498,28 +396,7 @@ function bp_friend_reject_request_link() {
 	 * @return string reject-friendship URL.
 	 */
 	function bp_get_friend_reject_request_link() {
-		global $members_template;
-
-		if ( ! $friendship_id = wp_cache_get( 'friendship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), 'bp' ) ) {
-			$friendship_id = friends_get_friendship_id( $members_template->member->id, bp_loggedin_user_id() );
-			wp_cache_set( 'friendship_id_' . $members_template->member->id . '_' . bp_loggedin_user_id(), $friendship_id, 'bp' );
-		}
-
-		$url = wp_nonce_url(
-			bp_loggedin_user_url( bp_members_get_path_chunks( array( bp_get_friends_slug(), 'requests', array( 'reject', $friendship_id ) ) ) ),
-			'friends_reject_friendship'
-		);
-
-		/**
-		 * Filters the URL for rejecting the current friendship request in the loop.
-		 *
-		 * @since 1.0.0
-		 * @since 2.6.0 Added the `$friendship_id` parameter.
-		 *
-		 * @param string $url           Reject-friendship URL.
-		 * @param int    $friendship_id ID of the friendship.
-		 */
-		return apply_filters( 'bp_get_friend_reject_request_link', $url, $friendship_id );
+		return get_awaiting_url('reject', 'friend');
 	}
 
 /**
@@ -588,7 +465,7 @@ function bp_friend_total_requests_count( $user_id = 0 ) {
 		 * @param int $value   Friendship request count.
 		 * @param int $user_id ID of the queried user.
 		 */
-		return apply_filters( 'bp_friend_get_total_requests_count', count( BP_Friends_Friendship::get_friend_user_ids( $user_id, true ) ), $user_id );
+		return apply_filters( 'bp_friend_get_total_requests_count', count( BP_Friends_Friendship::get_relation_user_ids(  $user_id, true ) ), $user_id );
 	}
 
 /** Stats **********************************************************************/

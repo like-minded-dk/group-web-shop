@@ -161,11 +161,11 @@ add_action( 'friends_screen_my_friends', 'bp_friends_mark_friendship_accepted_no
  *
  * @param int $friendship_id     The unique ID of the friendship.
  * @param int $initiator_user_id The friendship initiator user ID.
- * @param int $friend_user_id    The friendship request receiver user ID.
+ * @param int $receiver_user_id    The friendship request receiver user ID.
  */
-function bp_friends_friendship_requested_notification( $friendship_id, $initiator_user_id, $friend_user_id ) {
+function bp_friends_friendship_requested_notification( $friendship_id, $initiator_user_id, $receiver_user_id ) {
 	bp_notifications_add_notification( array(
-		'user_id'           => $friend_user_id,
+		'user_id'           => $receiver_user_id,
 		'item_id'           => $initiator_user_id,
 		'secondary_item_id' => $friendship_id,
 		'component_name'    => buddypress()->friends->id,
@@ -185,7 +185,7 @@ add_action( 'friends_friendship_requested', 'bp_friends_friendship_requested_not
  * @param BP_Friends_Friendship $friendship    The friendship object.
  */
 function bp_friends_mark_friendship_rejected_notifications_by_item_id( $friendship_id, $friendship ) {
-	bp_notifications_mark_notifications_by_item_id( $friendship->friend_user_id, $friendship->initiator_user_id, buddypress()->friends->id, 'friendship_request' );
+	bp_notifications_mark_notifications_by_item_id( $friendship->receiver_user_id, $friendship->initiator_user_id, buddypress()->friends->id, 'friendship_request' );
 }
 add_action( 'friends_friendship_rejected', 'bp_friends_mark_friendship_rejected_notifications_by_item_id', 10, 2 );
 
@@ -196,16 +196,16 @@ add_action( 'friends_friendship_rejected', 'bp_friends_mark_friendship_rejected_
  *
  * @param int $friendship_id     The unique ID of the friendship.
  * @param int $initiator_user_id The friendship initiator user ID.
- * @param int $friend_user_id    The friendship request receiver user ID.
+ * @param int $receiver_user_id    The friendship request receiver user ID.
  */
-function bp_friends_add_friendship_accepted_notification( $friendship_id, $initiator_user_id, $friend_user_id ) {
+function bp_friends_add_friendship_accepted_notification( $friendship_id, $initiator_user_id, $receiver_user_id ) {
 	// Remove the friend request notice.
-	bp_notifications_mark_notifications_by_item_id( $friend_user_id, $initiator_user_id, buddypress()->friends->id, 'friendship_request' );
+	bp_notifications_mark_notifications_by_item_id( $receiver_user_id, $initiator_user_id, buddypress()->friends->id, 'friendship_request' );
 
 	// Add a friend accepted notice for the initiating user.
 	bp_notifications_add_notification(  array(
 		'user_id'           => $initiator_user_id,
-		'item_id'           => $friend_user_id,
+		'item_id'           => $receiver_user_id,
 		'secondary_item_id' => $friendship_id,
 		'component_name'    => buddypress()->friends->id,
 		'component_action'  => 'friendship_accepted',
@@ -223,8 +223,8 @@ add_action( 'friends_friendship_accepted', 'bp_friends_add_friendship_accepted_n
  * @param int                   $friendship_id Friendship ID (not used).
  * @param BP_Friends_Friendship $friendship    The friendship object.
  */
-function bp_friends_mark_friendship_withdrawn_notifications_by_item_id( $friendship_id, $friendship ) {
-	bp_notifications_delete_notifications_by_item_id( $friendship->friend_user_id, $friendship->initiator_user_id, buddypress()->friends->id, 'friendship_request' );
+function bp_friends_mark_friendship_withdrawn_notifications_by_item_id( $friendship_id, $relationship ) {
+	bp_notifications_delete_notifications_by_item_id( $relationship->receiver_user_id, $relationship->initiator_user_id, buddypress()->friends->id, 'friendship_request' );
 }
 add_action( 'friends_friendship_withdrawn', 'bp_friends_mark_friendship_withdrawn_notifications_by_item_id', 10, 2 );
 

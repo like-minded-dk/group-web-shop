@@ -4238,11 +4238,11 @@ body.no-js .buddypress #messages-bulk-management #select-all-messages {
 	border-color: #ccc;
 	border-style: solid;
 	border-width: 1px;
-	border-radius: 0;
-	color: #555;
+	border-radius: 20px;
+	color: #634a4a;
 	cursor: pointer;
 	font-family: inherit;
-	font-size: inherit;
+	font-size: large;
 	font-weight: 400;
 	outline: none;
 	padding: 0.3em 0.5em;

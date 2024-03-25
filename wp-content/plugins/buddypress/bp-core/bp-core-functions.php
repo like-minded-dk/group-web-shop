@@ -567,6 +567,7 @@ function bp_core_get_packaged_component_ids() {
 		'blogs',
 		'xprofile',
 		'friends',
+		'engagements',
 		'messages',
 		'settings',
 		'notifications',
@@ -2731,6 +2732,14 @@ function bp_core_get_components( $type = 'all' ) {
 		),
 		'friends'  => array(
 			'title'       => __( 'Friend Connections', 'buddypress' ),
+			'description' => __( 'Let your users make connections so they can track the activity of others and focus on the people they care about the most.', 'buddypress' )
+		),
+		'engagements'  => array(
+			'title'       => __( 'Egngement Connections - LM', 'buddypress' ),
+			'description' => __( 'Let your users make connections so they can track the activity of others and focus on the people they care about the most.', 'buddypress' )
+		),
+		'relations'  => array(
+			'title'       => __( 'Relation Connections - LM', 'buddypress' ),
 			'description' => __( 'Let your users make connections so they can track the activity of others and focus on the people they care about the most.', 'buddypress' )
 		),
 		'messages' => array(

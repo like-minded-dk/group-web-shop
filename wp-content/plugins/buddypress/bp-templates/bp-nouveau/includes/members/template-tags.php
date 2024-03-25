@@ -8,7 +8,7 @@
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
-
+require 'template-buttons.php';
 // todo: error_log('add_core_funciton')
 function bp_is_user_templates() {
 	return (bool) ( bp_is_user() && bp_is_templates_component() );
@@ -19,96 +19,6 @@ function bp_is_templates_component() {
 	return (bool) bp_is_current_component( 'engagements' );
 }
 
-function add_engagement_button($user_id, $type, $parent_class, $button_element, $parent_element) {
-	$buttons  = [];
-	// if ( bp_is_active( 'engagement' ) ) {
-	if ( true ) {
-			// It's the member's friendship requests screen
-			if ( 'engagementship_request' === $type ) {
-				$buttons = array(
-					'accept_engagementship' => array(
-						'id'                => 'accept_engagementship',
-						'position'          => 5,
-						'component'         => 'engagements',
-						'must_be_logged_in' => true,
-						'parent_element'    => $parent_element,
-						'link_text'         => _x( 'Accept', 'button', 'buddypress' ),
-						'parent_attr'       => array(
-							'id'    => '',
-							'class' => $parent_class ,
-						),
-						'button_element'    => $button_element,
-						'button_attr'       => array(
-							'class'           => 'button accept',
-							'rel'             => '',
-						),
-					), 'reject_engagementship' => array(
-						'id'                => 'reject_engagementship',
-						'position'          => 15,
-						'component'         => 'engagements',
-						'must_be_logged_in' => true,
-						'parent_element'    => $parent_element,
-						'link_text'         => _x( 'Reject', 'button', 'buddypress' ),
-						'parent_attr'       => array(
-							'id'    => '',
-							'class' => $parent_class,
-						),
-						'button_element'    => $button_element,
-						'button_attr'       => array (
-							'class'           => 'button reject',
-							'rel'             => '',
-						),
-					),
-				);
-
-				// If button element set add nonce link to data attr
-				if ( 'button' === $button_element ) {
-					$buttons['accept_engagementship']['button_attr']['data-bp-nonce'] = bp_get_engagement_accept_request_link();
-					$buttons['reject_engagementship']['button_attr']['data-bp-nonce'] = bp_get_engagement_reject_request_link();
-				} else {
-					$buttons['accept_engagementship']['button_attr']['href'] = bp_get_engagement_accept_request_link();
-					$buttons['reject_engagementship']['button_attr']['href'] = bp_get_engagement_reject_request_link();
-				}
-			// It's any other members screen
-			} else {
-				$button_args = bp_get_add_engagement_button_args( $user_id );
-
-				if ( array_filter( $button_args ) ) {
-					$buttons['member_engagementship'] = array(
-						'id'                => 'member_engagementship',
-						'position'          => 5,
-						'component'         => $button_args['component'],
-						'must_be_logged_in' => $button_args['must_be_logged_in'],
-						'block_self'        => $button_args['block_self'],
-						'parent_element'    => $parent_element,
-						'link_text'         => $button_args['link_text'],
-						'link_title'        => $button_args['link_title'],
-						'parent_attr'       => array(
-							'id'    => $button_args['wrapper_id'],
-							'class' => $parent_class . ' ' . $button_args['wrapper_class'],
-						),
-						'button_element'    => $button_element,
-						'button_attr'       => array(
-							'id'    => $button_args['link_id'],
-							'class' => $button_args['link_class'],
-							'rel'   => $button_args['link_rel'],
-							'title' => '',
-						),
-					);
-
-					// If button element set add nonce link to data attr
-					if ( 'button' === $button_element && 'awaiting_response' !== $button_args['id'] ) {
-						$buttons['member_engagementship']['button_attr']['data-bp-nonce'] = $button_args['link_href'];
-					} else {
-						$buttons['member_engagementship']['button_element'] = 'a';
-						$buttons['member_engagementship']['button_attr']['href'] = $button_args['link_href'];
-					}
-				}
-			}
-			
-		}
-	return $buttons;
-}
 /**
  * Template tag to wrap all Legacy actions that was used
  * before the members directory content
@@ -290,9 +200,9 @@ function bp_nouveau_members_loop_buttons( $args = array() ) {
 		$args['type'] = 'engagementship_request';
 		$action       = 'bp_engagement_requests_item_action';
 	}
-
-
+	
 	$output = join( ' ', bp_nouveau_get_members_buttons( $args ) );
+
 
 	ob_start();
 	/**
@@ -356,7 +266,6 @@ function bp_nouveau_members_loop_buttons( $args = array() ) {
 		if ( ! empty( $args['button_element'] ) ) {
 			$button_element = $args['button_element'] ;
 		} else {
-
 			$button_element = 'button';
 		}
 
@@ -366,159 +275,9 @@ function bp_nouveau_members_loop_buttons( $args = array() ) {
 			$parent_class = $args['parent_attr']['class'];
 		}
 
-		$buttons = add_engagement_button($user_id, $type, $parent_class, $button_element, $parent_element);
-		if ( bp_is_active( 'friends' ) ) {
-			// It's the member's friendship requests screen
-			if ( 'friendship_request' === $type ) {
-				$buttons = array(
-					'accept_friendship' => array(
-						'id'                => 'accept_friendship',
-						'position'          => 5,
-						'component'         => 'friends',
-						'must_be_logged_in' => true,
-						'parent_element'    => $parent_element,
-						'link_text'         => _x( 'Accept', 'button', 'buddypress' ),
-						'parent_attr'       => array(
-							'id'    => '',
-							'class' => $parent_class ,
-						),
-						'button_element'    => $button_element,
-						'button_attr'       => array(
-							'class'           => 'button accept',
-							'rel'             => '',
-						),
-					), 'reject_friendship' => array(
-						'id'                => 'reject_friendship',
-						'position'          => 15,
-						'component'         => 'friends',
-						'must_be_logged_in' => true,
-						'parent_element'    => $parent_element,
-						'link_text'         => _x( 'Reject', 'button', 'buddypress' ),
-						'parent_attr'       => array(
-							'id'    => '',
-							'class' => $parent_class,
-						),
-						'button_element'    => $button_element,
-						'button_attr'       => array (
-							'class'           => 'button reject',
-							'rel'             => '',
-						),
-					),
-				);
-
-				// If button element set add nonce link to data attr
-				if ( 'button' === $button_element ) {
-					$buttons['accept_friendship']['button_attr']['data-bp-nonce'] = bp_get_friend_accept_request_link();
-					$buttons['reject_friendship']['button_attr']['data-bp-nonce'] = bp_get_friend_reject_request_link();
-				} else {
-					$buttons['accept_friendship']['button_attr']['href'] = bp_get_friend_accept_request_link();
-					$buttons['reject_friendship']['button_attr']['href'] = bp_get_friend_reject_request_link();
-				}
-
-			// It's any other members screen
-			} else {
-				$button_args = bp_get_add_friend_button_args( $user_id );
-
-				if ( array_filter( $button_args ) ) {
-					$buttons['member_friendship'] = array(
-						'id'                => 'member_friendship',
-						'position'          => 5,
-						'component'         => $button_args['component'],
-						'must_be_logged_in' => $button_args['must_be_logged_in'],
-						'block_self'        => $button_args['block_self'],
-						'parent_element'    => $parent_element,
-						'link_text'         => $button_args['link_text'],
-						'link_title'        => $button_args['link_title'],
-						'parent_attr'       => array(
-							'id'    => $button_args['wrapper_id'],
-							'class' => $parent_class . ' ' . $button_args['wrapper_class'],
-						),
-						'button_element'    => $button_element,
-						'button_attr'       => array(
-							'id'    => $button_args['link_id'],
-							'class' => $button_args['link_class'],
-							'rel'   => $button_args['link_rel'],
-							'title' => '',
-						),
-					);
-
-					// If button element set add nonce link to data attr
-					if ( 'button' === $button_element && 'awaiting_response' !== $button_args['id'] ) {
-						$buttons['member_friendship']['button_attr']['data-bp-nonce'] = $button_args['link_href'];
-					} else {
-						$buttons['member_friendship']['button_element'] = 'a';
-						$buttons['member_friendship']['button_attr']['href'] = $button_args['link_href'];
-					}
-				}
-			}
-		}
-
-		// Only add The public and private messages when not in a loop
-		if ( 'profile' === $type ) {
-			if ( bp_is_active( 'activity' ) && bp_activity_do_mentions() ) {
-				$button_args = bp_activity_get_public_message_button_args();
-
-				if ( array_filter( $button_args ) ) {
-					/*
-					* This button should remain as an anchor link.
-					* Hardcode the use of anchor elements if button arg passed in for other elements.
-					*/
-					$buttons['public_message'] = array(
-						'id'                => $button_args['id'],
-						'position'          => 15,
-						'component'         => $button_args['component'],
-						'must_be_logged_in' => $button_args['must_be_logged_in'],
-						'block_self'        => $button_args['block_self'],
-						'parent_element'    => $parent_element,
-						'button_element'    => 'a',
-						'link_text'         => $button_args['link_text'],
-						'link_title'        => $button_args['link_title'],
-						'parent_attr'       => array(
-							'id'    => $button_args['wrapper_id'],
-							'class' => $parent_class,
-						),
-						'button_attr'       => array(
-							'href'             => $button_args['link_href'],
-							'id'               => '',
-							'class'            => $button_args['link_class'],
-						),
-					);
-				}
-			}
-
-			if ( bp_is_active( 'messages' ) ) {
-				$button_args = bp_get_send_message_button_args();
-
-				if ( array_filter( $button_args ) ) {
-					/*
-					* This button should remain as an anchor link.
-					* Hardcode the use of anchor elements if button arg passed in for other elements.
-					*/
-					$buttons['private_message'] = array(
-						'id'                => $button_args['id'],
-						'position'          => 25,
-						'component'         => $button_args['component'],
-						'must_be_logged_in' => $button_args['must_be_logged_in'],
-						'block_self'        => $button_args['block_self'],
-						'parent_element'    => $parent_element,
-						'button_element'    => 'a',
-						'link_text'         => $button_args['link_text'],
-						'link_title'        => $button_args['link_title'],
-						'parent_attr'       => array(
-							'id'    => $button_args['wrapper_id'],
-							'class' => $parent_class,
-						),
-						'button_attr'       => array(
-							'href'  => bp_get_send_private_message_link(),
-							'id'    => false,
-							'class' => $button_args['link_class'],
-							'rel'   => '',
-							'title' => '',
-						),
-					);
-				}
-			}
-		}
+		add_relation_button('engagement', $buttons, $user_id, $type, $parent_class, $button_element, $parent_element);
+		add_relation_button('friend', $buttons, $user_id, $type, $parent_class, $button_element, $parent_element);
+		add_profile_button($buttons, $type, $parent_class, $parent_element);
 
 		/**
 		 * Filter to add your buttons, use the position argument to choose where to insert it.
@@ -531,6 +290,7 @@ function bp_nouveau_members_loop_buttons( $args = array() ) {
 		 * @param string $type    Whether we're displaying a members loop or a user's page
 		 * @param array  $args    Button arguments.
 		 */
+		// note  bp_nouveau_get_members_buttons regester member buttons , there for registed all  other action , when action list include member
 		$buttons_group = apply_filters( 'bp_nouveau_get_members_buttons', $buttons, $user_id, $type, $args );
 		if ( ! $buttons_group ) {
 			return array();
@@ -563,7 +323,6 @@ function bp_nouveau_members_loop_buttons( $args = array() ) {
 		 * @param string $type    Whether we're displaying a members loop or a user's page
 		 */
 		do_action_ref_array( 'bp_nouveau_return_members_buttons', array( &$return, $user_id, $type ) );
-
 		return $return;
 	}
 
