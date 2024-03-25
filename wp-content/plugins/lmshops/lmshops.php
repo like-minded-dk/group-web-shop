@@ -12,6 +12,7 @@ include __DIR__.'/create_offer.php';
 include __DIR__.'/edit_offer.php';
 include __DIR__.'/hide_part.php';
 include __DIR__.'/duplicate_offer.php';
+include __DIR__.'/menus.php';
 
 define("DEFAULT_PRODUCT_IMAGE", "/wp-content/uploads/woocommerce-placeholder-324x324.png");
 define("DEFAULT_PRODUCT_IMAGE_ID", 112);
