@@ -409,8 +409,8 @@ class BP_User_Query {
 
 		$friend_ids = friends_get_receiver_user_ids( $user_id );
 		$engagement_ids = engagements_get_receiver_user_ids( $user_id );
-		// error_log('=====query===friend_ids========= '.json_encode($friend_ids));
-		// error_log('=====query===engagement_ids===== '.json_encode($engagement_ids));
+		error_log('=====query===friend_ids========= '.json_encode($friend_ids));
+		error_log('=====query===engagement_ids===== '.json_encode($engagement_ids));
 		if ( ! empty( $user_id ) && ($is_engagment || $is_friend) ) {
 			// todo lm  merge friend and engagement
 			$relation_ids = array_merge($friend_ids, $engagement_ids);

@@ -1,0 +1,170 @@
+<input type="hidden" name="action" value="create_custom_product_shortcode">
+
+<div class="product-setting-text">Offer settings.</div>
+
+<div class="mt-3 mb-3">
+    <label class="form-label" for="sale_price">Wholesale price:</label>
+    <input class="form-control" type="text" id="sale_price" name="sale_price" required
+        <?php echo isset($product) ? 'value="' . $product['sale_price'] . '"' : ''; ?>
+        placeholder="Enter wholesale price of offer">
+</div>
+
+<div class="mt-3 mb-3">
+    <div class="product-field-note">
+        If you want to determine the retail price of the offer, please enter that below. Alternatively leave blank (and
+        retailers can decide their retail price).
+    </div>
+    <label class="form-label" for="regular_price">Retail price (ex. VAT):</label>
+    <input class="form-control" type="text" id="regular_price" name="regular_price" required
+        <?php echo isset($product) ? 'value="' . $product['regular_price'] . '"' : ''; ?>
+        placeholder="Enter retail price of offer (ex. VAT)">
+</div>
+
+<div class="mt-3 mb-3">
+    <div class="product-field-note">
+        Do you have any minimum order quantity? Please leave blank if no minimum.
+    </div>
+    <label class="form-label" for="minimum_quantity">Minimum order quantity:</label>
+    <input class="form-control" type="text" id="minimum_quantity" name="minimum_quantity" required
+        <?php echo isset($product) ? 'value="' . $product['minimum_quantity'] . '"' : ''; ?>
+        placeholder="Enter minimum order quantity for offer">
+</div>
+
+<div class="mt-3 mb-3">
+    <div class="product-field-note">
+        When should the offer expire?.
+    </div>
+    <label class="form-label" for="offer_expiry">Offer expiry:</label>
+    <input class="form-control" type="date" id="offer_expiry" name="offer_expiry" required
+        <?php echo isset($product) ? 'value="' . $product['offer_expiry'] . '"' : ''; ?>
+        placeholder="Please enter offer expiry date (DD-MM-YYYY)">
+</div>
+
+<div class="mt-3 mb-3">
+    <div class="product-field-note">
+        Do you want to ship the products to your re-seller for centralised pickup, or will you ship the products
+        directly to the end customers?
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="ship_to_option" id="ship_to_reseller" value="ship_to_reseller"
+            checked required>
+        <label class="form-check-label" for="ship_to_reseller">
+            Send products to re-seller only
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="ship_to_option" id="ship_to_customer" value="ship_to_customer"
+            required>
+        <label class="form-check-label" for="ship_to_customer">
+            Send products to customers
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="ship_to_option" id="ship_to_both" value="ship_to_both" required>
+        <label class="form-check-label" for="ship_to_both">
+            Open to both
+        </label>
+    </div>
+</div>
+
+<div class="mt-3 mb-3">
+    <div class="product-field-note">
+        Who pays for the shipment fee?
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="pay_ship_by" id="pay_ship_me" value="pay_ship_me" checked required>
+        <label class="form-check-label" for="pay_ship_me">
+            Me
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="pay_ship_by" id="pay_ship_reseller" value="pay_ship_reseller"
+            required>
+        <label class="form-check-label" for="pay_ship_reseller">
+            Re-seller
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="pay_ship_by" id="pay_ship_customer" value="pay_ship_customer"
+            required>
+        <label class="form-check-label" for="pay_ship_customer">
+            Customers
+        </label>
+    </div>
+</div>
+
+<div class="mt-3 mb-3">
+    <div class="product-field-note">
+        Make offer available to all your re-sellers on the same terms?
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="offer_avaliability" id="offer_avaliable" value="offer_avaliable" checked
+            required>
+        <label class="form-check-label" for="offer_avaliable">
+            Yes
+        </label>
+    </div>
+    <div class="form-check">
+        <input class="form-check-input" type="radio" name="offer_avaliability" id="offer_not_avaliable" value="offer_not_avaliable" required>
+        <label class="form-check-label" for="offer_not_avaliable">
+            No, take me to sharing settings
+        </label>
+    </div>
+</div>
+
+
+
+<div class="product-setting-text">Description and images.</div>
+
+<div class="mt-3 mb-3">
+    <label class="form-label" for="product_name">Name of product:</label>
+    <input class="form-control" type="text" id="product_name" name="product_name" required
+        <?php echo isset($product) ? 'value="' . $product['product_name'] . '"' : ''; ?>
+        placeholder="What would you like to call your product/offer?">
+</div>
+
+<div class="mt-3 mb-3">
+    <label class="form-label" for="product_short_description">Short product description:</label>
+    <textarea class="form-control" id="product_short_description" name="product_short_description" required rows="2"
+        <?php echo isset($product) ? 'value="' . $product['product_short_description'] . '"' : ''; ?>
+        placeholder="Let’s create a short and captivating description of your product/offer."></textarea>
+</div>
+
+<div class="mt-3 mb-3">
+    <label class="form-label" for="description">Full-length product description:</label>
+    <textarea class="form-control" type="text" id="description" name="description" required rows="4"
+        <?php echo isset($product) ? 'value="' . $product['description'] . '"' : ''; ?>
+        placeholder="To make sure your product/offer stands out, we recommend that you describe in detailed terms everything you think customers would find interesting, and would like to know.
+                Our best selling products always include......(provide guidance and recommendations for what to be included)"></textarea>
+</div>
+
+<div class="mt-3 mb-3">
+    <label class="form-label" for="offer_image">Product images:
+        <br>
+        Upload your favourite product images here. Drag and drop, or click the upload button below to choose.</label>
+    <input class="form-control" type="file" id="offer_image" name="offer_image[]" accept="image/*" multiple required>
+</div>
+
+<div class="mt-3 mb-3">
+    <label class="form-label" for="brand_description">Brand description (optional):</label>
+    <textarea class="form-control" type="text" id="brand_description" name="brand_description" rows="4"
+        <?php echo isset($product) ? 'value="' . $product['brand_description'] . '"' : ''; ?>
+        placeholder="Now is your chance to tell your unique brand story."></textarea>
+</div>
+
+<div class="mt-3 mb-3">
+    <label class="form-label" for="brand_image">Brand images (optional):
+        <br>
+        Upload your favourite brand images here. Drag and drop, or click the upload button below to choose.
+    </label>
+    <input class="form-control" type="file" id="brand_image" name="brand_image[]" accept="image/*" multiple>
+</div>
+
+<div class="mt-3 mb-3">
+    <?php echo isset($product) ? get_image_html($product_simple) : ''; ?>
+</div>
+
+
+<div class="product-done-text">Almost done - now let’s finalise your offer.</div>
+
+<button type="submit" class="btn btn-primary mt-3">Submit</button>
