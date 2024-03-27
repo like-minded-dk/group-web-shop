@@ -118,6 +118,7 @@ function bp_core_get_users( $args = '' ) {
 		// Get users like we were asked to do...
 		$users = new BP_User_Query( $r );
 
+		error_log('[bp_core_get_users]'. json_encode(count($users->results)));
 		// ...but reformat the results to match bp_core_get_users() behavior.
 		$retval = array(
 			'users' => array_values( $users->results ),

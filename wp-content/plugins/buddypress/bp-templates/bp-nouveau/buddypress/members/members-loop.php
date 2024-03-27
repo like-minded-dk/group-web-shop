@@ -34,7 +34,6 @@ bp_nouveau_before_loop(); ?>
 						<h2 class="list-title member-name">
 							<a href="<?php bp_member_permalink(); ?>"><?php bp_member_name(); ?></a>
 						</h2>
-
 							<?php 
 							echo print_initiator('');
 							 ?>

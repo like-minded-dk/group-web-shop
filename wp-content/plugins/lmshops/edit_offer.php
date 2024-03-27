@@ -35,48 +35,41 @@ function get_image_html($product) {
 
 function custom_product_edit_form_shortcode() {
     $product_id = isset($_GET['product_id']) ? intval($_GET['product_id']) : 0;
-    $product = wc_get_product($product_id);
+    $product_simple = wc_get_product($product_id);
 
-    if (!$product) {
+    if (!$product_simple) {
         return '<p>Product not found.</p>';
     }
 
-    $form_html = '<form class="edit-offer-form" action="' . esc_url(admin_url('admin-post.php')) . '" method="post" enctype="multipart/form-data">
-        <input type="hidden" name="action" value="update_custom_product_shortcode">
-        <input type="hidden" name="product_id" value="' . esc_attr($product_id) . '">
-        
-        <div class="mt-3 mb-3">
-            <label class="form-label" for="product_name">Product Name:</label>
-            <input class="form-control" type="text" id="product_name" name="product_name" value="' . esc_attr($product->get_name()) . '" required>
-        </div>
-        
-        <div class="mt-3 mb-3">
-            <label class="form-label" for="sale_price">Sales Price:</label>
-            <input class="form-control" type="text" id="sale_price" name="sale_price" value="' . esc_attr($product->get_sale_price()) . '" required>
-        </div>
-        
-        <div class="mt-3 mb-3">
-            <label class="form-label" for="regular_price">Regular
-             Price:</label>
-            <input class="form-control" type="text" id="regular_price" name="regular_price" value="' . esc_attr($product->get_regular_price()) . '" required>
-        </div>
+    ob_start();
+    $product = array(
+        'product_id' => esc_attr($product_id),
+        'product_name' => esc_attr($product_simple->get_name()),
+        'sale_price' => esc_attr($product_simple->get_sale_price()),
+        'regular_price' => esc_attr($product_simple->get_regular_price()) ,
+        'description' => esc_attr($product_simple->get_description()),
+        'product_short_description' => esc_attr($product_simple->get_short_description()),
+        'minimum_quantity' => esc_attr(get_post_meta($product_id, 'minimum_quantity', true)),
+        'offer_expiry' => esc_attr(get_post_meta($product_id, 'offer_expiry', true)),
+        'ship_to_option' => esc_attr(get_post_meta($product_id, 'ship_to_option', true)),
+        'pay_ship' => esc_attr(get_post_meta($product_id, 'pay_ship', true)),
+        'offer_avaliability' => esc_attr(get_post_meta($product_id, 'offer_avaliability', true)),
+        'brand_description' => esc_attr(get_post_meta($product_id, 'brand_description', true)),
 
-        <div class="mt-3 mb-3">
-            <label class="form-label" for="description">Description:</label>
-            <input class="form-control" type="text" id="description" name="description" value="' . esc_attr($product->get_description()) . '">
-        </div>
+    );
+    include "offer.html";
+    // Get the contents of the output buffer (the included file's content)
+    $offer_html = ob_get_clean();
+    // Now $offer_html contains the content of offer.html, and you can concatenate it as intended
+    $url = esc_url(admin_url('admin-post.php'));
 
-        <div class="mt-3 mb-3">
-            <label class="form-label" for="offer_image">Images:</label>
-            <input class="form-control" type="file" id="offer_image" name="offer_image[]" accept="image/*" multiple>
-        </div>
+    $form_html = <<<HTML
+        <form action="{$url}" method="post" enctype="multipart/form-data">'
+            <input type="hidden" name="action" value="update_custom_product_shortcode">
+            {$offer_html}
+        </form>
+    HTML;
 
-        <div class="mt-3 mb-3">
-            ' . get_image_html($product) . '
-        </div>
-
-        <button type="submit" class="btn btn-primary mb-3">Update Product</button>
-    </form>';
 
     return $form_html;
 }

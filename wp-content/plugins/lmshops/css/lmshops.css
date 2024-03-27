@@ -24,7 +24,10 @@
 
 
 .product-images-container {
-    display: flex !important;
+    display: flex;
+}
+.product-images-container img{
+    width: 200px;
 }
 
 .grid-button-container {

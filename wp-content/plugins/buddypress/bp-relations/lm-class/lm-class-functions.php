@@ -50,23 +50,23 @@ function update_lm_relation_cache($comp, $user_id, $possible_member_ids, $bp_cac
 	$listName = $comp[0].'List';
 
 
-	error_log(json_encode('-------->>> bp_cache_key:'. $bp_cache_key));
+	error_log(json_encode('[class] [bp_cache_key] '. $bp_cache_key));
 	// error_log('count rel: '.json_encode(count($relationships)));
 	// error_log(json_encode($relationship));
-	error_log(json_encode('---------->>> comp_table: '. $comp_table . '  oppo_table: '. $oppo_table));
+	// error_log(json_encode('---------->>> comp_table: '. $comp_table . '  oppo_table: '. $oppo_table));
 	
 	foreach ( $relationships as $relationship ) {
 		$initiator_user_id = (int) $relationship->initiator_user_id;
 		$receiver_user_id = (int) $relationship->receiver_user_id;
 
-		error_log(json_encode($relationship));
+		// error_log(json_encode($relationship));
 		if ( $relationship->is_comp_table ) {	
 			$tableLetter = $comp[0];
-			error_log(json_encode('---> has Ini record'));
+			// error_log(json_encode('---> has Ini record'));
 			$confirm_test = $initiator_user_id === $user_id;
 		} else {
 			$tableLetter = $oppo[0];
-			error_log(json_encode('---> has Reverse record'));
+			// error_log(json_encode('---> has Reverse record'));
 			$confirm_test = $receiver_user_id === $user_id;
 		}
 
@@ -85,8 +85,8 @@ function update_lm_relation_cache($comp, $user_id, $possible_member_ids, $bp_cac
 		}
 		
 		
-		error_log(json_encode('-------------->>> rel_id: '. $relationship->id . ' user_id: '. $user_id . ' '. $initiator_user_id . '->'. $receiver_user_id. ' comp: '. $comp ));
-		error_log('--status_initiator-> ' . $status_initiator . ' --status_receiver-> ' . $status_receiver );
+		// error_log(json_encode('-------------->>> rel_id: '. $relationship->id . ' user_id: '. $user_id . ' '. $initiator_user_id . '->'. $receiver_user_id. ' comp: '. $comp ));
+		// error_log('--status_initiator-> ' . $status_initiator . ' --status_receiver-> ' . $status_receiver );
 		bp_core_set_incremented_cache( $initiator_user_id . ':' . $receiver_user_id, $bp_cache_key, $status_initiator );
 		bp_core_set_incremented_cache( $receiver_user_id . ':' . $initiator_user_id, $bp_cache_key, $status_receiver );
 

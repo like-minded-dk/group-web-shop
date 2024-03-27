@@ -156,7 +156,6 @@ class BP_User_Query {
 
 		// Allow extending classes to register action/filter hooks.
 		$this->setup_hooks();
-
 		if ( ! empty( $this->query_vars_raw ) ) {
 			$this->query_vars = bp_parse_args(
 				$this->query_vars_raw,
@@ -410,8 +409,8 @@ class BP_User_Query {
 
 		$friend_ids = friends_get_receiver_user_ids( $user_id );
 		$engagement_ids = engagements_get_receiver_user_ids( $user_id );
-		// error_log('=====query===friend_ids========= '.json_encode($friend_ids));
-		// error_log('=====query===engagement_ids===== '.json_encode($engagement_ids));
+		error_log('=====query===friend_ids========= '.json_encode($friend_ids));
+		error_log('=====query===engagement_ids===== '.json_encode($engagement_ids));
 		if ( ! empty( $user_id ) && ($is_engagment || $is_friend) ) {
 			// todo lm  merge friend and engagement
 			$relation_ids = array_merge($friend_ids, $engagement_ids);
